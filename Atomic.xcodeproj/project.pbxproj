@@ -1,0 +1,534 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D01B52274EC95000556EDA /* ToolsController.swift */; };
+		C0D04AC3274D7FBF0049E8ED /* Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = C0D04AC2274D7FBF0049E8ED /* Dynamic */; };
+		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
+		F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA47926E77F5100387EBA /* AtomicApp.swift */; };
+		F06AA47E26E77F5200387EBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
+		F06AA48126E77F5200387EBA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA48026E77F5200387EBA /* Preview Assets.xcassets */; };
+		F06AA49A26E7801200387EBA /* PeriodicTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48A26E7801200387EBA /* PeriodicTable.swift */; };
+		F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48B26E7801200387EBA /* AtomModel.swift */; };
+		F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48C26E7801200387EBA /* ChartsViews.swift */; };
+		F06AA49D26E7801200387EBA /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48E26E7801200387EBA /* FileManager.swift */; };
+		F06AA49E26E7801200387EBA /* FileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48F26E7801200387EBA /* FileReader.swift */; };
+		F06AA49F26E7801200387EBA /* MoleculeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49026E7801200387EBA /* MoleculeView.swift */; };
+		F06AA4A226E7801200387EBA /* MoleculeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49326E7801200387EBA /* MoleculeScene.swift */; };
+		F06AA4A526E7801200387EBA /* MoleculeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49726E7801200387EBA /* MoleculeViewController.swift */; };
+		F06AA4A726E7801200387EBA /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49926E7801200387EBA /* StartView.swift */; };
+		F06AA4AC26E7817B00387EBA /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = F06AA4AB26E7817B00387EBA /* Charts */; };
+		F0A7D06126F7AE7B000A84EC /* DemoMolecule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A7D06026F7AE7B000A84EC /* DemoMolecule.swift */; };
+		F0D5D7F227144544004E78B5 /* ToolsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D5D7F127144544004E78B5 /* ToolsModel.swift */; };
+		F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */; };
+		F0F6552226F7C61500DD4F25 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552126F7C61500DD4F25 /* MainWindow.swift */; };
+		F0F6552726F7C89600DD4F25 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552626F7C89600DD4F25 /* SettingsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C0D01B52274EC95000556EDA /* ToolsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsController.swift; sourceTree = "<group>"; };
+		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableView.swift; sourceTree = "<group>"; };
+		F06AA47626E77F5100387EBA /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F06AA47926E77F5100387EBA /* AtomicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicApp.swift; sourceTree = "<group>"; };
+		F06AA47D26E77F5200387EBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F06AA48026E77F5200387EBA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F06AA48A26E7801200387EBA /* PeriodicTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodicTable.swift; sourceTree = "<group>"; };
+		F06AA48B26E7801200387EBA /* AtomModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomModel.swift; sourceTree = "<group>"; };
+		F06AA48C26E7801200387EBA /* ChartsViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartsViews.swift; sourceTree = "<group>"; };
+		F06AA48E26E7801200387EBA /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		F06AA48F26E7801200387EBA /* FileReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileReader.swift; sourceTree = "<group>"; };
+		F06AA49026E7801200387EBA /* MoleculeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoleculeView.swift; sourceTree = "<group>"; };
+		F06AA49326E7801200387EBA /* MoleculeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoleculeScene.swift; sourceTree = "<group>"; };
+		F06AA49726E7801200387EBA /* MoleculeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoleculeViewController.swift; sourceTree = "<group>"; };
+		F06AA49926E7801200387EBA /* StartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		F0A7D06026F7AE7B000A84EC /* DemoMolecule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoMolecule.swift; sourceTree = "<group>"; };
+		F0D5D7F127144544004E78B5 /* ToolsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsModel.swift; sourceTree = "<group>"; };
+		F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableViewController.swift; sourceTree = "<group>"; };
+		F0F55A0C27305DC2003730BA /* Atomic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Atomic.entitlements; sourceTree = "<group>"; };
+		F0F6552126F7C61500DD4F25 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
+		F0F6552626F7C89600DD4F25 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F06AA47326E77F5100387EBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0D04AC3274D7FBF0049E8ED /* Dynamic in Frameworks */,
+				F06AA4AC26E7817B00387EBA /* Charts in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F011454826E782510063CA01 /* Molecule view */ = {
+			isa = PBXGroup;
+			children = (
+				F06AA49726E7801200387EBA /* MoleculeViewController.swift */,
+				F06AA49026E7801200387EBA /* MoleculeView.swift */,
+				F0A7D06026F7AE7B000A84EC /* DemoMolecule.swift */,
+			);
+			path = "Molecule view";
+			sourceTree = "<group>";
+		};
+		F06AA46D26E77F5100387EBA = {
+			isa = PBXGroup;
+			children = (
+				F06AA47826E77F5100387EBA /* Atomic */,
+				F06AA47726E77F5100387EBA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F06AA47726E77F5100387EBA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F06AA47626E77F5100387EBA /* Atomic.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F06AA47826E77F5100387EBA /* Atomic */ = {
+			isa = PBXGroup;
+			children = (
+				C0D04A89274D66E30049E8ED /* Info.plist */,
+				F0F55A0C27305DC2003730BA /* Atomic.entitlements */,
+				F0D5D7F027144539004E78B5 /* Tools */,
+				F06AA47926E77F5100387EBA /* AtomicApp.swift */,
+				F06AA49926E7801200387EBA /* StartView.swift */,
+				F06AA48926E7801200387EBA /* Atom models */,
+				F06AA48D26E7801200387EBA /* File management */,
+				F06AA4A926E7806100387EBA /* Renderer */,
+				F06AA49526E7801200387EBA /* Views */,
+				F06AA47F26E77F5200387EBA /* Preview Content */,
+				F06AA47D26E77F5200387EBA /* Assets.xcassets */,
+			);
+			path = Atomic;
+			sourceTree = "<group>";
+		};
+		F06AA47F26E77F5200387EBA /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				F06AA48026E77F5200387EBA /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		F06AA48926E7801200387EBA /* Atom models */ = {
+			isa = PBXGroup;
+			children = (
+				F06AA48A26E7801200387EBA /* PeriodicTable.swift */,
+				F06AA48B26E7801200387EBA /* AtomModel.swift */,
+			);
+			path = "Atom models";
+			sourceTree = "<group>";
+		};
+		F06AA48D26E7801200387EBA /* File management */ = {
+			isa = PBXGroup;
+			children = (
+				F06AA48E26E7801200387EBA /* FileManager.swift */,
+				F06AA48F26E7801200387EBA /* FileReader.swift */,
+			);
+			path = "File management";
+			sourceTree = "<group>";
+		};
+		F06AA49526E7801200387EBA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */,
+				F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */,
+				F0F6552026F7C60200DD4F25 /* Main Windows */,
+				F0F6552526F7C88800DD4F25 /* Settings view */,
+				F011454826E782510063CA01 /* Molecule view */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F06AA4A926E7806100387EBA /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				F06AA48C26E7801200387EBA /* ChartsViews.swift */,
+				F06AA49326E7801200387EBA /* MoleculeScene.swift */,
+			);
+			path = Renderer;
+			sourceTree = "<group>";
+		};
+		F0D5D7F027144539004E78B5 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				F0D5D7F127144544004E78B5 /* ToolsModel.swift */,
+				C0D01B52274EC95000556EDA /* ToolsController.swift */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		F0F6552026F7C60200DD4F25 /* Main Windows */ = {
+			isa = PBXGroup;
+			children = (
+				F0F6552126F7C61500DD4F25 /* MainWindow.swift */,
+			);
+			path = "Main Windows";
+			sourceTree = "<group>";
+		};
+		F0F6552526F7C88800DD4F25 /* Settings view */ = {
+			isa = PBXGroup;
+			children = (
+				F0F6552626F7C89600DD4F25 /* SettingsView.swift */,
+			);
+			path = "Settings view";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F06AA47526E77F5100387EBA /* Atomic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F06AA48426E77F5200387EBA /* Build configuration list for PBXNativeTarget "Atomic" */;
+			buildPhases = (
+				F06AA47226E77F5100387EBA /* Sources */,
+				F06AA47326E77F5100387EBA /* Frameworks */,
+				F06AA47426E77F5100387EBA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Atomic;
+			packageProductDependencies = (
+				F06AA4AB26E7817B00387EBA /* Charts */,
+				C0D04AC2274D7FBF0049E8ED /* Dynamic */,
+			);
+			productName = Atomic;
+			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F06AA46E26E77F5100387EBA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1310;
+				LastUpgradeCheck = 1300;
+				TargetAttributes = {
+					F06AA47526E77F5100387EBA = {
+						CreatedOnToolsVersion = 13.0;
+						LastSwiftMigration = 1310;
+					};
+				};
+			};
+			buildConfigurationList = F06AA47126E77F5100387EBA /* Build configuration list for PBXProject "Atomic" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F06AA46D26E77F5100387EBA;
+			packageReferences = (
+				F06AA4AA26E7817B00387EBA /* XCRemoteSwiftPackageReference "Charts" */,
+				C0D04AC1274D7FBF0049E8ED /* XCRemoteSwiftPackageReference "Dynamic" */,
+			);
+			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F06AA47526E77F5100387EBA /* Atomic */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F06AA47426E77F5100387EBA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F06AA48126E77F5200387EBA /* Preview Assets.xcassets in Resources */,
+				F06AA47E26E77F5200387EBA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F06AA47226E77F5100387EBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0A7D06126F7AE7B000A84EC /* DemoMolecule.swift in Sources */,
+				C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */,
+				F06AA4A526E7801200387EBA /* MoleculeViewController.swift in Sources */,
+				F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */,
+				F06AA4A726E7801200387EBA /* StartView.swift in Sources */,
+				F0F6552226F7C61500DD4F25 /* MainWindow.swift in Sources */,
+				F06AA49E26E7801200387EBA /* FileReader.swift in Sources */,
+				F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */,
+				F0F6552726F7C89600DD4F25 /* SettingsView.swift in Sources */,
+				F0D5D7F227144544004E78B5 /* ToolsModel.swift in Sources */,
+				F06AA49A26E7801200387EBA /* PeriodicTable.swift in Sources */,
+				F06AA49D26E7801200387EBA /* FileManager.swift in Sources */,
+				F06AA4A226E7801200387EBA /* MoleculeScene.swift in Sources */,
+				F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */,
+				F06AA49F26E7801200387EBA /* MoleculeView.swift in Sources */,
+				F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */,
+				F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F06AA48226E77F5200387EBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F06AA48326E77F5200387EBA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F06AA48526E77F5200387EBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Atomic/Atomic.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Atomic/Preview Content\"";
+				DEVELOPMENT_TEAM = A5LQ554459;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Atomic/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kris.Atomic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "2,6";
+			};
+			name = Debug;
+		};
+		F06AA48626E77F5200387EBA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Atomic/Atomic.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Atomic/Preview Content\"";
+				DEVELOPMENT_TEAM = A5LQ554459;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Atomic/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kris.Atomic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "2,6";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F06AA47126E77F5100387EBA /* Build configuration list for PBXProject "Atomic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F06AA48226E77F5200387EBA /* Debug */,
+				F06AA48326E77F5200387EBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F06AA48426E77F5200387EBA /* Build configuration list for PBXNativeTarget "Atomic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F06AA48526E77F5200387EBA /* Debug */,
+				F06AA48626E77F5200387EBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C0D04AC1274D7FBF0049E8ED /* XCRemoteSwiftPackageReference "Dynamic" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mhdhejazi/Dynamic";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		F06AA4AA26E7817B00387EBA /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C0D04AC2274D7FBF0049E8ED /* Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D04AC1274D7FBF0049E8ED /* XCRemoteSwiftPackageReference "Dynamic" */;
+			productName = Dynamic;
+		};
+		F06AA4AB26E7817B00387EBA /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F06AA4AA26E7817B00387EBA /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F06AA46E26E77F5100387EBA /* Project object */;
+}

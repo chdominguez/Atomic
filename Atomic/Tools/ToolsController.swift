@@ -12,7 +12,7 @@ class ToolsController: ObservableObject {
     
     static let shared = ToolsController()
     
-    @Published var selected1Tool: level1Tools = .manipulate
-    @Published var selected2Tool: level2Tools = .selectAtom
+    @Published var selected1Tool: mainTools = .manipulate
+    @Published var selected2Tool: editTools = .selectAtom
     
 }

@@ -19,8 +19,12 @@ struct DemoMolecule: View {
         self.molecule = MolReader.demoReader(demoFile: MolReader.demoGJF)
     }
     
-    var body: some View {
+    private var scene: SceneUI {
         SceneUI(molecule: $molecule[0].molecule, selectedAtom: $ptablecontroller.selectedAtom)
+    }
+    
+    var body: some View {
+        scene
     }
 }
 

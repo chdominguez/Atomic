@@ -18,11 +18,10 @@ struct MainWindow: View {
     
     var body: some View {
         ZStack {
-            DemoMolecule()
-            VStack {
-                toolbar1.background(Color.red)
-                
-                editToolbar
+            demoMolecule
+            VStack(spacing: 0) {
+                toolbar1.background(Color.gray.opacity(0.5))
+                editToolbar.background(Color.gray.opacity(0.5))
                     .opacity(toolsController.selected1Tool == .edit ? 1 : 0)
                 Spacer()
             }
@@ -31,6 +30,10 @@ struct MainWindow: View {
 }
 
 extension MainWindow {
+    
+    private var demoMolecule: some View {
+        DemoMolecule()
+    }
     
     private var editToolbar: some View {
         HStack {
@@ -48,6 +51,15 @@ extension MainWindow {
                 toolsController.selected2Tool = .selectAtom
             } label: {
                 Text("Select")
+            }
+            
+            Button {
+                demoMolecule.
+            } label: {
+                HStack{
+                    Image(systemName: "point.topleft.down.curvedto.point.bottomright.up.fill").rotationEffect(Angle(degrees: 90))
+                    Text("Bond")
+                }
             }
 
             Spacer()
@@ -107,7 +119,6 @@ extension MainWindow {
                     Text("Measure")
                 }
             }
-            
         }
         .padding(10)
     }

@@ -13,7 +13,9 @@ import SceneKit
 struct SceneUI: UIViewRepresentable {
     
     @Binding var molecule: Molecule
-    @Binding var selectedAtom: Element
+    @Binding var selectedAtomToAdd: Element
+    var selectionAtoms = [SCNNode]()
+    
     let sceneView = SCNView()
     var scene = SCNScene()
 
@@ -122,28 +124,28 @@ struct SceneUI: UIViewRepresentable {
             atomsNodes.addChildNode(atomNode)
         }
         
-        if molecule.bonds.isEmpty {
-            var checkedAtoms = molecule.atoms
-            
-            for atom1 in checkedAtoms {
-                checkedAtoms.removeFirst()
-                for atom2 in checkedAtoms {
-                    let pos1 = atom1.position
-                    let pos2 = atom2.position
-                    if let cylinderNode = lineBetweenNodes(positionA: pos1, positionB: pos2, inScene: scene, manual: false) {
-                        scene.rootNode.addChildNode(cylinderNode)
-                        molecule.bonds.append(Bond(pos1: pos1, pos2: pos2, type: .single))
-                    }
-                }
-            }
-        }
-        else {
-            for bond in molecule.bonds {
-                if let cylinderNode = lineBetweenNodes(positionA: bond.pos1, positionB: bond.pos2, inScene: scene, manual: false) {
-                    scene.rootNode.addChildNode(cylinderNode)
-                }
-            }
-        }
+//        if molecule.bonds.isEmpty {
+//            var checkedAtoms = molecule.atoms
+//
+//            for atom1 in checkedAtoms {
+//                checkedAtoms.removeFirst()
+//                for atom2 in checkedAtoms {
+//                    let pos1 = atom1.position
+//                    let pos2 = atom2.position
+//                    if let cylinderNode = lineBetweenNodes(positionA: pos1, positionB: pos2, inScene: scene, manual: false) {
+//                        scene.rootNode.addChildNode(cylinderNode)
+//                        molecule.bonds.append(Bond(pos1: pos1, pos2: pos2, type: .single))
+//                    }
+//                }
+//            }
+//        }
+//        else {
+//            for bond in molecule.bonds {
+//                if let cylinderNode = lineBetweenNodes(positionA: bond.pos1, positionB: bond.pos2, inScene: scene, manual: false) {
+//                    scene.rootNode.addChildNode(cylinderNode)
+//                }
+//            }
+//        }
         
         scene.rootNode.addChildNode(atomsNodes)
         
@@ -151,9 +153,11 @@ struct SceneUI: UIViewRepresentable {
     }
     
     public func bondSelectedAtoms() {
-        if selectedAtoms.count == 2 {
-            let atom1 = selectedAtoms[0]
-            let atom2 = selectedAtoms[1]
+        print(selectionAtoms)
+        if selectionAtoms.count == 2 {
+            print("Bonding")
+            let atom1 = selectionAtoms[0]
+            let atom2 = selectionAtoms[1]
             let position1 = atom1.position
             let position2 = atom2.position
             guard let newBond = lineBetweenNodes(positionA: position1, positionB: position2, inScene: scene, manual: true) else {return}
@@ -291,8 +295,6 @@ class AtomRenderer: NSObject {
     
     var world0: SCNVector3 { sceneParent.sceneView.projectPoint(SCNVector3Zero) }
     
-    let selectedAtoms = SelectedAtoms.shared
-    
     init(_ sceneView: SceneUI) {
         self.sceneParent = sceneView
     }
@@ -337,21 +339,15 @@ class AtomRenderer: NSObject {
                     atomOrbSelection.opacity = 0.3
                     sceneParent.scene.rootNode.addChildNode(atomOrbSelection)
                     
-                    selectedAtoms.selectedAtoms.append(hitNode)
+                    sceneParent.selectionAtoms.append(hitNode)
                 }
                 else if hitNode.name == "selection"  {
                     hitNode.removeFromParentNode()
-                    guard let i = selectedAtoms.selected.firstIndex(of: hitNode) else {return}
-                    selectedAtoms.selected.remove(at: i)
+                    guard let i = sceneParent.selectionAtoms.firstIndex(of: hitNode) else {return}
+                    sceneParent.selectionAtoms.remove(at: i)
                 }
             }
         }
         
     }
-}
-
-class SelectedAtoms {
-    var shared = SelectedAtoms()
-    
-    var selected: [SCNNode] = []
 }

@@ -17,14 +17,13 @@ struct MainWindow: View {
     @State var periodicBarVisible = false
     
     var body: some View {
-        ZStack {
-            demoMolecule
-            VStack(spacing: 0) {
+        VStack {
+            
                 toolbar1.background(Color.gray.opacity(0.5))
                 editToolbar.background(Color.gray.opacity(0.5))
                     .opacity(toolsController.selected1Tool == .edit ? 1 : 0)
-                Spacer()
-            }
+            
+            demoMolecule
         }
     }
 }
@@ -54,7 +53,7 @@ extension MainWindow {
             }
             
             Button {
-                demoMolecule.
+                
             } label: {
                 HStack{
                     Image(systemName: "point.topleft.down.curvedto.point.bottomright.up.fill").rotationEffect(Angle(degrees: 90))

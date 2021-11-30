@@ -15,6 +15,8 @@ struct DemoMolecule: View {
     
     @State var molecule: [Step]
     
+    @ObservedObejct var 
+    
     init() {
         self.molecule = MolReader.demoReader(demoFile: MolReader.demoGJF)
     }
@@ -24,7 +26,17 @@ struct DemoMolecule: View {
     }
     
     var body: some View {
-        scene
+        VStack {
+            Button {
+                let bond = Bond(pos1: <#T##SCNVector3#>, pos2: <#T##SCNVector3#>)
+                molecule[0].molecule.bonds.append()
+            } label: {
+                <#code#>
+            }
+
+            scene
+        }
+        
     }
 }
 

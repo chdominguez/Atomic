@@ -16,7 +16,7 @@ struct SceneUI: UIViewRepresentable {
     @Binding var selectedAtom: Element
     let sceneView = SCNView()
     var scene = SCNScene()
-    var selectedAtoms: [SCNNode] = []
+
     
     func makeUIView(context: Context) -> SCNView {
         let gesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
@@ -122,14 +122,24 @@ struct SceneUI: UIViewRepresentable {
             atomsNodes.addChildNode(atomNode)
         }
         
-        var checkedAtoms = molecule.atoms
-        
-        for atom1 in checkedAtoms {
-            checkedAtoms.removeFirst()
-            for atom2 in checkedAtoms {
-                let pos1 = atom1.position
-                let pos2 = atom2.position
-                if let cylinderNode = lineBetweenNodes(positionA: pos1, positionB: pos2, inScene: scene, manual: false) {
+        if molecule.bonds.isEmpty {
+            var checkedAtoms = molecule.atoms
+            
+            for atom1 in checkedAtoms {
+                checkedAtoms.removeFirst()
+                for atom2 in checkedAtoms {
+                    let pos1 = atom1.position
+                    let pos2 = atom2.position
+                    if let cylinderNode = lineBetweenNodes(positionA: pos1, positionB: pos2, inScene: scene, manual: false) {
+                        scene.rootNode.addChildNode(cylinderNode)
+                        molecule.bonds.append(Bond(pos1: pos1, pos2: pos2, type: .single))
+                    }
+                }
+            }
+        }
+        else {
+            for bond in molecule.bonds {
+                if let cylinderNode = lineBetweenNodes(positionA: bond.pos1, positionB: bond.pos2, inScene: scene, manual: false) {
                     scene.rootNode.addChildNode(cylinderNode)
                 }
             }
@@ -149,6 +159,10 @@ struct SceneUI: UIViewRepresentable {
             guard let newBond = lineBetweenNodes(positionA: position1, positionB: position2, inScene: scene, manual: true) else {return}
             scene.rootNode.addChildNode(newBond)
         }
+    }
+    
+    private func checkBondingBasedOnDistance() {
+        
     }
     
     private func lineBetweenNodes(positionA: SCNVector3, positionB: SCNVector3, inScene: SCNScene, manual: Bool) -> SCNNode? {
@@ -277,12 +291,13 @@ class AtomRenderer: NSObject {
     
     var world0: SCNVector3 { sceneParent.sceneView.projectPoint(SCNVector3Zero) }
     
+    let selectedAtoms = SelectedAtoms.shared
+    
     init(_ sceneView: SceneUI) {
         self.sceneParent = sceneView
     }
     
     @objc func handleTaps(gesture: UIGestureRecognizer) {
-        
         
         let location = gesture.location(in: sceneParent.sceneView)
         let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
@@ -322,17 +337,21 @@ class AtomRenderer: NSObject {
                     atomOrbSelection.opacity = 0.3
                     sceneParent.scene.rootNode.addChildNode(atomOrbSelection)
                     
-                    sceneParent.selectedAtoms.append(hitNode)
-                    
+                    selectedAtoms.selectedAtoms.append(hitNode)
                 }
                 else if hitNode.name == "selection"  {
                     hitNode.removeFromParentNode()
-                    guard let i = sceneParent.selectedAtoms.firstIndex(of: hitNode) else {return}
-                    sceneParent.selectedAtoms.remove(at: i)
+                    guard let i = selectedAtoms.selected.firstIndex(of: hitNode) else {return}
+                    selectedAtoms.selected.remove(at: i)
                 }
             }
         }
         
     }
 }
+
+class SelectedAtoms {
+    var shared = SelectedAtoms()
     
+    var selected: [SCNNode] = []
+}

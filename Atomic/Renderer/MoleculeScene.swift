@@ -12,9 +12,11 @@ import SceneKit
 
 struct SceneUI: UIViewRepresentable {
     
+    
+    @Binding var createBondsButtonPressed: Bool
     @Binding var molecule: Molecule
     @Binding var selectedAtomToAdd: Element
-    var selectionAtoms = [SCNNode]()
+    @State var selectionAtoms = [SCNNode]()
     
     let sceneView = SCNView()
     var scene = SCNScene()
@@ -34,6 +36,13 @@ struct SceneUI: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: SCNView, context: Context) {
+        if createBondsButtonPressed {
+            print(selectionAtoms)
+            bondSelectedAtoms()
+            DispatchQueue.main.async {
+                createBondsButtonPressed = false
+            }
+        }
         uiView.scene?.rootNode.addChildNode(newAtomRender())
     }
     
@@ -280,7 +289,7 @@ extension UIView {
 
 
 class AtomRenderer: NSObject {
-    
+        
     var selectedAtom: Element {PeriodicTableViewController.shared.selectedAtom}
     
     var selected1Tool: mainTools {ToolsController.shared.selected1Tool}
@@ -339,15 +348,85 @@ class AtomRenderer: NSObject {
                     atomOrbSelection.opacity = 0.3
                     sceneParent.scene.rootNode.addChildNode(atomOrbSelection)
                     
-                    sceneParent.selectionAtoms.append(hitNode)
+                    sceneParent.selectionAtoms.append(atomOrbSelection)
+                    print(sceneParent.selectionAtoms)
                 }
                 else if hitNode.name == "selection"  {
-                    hitNode.removeFromParentNode()
                     guard let i = sceneParent.selectionAtoms.firstIndex(of: hitNode) else {return}
                     sceneParent.selectionAtoms.remove(at: i)
+                    hitNode.removeFromParentNode()
+                    
                 }
             }
         }
         
     }
+    
+
 }
+
+//import SwiftUI
+//import Combine
+//
+//struct ContentView: View {
+//    @ObservedObject var vcLink = VCLink()
+//    var body: some View {
+//        VStack {
+//            VCRepresented(vcLink: vcLink)
+//            Button("Take photo") {
+//                vcLink.takePhoto()
+//            }
+//        }
+//    }
+//}
+//
+//enum LinkAction {
+//    case takePhoto
+//}
+//
+//class VCLink : ObservableObject {
+//    @Published var action : LinkAction?
+//
+//    func takePhoto() {
+//        action = .takePhoto
+//    }
+//}
+//
+//class CustomVC : UIViewController {
+//    func action(_ action : LinkAction) {
+//        print("\(action)")
+//    }
+//}
+//
+//struct VCRepresented : UIViewControllerRepresentable {
+//    var vcLink : VCLink
+//
+//    class Coordinator {
+//        var vcLink : VCLink? {
+//            didSet {
+//                cancelable = vcLink?.$action.sink(receiveValue: { (action) in
+//                    guard let action = action else {
+//                        return
+//                    }
+//                    self.viewController?.action(action)
+//                })
+//            }
+//        }
+//        var viewController : CustomVC?
+//
+//        private var cancelable : AnyCancellable?
+//    }
+//
+//    func makeCoordinator() -> Coordinator {
+//        return Coordinator()
+//    }
+//
+//    func makeUIViewController(context: Context) -> CustomVC {
+//        return CustomVC()
+//    }
+//
+//    func updateUIViewController(_ uiViewController: CustomVC, context: Context) {
+//        context.coordinator.viewController = uiViewController
+//        context.coordinator.vcLink = vcLink
+//    }
+//}

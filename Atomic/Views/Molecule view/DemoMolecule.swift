@@ -15,18 +15,20 @@ struct DemoMolecule: View {
     
     @State var molecule: [Step]
     
+    @State var createNewBonds = false
+    
     init() {
         self.molecule = MolReader.demoReader(demoFile: MolReader.demoGJF)
     }
     
     private var scene: SceneUI {
-        SceneUI(molecule: $molecule[0].molecule, selectedAtomToAdd: $ptablecontroller.selectedAtom)
+        SceneUI(createBondsButtonPressed: $createNewBonds, molecule: $molecule[0].molecule, selectedAtomToAdd: $ptablecontroller.selectedAtom)
     }
     
     var body: some View {
         VStack {
             Button {
-                scene.bondSelectedAtoms()
+                createNewBonds = true
             } label: {
                 Text("BOND")
             }

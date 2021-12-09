@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C09441352761F76F00680075 /* CustomViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* CustomViewModifiers.swift */; };
 		C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D01B52274EC95000556EDA /* ToolsController.swift */; };
 		C0D04AC3274D7FBF0049E8ED /* Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = C0D04AC2274D7FBF0049E8ED /* Dynamic */; };
 		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C09441342761F76F00680075 /* CustomViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewModifiers.swift; sourceTree = "<group>"; };
 		C0D01B52274EC95000556EDA /* ToolsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsController.swift; sourceTree = "<group>"; };
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableView.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 		F06AA49526E7801200387EBA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C09441342761F76F00680075 /* CustomViewModifiers.swift */,
 				F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */,
 				F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */,
 				F0F6552026F7C60200DD4F25 /* Main Windows */,
@@ -153,8 +156,8 @@
 		F06AA4A926E7806100387EBA /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
-				F06AA48C26E7801200387EBA /* ChartsViews.swift */,
 				F06AA49326E7801200387EBA /* MoleculeScene.swift */,
+				F06AA48C26E7801200387EBA /* ChartsViews.swift */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */,
 				F06AA4A526E7801200387EBA /* MoleculeViewController.swift in Sources */,
 				F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */,
+				C09441352761F76F00680075 /* CustomViewModifiers.swift in Sources */,
 				F06AA4A726E7801200387EBA /* StartView.swift in Sources */,
 				F0F6552226F7C61500DD4F25 /* MainWindow.swift in Sources */,
 				F06AA49E26E7801200387EBA /* FileReader.swift in Sources */,

@@ -13,35 +13,16 @@ struct DemoMolecule: View {
     
     @EnvironmentObject var ptablecontroller: PeriodicTableViewController
     
-    @State var molecule: [Step]
+    @State var molecule: [Step] = MolReader.demoReader(demoFile: MolReader.demoGJF)
     
-    @State var createNewBonds = false
-    
-    init() {
-        self.molecule = MolReader.demoReader(demoFile: MolReader.demoGJF)
-    }
+    @Binding var createNewBonds: Bool
     
     private var scene: SceneUI {
         SceneUI(createBondsButtonPressed: $createNewBonds, molecule: $molecule[0].molecule, selectedAtomToAdd: $ptablecontroller.selectedAtom)
     }
     
     var body: some View {
-        VStack {
-            Button {
-                createNewBonds = true
-            } label: {
-                Text("BOND")
-            }
-
-            scene
-        }
-        
-    }
-}
-
-struct DemoMolecule_Previews: PreviewProvider {
-    static var previews: some View {
-        DemoMolecule()
+        scene
     }
 }
 

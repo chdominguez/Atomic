@@ -10,11 +10,11 @@ import Combine
 
 struct MainWindow: View {
     
+    @ObservedObject var controller = RendererController()
+    
     @State var showFile = false
     
     @State var showEdit = false
-    
-    @State var createNewBondsTapped = false
     
     @ObservedObject var toolsController: ToolsController = ToolsController.shared
     
@@ -23,11 +23,14 @@ struct MainWindow: View {
     @State var periodicBarVisible = false
     
     var body: some View {
-        VStack {
-            toolbar1.background(Color.gray.opacity(0.5)).zIndex(1)
+        ZStack {
+            VStack {
+                toolbar1
+                Spacer()
+            }.zIndex(1)
             //editToolbar.background(Color.gray.opacity(0.5))
             //.opacity(toolsController.selected1Tool == .edit ? 1 : 0)
-            demoMolecule
+            MoleculeView()
         }
     }
 }
@@ -35,7 +38,7 @@ struct MainWindow: View {
 extension MainWindow {
     
     private var demoMolecule: some View {
-        DemoMolecule(createNewBonds: $createNewBondsTapped)
+        SceneUI(controller: controller)
     }
     
     private var editToolbar: some View {
@@ -115,7 +118,6 @@ extension MainWindow {
                 .offset(x: 0, y: showFile ? 80 : 40).opacity(showFile ? 1 : 0)
                     
             }
-            Spacer()
             ZStack {
                 Button {
                     withAnimation {
@@ -131,7 +133,15 @@ extension MainWindow {
                 
                 VStack {
                     Button {
-                        createNewBondsTapped = true
+                        controller.eraseSelectedAtoms()
+                    } label: {
+                        HStack{
+                            Image(systemName: "trash")
+                            Text("Erase")
+                        }
+                    }.atomicButton()
+                    Button {
+                        controller.bondSelectedAtoms()
                     } label: {
                         HStack{
                             Image(systemName: "link")
@@ -139,9 +149,10 @@ extension MainWindow {
                         }
                     }.atomicButton()
                 }
-                .offset(x: 0, y: showEdit ? 40 : 10).opacity(showEdit ? 1 : 0)
+                .offset(x: 0, y: showEdit ? 60 : 10).opacity(showEdit ? 1 : 0)
                     
             }
+            Spacer()
         }
         .frame(maxHeight: 20)
         .padding(10)

@@ -48,7 +48,8 @@ struct MoleculeView: View {
                                 }
                             }
                         }
-                        //SceneUI(molecule: $moleculeVM.steps[moleculeVM.stepIndex].molecule)
+                        
+                        SceneUI(controller: moleculeVM.controller)
                     }
                         if !moleculeVM.steps[moleculeVM.stepIndex].frequencys.isEmpty {
                             ScrollView {

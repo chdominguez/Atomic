@@ -9,7 +9,13 @@ import SwiftUI
 import Combine
 
 struct MainWindow: View {
-        
+    
+    @ObservedObject var controller = RendererController()
+    
+    @State var showFile = false
+    
+    @State var showEdit = false
+    
     @ObservedObject var toolsController: ToolsController = ToolsController.shared
     
     @State var periodicVisible = false
@@ -18,19 +24,22 @@ struct MainWindow: View {
     
     var body: some View {
         ZStack {
-            DemoMolecule()
             VStack {
-                toolbar1.background(Color.red)
-                
-                editToolbar
-                    .opacity(toolsController.selected1Tool == .edit ? 1 : 0)
+                toolbar1
                 Spacer()
-            }
+            }.zIndex(1)
+            //editToolbar.background(Color.gray.opacity(0.5))
+            //.opacity(toolsController.selected1Tool == .edit ? 1 : 0)
+            MoleculeView()
         }
     }
 }
 
 extension MainWindow {
+    
+    private var demoMolecule: some View {
+        SceneUI(controller: controller)
+    }
     
     private var editToolbar: some View {
         HStack {
@@ -49,66 +58,103 @@ extension MainWindow {
             } label: {
                 Text("Select")
             }
-
+            
+            Button {
+                
+            } label: {
+                HStack{
+                    Image(systemName: "point.topleft.down.curvedto.point.bottomright.up.fill").rotationEffect(Angle(degrees: 90))
+                    Text("Bond")
+                }
+            }
+            
             Spacer()
-        }.padding()
+        }
     }
     
     private var toolbar1: some View {
         HStack(spacing: 5){
-            Button {
-                print("New file")
-            } label: {
-                HStack{
-                    Image(systemName: "doc.badge.plus")
-                    Text("New")
+            ZStack {
+                Button {
+                    withAnimation {
+                        showFile.toggle()
+                    }
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .rotationEffect(Angle(degrees: showFile ? 45 : 0))
+                    Text("File")
                 }
-            }
-            Button {
-                print("Open file")
-            } label: {
-                HStack{
-                    Image(systemName: "doc.on.doc")
-                    Text("Open")
+                .zIndex(1)
+                .atomicButton()
+                
+                VStack {
+                    Button {
+                        print("New file")
+                    } label: {
+                        HStack{
+                            Image(systemName: "doc.badge.plus")
+                            Text("New")
+                        }
+                    }.atomicButton()
+                    
+                    
+                    Button {
+                        print("Open file")
+                    } label: {
+                        HStack{
+                            Image(systemName: "doc.on.doc")
+                            Text("Open")
+                        }
+                    }.atomicButton()
+                    Button {
+                        print("Save file")
+                    } label: {
+                        HStack{
+                            Image(systemName: "square.and.arrow.down.fill")
+                            Text("Save")
+                        }
+                    }.atomicButton()
                 }
+                .offset(x: 0, y: showFile ? 80 : 40).opacity(showFile ? 1 : 0)
+                    
             }
-            Button {
-                print("Save file")
-            } label: {
-                HStack{
-                    Image(systemName: "square.and.arrow.down.fill")
-                    Text("Save")
-                }
-            }
-            
-            Spacer()
-            
-            Button {
-                toolsController.selected1Tool = .manipulate
-            } label: {
-                HStack{
-                    Image(systemName: "hand.point.up.left")
-                    Text("Manipulate")
-                }
-            }
-            Button {
-                toolsController.selected1Tool = .edit
-            } label: {
-                HStack {
+            ZStack {
+                Button {
+                    withAnimation {
+                        showEdit.toggle()
+                    }
+                } label: {
                     Image(systemName: "paintbrush.pointed")
+                        .rotationEffect(Angle(degrees: showEdit ? 45 : 0))
                     Text("Edit")
                 }
-            }
-            Button {
-                toolsController.selected1Tool = .measure
-            } label: {
-                HStack{
-                    Image(systemName: "ruler")
-                    Text("Measure")
+                .zIndex(1)
+                .atomicButton()
+                
+                VStack {
+                    Button {
+                        controller.eraseSelectedAtoms()
+                    } label: {
+                        HStack{
+                            Image(systemName: "trash")
+                            Text("Erase")
+                        }
+                    }.atomicButton()
+                    Button {
+                        controller.bondSelectedAtoms()
+                    } label: {
+                        HStack{
+                            Image(systemName: "link")
+                            Text("Bond")
+                        }
+                    }.atomicButton()
                 }
+                .offset(x: 0, y: showEdit ? 60 : 10).opacity(showEdit ? 1 : 0)
+                    
             }
-            
+            Spacer()
         }
+        .frame(maxHeight: 20)
         .padding(10)
     }
 }

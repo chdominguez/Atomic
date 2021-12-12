@@ -12,7 +12,7 @@ import SceneKit
 class RendererController: ObservableObject {
     
     @Published var selectedAtoms: [(atom: SCNNode, orb: SCNNode)] = []
-    @Published var molecule: Molecule?
+    @Published var molecule: Molecule
     
     @Published var scene = SCNScene()
     
@@ -65,7 +65,12 @@ class RendererController: ObservableObject {
         
         scene.rootNode.addChildNode(cameraNode)
         
-        for atom in molecule!.atoms {
+        guard let molecule = molecule else {
+            print("NO MOLECULE")
+            return
+        }
+        
+        for atom in molecule.atoms {
             let radius = atom.type.radius
             let sphere = SCNSphere(radius: radius)
             let physicsBody = SCNPhysicsBody(type: .static, shape: nil)

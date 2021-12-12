@@ -11,6 +11,7 @@ import SceneKit
 struct MoleculeView: View {
         
     @ObservedObject var moleculeVM = MoleculeViewModel()
+    @StateObject var controller = RendererController()
     
     var body: some View {
         
@@ -49,7 +50,7 @@ struct MoleculeView: View {
                             }
                         }
                         
-                        SceneUI(controller: moleculeVM.controller)
+                        SceneUI(controller: controller)
                     }
                         if !moleculeVM.steps[moleculeVM.stepIndex].frequencys.isEmpty {
                             ScrollView {

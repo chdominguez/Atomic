@@ -14,7 +14,7 @@ final class MolReader {
     
     public func readFile(_ file: URL) -> [Step]? {
         switch file.pathExtension {
-        case "gjf":
+        case "gjf", "gja":
             return readGJF(fileURL: file)
         case "log", "qfi":
             return readLOG(fileURL: file)

@@ -11,6 +11,8 @@ import SceneKit
 import UniformTypeIdentifiers
 
 class MoleculeViewModel: ObservableObject {
+    
+    @Published var controller = RendererController()
         
     @Published var openFileImporter = false
     
@@ -18,7 +20,13 @@ class MoleculeViewModel: ObservableObject {
     
     @Published var loading: Bool = false
     
-    @Published var steps = [Step]()
+    @Published var steps = [Step]() {
+        didSet {
+            if !steps.isEmpty {
+                controller.molecule = steps[0].molecule
+            }
+        }
+    }
     
     @Published var stepIndex: Int = 0 {
         didSet {

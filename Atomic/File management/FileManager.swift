@@ -12,7 +12,9 @@ class FileOpener: ObservableObject {
     
     private init() {}
     
-    static let types = [UTType("com.Atomic.gjf")!, UTType("com.Atomic.qfi")!, UTType("com.Atomic.log")!]
+    static let types: [UTType] = [UTType(filenameExtension: "gjf")!,
+                                  UTType(filenameExtension: "log")!,
+                                  UTType(filenameExtension: "qfi")!]
     
     static func getFile(res: Result<URL, Error>) -> URL? {
         do {

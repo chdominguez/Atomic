@@ -12,7 +12,7 @@ import SceneKit
 class RendererController: ObservableObject {
     
     @Published var selectedAtoms: [(atom: SCNNode, orb: SCNNode)] = []
-    @Published var molecule: Molecule
+    @Published var molecule: Molecule?
     
     @Published var scene = SCNScene()
     

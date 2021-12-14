@@ -11,7 +11,11 @@ import SwiftUI
 
 class StartingWindow: ObservableObject {
     //Change the view if the user did open a file
-    @Published var userDidOpenAFile = false
+    @Published var userDidOpenAFile = false {
+        didSet {
+            print("*** Change to VIEW")
+        }
+    }
     
     //Animations and toolbars displayed
     @Published var showFile = false

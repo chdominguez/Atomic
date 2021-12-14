@@ -82,8 +82,12 @@ final class MolReader {
    private func readGJF(fileURL: URL) -> [Step]? {
         var molecule = Molecule()
         do {
-            if fileURL.startAccessingSecurityScopedResource() {
+            print("*** HERE")
+            print("***\(CFURLStartAccessingSecurityScopedResource(fileURL as CFURL))")
+            if CFURLStartAccessingSecurityScopedResource(fileURL as CFURL) {
+                print("*** HERE")
                 let textContent = try String(contentsOf: fileURL)
+                print("*** HERE the text is: \(textContent)")
                 let lines = textContent.components(separatedBy: "\n")
                 for line in lines {
                     if let atom = gjfToAtom(line: line, number: molecule.atoms.count + 1) {
@@ -91,7 +95,8 @@ final class MolReader {
                     }
                 }
             }
-            fileURL.stopAccessingSecurityScopedResource()
+            //fileURL.stopAccessingSecurityScopedResource()
+            CFURLStopAccessingSecurityScopedResource(fileURL as CFURL)
             return [Step(molecule: molecule, energy: 0)]
         }
         catch {

@@ -12,7 +12,8 @@ struct MainWindow: View {
     
     @StateObject var mainWindowVM = StartingWindow()
     @StateObject var moleculeVM = MoleculeViewModel()
-            
+    @State var dragOver = false
+    
     var body: some View {
         ZStack {
             VStack {
@@ -20,23 +21,39 @@ struct MainWindow: View {
                 Spacer()
             }
             .zIndex(1)
-            if mainWindowVM.userDidOpenAFile {
-                MoleculeView(moleculeVM: moleculeVM)
+            Group {
+                if moleculeVM.moleculeReady {
+                    MoleculeView(moleculeVM: moleculeVM)
+                }
+                else {
+                    VStack {
+                        WelcomeMessage()
+                        Image(systemName: "doc").font(.title)
+                            .foregroundColor(dragOver ? .red : .green)
+                    }
+                    #if targetEnvironment(macCatalyst)
+                    
+                    .onDrop(of: FileOpener.types, isTargeted: $dragOver) { providers -> Bool in
+                        moleculeVM.handleDrop(providers)
+                        return true
+                    }
+                    #endif
+                    
+                }
             }
-            else {
-                WelcomeMessage()
-            }
-            
         }
         .fileImporter(isPresented: $mainWindowVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
-            moleculeVM.getFile(fileURL)
-            mainWindowVM.userDidOpenAFile = true
+            guard let url = FileOpener.getFile(res: fileURL) else {return}
+            print("*** URL from open: \(url)")
+            moleculeVM.getFile(url)
+            //mainWindowVM.userDidOpenAFile = true
         }
+        
     }
 }
 
 extension MainWindow {
-        
+    
     private var toolbar: some View {
         HStack(spacing: 5){
             ZStack {
@@ -79,10 +96,19 @@ extension MainWindow {
                             Text("Save")
                         }
                     }.atomicButton()
+                    Button {
+                        moleculeVM.resetFile()
+                        
+                    } label: {
+                        HStack{
+                            Image(systemName: "xmark")
+                            Text("Close")
+                        }
+                    }.atomicButton()
                 }
                 .offset(x: 0, y: mainWindowVM.showFile ? 80 : 40)
                 .opacity(mainWindowVM.showFile ? 1 : 0)
-                    
+                
             }
             ZStack {
                 Button {
@@ -99,7 +125,7 @@ extension MainWindow {
                 
                 VStack {
                     Button {
-                        //moleculeVM.controller.eraseSelectedAtoms()
+                        moleculeVM.controller.eraseSelectedAtoms()
                     } label: {
                         HStack{
                             Image(systemName: "trash")
@@ -107,7 +133,7 @@ extension MainWindow {
                         }
                     }.atomicButton()
                     Button {
-                        //moleculeVM.controller.bondSelectedAtoms()
+                        moleculeVM.controller.bondSelectedAtoms()
                     } label: {
                         HStack{
                             Image(systemName: "link")
@@ -117,7 +143,7 @@ extension MainWindow {
                 }
                 .offset(x: 0, y: mainWindowVM.showEdit ? 60 : 10)
                 .opacity(mainWindowVM.showEdit ? 1 : 0)
-                    
+                
             }
             Spacer()
         }
@@ -125,6 +151,5 @@ extension MainWindow {
         .padding(10)
     }
 }
-
 
 

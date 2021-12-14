@@ -16,6 +16,12 @@ class RendererController: ObservableObject {
     
     @Published var scene = SCNScene()
     
+    func resetRenderer() {
+        scene = SCNScene()
+        selectedAtoms.removeAll()
+        molecule = nil
+    }
+    
     func newAtomRender() {
         let atom = molecule!.atoms.last!
         let radius = atom.type.radius

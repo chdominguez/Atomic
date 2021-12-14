@@ -12,6 +12,8 @@ import UniformTypeIdentifiers
 
 class MoleculeViewModel: ObservableObject {
     
+    @Published var showErrorFileAlert = false
+    
     @Published var moleculeReady = false
     
     @Published var controller = RendererController()
@@ -38,11 +40,11 @@ class MoleculeViewModel: ObservableObject {
     
     @Published var stepSlider = 0.0
     
-    func getFile(_ url: URL) {
-        resetFile()
-        self.fileURL = url
-        getMolecules(urlFile: url)
-    }
+//    func getFile(_ url: URL) {
+//        resetFile()
+//        self.fileURL = url
+//        getMolecules(urlFile: url)
+//    }
     
 //    func getFromDrop(providers: [NSItemProvider]) {
 //        providers.first?.loadInPlaceFileRepresentation(forTypeIdentifier: "public.data", completionHandler: { fileURL, completed, error in
@@ -56,40 +58,36 @@ class MoleculeViewModel: ObservableObject {
 //    }
     
     func handleDrop(_ drop: [NSItemProvider]) {
-        var finalURL: URL? = nil
-        let g = DispatchGroup()
-        g.enter()
-        drop.first?.loadInPlaceFileRepresentation(forTypeIdentifier: "public.data", completionHandler: { fileURL, completed, error in
-            guard let fileURL = fileURL else {return}
-            print("*** URL from drop: \(fileURL)")
-            let textContent = try! String(contentsOf: fileURL)
-            print(textContent)
-            finalURL = fileURL
-            g.leave()
-
-        })
-        g.notify(queue: .main) {
-            self.fileURL = finalURL!
-            self.getMolecules(urlFile: finalURL!)
-            //mainWindowVM.userDidOpenAFile = true
-        }
-    }
-    
-    private func getMolecules(urlFile: URL) {
-        print("*** Recieved file url is: \(urlFile)")
         loading = true
-        DispatchQueue.main.async { [self] in
-            let reader = MolReader()
-            guard let steps = reader.readFile(urlFile) else {fatalError()}
-            print("*** Steps: \(steps.first?.molecule.atoms)")
-            self.steps = steps
-            controller.molecule = steps[0].molecule
-            self.loading = false
-            print("*** Ended loading")
-            self.moleculeReady = true
+        FileOpener.getURL(fromDroppedFile: drop) { url in
+            DispatchQueue.main.sync {
+                guard let steps = FileOpener.getMolecules(fromFileURL: url) else {return}
+                self.steps = steps
+                self.moleculeReady = true
+                self.loading = false
+            }
         }
     }
     
+    func handlePickedFile(_ picked: Result<URL, Error>) {
+        guard let url = FileOpener.getFileURLForPicked(picked) else {
+            showErrorFileAlert = true
+            return
+        }
+        guard url.startAccessingSecurityScopedResource() else {
+            showErrorFileAlert = true
+            return
+        }
+        guard let steps = FileOpener.getMolecules(fromFileURL: url) else {
+            showErrorFileAlert = true
+            return
+        }
+        url.stopAccessingSecurityScopedResource()
+        self.resetFile()
+        self.steps = steps
+        self.moleculeReady = true
+    }
+
     
     
     func indexButton(_ stepButton: StepButton) {
@@ -117,9 +115,10 @@ class MoleculeViewModel: ObservableObject {
     }
     
     func resetFile() {
+        controller.resetRenderer()
         moleculeReady = false
         fileURL = nil
-        steps.removeAll()
+        steps = []
         stepIndex = 0
     }
     

@@ -21,32 +21,39 @@ struct MainWindow: View {
                 Spacer()
             }
             .zIndex(1)
-            Group {
-                if moleculeVM.moleculeReady {
-                    MoleculeView(moleculeVM: moleculeVM)
+            ZStack {
+                if moleculeVM.loading {
+                    ProgressView()
+                    Color.gray.opacity(0.25)
                 }
-                else {
-                    VStack {
-                        WelcomeMessage()
-                        Image(systemName: "doc").font(.title)
-                            .foregroundColor(dragOver ? .red : .green)
+                Group {
+                    if moleculeVM.moleculeReady {
+                        MoleculeView(moleculeVM: moleculeVM)
                     }
-                    #if targetEnvironment(macCatalyst)
-                    
-                    .onDrop(of: FileOpener.types, isTargeted: $dragOver) { providers -> Bool in
-                        moleculeVM.handleDrop(providers)
-                        return true
+                    else {
+                        VStack {
+                            //WelcomeMessage()
+                            Image(systemName: "doc")//.font(.custom(size: 40))
+                                //.frame(width: 100, height: 100)
+                                .foregroundColor(dragOver ? .green : .secondary)
+                        }
+                        
+                        .onDrop(of: FileOpener.types, isTargeted: $dragOver) { providers -> Bool in
+                            moleculeVM.handleDrop(providers)
+                            return true
+                        }
+                        
                     }
-                    #endif
-                    
                 }
             }
         }
         .fileImporter(isPresented: $mainWindowVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
-            guard let url = FileOpener.getFile(res: fileURL) else {return}
-            print("*** URL from open: \(url)")
-            moleculeVM.getFile(url)
-            //mainWindowVM.userDidOpenAFile = true
+            moleculeVM.loading = true
+            DispatchQueue.main.async {
+                moleculeVM.handlePickedFile(fileURL)
+                moleculeVM.loading = false
+            }
+            
         }
         
     }
@@ -97,8 +104,8 @@ extension MainWindow {
                         }
                     }.atomicButton()
                     Button {
+                        mainWindowVM.showFile = false
                         moleculeVM.resetFile()
-                        
                     } label: {
                         HStack{
                             Image(systemName: "xmark")
@@ -106,7 +113,7 @@ extension MainWindow {
                         }
                     }.atomicButton()
                 }
-                .offset(x: 0, y: mainWindowVM.showFile ? 80 : 40)
+                .offset(x: 0, y: mainWindowVM.showFile ? 100 : 40)
                 .opacity(mainWindowVM.showFile ? 1 : 0)
                 
             }

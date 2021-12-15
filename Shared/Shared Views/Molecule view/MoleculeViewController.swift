@@ -10,7 +10,7 @@ import SwiftUI
 import SceneKit
 import UniformTypeIdentifiers
 
-class MoleculeViewModel: ObservableObject {
+class MoleculeViewModel: ObservableObject, DropDelegate {
     
     @Published var showErrorFileAlert = false
     
@@ -20,7 +20,7 @@ class MoleculeViewModel: ObservableObject {
         
     @Published var openFileImporter = false
     
-    @Published var fileURL: URL? = nil
+    var fileURL: URL? = nil
     
     @Published var loading: Bool = false
     
@@ -60,6 +60,9 @@ class MoleculeViewModel: ObservableObject {
     func handleDrop(_ drop: [NSItemProvider]) {
         loading = true
         FileOpener.getURL(fromDroppedFile: drop) { url in
+            //        guard let fileURL = fileURL else {
+            //            return
+            //        }
             DispatchQueue.main.sync {
                 guard let steps = FileOpener.getMolecules(fromFileURL: url) else {return}
                 self.steps = steps
@@ -122,4 +125,58 @@ class MoleculeViewModel: ObservableObject {
         stepIndex = 0
     }
     
+    func performDrop(info: DropInfo) -> Bool {
+        let drop = info.itemProviders(for: [.fileURL])
+        FileOpener.getURL(fromDroppedFile: drop) { url in
+            DispatchQueue.main.sync {
+                guard let steps = FileOpener.getMolecules(fromFileURL: url) else {return}
+                self.steps = steps
+                self.moleculeReady = true
+                self.loading = false
+            }
+        }
+        return true
+    }
+    
+    /* Thanks Asperi from
+     
+     https://stackoverflow.com/questions/69771509/is-anyone-able-to-restrict-the-type-of-the-objects-dropped-on-the-mac-in-swiftui
+     
+     https://stackoverflow.com/users/12299030/asperi
+     
+     For this simple validation code.
+    */
+    func validateDrop(info: DropInfo) -> Bool {
+        // find provider with file URL
+        guard info.hasItemsConforming(to: [.fileURL]) else { return false }
+        guard let provider = info.itemProviders(for: [.fileURL]).first else { return false }
+        
+        var result = false
+        if provider.canLoadObject(ofClass: String.self) {
+            let group = DispatchGroup()
+            group.enter()     // << make decoding sync
+
+            // decode URL from item provider
+            _ = provider.loadObject(ofClass: String.self) { value, _ in
+                defer { group.leave() }
+                guard let fileURL = value, let url = URL(string: fileURL) else { return }
+
+                // verify type of content by URL
+                for allowedExtensions in FileOpener.types {
+                    let flag = try? url.resourceValues(forKeys: [.contentTypeKey]).contentType == allowedExtensions
+                    if flag == true {
+                        result = flag ?? false
+                    
+                    }
+                }
+            }
+            // wait a bit for verification result
+            _ = group.wait(timeout: .now() + 0.5)
+            
+        }
+        return result
+    }
+    
 }
+
+

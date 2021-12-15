@@ -1,22 +1,22 @@
 //
-//  SceneRepresentable.swift
-//  SceneRepresentable
+//  MoleculeScene_macOS.swift
+//  Atomic_macOS
 //
-//  Created by Christian Dominguez on 16/8/21.
+//  Created by Christian Dominguez on 15/12/21.
 //
 
 import SwiftUI
 import SceneKit
 
-
-struct SceneUI: UIViewRepresentable {
+struct SceneUI: NSViewRepresentable {
+    
     
     @ObservedObject var controller: RendererController
 
     let sceneView = SCNView()
     
-    func makeUIView(context: Context) -> SCNView {
-        let gesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
+    func makeNSView(context: Context) -> SCNView {
+        let gesture = NSClickGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
         sceneView.addGestureRecognizer(gesture)
         controller.setupScene()
         sceneView.scene = controller.scene
@@ -28,7 +28,7 @@ struct SceneUI: UIViewRepresentable {
         return sceneView
     }
     
-    func updateUIView(_ uiView: SCNView, context: Context) {
+    func updateNSView(_ uiView: SCNView, context: Context) {
     }
     
     func makeCoordinator() -> AtomRenderer {
@@ -43,14 +43,14 @@ class SCNAtomNode: SCNNode {
     var atomType: Element!
 }
 
-extension UIView {
-    func asImage() -> UIImage {
-        let renderer = UIGraphicsImageRenderer(bounds: bounds)
-        return renderer.image { rendererContext in
-            layer.render(in: rendererContext.cgContext)
-        }
-    }
-}
+//extension NSView {
+//    func asImage() -> NSImage {
+//        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+//        return renderer.image { rendererContext in
+//            layer.render(in: rendererContext.cgContext)
+//        }
+//    }
+//}
 
 
 class AtomRenderer: NSObject {
@@ -76,7 +76,7 @@ class AtomRenderer: NSObject {
         self.controller = controller
     }
     
-    @objc func handleTaps(gesture: UIGestureRecognizer) {
+    @objc func handleTaps(gesture: NSClickGestureRecognizer) {
         
         let location = gesture.location(in: sceneParent.sceneView)
         let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
@@ -105,7 +105,7 @@ class AtomRenderer: NSObject {
                     
                     let selectionMaterial = SCNMaterial()
                     
-                    selectionMaterial.diffuse.contents = UIColor.blue
+                    selectionMaterial.diffuse.contents = Color.blue
                     
                     
                     selectionOrb.materials = [selectionMaterial]
@@ -134,7 +134,7 @@ class AtomRenderer: NSObject {
                     
                     let selectionMaterial = SCNMaterial()
                     
-                    selectionMaterial.diffuse.contents = UIColor.blue
+                    selectionMaterial.diffuse.contents = Color.blue
                     
                     
                     selectionOrb.materials = [selectionMaterial]

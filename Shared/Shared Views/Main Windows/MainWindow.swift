@@ -10,8 +10,10 @@ import Combine
 
 struct MainWindow: View {
     
+    
     @StateObject var mainWindowVM = StartingWindow()
     @StateObject var moleculeVM = MoleculeViewModel()
+    
     @State var dragOver = false
     
     var body: some View {
@@ -34,19 +36,23 @@ struct MainWindow: View {
                         VStack {
                             //WelcomeMessage()
                             Image(systemName: "doc")//.font(.custom(size: 40))
-                                //.frame(width: 100, height: 100)
+                                .resizable()
+                                .frame(width: 100, height: 100)
                                 .foregroundColor(dragOver ? .green : .secondary)
                         }
+                       .onDrop(of: [.fileURL], delegate: moleculeVM)
+//                       .onDrop(of: [.fileURL], isTargeted: $dragOver) { providers -> Bool in
+//                            print("*** FILE DRAGGED")
+//                            moleculeVM.handleDrop(providers)
+//                            return true
+//                        }
                         
-                        .onDrop(of: FileOpener.types, isTargeted: $dragOver) { providers -> Bool in
-                            moleculeVM.handleDrop(providers)
-                            return true
-                        }
                         
                     }
                 }
             }
         }
+        
         .fileImporter(isPresented: $mainWindowVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
             moleculeVM.loading = true
             DispatchQueue.main.async {
@@ -158,5 +164,6 @@ extension MainWindow {
         .padding(10)
     }
 }
+
 
 

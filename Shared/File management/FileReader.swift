@@ -96,7 +96,7 @@ private func logToAtom(line: String, number: Int) -> Atom? {
                   let y = Float(components[4]),
                   let z = Float(components[5])
             else {return nil}
-            let position = SCNVector3(x: x, y: y, z: z)
+            let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
             atom = Atom(id: UUID(), position: position, type: atomName, number: number)
         }
     }
@@ -115,7 +115,7 @@ private func gjfToAtom(line: String, number: Int) -> Atom? {
             lineComponents = lineComponents.filter { $0 != "" }
             lineComponents = lineComponents.filter { $0 != atomName.rawValue }
             guard let x = Float(lineComponents[0]), let y = Float(lineComponents[1]), let z = Float(lineComponents[2]) else {return nil}
-            let position = SCNVector3(x: x, y: y, z: z)
+            let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
             atom = Atom(id: UUID(), position: position, type: atomName, number: number)
         }
     }
@@ -152,7 +152,8 @@ extension MolReader {
                 lineComponents = lineComponents.filter { $0 != "" }
                 lineComponents = lineComponents.filter { $0 != atomName.rawValue }
                 guard let x = Float(lineComponents[0]), let y = Float(lineComponents[1]), let z = Float(lineComponents[2]) else {return nil}
-                let position = SCNVector3(x: x, y: y, z: z)
+                //Check other solutions for CGFLOAT - TEMPORARY
+                let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
                 atom = Atom(id: UUID(), position: position, type: atomName, number: number)
             }
         }

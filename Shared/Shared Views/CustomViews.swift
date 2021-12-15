@@ -14,6 +14,7 @@ struct AtomicButton: ViewModifier {
     let gradientColor = LinearGradient(colors: [Color("ButtonColor1"), Color("ButtonColor2")], startPoint: .topTrailing, endPoint: .bottomLeading)
     
     func body(content: Content) -> some View {
+            
         content
             .frame(height: 30)
             .frame(minWidth: 60)
@@ -23,6 +24,7 @@ struct AtomicButton: ViewModifier {
                 gradientColor
             }
             .cornerRadius(15)
+        
             
     }
 }
@@ -31,6 +33,16 @@ struct AtomicButton: ViewModifier {
 extension View {
     func atomicButton() -> some View {
         modifier(AtomicButton())
+    }
+}
+
+struct BlueButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .foregroundColor(configuration.isPressed ? Color.blue : Color.white)
+            .background(configuration.isPressed ? Color.white : Color.blue)
+            .cornerRadius(6.0)
+            .padding()
     }
 }
 

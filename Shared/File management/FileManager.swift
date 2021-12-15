@@ -42,11 +42,11 @@ class FileOpener: ObservableObject {
     }
     
     static func getURL(fromDroppedFile file: [NSItemProvider], completion: @escaping (URL) -> Void) {
-        file.first?.loadInPlaceFileRepresentation(forTypeIdentifier: "public.data") { url, didSucceed, error in
-            guard let url = url else {return}
-            completion(url)
-        }
-        
+        _ = file.first?.loadObject(ofClass: String.self, completionHandler: { value, error in
+            guard let url = value else {return}
+            print(url)
+            completion(URL(string: url)!)
+        })
     }
 //        do {
 //            let fileData = try String(contentsOfFile: fileURL)

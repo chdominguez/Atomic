@@ -123,7 +123,7 @@ enum Element: String, CaseIterable {
         }
     }
     
-    var color: UIColor {
+    var color: Color {
         switch self {
         case .hydrogen:
             return .white
@@ -134,7 +134,7 @@ enum Element: String, CaseIterable {
         case .beryllium:
             return .green
         case .boron:
-            return .systemPink
+            return .black // TEMPORARY
         case .carbon:
             return .gray
         case .nitrogen:
@@ -152,7 +152,7 @@ enum Element: String, CaseIterable {
         case .aluminium:
             return .gray
         case .silicon:
-            return .darkGray
+            return .black // TEMPORARY
         case .phosphorus:
             return .orange
         case .sulphur:
@@ -160,7 +160,7 @@ enum Element: String, CaseIterable {
         case .chlorine:
             return .purple
         case .argon:
-            return .magenta
+            return .black // TEMPORARY
         default:
             return .gray
         }

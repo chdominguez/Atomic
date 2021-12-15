@@ -16,9 +16,6 @@ struct AtomicApp: App {
     var body: some Scene {
         WindowGroup {
             MainWindow().environmentObject(ptablecontroller)
-                .onOpenURL { url in
-                    print("*** url")
-                }
         }
     }
 }

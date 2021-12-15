@@ -44,7 +44,7 @@ struct ElementView: View {
     
     @EnvironmentObject var ptablecontroller: PeriodicTableViewController
     
-#if targetEnvironment(macCatalyst)
+#if os(macOS)
     private var height: CGFloat {60}
     private var width: CGFloat {50}
     private var fontSize: CGFloat {12}

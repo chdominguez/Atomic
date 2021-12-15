@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "Dynamic",
-        "repositoryURL": "https://github.com/mhdhejazi/Dynamic",
-        "state": {
-          "branch": null,
-          "revision": "ab9a2570862d54aed2663691bb767f881226a12f",
-          "version": "1.2.0"
-        }
-      },
-      {
         "package": "swift-algorithms",
         "repositoryURL": "https://github.com/apple/swift-algorithms",
         "state": {

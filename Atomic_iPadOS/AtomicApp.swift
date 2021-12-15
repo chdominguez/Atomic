@@ -10,12 +10,11 @@ import SwiftUI
 @main
 struct AtomicApp: App {
     
-    @StateObject var ptablecontroller = PeriodicTableViewController.shared
-    @StateObject var toolscontroller = ToolsController.shared
+    @StateObject var moleculeVM = MoleculeViewModel()
     
     var body: some Scene {
         WindowGroup {
-            MainWindow().environmentObject(ptablecontroller)
+            MainWindow(moleculeVM: moleculeVM)
         }
     }
 }

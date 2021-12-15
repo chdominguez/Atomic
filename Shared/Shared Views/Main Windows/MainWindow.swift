@@ -12,17 +12,18 @@ struct MainWindow: View {
     
     
     @StateObject var mainWindowVM = StartingWindow()
-    @StateObject var moleculeVM = MoleculeViewModel()
-    
-    @State var dragOver = false
+    @ObservedObject var moleculeVM: MoleculeViewModel
     
     var body: some View {
         ZStack {
             VStack {
+                #if !os(macOS)
                 toolbar
+                #endif
                 Spacer()
             }
             .zIndex(1)
+            
             ZStack {
                 if moleculeVM.loading {
                     ProgressView()
@@ -34,11 +35,12 @@ struct MainWindow: View {
                     }
                     else {
                         VStack {
-                            //WelcomeMessage()
-                            Image(systemName: "doc")//.font(.custom(size: 40))
+                            WelcomeMessage()
+                            Image(systemName: moleculeVM.isDragginFile ? "square.and.arrow.down" : "doc")
                                 .resizable()
+                                .scaledToFit()
                                 .frame(width: 100, height: 100)
-                                .foregroundColor(dragOver ? .green : .secondary)
+                                .foregroundColor(moleculeVM.isDragginFile ? .green : .secondary)
                         }
                        .onDrop(of: [.fileURL], delegate: moleculeVM)
 //                       .onDrop(of: [.fileURL], isTargeted: $dragOver) { providers -> Bool in
@@ -51,9 +53,9 @@ struct MainWindow: View {
                     }
                 }
             }
-        }
+        }.frame(minWidth: 500, minHeight: 500)
         
-        .fileImporter(isPresented: $mainWindowVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
+        .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
             moleculeVM.loading = true
             DispatchQueue.main.async {
                 moleculeVM.handlePickedFile(fileURL)

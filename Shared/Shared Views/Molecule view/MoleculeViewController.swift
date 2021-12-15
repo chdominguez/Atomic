@@ -20,6 +20,8 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
         
     @Published var openFileImporter = false
     
+    @Published var isDragginFile = false
+    
     var fileURL: URL? = nil
     
     @Published var loading: Bool = false
@@ -174,7 +176,14 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
             _ = group.wait(timeout: .now() + 0.5)
             
         }
+        if result {
+            isDragginFile = true
+        }
         return result
+    }
+    
+    func dropExited(info: DropInfo) {
+        isDragginFile = false
     }
     
 }

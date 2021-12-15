@@ -69,7 +69,7 @@ class RendererController: ObservableObject {
         let cameraNode = SCNNode()
         let cameraItem = SCNCamera()
         cameraNode.camera = cameraItem
-        cameraNode.position = SCNVector3(0, 0, 20)
+        cameraNode.position = SCNVector3(0, 0, 10)
         
         scene.rootNode.addChildNode(cameraNode)
         
@@ -86,21 +86,30 @@ class RendererController: ObservableObject {
             let frame = radius*4
             
             let view = NSView(frame: CGRect(x: 0, y: 0, width: frame*200, height: frame*100))
-            view.window?.backgroundColor = NSColor(atom.type.color)
-            let label = NSTextField(frame: CGRect(x: 0, y: frame*35, width: frame*200, height: frame*30))
+            view.wantsLayer = true
+            view.layer?.backgroundColor = NSColor(atom.type.color).cgColor
+            let label = NSTextField(frame: CGRect(x: 0, y: frame*25, width: frame*200, height: frame*30))
             label.font = NSFont.systemFont(ofSize: 20)
             view.addSubview(label)
             label.alignment = .center
             label.stringValue = String(atom.number)
             label.textColor = NSColor.black
+            label.isBezeled = false
+            label.drawsBackground = false
             label.isEditable = false
+            
+            let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds)!
+            view.cacheDisplay(in: view.bounds, to: rep)
+
+            let img = NSImage(size: view.bounds.size)
+            img.addRepresentation(rep)
             
             let atomNode = SCNAtomNode()
             atomNode.atomType = atom.type
             atomNode.physicsBody = physicsBody
             
             let material = SCNMaterial()
-            material.diffuse.contents = view
+            material.diffuse.contents = img
             
             atomNode.geometry = sphere
             atomNode.geometry!.materials = [material]

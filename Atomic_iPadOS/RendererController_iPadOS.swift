@@ -31,7 +31,7 @@ class RendererController: ObservableObject {
         let frame = radius*4
         
         let view = UIView(frame: CGRect(x: 0, y: 0, width: frame*200, height: frame*100))
-        view.backgroundColor = atom.type.color
+        view.backgroundColor = UIColor(atom.type.color)
         let label = UILabel(frame: CGRect(x: 0, y: frame*35, width: frame*200, height: frame*30))
         label.font = UIFont.systemFont(ofSize: 20)
         view.addSubview(label)
@@ -84,7 +84,7 @@ class RendererController: ObservableObject {
             let frame = radius*4
             
             let view = UIView(frame: CGRect(x: 0, y: 0, width: frame*200, height: frame*100))
-            view.backgroundColor = atom.type.color
+            view.backgroundColor = UIColor(atom.type.color)
             let label = UILabel(frame: CGRect(x: 0, y: frame*35, width: frame*200, height: frame*30))
             label.font = UIFont.systemFont(ofSize: 20)
             view.addSubview(label)

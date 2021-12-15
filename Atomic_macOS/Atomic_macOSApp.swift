@@ -10,17 +10,30 @@ import SwiftUI
 @main
 struct Atomic_macOSApp: App {
     
-    @StateObject var ptablecontroller = PeriodicTableViewController.shared
-    @StateObject var toolscontroller = ToolsController.shared
+    @StateObject var moleculeVM = MoleculeViewModel()
     
     var body: some Scene {
         WindowGroup {
-            MainWindow().environmentObject(ptablecontroller)
+            MainWindow(moleculeVM: moleculeVM)
         }.commands {
-            CommandGroup(before: CommandGroupPlacement.newItem) {
-                Button("Open File") {
-                    print("open item")
-                }
+            CommandGroup(replacing: .newItem) {
+                Button("New molecule") {
+                    // implement new file
+                }.keyboardShortcut("N")
+                Button("Open file") {
+                    moleculeVM.openFileImporter = true
+                }.keyboardShortcut("O")
+                Button("Close file") {
+                    moleculeVM.resetFile()
+                }.keyboardShortcut("W")
+            }
+            CommandMenu("Tools") {
+                    Button("Bond selected") {
+                        moleculeVM.controller.bondSelectedAtoms()
+                    }.keyboardShortcut("B")
+                    Button("Remove selected") {
+                        moleculeVM.controller.eraseSelectedAtoms()
+                    }.keyboardShortcut("R")
             }
         }
     }

@@ -116,11 +116,11 @@
 			children = (
 				C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */,
 				C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */,
+				C0DCCED8276A40110085CD1D /* RendererController_macOS.swift */,
 				C0DCCECC276A3E710085CD1D /* MoleculeScene_macOS.swift */,
 				C0DCCE9A276A3C9C0085CD1D /* Assets.xcassets */,
 				C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */,
 				C0DCCE9C276A3C9C0085CD1D /* Preview Content */,
-				C0DCCED8276A40110085CD1D /* RendererController_macOS.swift */,
 			);
 			path = Atomic_macOS;
 			sourceTree = "<group>";

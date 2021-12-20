@@ -9,10 +9,16 @@ import SwiftUI
 import SceneKit
 
 
-class RendererController: ObservableObject {
+class RendererController: SharedRenderer, ObservableObject {
     
     @Published var selectedAtoms: [(atom: SCNNode, orb: SCNNode)] = []
-    @Published var molecule: Molecule?
+    @Published var molecule: Molecule? {
+        didSet {
+            scene.rootNode.enumerateChildNodes { (node, stop) in
+                    node.removeFromParentNode()
+                }
+        }
+    }
     
     @Published var scene = SCNScene()
     
@@ -57,7 +63,7 @@ class RendererController: ObservableObject {
     }
     
     func setupScene() {
-        
+
         let atomsNodes = SCNNode()
         
         let lightNode = SCNNode()

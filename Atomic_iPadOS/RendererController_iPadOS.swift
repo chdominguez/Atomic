@@ -9,7 +9,7 @@ import SwiftUI
 import SceneKit
 
 
-class RendererController: ObservableObject {
+class RendererController: SharedRenderer, ObservableObject {
     
     @Published var selectedAtoms: [(atom: SCNNode, orb: SCNNode)] = []
     @Published var molecule: Molecule?

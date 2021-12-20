@@ -12,6 +12,10 @@ import UniformTypeIdentifiers
 
 class MoleculeViewModel: ObservableObject, DropDelegate {
     
+    var timer = Timer()
+    
+    @Published var isPlaying = false
+    
     @Published var showErrorFileAlert = false
     
     @Published var moleculeReady = false
@@ -21,6 +25,10 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     @Published var openFileImporter = false
     
     @Published var isDragginFile = false
+    
+    @Published var showFileMenu = false
+    @Published var showEditMenu = false
+    @Published var energy: Double = 0
     
     var fileURL: URL? = nil
     
@@ -36,29 +44,31 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     
     @Published var stepIndex: Int = 0 {
         didSet {
-            stepSlider = Double(stepIndex)
+            let count = steps.count
+            if stepIndex == count {
+                stepIndex = 0
+            }
+            if stepIndex == -1 {
+                stepIndex = count - 1
+            }
+            controller.molecule = steps[stepIndex].molecule
         }
     }
     
     @Published var stepSlider = 0.0
     
-//    func getFile(_ url: URL) {
-//        resetFile()
-//        self.fileURL = url
-//        getMolecules(urlFile: url)
-//    }
-    
-//    func getFromDrop(providers: [NSItemProvider]) {
-//        providers.first?.loadInPlaceFileRepresentation(forTypeIdentifier: "public.data", completionHandler: { fileURL, completed, error in
-//            guard let decriptedUrl = fileURL else {return}
-//            print("*** URL from drop: \(decriptedUrl)")
-//            DispatchQueue.main.sync {
-//                self.getFile(decriptedUrl)
-//            }
-//        })
-//
-//    }
-    
+    func playAnimation() {
+        if isPlaying {
+            timer.invalidate()
+        }
+        else {
+            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+                self.stepIndex += 1
+            }
+        }
+        isPlaying.toggle()
+    }
+        
     func handleDrop(_ drop: [NSItemProvider]) {
         loading = true
         FileOpener.getURL(fromDroppedFile: drop) { url in
@@ -123,11 +133,12 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
         controller.resetRenderer()
         moleculeReady = false
         fileURL = nil
-        steps = []
         stepIndex = 0
+        steps = []
     }
     
     func performDrop(info: DropInfo) -> Bool {
+        self.loading = true
         let drop = info.itemProviders(for: [.fileURL])
         FileOpener.getURL(fromDroppedFile: drop) { url in
             DispatchQueue.main.sync {

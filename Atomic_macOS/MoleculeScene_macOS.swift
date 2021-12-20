@@ -10,7 +10,6 @@ import SceneKit
 
 struct SceneUI: NSViewRepresentable {
     
-    
     @ObservedObject var controller: RendererController
 
     let sceneView = SCNView()
@@ -18,8 +17,6 @@ struct SceneUI: NSViewRepresentable {
     func makeNSView(context: Context) -> SCNView {
         let gesture = NSClickGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
         sceneView.addGestureRecognizer(gesture)
-        controller.setupScene()
-        sceneView.scene = controller.scene
         sceneView.allowsCameraControl = true
         sceneView.defaultCameraController.interactionMode = .orbitTurntable
         sceneView.cameraControlConfiguration.autoSwitchToFreeCamera = true
@@ -29,6 +26,8 @@ struct SceneUI: NSViewRepresentable {
     }
     
     func updateNSView(_ uiView: SCNView, context: Context) {
+        controller.setupScene()
+        sceneView.scene = controller.scene
     }
     
     func makeCoordinator() -> AtomRenderer {
@@ -42,15 +41,6 @@ struct SceneUI: NSViewRepresentable {
 class SCNAtomNode: SCNNode {
     var atomType: Element!
 }
-
-//extension NSView {
-//    func asImage() -> NSImage {
-//        let renderer = UIGraphicsImageRenderer(bounds: bounds)
-//        return renderer.image { rendererContext in
-//            layer.render(in: rendererContext.cgContext)
-//        }
-//    }
-//}
 
 
 class AtomRenderer: NSObject {
@@ -91,7 +81,6 @@ class AtomRenderer: NSObject {
             let hitResult = sceneParent.sceneView.hitTest(location).first
             let hitNode = hitResult?.node
             hitNode?.removeFromParentNode()
-            print("RemoveAtom")
         case .selectAtom:
             let hitResult = sceneParent.sceneView.hitTest(location).first
             if let hitNode = hitResult?.node {
@@ -147,6 +136,13 @@ class AtomRenderer: NSObject {
                     
                     controller.selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
                 }
+
+            }
+            else {
+                print("*** Else")
+                controller.selectedAtoms.removeAll()
+                controller.scene.rootNode.childNodes.filter({ $0.name == "selection" }).forEach({ $0.removeFromParentNode() })
+
             }
         }
         

@@ -11,7 +11,6 @@ import Combine
 struct MainWindow: View {
     
     
-    @StateObject var mainWindowVM = StartingWindow()
     @ObservedObject var moleculeVM: MoleculeViewModel
     
     var body: some View {
@@ -27,11 +26,13 @@ struct MainWindow: View {
             ZStack {
                 if moleculeVM.loading {
                     ProgressView()
-                    Color.gray.opacity(0.25)
                 }
                 Group {
                     if moleculeVM.moleculeReady {
-                        MoleculeView(moleculeVM: moleculeVM)
+                        VStack {
+                            SceneUI(controller: moleculeVM.controller)
+                            toolbar2.padding(.horizontal).padding(.bottom, 5)
+                        }
                     }
                     else {
                         VStack {
@@ -43,17 +44,10 @@ struct MainWindow: View {
                                 .foregroundColor(moleculeVM.isDragginFile ? .green : .secondary)
                         }
                        .onDrop(of: [.fileURL], delegate: moleculeVM)
-//                       .onDrop(of: [.fileURL], isTargeted: $dragOver) { providers -> Bool in
-//                            print("*** FILE DRAGGED")
-//                            moleculeVM.handleDrop(providers)
-//                            return true
-//                        }
-                        
-                        
                     }
                 }
             }
-        }.frame(minWidth: 500, minHeight: 500)
+        }.frame(minWidth: 800, minHeight: 600)
         
         .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
             moleculeVM.loading = true
@@ -69,16 +63,42 @@ struct MainWindow: View {
 
 extension MainWindow {
     
+    private var toolbar2: some View {
+        HStack {
+            Text("\(moleculeVM.stepIndex + 1) / \(moleculeVM.steps.count)")
+            Button {
+                moleculeVM.stepIndex -= 1
+            } label: {
+                Image(systemName: "chevron.left")
+            }
+            Button {
+                moleculeVM.stepIndex += 1
+            } label: {
+                Image(systemName: "chevron.right")
+            }
+            Spacer()
+            Text("Energy: \(moleculeVM.steps[moleculeVM.stepIndex].energy)")
+            Spacer()
+            Text("Play")
+            Button {
+                moleculeVM.playAnimation()
+            } label: {
+                Image(systemName: moleculeVM.isPlaying ? "stop.fill" : "play.fill").foregroundColor(moleculeVM.isPlaying ? .red : .green)
+            }
+
+        }//.padding()
+    }
+    
     private var toolbar: some View {
         HStack(spacing: 5){
             ZStack {
                 Button {
                     withAnimation {
-                        mainWindowVM.showFile.toggle()
+                        moleculeVM.showFileMenu.toggle()
                     }
                 } label: {
                     Image(systemName: "plus.circle.fill")
-                        .rotationEffect(Angle(degrees: mainWindowVM.showFile ? 45 : 0))
+                        .rotationEffect(Angle(degrees: moleculeVM.showFileMenu ? 45 : 0))
                     Text("File")
                 }
                 .zIndex(1)
@@ -96,7 +116,7 @@ extension MainWindow {
                     
                     
                     Button {
-                        mainWindowVM.openFileImporter.toggle()
+                        moleculeVM.openFileImporter.toggle()
                     } label: {
                         HStack{
                             Image(systemName: "doc.on.doc")
@@ -112,7 +132,7 @@ extension MainWindow {
                         }
                     }.atomicButton()
                     Button {
-                        mainWindowVM.showFile = false
+                        moleculeVM.showFileMenu = false
                         moleculeVM.resetFile()
                     } label: {
                         HStack{
@@ -121,18 +141,18 @@ extension MainWindow {
                         }
                     }.atomicButton()
                 }
-                .offset(x: 0, y: mainWindowVM.showFile ? 100 : 40)
-                .opacity(mainWindowVM.showFile ? 1 : 0)
+                .offset(x: 0, y: moleculeVM.showFileMenu ? 100 : 40)
+                .opacity(moleculeVM.showFileMenu ? 1 : 0)
                 
             }
             ZStack {
                 Button {
                     withAnimation {
-                        mainWindowVM.showEdit.toggle()
+                        moleculeVM.showEditMenu.toggle()
                     }
                 } label: {
                     Image(systemName: "paintbrush.pointed")
-                        .rotationEffect(Angle(degrees: mainWindowVM.showEdit ? 45 : 0))
+                        .rotationEffect(Angle(degrees: moleculeVM.showEditMenu ? 45 : 0))
                     Text("Edit")
                 }
                 .zIndex(1)
@@ -156,8 +176,8 @@ extension MainWindow {
                         }
                     }.atomicButton()
                 }
-                .offset(x: 0, y: mainWindowVM.showEdit ? 60 : 10)
-                .opacity(mainWindowVM.showEdit ? 1 : 0)
+                .offset(x: 0, y: moleculeVM.showEditMenu ? 60 : 10)
+                .opacity(moleculeVM.showEditMenu ? 1 : 0)
                 
             }
             Spacer()

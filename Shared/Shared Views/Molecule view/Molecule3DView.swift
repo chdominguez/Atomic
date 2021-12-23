@@ -71,12 +71,13 @@ extension Molecule3DView {
                 Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill").foregroundColor(controller.isPlaying ? .red : .green).atomicButton()
             }
         }
+        .padding(.horizontal)
         #if os(macOS)
         .padding(.bottom, 5)
         #else
         .padding(.vertical, 5)
-        #endif
-        .padding(.horizontal)
         .background(Color.gray)
+        #endif
+        
     }
 }

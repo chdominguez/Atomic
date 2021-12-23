@@ -22,14 +22,19 @@ struct MainWindow: View {
                     WelcomeMessage()
                     ZStack {
                         if moleculeVM.loading {
-                            ProgressView()
+                            VStack {
+                                ProgressView()
+                                Text("Reading file")
+                            }
                         }
                         else {
-                            Image(systemName: moleculeVM.isDragginFile ? "square.and.arrow.down" : "doc")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 100)
-                                .foregroundColor(moleculeVM.isDragginFile ? .green : .secondary)
+                            VStack {
+                                Image(systemName: moleculeVM.isDragginFile ? "square.and.arrow.down" : "doc")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 100, height: 100)
+                                    .foregroundColor(moleculeVM.isDragginFile ? .green : .secondary)
+                            }
                             if moleculeVM.isDragginFile {
                                 Rectangle()
                                     .strokeBorder(style: StrokeStyle(lineWidth: 4, dash: [10], dashPhase: moleculeVM.phase))
@@ -49,6 +54,12 @@ struct MainWindow: View {
                 }
                 
             }
+            #if os(iOS)
+            VStack {
+                toolbar
+                Spacer()
+            }
+            #endif
         }
         .onDrop(of: [.fileURL], delegate: moleculeVM)
         .frame(minWidth: 800, minHeight: 600)

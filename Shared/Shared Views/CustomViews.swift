@@ -15,7 +15,6 @@ struct AtomicButton: ViewModifier {
         
         #if os(macOS)
         content
-            .buttonStyle(BlueButtonStyle())
         #else
         content
             .frame(height: 30)
@@ -34,18 +33,6 @@ struct AtomicButton: ViewModifier {
 extension View {
     func atomicButton() -> some View {
         modifier(AtomicButton())
-    }
-}
-
-struct BlueButtonStyle: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .frame(height: 30)
-            .frame(minWidth: 80)
-            .foregroundColor(configuration.isPressed ? Color.blue : Color.white)
-            .background(Color.blue)
-            .cornerRadius(6.0)
-
     }
 }
 

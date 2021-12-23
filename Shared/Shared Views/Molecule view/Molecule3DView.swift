@@ -27,9 +27,12 @@ struct Molecule3DView: View {
             }
         }
         else {
-            progressview.onAppear {
-                    controller.loadAllScenes()
-                }
+            VStack {
+                Spacer()
+                progressview.onAppear {
+                        controller.loadAllScenes()
+                    }
+            }
         }
         
     }
@@ -40,7 +43,7 @@ extension Molecule3DView {
     private var progressview: some View {
         VStack {
             Image(systemName: "atom")
-            Text("Loading molecule")
+            Text("Loading: \(controller.stepsPreloaded)/\(controller.steps.count)")
             ProgressView(value: controller.progress)
         }.padding()
     }
@@ -51,12 +54,12 @@ extension Molecule3DView {
             Button {
                 controller.previousScene()
             } label: {
-                Image(systemName: "chevron.left")
+                Image(systemName: "chevron.left").atomicButton()
             }
             Button {
                 controller.nextScene()
             } label: {
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.right").atomicButton()
             }
             Spacer()
             Text("Energy: \(controller.showingStep.energy)")
@@ -65,10 +68,15 @@ extension Molecule3DView {
             Button {
                 controller.playAnimation()
             } label: {
-                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill").foregroundColor(controller.isPlaying ? .red : .green)
+                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill").foregroundColor(controller.isPlaying ? .red : .green).atomicButton()
             }
         }
+        #if os(macOS)
         .padding(.bottom, 5)
+        #else
+        .padding(.vertical, 5)
+        #endif
         .padding(.horizontal)
+        .background(Color.gray)
     }
 }

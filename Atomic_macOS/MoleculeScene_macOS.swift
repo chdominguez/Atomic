@@ -12,22 +12,20 @@ struct SceneUI: NSViewRepresentable {
     
     @ObservedObject var controller: RendererController
 
-    let sceneView = SCNView()
-    
     func makeNSView(context: Context) -> SCNView {
         let gesture = NSClickGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
-        sceneView.addGestureRecognizer(gesture)
-        sceneView.allowsCameraControl = true
-        sceneView.defaultCameraController.interactionMode = .orbitTurntable
-        sceneView.cameraControlConfiguration.autoSwitchToFreeCamera = true
-        sceneView.cameraControlConfiguration.allowsTranslation = true
-        sceneView.autoenablesDefaultLighting = true
-        return sceneView
+        controller.sceneView.addGestureRecognizer(gesture)
+        controller.sceneView.allowsCameraControl = true
+        controller.sceneView.defaultCameraController.interactionMode = .orbitTurntable
+        controller.sceneView.cameraControlConfiguration.autoSwitchToFreeCamera = true
+        controller.sceneView.cameraControlConfiguration.allowsTranslation = true
+        controller.sceneView.autoenablesDefaultLighting = true
+        controller.sceneView.scene = controller.scene
+        return controller.sceneView
     }
     
     func updateNSView(_ uiView: SCNView, context: Context) {
-        controller.setupScene()
-        sceneView.scene = controller.scene
+
     }
     
     func makeCoordinator() -> AtomRenderer {
@@ -59,7 +57,7 @@ class AtomRenderer: NSObject {
     
     var touch2:SCNVector3?
     
-    var world0: SCNVector3 { sceneParent.sceneView.projectPoint(SCNVector3Zero) }
+    var world0: SCNVector3 { controller.sceneView.projectPoint(SCNVector3Zero) }
     
     init(_ sceneView: SceneUI, controller: RendererController) {
         self.sceneParent = sceneView
@@ -68,21 +66,22 @@ class AtomRenderer: NSObject {
     
     @objc func handleTaps(gesture: NSClickGestureRecognizer) {
         
-        let location = gesture.location(in: sceneParent.sceneView)
-        let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
-        let unprojected = sceneParent.sceneView.unprojectPoint(position)
+        let location = gesture.location(in: controller.sceneView)
+        //let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
+        //let unprojected = sceneParent.sceneView.unprojectPoint(position)
         
         switch selected2Tool {
         case .addAtom:
-            let atom = Atom(id: UUID(), position: unprojected, type: selectedAtom, number: controller.molecule!.atoms.count + 1)
-            controller.molecule!.atoms.append(atom)
-            controller.newAtomRender()
+            print("WIP")
+//            let atom = Atom(id: UUID(), position: unprojected, type: selectedAtom, number: controller.molecule!.atoms.count + 1)
+//            controller.molecule!.atoms.append(atom)
+//            controller.newAtomRender()
         case .removeAtom:
-            let hitResult = sceneParent.sceneView.hitTest(location).first
+            let hitResult = controller.sceneView.hitTest(location).first
             let hitNode = hitResult?.node
             hitNode?.removeFromParentNode()
         case .selectAtom:
-            let hitResult = sceneParent.sceneView.hitTest(location).first
+            let hitResult = controller.sceneView.hitTest(location).first
             if let hitNode = hitResult?.node {
                 if hitNode.name == "atom" {
                     let atomOrbSelection = SCNNode()
@@ -103,7 +102,7 @@ class AtomRenderer: NSObject {
                     atomOrbSelection.geometry = selectionOrb
                     
                     atomOrbSelection.opacity = 0.3
-                    controller.scene.rootNode.addChildNode(atomOrbSelection)
+                    controller.sceneView.scene?.rootNode.addChildNode(atomOrbSelection)
                     
                     controller.selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
                 }
@@ -132,7 +131,7 @@ class AtomRenderer: NSObject {
                     atomOrbSelection.geometry = selectionOrb
                     
                     atomOrbSelection.opacity = 0.3
-                    controller.scene.rootNode.addChildNode(atomOrbSelection)
+                    controller.sceneView.scene?.rootNode.addChildNode(atomOrbSelection)
                     
                     controller.selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
                 }
@@ -141,7 +140,7 @@ class AtomRenderer: NSObject {
             else {
                 print("*** Else")
                 controller.selectedAtoms.removeAll()
-                controller.scene.rootNode.childNodes.filter({ $0.name == "selection" }).forEach({ $0.removeFromParentNode() })
+                controller.sceneView.scene?.rootNode.childNodes.filter({ $0.name == "selection" }).forEach({ $0.removeFromParentNode() })
 
             }
         }

@@ -10,6 +10,8 @@
 		C01D9EF62762AE700020716F /* RendererController_iPadOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D9EF52762AE700020716F /* RendererController_iPadOS.swift */; };
 		C0265CA32766A27100C5219E /* MainWindowVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0265CA22766A27100C5219E /* MainWindowVM.swift */; };
 		C0265CA52766A30100C5219E /* WelcomeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0265CA42766A30100C5219E /* WelcomeMessage.swift */; };
+		C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
+		C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
 		C09441352761F76F00680075 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* CustomViews.swift */; };
 		C0A7F09F276F7FBB00E69E0F /* SharedRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* SharedRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */; };
@@ -35,7 +37,6 @@
 		C0DCCED3276A3E920085CD1D /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552126F7C61500DD4F25 /* MainWindow.swift */; };
 		C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552626F7C89600DD4F25 /* SettingsView.swift */; };
 		C0DCCED5276A3E980085CD1D /* MoleculeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49726E7801200387EBA /* MoleculeViewController.swift */; };
-		C0DCCED6276A3E980085CD1D /* DemoMolecule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A7D06026F7AE7B000A84EC /* DemoMolecule.swift */; };
 		C0DCCED9276A40110085CD1D /* RendererController_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCED8276A40110085CD1D /* RendererController_macOS.swift */; };
 		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
 		F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA47926E77F5100387EBA /* AtomicApp.swift */; };
@@ -48,7 +49,6 @@
 		F06AA49E26E7801200387EBA /* FileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48F26E7801200387EBA /* FileReader.swift */; };
 		F06AA4A226E7801200387EBA /* MoleculeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49326E7801200387EBA /* MoleculeScene.swift */; };
 		F06AA4A526E7801200387EBA /* MoleculeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49726E7801200387EBA /* MoleculeViewController.swift */; };
-		F0A7D06126F7AE7B000A84EC /* DemoMolecule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A7D06026F7AE7B000A84EC /* DemoMolecule.swift */; };
 		F0D5D7F227144544004E78B5 /* ToolsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D5D7F127144544004E78B5 /* ToolsModel.swift */; };
 		F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */; };
 		F0F6552226F7C61500DD4F25 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552126F7C61500DD4F25 /* MainWindow.swift */; };
@@ -59,6 +59,7 @@
 		C01D9EF52762AE700020716F /* RendererController_iPadOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererController_iPadOS.swift; sourceTree = "<group>"; };
 		C0265CA22766A27100C5219E /* MainWindowVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowVM.swift; sourceTree = "<group>"; };
 		C0265CA42766A30100C5219E /* WelcomeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeMessage.swift; sourceTree = "<group>"; };
+		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRenderer.swift; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
@@ -84,7 +85,6 @@
 		F06AA48F26E7801200387EBA /* FileReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileReader.swift; sourceTree = "<group>"; };
 		F06AA49326E7801200387EBA /* MoleculeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoleculeScene.swift; sourceTree = "<group>"; };
 		F06AA49726E7801200387EBA /* MoleculeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoleculeViewController.swift; sourceTree = "<group>"; };
-		F0A7D06026F7AE7B000A84EC /* DemoMolecule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoMolecule.swift; sourceTree = "<group>"; };
 		F0D5D7F127144544004E78B5 /* ToolsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsModel.swift; sourceTree = "<group>"; };
 		F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableViewController.swift; sourceTree = "<group>"; };
 		F0F55A0C27305DC2003730BA /* Atomic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Atomic.entitlements; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				F06AA49726E7801200387EBA /* MoleculeViewController.swift */,
-				F0A7D06026F7AE7B000A84EC /* DemoMolecule.swift */,
+				C041E25D2774B96D005790EE /* Molecule3DView.swift */,
 			);
 			path = "Molecule view";
 			sourceTree = "<group>";
@@ -387,7 +387,6 @@
 				C0DCCEC5276A3D600085CD1D /* FileReader.swift in Sources */,
 				C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */,
 				C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */,
-				C0DCCED6276A3E980085CD1D /* DemoMolecule.swift in Sources */,
 				C0DCCED3276A3E920085CD1D /* MainWindow.swift in Sources */,
 				C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */,
 				C0DCCECE276A3E8F0085CD1D /* PeriodicTableViewController.swift in Sources */,
@@ -396,6 +395,7 @@
 				C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */,
 				C0DCCED5276A3E980085CD1D /* MoleculeViewController.swift in Sources */,
 				C0DCCEC0276A3D540085CD1D /* ToolsController.swift in Sources */,
+				C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */,
 				C0DCCED1276A3E920085CD1D /* MainWindowVM.swift in Sources */,
 			);
@@ -405,7 +405,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0A7D06126F7AE7B000A84EC /* DemoMolecule.swift in Sources */,
 				C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */,
 				C0A7F09F276F7FBB00E69E0F /* SharedRenderer.swift in Sources */,
 				F06AA4A526E7801200387EBA /* MoleculeViewController.swift in Sources */,
@@ -424,6 +423,7 @@
 				F06AA4A226E7801200387EBA /* MoleculeScene.swift in Sources */,
 				C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */,
 				F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */,
+				C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */,
 				F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */,
 			);

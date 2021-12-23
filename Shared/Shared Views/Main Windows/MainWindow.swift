@@ -10,85 +10,55 @@ import Combine
 
 struct MainWindow: View {
     
-    
     @ObservedObject var moleculeVM: MoleculeViewModel
     
     var body: some View {
         ZStack {
-            VStack {
-                #if !os(macOS)
-                toolbar
-                #endif
-                Spacer()
+            if moleculeVM.fileReady {
+                Molecule3DView(controller: moleculeVM.renderer!)
             }
-            .zIndex(1)
-            
-            ZStack {
-                if moleculeVM.loading {
-                    ProgressView()
-                }
-                Group {
-                    if moleculeVM.moleculeReady {
-                        VStack {
-                            SceneUI(controller: moleculeVM.controller)
-                            toolbar2.padding(.horizontal).padding(.bottom, 5)
+            else {
+                VStack {
+                    WelcomeMessage()
+                    ZStack {
+                        if moleculeVM.loading {
+                            ProgressView()
                         }
-                    }
-                    else {
-                        VStack {
-                            WelcomeMessage()
+                        else {
                             Image(systemName: moleculeVM.isDragginFile ? "square.and.arrow.down" : "doc")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 100, height: 100)
                                 .foregroundColor(moleculeVM.isDragginFile ? .green : .secondary)
+                            if moleculeVM.isDragginFile {
+                                Rectangle()
+                                    .strokeBorder(style: StrokeStyle(lineWidth: 4, dash: [10], dashPhase: moleculeVM.phase))
+                                    .frame(width: 120, height: 120)
+                                    .foregroundColor(.green)
+                                    .onAppear {
+                                        withAnimation(.linear.repeatForever(autoreverses: false)) {
+                                            moleculeVM.phase -= 20
+                                        }
+                                    }
+                            }
                         }
-                       .onDrop(of: [.fileURL], delegate: moleculeVM)
+                        
                     }
+                    .frame(width: 120, height: 120)
+                    .padding()
                 }
+                
             }
-        }.frame(minWidth: 800, minHeight: 600)
-        
-        .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
-            moleculeVM.loading = true
-            DispatchQueue.main.async {
-                moleculeVM.handlePickedFile(fileURL)
-                moleculeVM.loading = false
-            }
-            
         }
-        
+        .onDrop(of: [.fileURL], delegate: moleculeVM)
+        .frame(minWidth: 800, minHeight: 600)
+        .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
+            moleculeVM.handlePickedFile(fileURL)
+        }
     }
 }
 
 extension MainWindow {
-    
-    private var toolbar2: some View {
-        HStack {
-            Text("\(moleculeVM.stepIndex + 1) / \(moleculeVM.steps.count)")
-            Button {
-                moleculeVM.stepIndex -= 1
-            } label: {
-                Image(systemName: "chevron.left")
-            }
-            Button {
-                moleculeVM.stepIndex += 1
-            } label: {
-                Image(systemName: "chevron.right")
-            }
-            Spacer()
-            Text("Energy: \(moleculeVM.steps[moleculeVM.stepIndex].energy)")
-            Spacer()
-            Text("Play")
-            Button {
-                moleculeVM.playAnimation()
-            } label: {
-                Image(systemName: moleculeVM.isPlaying ? "stop.fill" : "play.fill").foregroundColor(moleculeVM.isPlaying ? .red : .green)
-            }
-
-        }//.padding()
-    }
-    
     private var toolbar: some View {
         HStack(spacing: 5){
             ZStack {
@@ -160,7 +130,7 @@ extension MainWindow {
                 
                 VStack {
                     Button {
-                        moleculeVM.controller.eraseSelectedAtoms()
+                        moleculeVM.renderer?.eraseSelectedAtoms()
                     } label: {
                         HStack{
                             Image(systemName: "trash")
@@ -168,7 +138,7 @@ extension MainWindow {
                         }
                     }.atomicButton()
                     Button {
-                        moleculeVM.controller.bondSelectedAtoms()
+                        moleculeVM.renderer?.bondSelectedAtoms()
                     } label: {
                         HStack{
                             Image(systemName: "link")
@@ -186,6 +156,3 @@ extension MainWindow {
         .padding(10)
     }
 }
-
-
-

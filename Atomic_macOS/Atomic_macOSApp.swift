@@ -29,10 +29,10 @@ struct Atomic_macOSApp: App {
             }
             CommandMenu("Tools") {
                     Button("Bond selected") {
-                        moleculeVM.controller.bondSelectedAtoms()
+                        moleculeVM.renderer?.bondSelectedAtoms()
                     }.keyboardShortcut("B")
                     Button("Remove selected") {
-                        moleculeVM.controller.eraseSelectedAtoms()
+                        moleculeVM.renderer?.eraseSelectedAtoms()
                     }.keyboardShortcut("R")
             }
         }

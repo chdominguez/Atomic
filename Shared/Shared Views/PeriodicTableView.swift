@@ -35,7 +35,7 @@ struct PTable: View {
             .padding()
             
         }
-        .navigationTitle("eriodic table")
+        .navigationTitle("Periodic table")
    
     }
 }

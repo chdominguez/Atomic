@@ -48,44 +48,4 @@ class FileOpener: ObservableObject {
             completion(URL(string: url)!)
         })
     }
-//        do {
-//            let fileData = try String(contentsOfFile: fileURL)
-//            let molreader = MolReader()
-//            let steps = molreader.readFile(fileURL: fileURL, dataString: fileData)
-//            return steps
-//        }
-//        catch {
-//            return nil
-//        }
-    
-//    static func getMolecules(_ fromDroppedFile: [NSItemProvider]) -> [Step] {
-//
-//        var finalURL: URL? = nil
-//        let g = DispatchGroup()
-//        g.enter()
-//        drop.first?.loadInPlaceFileRepresentation(forTypeIdentifier: "public.data", completionHandler: { fileURL, completed, error in
-//            guard let fileURL = fileURL else {return}
-//            print("*** URL from drop: \(fileURL)")
-//            let textContent = try! String(contentsOf: fileURL)
-//            print(textContent)
-//            finalURL = fileURL
-//            g.leave()
-//
-//        })
-//        g.notify(queue: .main) {
-//            self.fileURL = finalURL!
-//            self.getMolecules(urlFile: finalURL!)
-//            //mainWindowVM.userDidOpenAFile = true
-//        }
-//
-//        loading = true
-//        DispatchQueue.main.async { [self] in
-//            let reader = MolReader()
-//            guard let steps = reader.readFile(urlFile) else {fatalError()}
-//            self.steps = steps
-//            controller.molecule = steps[0].molecule
-//            self.loading = false
-//            self.moleculeReady = true
-//        }
-//    }
 }

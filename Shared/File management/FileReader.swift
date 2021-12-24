@@ -32,14 +32,14 @@ final class MolReader {
         var previousLine2 = ""
         let lines = data.components(separatedBy: "\n")
         for line in lines {
-            if line.contains("Frequencies") {
-                var components = line.components(separatedBy: " ")
-                components = components.filter { $0 != "" }
-                let index = steps.count - 1
-                steps[index].frequencys.append(Double(components[2]) ?? 0)
-                steps[index].frequencys.append(Double(components[3]) ?? 0)
-                steps[index].frequencys.append(Double(components[4]) ?? 0)
-            }
+//            if line.contains("Frequencies") {
+//                var components = line.components(separatedBy: " ")
+//                components = components.filter { $0 != "" }
+//                let index = steps.count - 1
+//                steps[index].frequencys.append(Double(components[2]) ?? 0)
+//                steps[index].frequencys.append(Double(components[3]) ?? 0)
+//                steps[index].frequencys.append(Double(components[4]) ?? 0)
+//            }
             if line.contains("SCF Done:") {
                 var components = line.components(separatedBy: " ")
                 components = components.filter { $0 != "" }

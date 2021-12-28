@@ -167,8 +167,9 @@ class RendererController: ObservableObject {
     func setupScene(step: Step) -> SCNNode {
         
         var atomsNodes = SCNNode()
+        guard let molecule = step.molecule else {return SCNNode()}
         
-        for atom in step.molecule.atoms {
+        for atom in molecule.atoms {
             let radius = atom.type.radius
             let sphere = SCNSphere(radius: radius)
             let physicsBody = SCNPhysicsBody(type: .static, shape: nil)
@@ -209,7 +210,7 @@ class RendererController: ObservableObject {
             atomsNodes.addChildNode(atomNode)
         }
         
-        atomsNodes = checkBondingBasedOnDistance(node: atomsNodes, molecule: step.molecule)
+        atomsNodes = checkBondingBasedOnDistance(node: atomsNodes, molecule: molecule)
         
         return atomsNodes
     }

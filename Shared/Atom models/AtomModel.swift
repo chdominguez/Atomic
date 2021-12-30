@@ -35,6 +35,7 @@ struct Step {
     var inputFile: String?
     var energy: Double?
     var frequencys: [Double]?
+    var isFinalStep: Bool = false
 }
 
 enum bondTypes {

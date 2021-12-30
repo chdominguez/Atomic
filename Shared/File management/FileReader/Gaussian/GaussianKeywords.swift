@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ReadGaussian {
+extension GaussianReader {
     
     // General gaussian job types
     enum jobKeywords: String, CaseIterable {
@@ -81,5 +81,26 @@ extension ReadGaussian {
         case all      = "all"
         case spinspin = "spinspin"
         case mixed    = "mixed"
+    }
+    
+    // Methods
+    enum Methods: String, CaseIterable {
+        // Hartree-Fock
+        case hf         = "hf"
+        
+        // Coupled-cluster and multi-perturbation
+        case ccsdt      = "CCSD(T)"
+        case ccsd       = "CCSD"
+        case mp2        = "MP2"
+        case mp4        = "MP4"
+        
+        // DFT methods...
+        case b3lyp      = "b3lyp"
+        case pbe0       = "pbepbe"
+        case m062x      = "m062x"
+        // More to be added....
+        
+        // Fallthrough
+        case other = ""
     }
 }

@@ -6,67 +6,87 @@
 //
 
 import SceneKit
-    //Read a Gaussian log file
+
+//Read a Gaussian log file
 class GaussianReader {
     
     // Typealias for the gaussian separators. Uses less coding space
-    typealias GS = GaussianSeparators
+    private typealias GS = GaussianSeparators
     
     // The file as a string array separated by lines
-    let fileInput: [String]
+    private let fileInput: [String]
     
     // Variables for reading the input Gaussian file located inside the log file
-    var asteriscs:       Int =  0
-    var inputSeparators: Int =  0
-    var titleSeparators: Int =  0
-    var readInput:       Bool = false
-    var readTitle:       Bool = false
-    var readInputCoords: Bool = false
-    var readingKeywords: Bool = false
-    var readOldGeom:     Bool = false
-    var didReadInput:    Bool = false
-    // The resulting input file written as a GJF file
-    var inputFile = ""
+    private var asteriscs:       Int  =  0
+    private var inputSeparators: Int  =  0
+    private var titleSeparators: Int  =  0
+    private var readInput:       Bool = false
+    private var readTitle:       Bool = false
+    private var readInputCoords: Bool = false
+    private var readingKeywords: Bool = false
+    private var readOldGeom:     Bool = false
+    private var didReadInput:    Bool = false
     
+    // The resulting input file written as a GJF file
+    public var inputFile: String = ""
     
     // Variables for reading the output file
-    var orientSeparators: Int  = 0
-    var orientCoords:     Bool = false
-    var startStep:        Bool = false
-    var inputOrientation: Bool = false
+    private var orientSeparators: Int  = 0
+    private var finishedJobs:     Int  = 0
+    private var readFinished:     Bool = false
+    private var orientCoords:     Bool = false
+    private var startStep:        Bool = false
+    
+    private var finalString: String = ""
     
     // All of the steps in the output file are saved in an array of Step objects.
-    var steps: [Step] = []
-    var currentMolecule = Molecule()
+    public var steps: [Step] = []
+    private var currentMolecule = Molecule()
     // The current step that is going to be appended
-    var currentStep: Step = Step()
+    private var currentStep: Step? = nil
     
     // Error handling
     var readError: ReadingErrors? = nil
-    var errorLine: Int? = nil
+    var errorLine: Int = 0
     
     // Initialize the class with the input file
     init(file: String) {
         self.fileInput = file.components(separatedBy: "\n")
     }
     
-    public func getSteps() -> [Step]? {
+    public func getStepsFromLog() throws -> [Step]? {
         do {
-            try readFile()
+            try readlogFile()
+            return steps
+        }
+        catch let error as ReadingErrors {
+            ErrorManager.shared.lineError = errorLine
+            readError = error
+            throw error
+        }
+        catch {
+            readError = .unknown
+            throw error
+        }
+    }
+    
+    public func getStepsFromGJF() throws -> [Step]? {
+        do {
+            try readgjfFile()
             return steps
         }
         catch let error as ReadingErrors {
             readError = error
-            return nil
+            ErrorManager.shared.lineError = errorLine
+            throw error
         }
         catch {
             readError = .unknown
-            print("*** Unknown error")
-            return nil
+            throw error
         }
     }
     
-    private func readFile() throws {
+    private func readlogFile() throws {
         for (n, line) in fileInput.enumerated() {
             errorLine = n
             if didReadInput {
@@ -80,23 +100,67 @@ class GaussianReader {
     
     private func readSteps(_ line: String) throws {
         switch line {
-        case GS.inputOrientation.rawValue:
-            inputOrientation = true
+        case GS.standardOrientation.rawValue:
+            if let currentStep = self.currentStep {
+                self.steps.append(currentStep)
+                self.currentStep = Step()
+            }
+            else {
+                self.currentStep = Step()
+            }
         case GS.orientationSeparator.rawValue:
             orientSeparators += 1
             if orientSeparators == 2 {orientCoords = true}
             if orientSeparators == 3 {
                 orientCoords = false
                 orientSeparators = 0
-                currentStep.molecule = currentMolecule
+                guard let _ = currentStep else {
+                    throw ReadingErrors.internalFailure
+                }
+                self.currentStep!.molecule = currentMolecule
                 currentMolecule = Molecule()
             }
         default:
             if orientCoords {
                 let atom = try gaussInputOrientationToAtom(line)
                 currentMolecule.atoms.append(atom)
-            } else if line.contains("Frequencies") {
-                //WIP Continue tomorrow
+            }
+            if line.contains("Frequencies") {
+                let components = line.split(separator: " ")
+                guard let freq1 = Double(components[2]), let freq2 = Double(components[2]), let freq3 = Double(components[2]) else {throw ReadingErrors.badFreqs}
+                guard let _ = currentStep else {throw ReadingErrors.internalFailure}
+                if let _ = currentStep!.frequencys {
+                    currentStep!.frequencys?.append(contentsOf: [freq1, freq2, freq3])
+                }
+                else  {
+                    currentStep!.frequencys = []
+                    currentStep!.frequencys!.append(contentsOf: [freq1, freq2, freq3])
+                }
+                    
+            }
+            if line.contains("1\\1\\") { // When a job sucessfully ends, Gaussian writes the summary of the calculation, the proverb and finally "Normal termination of Gaussian.
+                readFinished = true
+            }
+            if readFinished {
+                finalString += line
+            }
+            if line.contains("\\@") {
+                guard let _ = currentStep else {throw ReadingErrors.internalFailure}
+                readFinished = false
+                let components = finalString.split(separator: " ").reversed()
+                componentsLoop: for component in components {
+                    for method in Methods.allCases {
+                        if String(component).contains(method.rawValue) {
+                            let subcomponent = component.split(separator: "=")
+                            guard let energy = Double(subcomponent[1]) else {throw ReadingErrors.badTermination}
+                            currentStep!.energy = energy
+                            break componentsLoop
+                        }
+                    }
+                }
+                currentStep!.isFinalStep = true
+                steps.append(currentStep!)
+                currentStep = nil
             }
         }
     }
@@ -125,14 +189,18 @@ class GaussianReader {
                 readOldGeom = true
                 break
             }
-            if line.contains("Charge") {
+            if line.contains("Multiplicity") {
                 let splitted = line.split(separator: " ")
-                inputFile += splitted[2] + " " + splitted[5] + "\n"
+                guard let charge = Int(splitted[2]),
+                      let multiplicty = Int(splitted[5])
+                else {throw ReadingErrors.badInputCoords}
+                inputFile += "\(charge)" + " " + "\(multiplicty)" + "\n"
                 readInput = true
                 break
             }
             if readInput {
-                if line.contains("") || line.contains("Recover connectivity data from disk.") {
+                if line.isEmpty || line == " " || line.contains("Recover connectivity data from disk.") {
+                    self.steps = [try readgjfFile(fromlog: inputFile)]
                     didReadInput = true
                     break
                 }
@@ -158,7 +226,7 @@ class GaussianReader {
         
         var atom: Atom? = nil
         
-        let components = line.components(separatedBy: " ").filter { $0 != "" }
+        let components = line.split(separator: " ")
         guard let atomNumber = Int(components[0]) else {throw ReadingErrors.badInputCoords}
         
         for atomName in Element.allCases {
@@ -179,27 +247,36 @@ class GaussianReader {
         return atom
     }
     
-    private func readGJF(data: String) -> [Step]? {
+    private func readgjfFile() throws {
         var molecule = Molecule()
-        let lines = data.components(separatedBy: "\n")
-        for line in lines {
-            if let atom = gjfToAtom(line: line, number: molecule.atoms.count + 1) {
-                molecule.atoms.append(atom)
-            }
+        for line in fileInput {
+            errorLine += 1
+            guard let atom = try gjfToAtom(line: line, number: molecule.atoms.count + 1) else {continue}
+            molecule.atoms.append(atom)
         }
-        return [Step(molecule: molecule)]
+        self.steps = [Step(molecule: molecule, isFinalStep: true)]
+    }
+    
+    private func readgjfFile(fromlog: String) throws -> Step {
+        var molecule = Molecule()
+        for line in fromlog.components(separatedBy: "\n") {
+            errorLine += 1
+            guard let atom = try gjfToAtom(line: line, number: molecule.atoms.count + 1) else {continue}
+            molecule.atoms.append(atom)
+        }
+        return Step(molecule: molecule)
     }
 
-    private func gjfToAtom(line: String, number: Int) -> Atom? {
+    private func gjfToAtom(line: String, number: Int) throws -> Atom? {
         
         var atom: Atom?
         
+        let fixedLine = line.replacingOccurrences(of: "\t", with: " ")
+        
         for atomName in Element.allCases {
-            if line.contains("\(atomName.rawValue) ") {
-                var lineComponents = line.components(separatedBy: " ")
-                lineComponents = lineComponents.filter { $0 != "" }
-                lineComponents = lineComponents.filter { $0 != atomName.rawValue }
-                guard let x = Float(lineComponents[0]), let y = Float(lineComponents[1]), let z = Float(lineComponents[2]) else {return nil}
+            if fixedLine.contains("\(atomName.rawValue) ") {
+                let lineComponents = fixedLine.split(separator: " ")
+                guard let x = Float(lineComponents[1]), let y = Float(lineComponents[2]), let z = Float(lineComponents[3]) else {throw ReadingErrors.badInputCoords}
                 #if os(macOS)
                 let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
                 #else
@@ -208,21 +285,40 @@ class GaussianReader {
                 atom = Atom(id: UUID(), position: position, type: atomName, number: number)
             }
         }
-        guard let atom = atom else {return nil}
         return atom
     }
     
-    enum GaussianSeparators: String, CaseIterable {
-        case inputOrientation = "                          Input orientation   :                       "
-        case orientationSeparator = " ---------------------------------------------------------------------"
-        case inputKeywords = " ----------------------------------------------------"
-        case asterisc = " ******************************************"
-        case title = " ----------"
+    // These are some of the important strings that appear on a Gaussian .log file. They can be used to track the output.
+    private enum GaussianSeparators: String, CaseIterable {
+        case standardOrientation = "                         Standard orientation:                         " // When writing the coordinates of each step, Gaussian writes them in a box with this title.
+        case orientationSeparator = " ---------------------------------------------------------------------" // Then, there are three separators like this that encampsulate the coordinates.
+        case inputKeywords = " ----------------------------------------------------------------------" // The keywords from the input file are locathed between two of those.
+        case asterisc = " ******************************************" // After two of these lines, the inputfile that was given to Gaussian is written back into the log file.
+        case title = " ----------" // The title of the job is written between two of those.
     }
     
-    enum ReadingErrors: Error {
+    enum ReadingErrors: Error, LocalizedError {
         case badInputCoords
+        case internalFailure
+        case badTermination
+        case badFreqs
         case unknown
+        
+        public var errorDescription: String? {
+            switch self {
+            case .badInputCoords:
+                return "Input coordinates are wrong"
+            case .internalFailure:
+                return "Internal failure"
+            case .badTermination:
+                return "Bad termination"
+            case .badFreqs:
+                return "Bad frequencies"
+            case .unknown:
+                return "Unknown error. Contact developer."
+            }
+        }
     }
+    
 }
 

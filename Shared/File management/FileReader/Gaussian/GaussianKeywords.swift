@@ -84,7 +84,22 @@ extension GaussianReader {
     }
     
     // Methods
-    enum Methods: String, CaseIterable {
+    
+    enum CalculationMethods: String, CaseIterable {
+        // Hartree-Fock
+        case hf         = "hf"
+        
+        // DFT methods...
+        case b3lyp      = "b3lyp"
+        case pbe0       = "pbepbe"
+        case m062x      = "m062x"
+        // More to be added....
+        
+        // Fallthrough
+        case other = ""
+    }
+    
+    enum EnergyMethods: String, CaseIterable {
         // Hartree-Fock
         case hf         = "hf"
         
@@ -93,12 +108,6 @@ extension GaussianReader {
         case ccsd       = "CCSD"
         case mp2        = "MP2"
         case mp4        = "MP4"
-        
-        // DFT methods...
-        case b3lyp      = "b3lyp"
-        case pbe0       = "pbepbe"
-        case m062x      = "m062x"
-        // More to be added....
         
         // Fallthrough
         case other = ""

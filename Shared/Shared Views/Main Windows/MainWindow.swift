@@ -61,6 +61,9 @@ struct MainWindow: View {
             }
             #endif
         }
+        .alert(isPresented: $moleculeVM.showErrorFileAlert) {
+            Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
+        }
         .onDrop(of: [.fileURL], delegate: moleculeVM)
         .frame(minWidth: 800, minHeight: 600)
         .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
@@ -71,7 +74,7 @@ struct MainWindow: View {
 
 extension MainWindow {
     private var toolbar: some View {
-        HStack(spacing: 5){
+        HStack(spacing: 5) {
             ZStack {
                 Button {
                     withAnimation {

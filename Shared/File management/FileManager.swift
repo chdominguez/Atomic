@@ -29,16 +29,11 @@ class FileOpener: ObservableObject {
         }
     }
     
-    static func getMolecules(fromFileURL fileURL: URL) -> [Step]? {
-        do {
-            let fileData = try String(contentsOf: fileURL)
-            let molreader = MolReader()
-            let steps = molreader.readFile(fileURL: fileURL, dataString: fileData)
-            return steps
-        }
-        catch {
-            return nil
-        }
+    static func getMolecules(fromFileURL fileURL: URL) throws -> [Step]? {
+        let fileData = try String(contentsOf: fileURL)
+        let molreader = MolReader()
+        let steps = try molreader.readFile(fileURL: fileURL, dataString: fileData)
+        return steps
     }
     
     static func getURL(fromDroppedFile file: [NSItemProvider], completion: @escaping (URL) -> Void) {

@@ -62,7 +62,7 @@ extension Molecule3DView {
                 Image(systemName: "chevron.right").atomicButton()
             }
             Spacer()
-            Text("Energy: \(controller.showingStep.energy)")
+            Text("Energy: \(controller.showingStep.energy ?? 0)")
             Spacer()
             Text("Play")
             Button {

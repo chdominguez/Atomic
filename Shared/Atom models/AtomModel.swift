@@ -29,9 +29,13 @@ struct Molecule {
 }
 
 struct Step {
-    var molecule: Molecule
-    var energy: Double = 0
-    var frequencys = [Double]()
+    var stepNumber: Int?
+    var molecule: Molecule?
+    var isInput: Bool?
+    var inputFile: String?
+    var energy: Double?
+    var frequencys: [Double]?
+    var isFinalStep: Bool = false
 }
 
 enum bondTypes {
@@ -40,3 +44,4 @@ enum bondTypes {
     case triple
     case resonant
 }
+

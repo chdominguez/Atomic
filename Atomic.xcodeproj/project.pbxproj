@@ -11,6 +11,12 @@
 		C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
 		C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
 		C041E26027752250005790EE /* Representable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCECC276A3E710085CD1D /* Representable.swift */; };
+		C0455E55277B668A00561AAA /* GaussianFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E54277B668A00561AAA /* GaussianFileReader.swift */; };
+		C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E54277B668A00561AAA /* GaussianFileReader.swift */; };
+		C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E57277B985400561AAA /* GaussianKeywords.swift */; };
+		C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E57277B985400561AAA /* GaussianKeywords.swift */; };
+		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
+		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C09441352761F76F00680075 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* CustomViews.swift */; };
 		C0A7F09F276F7FBB00E69E0F /* SharedRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* SharedRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */; };
@@ -54,6 +60,9 @@
 /* Begin PBXFileReference section */
 		C0265CA42766A30100C5219E /* WelcomeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeMessage.swift; sourceTree = "<group>"; };
 		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
+		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
+		C0455E57277B985400561AAA /* GaussianKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianKeywords.swift; sourceTree = "<group>"; };
+		C066B780277E15140036F404 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRenderer.swift; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
@@ -102,6 +111,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C01FB1F62775D2C60012FD88 /* FileReader */ = {
+			isa = PBXGroup;
+			children = (
+				F06AA48F26E7801200387EBA /* FileReader.swift */,
+				C0455E50277B65C200561AAA /* Gaussian */,
+			);
+			path = FileReader;
+			sourceTree = "<group>";
+		};
+		C0455E50277B65C200561AAA /* Gaussian */ = {
+			isa = PBXGroup;
+			children = (
+				C0455E54277B668A00561AAA /* GaussianFileReader.swift */,
+				C0455E57277B985400561AAA /* GaussianKeywords.swift */,
+			);
+			path = Gaussian;
+			sourceTree = "<group>";
+		};
 		C0DCCE95276A3C9B0085CD1D /* Atomic_macOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,7 +172,6 @@
 		F011454826E782510063CA01 /* Molecule view */ = {
 			isa = PBXGroup;
 			children = (
-				F06AA49726E7801200387EBA /* MoleculeViewController.swift */,
 				C041E25D2774B96D005790EE /* Molecule3DView.swift */,
 			);
 			path = "Molecule view";
@@ -203,8 +229,9 @@
 		F06AA48D26E7801200387EBA /* File management */ = {
 			isa = PBXGroup;
 			children = (
+				C066B780277E15140036F404 /* ErrorManager.swift */,
 				F06AA48E26E7801200387EBA /* FileManager.swift */,
-				F06AA48F26E7801200387EBA /* FileReader.swift */,
+				C01FB1F62775D2C60012FD88 /* FileReader */,
 			);
 			path = "File management";
 			sourceTree = "<group>";
@@ -244,6 +271,7 @@
 		F0F6552026F7C60200DD4F25 /* Main Windows */ = {
 			isa = PBXGroup;
 			children = (
+				F06AA49726E7801200387EBA /* MoleculeViewController.swift */,
 				F0F6552126F7C61500DD4F25 /* MainWindow.swift */,
 				C0265CA42766A30100C5219E /* WelcomeMessage.swift */,
 			);
@@ -369,11 +397,14 @@
 				C0DCCEC1276A3D540085CD1D /* ToolsModel.swift in Sources */,
 				C0A7F0A0276F7FBB00E69E0F /* SharedRenderer.swift in Sources */,
 				C0DCCEC2276A3D5C0085CD1D /* PeriodicTable.swift in Sources */,
+				C066B782277E15140036F404 /* ErrorManager.swift in Sources */,
+				C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */,
 				C0DCCED2276A3E920085CD1D /* WelcomeMessage.swift in Sources */,
 				C0DCCECD276A3E710085CD1D /* Representable.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
 				C0DCCEC5276A3D600085CD1D /* FileReader.swift in Sources */,
 				C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */,
+				C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */,
 				C0DCCED3276A3E920085CD1D /* MainWindow.swift in Sources */,
 				C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */,
@@ -395,11 +426,14 @@
 				C0A7F09F276F7FBB00E69E0F /* SharedRenderer.swift in Sources */,
 				F06AA4A526E7801200387EBA /* MoleculeViewController.swift in Sources */,
 				F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */,
+				C066B781277E15140036F404 /* ErrorManager.swift in Sources */,
+				C0455E55277B668A00561AAA /* GaussianFileReader.swift in Sources */,
 				C09441352761F76F00680075 /* CustomViews.swift in Sources */,
 				F0F6552226F7C61500DD4F25 /* MainWindow.swift in Sources */,
 				C041E26027752250005790EE /* Representable.swift in Sources */,
 				F06AA49E26E7801200387EBA /* FileReader.swift in Sources */,
 				C0265CA52766A30100C5219E /* WelcomeMessage.swift in Sources */,
+				C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */,
 				F0F6552726F7C89600DD4F25 /* SettingsView.swift in Sources */,
 				F0D5D7F227144544004E78B5 /* ToolsModel.swift in Sources */,

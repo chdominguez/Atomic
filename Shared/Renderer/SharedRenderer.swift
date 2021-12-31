@@ -36,6 +36,9 @@ class RendererController: ObservableObject {
     @Published var showingStep: Step {
         didSet {
             updateChildNode()
+            if let _ = showingStep.frequencys {
+                CommandMenuController.shared.hasfreq = true
+            }
         }
     }
     @Published var selectedAtoms: [(atom: SCNNode, orb: SCNNode)] = []

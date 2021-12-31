@@ -13,6 +13,8 @@ import Combine
 
 class MoleculeViewModel: ObservableObject, DropDelegate {
     
+    static let shared = MoleculeViewModel()
+    
     var renderer: RendererController? = nil
     var fileURL: URL? = nil
     
@@ -24,6 +26,8 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     @Published var showFileMenu: Bool  = false
     @Published var showEditMenu: Bool = false
     @Published var phase: CGFloat = 0
+    
+    var gReader: GaussianReader? = nil
     
     var errorDescription = ""
     
@@ -92,7 +96,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
                         }
                         else {
                             if !steps.last!.isFinalStep {
-                                errorDescription = "Gaussian did not terminate"
+                                errorDescription = "Job did not terminate"
                                 showErrorFileAlert = true
                             }
                             initializeController(steps: steps)

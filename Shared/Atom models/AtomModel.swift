@@ -39,6 +39,12 @@ struct Step {
     var jobNumber: Int = 1
 }
 
+struct Frequencies {
+    var freq: Double?
+    var infrared: Double?
+    var raman: Double?
+}
+
 enum bondTypes {
     case single
     case double

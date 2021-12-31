@@ -10,7 +10,8 @@ import SwiftUI
 @main
 struct Atomic_macOSApp: App {
     
-    @StateObject var moleculeVM = MoleculeViewModel()
+    @StateObject var moleculeVM = MoleculeViewModel.shared
+    @StateObject var commandMenu = CommandMenuController.shared
     
     var body: some Scene {
         WindowGroup {
@@ -26,8 +27,13 @@ struct Atomic_macOSApp: App {
                 Button("Close file") {
                     moleculeVM.resetFile()
                 }.keyboardShortcut("W")
+                Button("Show input file...") {
+                    if let gReader = moleculeVM.gReader {
+                        InputfileView(fileInput: gReader.inputFile).openNewWindow(with: "Input file")
+                    }
+                }.disabled(moleculeVM.gReader == nil)
             }
-            CommandMenu("Tools") {
+            CommandMenu("Molecule") {
                     Button("Bond selected") {
                         moleculeVM.renderer?.bondSelectedAtoms()
                     }.keyboardShortcut("B")
@@ -35,6 +41,32 @@ struct Atomic_macOSApp: App {
                         moleculeVM.renderer?.eraseSelectedAtoms()
                     }.keyboardShortcut("R")
             }
+            CommandMenu("Tools") {
+                Button("Frequencies...") {
+                    if let freqs = moleculeVM.renderer?.showingStep.frequencys {
+                        FreqsView(freqs: freqs).openNewWindow(with: "Frequencies")
+                    }
+                }.disabled(!commandMenu.hasfreq)
+            }
         }
+    }
+}
+
+extension View {
+    private func newWindowInternal(with title: String) -> NSWindow {
+        let window = NSWindow(
+            contentRect: NSRect(x: 20, y: 20, width: 680, height: 600),
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false)
+        window.center()
+        window.isReleasedWhenClosed = false
+        window.title = title
+        window.makeKeyAndOrderFront(nil)
+        return window
+    }
+    
+    func openNewWindow(with title: String = "New Window") {
+        self.newWindowInternal(with: title).contentView = NSHostingView(rootView: self)
     }
 }

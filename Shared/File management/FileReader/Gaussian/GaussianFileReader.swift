@@ -137,7 +137,7 @@ class GaussianReader {
             }
             if line.contains("Frequencies") {
                 let components = line.split(separator: " ")
-                guard let freq1 = Double(components[2]), let freq2 = Double(components[2]), let freq3 = Double(components[2]) else {throw ReadingErrors.badFreqs}
+                guard let freq1 = Double(components[2]), let freq2 = Double(components[3]), let freq3 = Double(components[4]) else {throw ReadingErrors.badFreqs}
                 guard let _ = currentStep else {throw ReadingErrors.badFreqs}
                 if let _ = currentStep!.frequencys {
                     currentStep!.frequencys?.append(contentsOf: [freq1, freq2, freq3])
@@ -177,6 +177,7 @@ class GaussianReader {
                         }
                     }
                 }
+                currentStep?.jobNumber = jobNumber
                 currentStep!.molecule = steps.last?.molecule
                 currentStep!.isFinalStep = true
                 steps.append(currentStep!)

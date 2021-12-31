@@ -44,6 +44,7 @@ final class MolReader {
         case .gaussian:
             let gReader = GaussianReader(file: data)
             let steps = try gReader.getStepsFromLog()
+            MoleculeViewModel.shared.gReader = gReader
             return steps
         case .gamess:
             //guard let steps = readGAMESSlog(lines: separatedData) else {return nil}

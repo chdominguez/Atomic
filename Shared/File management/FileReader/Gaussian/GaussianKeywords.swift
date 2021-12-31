@@ -101,7 +101,7 @@ extension GaussianReader {
     
     enum EnergyMethods: String, CaseIterable {
         // Hartree-Fock
-        case hf         = "hf"
+        case hf         = "HF"
         
         // Coupled-cluster and multi-perturbation
         case ccsdt      = "CCSD(T)"
@@ -109,7 +109,6 @@ extension GaussianReader {
         case mp2        = "MP2"
         case mp4        = "MP4"
         
-        // Fallthrough
-        case other = ""
+        // Fallthrought WIP
     }
 }

@@ -7,12 +7,12 @@
 import SwiftUI
 import SceneKit
 
-#if os(iOS) || os(tvOS)
+#if os(iOS)
 import UIKit
 typealias RView = UIView
 typealias RColor = UIColor
 typealias TapGesture = UITapGestureRecognizer
-#elseif os(OSX)
+#elseif os(macOS)
 import AppKit
 typealias RView = NSView
 typealias RColor = NSColor

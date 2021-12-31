@@ -26,17 +26,19 @@ class GaussianReader {
     private var readingKeywords: Bool = false
     private var readOldGeom:     Bool = false
     private var didReadInput:    Bool = false
+    private var chkGeom:         Bool = false
     
     // The resulting input file written as a GJF file
     public var inputFile: String = ""
     
     // Variables for reading the output file
     private var orientSeparators: Int  = 0
-    private var finishedJobs:     Int  = 0
+    private var jobNumber:        Int  = 1
     private var readFinished:     Bool = false
     private var orientCoords:     Bool = false
     private var startStep:        Bool = false
     private var standardOrient:   Bool = false
+    //private var skipOneGeom:      Bool = false // Used when multiple jobs in the same file to not store the input geometry. This geometry is the same from the last finished job.
     
     private var finalString: String = ""
     
@@ -58,6 +60,7 @@ class GaussianReader {
     public func getStepsFromLog() throws -> [Step]? {
         do {
             try readlogFile()
+            print(inputFile)
             return steps
         }
         catch let error as ReadingErrors {
@@ -102,14 +105,13 @@ class GaussianReader {
     private func readSteps(_ line: String) throws {
         switch line {
         case GS.standardOrientation.rawValue:
+//            if skipOneGeom {
+//                skipOneGeom = false
+//                self.currentStep = Step()
+//                break
+//            }
             standardOrient = true
-            if let currentStep = self.currentStep {
-                self.steps.append(currentStep)
-                self.currentStep = Step()
-            }
-            else {
-                self.currentStep = Step()
-            }
+            if currentStep == nil {currentStep = Step()}
         case GS.orientationSeparator.rawValue:
             if standardOrient { // Refactor all of this please...
                 orientSeparators += 1
@@ -118,11 +120,14 @@ class GaussianReader {
                     orientCoords = false
                     standardOrient = false
                     orientSeparators = 0
-                    guard let _ = currentStep else {
-                        throw ReadingErrors.internalFailure
-                    }
+
+                    guard let _ = currentStep else {throw ReadingErrors.internalFailure}
+                    currentStep!.jobNumber = jobNumber
                     self.currentStep!.molecule = currentMolecule
+                    self.steps.append(currentStep!)
+                    currentStep = Step()
                     currentMolecule = Molecule()
+                    
                 }
             }
         default:
@@ -133,7 +138,7 @@ class GaussianReader {
             if line.contains("Frequencies") {
                 let components = line.split(separator: " ")
                 guard let freq1 = Double(components[2]), let freq2 = Double(components[2]), let freq3 = Double(components[2]) else {throw ReadingErrors.badFreqs}
-                guard let _ = currentStep else {throw ReadingErrors.internalFailure}
+                guard let _ = currentStep else {throw ReadingErrors.badFreqs}
                 if let _ = currentStep!.frequencys {
                     currentStep!.frequencys?.append(contentsOf: [freq1, freq2, freq3])
                 }
@@ -141,8 +146,17 @@ class GaussianReader {
                     currentStep!.frequencys = []
                     currentStep!.frequencys!.append(contentsOf: [freq1, freq2, freq3])
                 }
+                break
                     
             }
+            
+            if line.contains("A.U.") {
+                let components = line.split(separator: " ")
+                guard let energy = Double(components[4]) else {throw ReadingErrors.badEnergy}
+                currentStep?.energy = energy
+                break
+            }
+            
             if line.contains("1\\1\\") { // When a job sucessfully ends, Gaussian writes the summary of the calculation, the proverb and finally "Normal termination of Gaussian.
                 readFinished = true
             }
@@ -152,21 +166,28 @@ class GaussianReader {
             if line.contains("\\@") {
                 guard let _ = currentStep else {throw ReadingErrors.internalFailure}
                 readFinished = false
-                let components = finalString.split(separator: " ").reversed()
+                let components = finalString.split(separator: "\\").reversed()
                 componentsLoop: for component in components {
                     for method in EnergyMethods.allCases {
                         if String(component).contains(method.rawValue) {
-                            let subcomponent = component.split(separator: "=")
-                            print(subcomponent)
+                            let subcomponent = component.replacingOccurrences(of: " ", with: "").split(separator: "=")
                             guard let energy = Double(subcomponent[1]) else {throw ReadingErrors.badTermination}
                             currentStep!.energy = energy
                             break componentsLoop
                         }
                     }
                 }
+                currentStep!.molecule = steps.last?.molecule
                 currentStep!.isFinalStep = true
                 steps.append(currentStep!)
                 currentStep = nil
+                jobNumber += 1
+            }
+            if line.contains("Initial command:") {
+                didReadInput = false
+                //skipOneGeom = true
+                restoreInputReader()
+                inputFile += "\n--link1--\n"
             }
         }
     }
@@ -176,12 +197,14 @@ class GaussianReader {
         case GS.asterisc.rawValue:
             asteriscs += 1
             if asteriscs == 2 {
+                asteriscs = 0
                 readInput = true
             }
         case GS.inputKeywords1.rawValue, GS.inputKeywords2.rawValue:
             inputSeparators += 1
             readingKeywords = true
             if inputSeparators == 2 {
+                inputSeparators = 0
                 readInput = false
                 readingKeywords = false
                 inputFile += "\n"
@@ -202,16 +225,22 @@ class GaussianReader {
                 else {throw ReadingErrors.badInputCoords}
                 inputFile += "\(charge)" + " " + "\(multiplicty)" + "\n"
                 readInput = true
+                if chkGeom {
+                    didReadInput = true
+                }
                 break
             }
             if readInput {
                 if line.isEmpty || line == " " || line.contains("Recover connectivity data from disk.") {
-                    self.steps = [try readgjfFile(fromlog: inputFile)]
+                    //self.steps = [try readgjfFile(fromlog: inputFile)]
                     didReadInput = true
                     break
                 }
                 if readingKeywords { // Necesssary for grouping all the keywords in one line without breaks.
                     inputFile += line.dropFirst()
+                    if line.contains("check") {
+                        chkGeom = true
+                    }
                     break
                 }
                 if readOldGeom {
@@ -291,6 +320,18 @@ class GaussianReader {
         return atom
     }
     
+    private func restoreInputReader() {
+        asteriscs =  0
+        inputSeparators =  0
+        titleSeparators = 0
+        readInput = false
+        readTitle = false
+        readInputCoords = false
+        readingKeywords = false
+        readOldGeom = false
+        didReadInput = false
+    }
+    
     // These are some of the important strings that appear on a Gaussian .log file. They can be used to track the output.
     private enum GaussianSeparators: String, CaseIterable {
         case standardOrientation = "                         Standard orientation:                         " // When writing the coordinates of each step, Gaussian writes them in a box with this title.
@@ -307,6 +348,7 @@ class GaussianReader {
         case internalFailure
         case badTermination
         case badFreqs
+        case badEnergy
         case unknown
         
         public var errorDescription: String? {
@@ -319,6 +361,8 @@ class GaussianReader {
                 return "Bad termination"
             case .badFreqs:
                 return "Bad frequencies"
+            case .badEnergy:
+                return "Bad energy"
             case .unknown:
                 return "Unknown error. Contact developer."
             }

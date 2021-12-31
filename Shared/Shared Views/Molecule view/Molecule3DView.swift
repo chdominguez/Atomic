@@ -16,6 +16,7 @@ struct Molecule3DView: View {
             VStack {
                 ZStack {
                     SceneUI(controller: controller)
+                        
                     VStack {
                         Spacer()
                         if !controller.didLoadAllScenes {
@@ -62,7 +63,15 @@ extension Molecule3DView {
                 Image(systemName: "chevron.right").atomicButton()
             }
             Spacer()
-            Text("Energy: \(controller.showingStep.energy ?? 0)")
+            if let energy = controller.showingStep.energy {
+                if controller.showingStep.isFinalStep {
+                    Text("Final energy for job \(controller.showingStep.jobNumber) : \(energy)")
+                } else {
+                    Text("Energy: \(energy)")
+                }
+            } else {
+                Text("Input geometry for job \(controller.showingStep.jobNumber)")
+            }
             Spacer()
             Text("Play")
             Button {

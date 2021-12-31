@@ -37,7 +37,7 @@ final class MolReader {
             }
         }
         
-        guard let logFrom = logFrom else {return nil}
+        guard let logFrom = logFrom else {throw SoftwareErrors.unrecognized}
         
         //Read specifically one of the softwares
         switch logFrom {
@@ -56,6 +56,17 @@ final class MolReader {
     enum logSoftware: String, CaseIterable {
         case gaussian = "Entering Gaussian System"
         case gamess = "GAMESS"
+    }
+    
+    enum SoftwareErrors: Error, LocalizedError {
+        case unrecognized
+        
+        public var errorDescription: String? {
+            switch self {
+            case .unrecognized:
+                return "Unrecognized file type"
+            }
+        }
     }
     
 }

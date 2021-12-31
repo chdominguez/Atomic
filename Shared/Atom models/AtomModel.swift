@@ -36,6 +36,7 @@ struct Step {
     var energy: Double?
     var frequencys: [Double]?
     var isFinalStep: Bool = false
+    var jobNumber: Int = 1
 }
 
 enum bondTypes {

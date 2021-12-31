@@ -77,6 +77,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
+        fileReady = false
         loading = true
         let drop = info.itemProviders(for: [.fileURL])
         FileOpener.getURL(fromDroppedFile: drop) { url in

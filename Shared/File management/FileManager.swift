@@ -29,6 +29,15 @@ class FileOpener: ObservableObject {
         }
     }
     
+    static func getFileAsString(from file: URL) throws -> String {
+        do {
+            return try String(contentsOf: file)
+        }
+        catch {
+            throw FileErrors.cannotOpen
+        }
+    }
+    
     static func getMolecules(fromFileURL fileURL: URL) throws -> [Step]? {
         let fileData = try String(contentsOf: fileURL)
         let molreader = MolReader()
@@ -42,5 +51,15 @@ class FileOpener: ObservableObject {
             print(url)
             completion(URL(string: url)!)
         })
+    }
+    
+    enum FileErrors: Error, LocalizedError {
+        case cannotOpen
+        var errorDescription: String? {
+            switch self {
+            case .cannotOpen:
+                return "Could not open file"
+            }
+        }
     }
 }

@@ -27,11 +27,18 @@ struct Atomic_macOSApp: App {
                 Button("Close file") {
                     moleculeVM.resetFile()
                 }.keyboardShortcut("W")
+                Button("Save...") {
+                    let file = GJFWritter.SceneToGJF(scene: commandMenu.currentScene!)
+                    print(file)
+                }.keyboardShortcut("S").disabled(commandMenu.currentScene == nil)
                 Button("Show input file...") {
                     if let gReader = moleculeVM.gReader {
                         InputfileView(fileInput: gReader.inputFile).openNewWindow(with: "Input file")
                     }
                 }.disabled(moleculeVM.gReader == nil)
+                Button("Show output file...") {
+                    OutputFileView(fileInput: moleculeVM.fileAsString!).openNewWindow(with: "Output file")
+                }.disabled(moleculeVM.fileAsString == nil)
             }
             CommandMenu("Molecule") {
                     Button("Bond selected") {

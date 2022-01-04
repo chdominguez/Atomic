@@ -31,6 +31,7 @@ class RendererController: ObservableObject {
     @Published var didLoadAtLeastOne: Bool = false {
         didSet {
             updateChildNode()
+            CommandMenuController.shared.currentScene = scene
         }
     }
     @Published var showingStep: Step {

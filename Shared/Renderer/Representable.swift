@@ -1,4 +1,6 @@
 
+// Custom view representables. Usually, the AppKit/UIKit counterparts of SwiftUI views are faster.
+
 import SwiftUI
 import SceneKit
 
@@ -52,3 +54,35 @@ struct SceneUI: Representable {
     }
 }
 
+struct TextEditorView: Representable {
+    
+    let text: String
+#if os(iOS)
+    func makeUIView(context: Context) -> UITextView {
+        let textView = UITextView()
+        textView.isScrollEnabled = true
+        textView.textStorage.append(NSAttributedString(string: text))
+        textView.isEditable = false
+        textView.textColor = .label
+        return textView
+    }
+    func updateUIView(_ uiView: UITextView, context: Context) {}
+    
+#elseif os(macOS)
+    func makeNSView(context: Context) -> NSScrollView {
+        let scrollView = NSTextView.scrollableTextView()
+        let textView = scrollView.documentView as? NSTextView
+        guard let _ = textView else {return NSScrollView()}
+        textView!.textStorage?.append(NSAttributedString(string: text))
+        textView!.isEditable = false
+        textView?.textColor = .labelColor
+        return scrollView
+    }
+    
+    func updateNSView(_ nsView: NSScrollView, context: Context) {
+        
+    }
+#endif
+
+    
+}

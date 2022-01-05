@@ -18,7 +18,7 @@ struct MainWindow: View {
                 Molecule3DView(controller: moleculeVM.renderer!)
             }
             else {
-                VStack {
+                VStack(spacing: 50) {
                     WelcomeMessage()
                     ZStack {
                         if moleculeVM.loading {
@@ -28,23 +28,26 @@ struct MainWindow: View {
                             }
                         }
                         else {
-                            VStack {
-                                Image(systemName: moleculeVM.isDragginFile ? "square.and.arrow.down" : "doc")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 100, height: 100)
-                                    .foregroundColor(moleculeVM.isDragginFile ? .green : .secondary)
-                            }
-                            if moleculeVM.isDragginFile {
-                                Rectangle()
-                                    .strokeBorder(style: StrokeStyle(lineWidth: 4, dash: [10], dashPhase: moleculeVM.phase))
-                                    .frame(width: 120, height: 120)
-                                    .foregroundColor(.green)
-                                    .onAppear {
-                                        withAnimation(.linear.repeatForever(autoreverses: false)) {
-                                            moleculeVM.phase -= 20
-                                        }
+                            HStack(spacing: 100) {
+                                VStack {
+                                    Image(systemName: "plus").resizable().scaledToFit().frame(width: 100, height: 100).foregroundColor(.secondary)
+                                    Text("New molecule")
+                                }.onTapGesture {
+                                    moleculeVM.newFile()
+                                }
+                                ZStack {
+                                    VStack {
+                                        Image(systemName: moleculeVM.isDragginFile ? "square.and.arrow.down" : "doc")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 100, height: 100)
+                                            .foregroundColor(moleculeVM.isDragginFile ? .green : .secondary)
+                                        Text(moleculeVM.isDragginFile ? "Drop file" : "Open file")
+                                    }.onTapGesture {
+                                        moleculeVM.openFileImporter.toggle()
                                     }
+                                }
+                                
                             }
                         }
                         

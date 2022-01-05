@@ -36,15 +36,29 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     
     var popoverContent: AnyView = AnyView(EmptyView())
     
+    func newFile() {
+        fileURL = nil
+        fileAsString = nil
+        fileReady = true
+        let emptyStep = Step()
+        renderer = RendererController([emptyStep])
+    }
+    
     func handlePickedFile(_ picked: Result<URL, Error>) {
         loading = true
-        DispatchQueue.global(qos: .background).async { [self] in
+//        DispatchQueue.global(qos: .background).async { [self] in
             guard let url = FileOpener.getFileURLForPicked(picked) else {
                 showErrorFileAlert = true
                 return
             }
+            guard url.startAccessingSecurityScopedResource() else {
+                DispatchQueue.main.sync {
+                    showErrorFileAlert = true
+                    loading = false
+                }
+                return
+            }
             processFile(url: url)
-        }
     }
 
     private func initializeController(steps: [Step]) {
@@ -60,12 +74,9 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     private func processFile(url: URL) {
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             do {
-                guard url.startAccessingSecurityScopedResource() else {
-                    showErrorFileAlert = true
-                    return
-                }
                 let fileString = try FileOpener.getFileAsString(from: url)
                 guard let steps = try FileOpener.getMolecules(fromFileURL: url) else {return}
+                url.stopAccessingSecurityScopedResource()
                 DispatchQueue.main.sync {
                     self.fileAsString = fileString
                     if steps.isEmpty {
@@ -84,7 +95,6 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
                         loading = false
                     }
                 }
-                url.stopAccessingSecurityScopedResource()
             }
             catch {
                 DispatchQueue.main.sync {
@@ -101,7 +111,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
         loading = true
         let drop = info.itemProviders(for: [.fileURL])
         FileOpener.getURL(fromDroppedFile: drop) { url in
-            
+            self.processFile(url: url)
         }
         return true
     }

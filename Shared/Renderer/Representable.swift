@@ -13,7 +13,7 @@ typealias Representable = NSViewRepresentable
 struct SceneUI: Representable {
     
     @ObservedObject var controller: RendererController
-
+    
     #if os(macOS)
     
     func makeNSView(context: Context) -> SCNView {
@@ -25,10 +25,17 @@ struct SceneUI: Representable {
         controller.sceneView.cameraControlConfiguration.allowsTranslation = true
         controller.sceneView.autoenablesDefaultLighting = true
         controller.sceneView.scene = controller.scene
+        
+        let cameraNode = SCNNode()
+        let camera = SCNCamera()
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
+        
+        cameraNode.camera = camera
+        
+        controller.sceneView.pointOfView = cameraNode
         return controller.sceneView
     }
     func updateNSView(_ uiView: SCNView, context: Context) {
-
     }
     
     #else

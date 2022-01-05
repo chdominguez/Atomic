@@ -66,6 +66,29 @@ class RendererController: ObservableObject {
         self.showingStep = steps.first!
     }
     
+    func newAtom(atom: Atom) {
+        
+        let atomNode = SCNAtomNode()
+        
+        let radius = atom.type.radius
+        let sphere = SCNSphere(radius: radius)
+        let physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+
+        atomNode.atomType = atom.type
+        atomNode.physicsBody = physicsBody
+        
+        let material = SCNMaterial()
+        material.diffuse.contents = RColor(atom.type.color)
+        
+        atomNode.geometry = sphere
+        atomNode.geometry!.materials = [material]
+        atomNode.position = atom.position
+        
+        atomNode.constraints = [SCNBillboardConstraint()]
+        atomNode.name = "atom_\(atom.type.rawValue)"
+        scene.rootNode.addChildNode(atomNode)
+    }
+    
     private func updateChildNode() {
         guard let currentChildNode = currentChildNode else {
             return
@@ -137,40 +160,6 @@ class RendererController: ObservableObject {
         selectedAtoms.removeAll()
     }
     
-//    func newAtomRender() {
-//        let atom = molecule!.atoms.last!
-//        let radius = atom.type.radius
-//        let sphere = SCNSphere(radius: radius)
-//        let physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-//
-//        let frame = radius*4
-//
-//        let view = NSView(frame: CGRect(x: 0, y: 0, width: frame*200, height: frame*100))
-//        view.window?.backgroundColor = NSColor(atom.type.color)
-//        let label = NSTextField(frame: NSRect(x: 0, y: frame*35, width: frame*200, height: frame*30))
-//        label.font = NSFont.systemFont(ofSize: 20)
-//        view.addSubview(label)
-//        label.alignment = .center
-//        label.stringValue = String(atom.number)
-//        label.textColor = .black
-//        label.isEditable = false
-//        label.sizeToFit()
-//
-//        let atomNode = SCNAtomNode()
-//        atomNode.atomType = atom.type
-//        atomNode.physicsBody = physicsBody
-//
-//        let material = SCNMaterial()
-//        material.diffuse.contents = view
-//
-//        atomNode.geometry = sphere
-//        atomNode.geometry!.materials = [material]
-//        atomNode.position = atom.position
-//
-//        atomNode.constraints = [SCNBillboardConstraint()]
-//        scene.rootNode.addChildNode(atomNode)
-//    }
-    
     func setupScene(step: Step) -> SCNNode {
         
         var atomsNodes = SCNNode()
@@ -180,27 +169,7 @@ class RendererController: ObservableObject {
             let radius = atom.type.radius
             let sphere = SCNSphere(radius: radius)
             let physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-            
-//            let frame = radius*4
-            
-//            let view = NSView(frame: CGRect(x: 0, y: 0, width: frame*200, height: frame*100))
-//            view.wantsLayer = true
-//            view.layer?.backgroundColor = NSColor(atom.type.color).cgColor
-//            let label = NSTextField(frame: CGRect(x: 0, y: frame*25, width: frame*200, height: frame*30))
-//            label.font = NSFont.systemFont(ofSize: 20)
-//            label.alignment = .center
-//            label.stringValue = String(atom.number)
-//            label.textColor = NSColor.black
-//            label.isBezeled = false
-//            label.drawsBackground = false
-//            label.isEditable = false
-            
-//            let rep = view.bitmapImageRepForCachingDisplay(in: view.bounds)!
-//            view.cacheDisplay(in: view.bounds, to: rep)
-
-//            let img = NSImage(size: view.bounds.size)
-//            img.addRepresentation(rep)
-            
+                        
             let atomNode = SCNAtomNode()
             atomNode.atomType = atom.type
             atomNode.physicsBody = physicsBody
@@ -213,7 +182,7 @@ class RendererController: ObservableObject {
             atomNode.position = atom.position
             
             atomNode.constraints = [SCNBillboardConstraint()]
-            atomNode.name = "atom"
+            atomNode.name = "atom_\(atom.type.rawValue)"
             atomsNodes.addChildNode(atomNode)
         }
         
@@ -283,7 +252,7 @@ class RendererController: ObservableObject {
     }
 }
 
-class AtomRenderer: NSObject {
+class AtomRenderer {
     
     @ObservedObject var controller: RendererController
         
@@ -309,15 +278,20 @@ class AtomRenderer: NSObject {
     @objc func handleTaps(gesture: TapGesture) {
         
         let location = gesture.location(in: controller.sceneView)
-        //let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
-        //let unprojected = sceneParent.sceneView.unprojectPoint(position)
         
         switch selected2Tool {
         case .addAtom:
-            print("WIP")
-//            let atom = Atom(id: UUID(), position: unprojected, type: selectedAtom, number: controller.molecule!.atoms.count + 1)
-//            controller.molecule!.atoms.append(atom)
-//            controller.newAtomRender()
+            var count = 0
+            if let molecule = controller.showingStep.molecule {
+                count = molecule.atoms.count
+            } else {
+                controller.showingStep.molecule = Molecule()
+            }
+            let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
+            let unprojected = controller.sceneView.unprojectPoint(position)
+            let atom = Atom(id: UUID(), position: unprojected, type: selectedAtom, number: count + 1)
+            controller.showingStep.molecule!.atoms.append(atom)
+            controller.newAtom(atom: atom)
         case .removeAtom:
             let hitResult = controller.sceneView.hitTest(location).first
             let hitNode = hitResult?.node
@@ -325,7 +299,8 @@ class AtomRenderer: NSObject {
         case .selectAtom:
             let hitResult = controller.sceneView.hitTest(location).first
             if let hitNode = hitResult?.node {
-                if hitNode.name == "atom" {
+                guard let name = hitNode.name else {return}
+                if name.contains("atom") {
                     let atomOrbSelection = SCNNode()
                     atomOrbSelection.position = hitNode.position
                     
@@ -347,14 +322,15 @@ class AtomRenderer: NSObject {
                     controller.sceneView.scene?.rootNode.addChildNode(atomOrbSelection)
                     
                     controller.selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
+                    break
                 }
-                else if hitNode.name == "selection"  {
+                if hitNode.name == "selection"  {
                     guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
                     controller.selectedAtoms.remove(at: i)
                     hitNode.removeFromParentNode()
-                    
+                    break
                 }
-                else if hitNode.name == "bond" {
+                if hitNode.name == "bond" {
                     let atomOrbSelection = SCNNode()
                     atomOrbSelection.position = hitNode.position
                     
@@ -376,11 +352,11 @@ class AtomRenderer: NSObject {
                     controller.sceneView.scene?.rootNode.addChildNode(atomOrbSelection)
                     
                     controller.selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
+                    break
                 }
 
             }
             else {
-                print("*** Else")
                 controller.selectedAtoms.removeAll()
                 controller.sceneView.scene?.rootNode.childNodes.filter({ $0.name == "selection" }).forEach({ $0.removeFromParentNode() })
 

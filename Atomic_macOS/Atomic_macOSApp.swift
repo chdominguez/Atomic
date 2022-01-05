@@ -19,7 +19,7 @@ struct Atomic_macOSApp: App {
         }.commands {
             CommandGroup(replacing: .newItem) {
                 Button("New molecule") {
-                    // implement new file
+                    moleculeVM.newFile()
                 }.keyboardShortcut("N")
                 Button("Open file") {
                     moleculeVM.openFileImporter = true
@@ -27,20 +27,21 @@ struct Atomic_macOSApp: App {
                 Button("Close file") {
                     moleculeVM.resetFile()
                 }.keyboardShortcut("W")
-                Button("Save...") {
+                Button("Save") {
                     let file = GJFWritter.SceneToGJF(scene: commandMenu.currentScene!)
-                    print(file)
+                    InputfileView(fileInput: file).openNewWindow(with: "New file")
                 }.keyboardShortcut("S").disabled(commandMenu.currentScene == nil)
-                Button("Show input file...") {
-                    if let gReader = moleculeVM.gReader {
-                        InputfileView(fileInput: gReader.inputFile).openNewWindow(with: "Input file")
-                    }
-                }.disabled(moleculeVM.gReader == nil)
-                Button("Show output file...") {
-                    OutputFileView(fileInput: moleculeVM.fileAsString!).openNewWindow(with: "Output file")
-                }.disabled(moleculeVM.fileAsString == nil)
             }
             CommandMenu("Molecule") {
+                Button("Add atoms") {
+                    ToolsController.shared.selected2Tool = .addAtom
+                }
+                Button("Select") {
+                    ToolsController.shared.selected2Tool = .selectAtom
+                }
+                Button("Erase") {
+                    ToolsController.shared.selected2Tool = .removeAtom
+                }
                     Button("Bond selected") {
                         moleculeVM.renderer?.bondSelectedAtoms()
                     }.keyboardShortcut("B")
@@ -54,6 +55,16 @@ struct Atomic_macOSApp: App {
                         FreqsView(freqs: freqs).openNewWindow(with: "Frequencies")
                     }
                 }.disabled(!commandMenu.hasfreq)
+            }
+            CommandMenu("Input/Output") {
+                Button("Show input file") {
+                    if let gReader = moleculeVM.gReader {
+                        InputfileView(fileInput: gReader.inputFile).openNewWindow(with: "Input file")
+                    }
+                }.disabled(moleculeVM.gReader == nil)
+                Button("Show output file") {
+                    OutputFileView(fileInput: moleculeVM.fileAsString!).openNewWindow(with: "Output file")
+                }.disabled(moleculeVM.fileAsString == nil)
             }
         }
     }

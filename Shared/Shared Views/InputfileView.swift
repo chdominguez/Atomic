@@ -1,5 +1,5 @@
 //
-//  InputfileView.swift
+//  FileViews
 //  Atomic
 //
 //  Created by Christian Dominguez on 31/12/21.
@@ -15,4 +15,14 @@ struct InputfileView: View {
         TextEditor(text: $fileInput).font(.system(size: 16))
     }
 }
+
+struct OutputFileView: View {
+    
+    let fileInput: String
+    
+    var body: some View {
+        TextEditorView(text: fileInput)           
+    }
+}
+
 

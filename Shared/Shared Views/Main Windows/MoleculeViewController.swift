@@ -26,48 +26,39 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     @Published var showFileMenu: Bool  = false
     @Published var showEditMenu: Bool = false
     @Published var phase: CGFloat = 0
+    @Published var showPopover: Bool = false
+    
+    @Published var fileAsString: String? = nil
     
     var gReader: GaussianReader? = nil
     
     var errorDescription = ""
     
+    var popoverContent: AnyView = AnyView(EmptyView())
+    
+    func newFile() {
+        fileURL = nil
+        fileAsString = nil
+        fileReady = true
+        let emptyStep = Step()
+        renderer = RendererController([emptyStep])
+    }
+    
     func handlePickedFile(_ picked: Result<URL, Error>) {
         loading = true
-        DispatchQueue.global(qos: .background).async { [self] in
+//        DispatchQueue.global(qos: .background).async { [self] in
             guard let url = FileOpener.getFileURLForPicked(picked) else {
                 showErrorFileAlert = true
                 return
             }
             guard url.startAccessingSecurityScopedResource() else {
-                showErrorFileAlert = true
+                DispatchQueue.main.sync {
+                    showErrorFileAlert = true
+                    loading = false
+                }
                 return
             }
-            do {
-                guard let steps = try FileOpener.getMolecules(fromFileURL: url) else {return}
-                DispatchQueue.main.sync {
-                    if steps.isEmpty {
-                        errorDescription = "Empty steps"
-                        showErrorFileAlert = true
-                        self.loading = false
-                    }
-                    else {
-                        self.initializeController(steps: steps)
-                        self.fileURL = url
-                        self.fileReady = true
-                        self.loading = false
-                        url.stopAccessingSecurityScopedResource()
-                    }
-                }
-            }
-            catch {
-                url.stopAccessingSecurityScopedResource()
-                DispatchQueue.main.sync {
-                    self.showErrorFileAlert = true
-                    self.loading = false
-                }
-            }
-            
-        }
+            processFile(url: url)
     }
 
     private func initializeController(steps: [Step]) {
@@ -80,40 +71,47 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
         fileURL = nil
     }
     
+    private func processFile(url: URL) {
+        DispatchQueue.global(qos: .userInitiated).async { [self] in
+            do {
+                let fileString = try FileOpener.getFileAsString(from: url)
+                guard let steps = try FileOpener.getMolecules(fromFileURL: url) else {return}
+                url.stopAccessingSecurityScopedResource()
+                DispatchQueue.main.sync {
+                    self.fileAsString = fileString
+                    if steps.isEmpty {
+                        errorDescription = "Could not load any molecule"
+                        showErrorFileAlert = true
+                        loading = false
+                    }
+                    else {
+                        if !steps.last!.isFinalStep {
+                            errorDescription = "Job did not terminate"
+                            showErrorFileAlert = true
+                        }
+                        initializeController(steps: steps)
+                        fileURL = url
+                        fileReady = true
+                        loading = false
+                    }
+                }
+            }
+            catch {
+                DispatchQueue.main.sync {
+                    self.errorDescription = error.localizedDescription + " at line:  \(ErrorManager.shared.lineError)"
+                    self.showErrorFileAlert = true
+                    self.loading = false
+                }
+            }
+        }
+    }
+    
     func performDrop(info: DropInfo) -> Bool {
         fileReady = false
         loading = true
         let drop = info.itemProviders(for: [.fileURL])
         FileOpener.getURL(fromDroppedFile: drop) { url in
-            DispatchQueue.global(qos: .userInitiated).async { [self] in
-                do {
-                    guard let steps = try FileOpener.getMolecules(fromFileURL: url) else {return}
-                    DispatchQueue.main.sync {
-                        if steps.isEmpty {
-                            errorDescription = "Could not load any molecule"
-                            showErrorFileAlert = true
-                            loading = false
-                        }
-                        else {
-                            if !steps.last!.isFinalStep {
-                                errorDescription = "Job did not terminate"
-                                showErrorFileAlert = true
-                            }
-                            initializeController(steps: steps)
-                            fileURL = url
-                            fileReady = true
-                            loading = false
-                        }
-                    }
-                }
-                catch {
-                    DispatchQueue.main.sync {
-                        self.errorDescription = error.localizedDescription + " at line:  \(ErrorManager.shared.lineError)"
-                        self.showErrorFileAlert = true
-                        self.loading = false
-                    }
-                }
-            }
+            self.processFile(url: url)
         }
         return true
     }

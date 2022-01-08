@@ -10,7 +10,7 @@ import Combine
 
 struct MainWindow: View {
     
-    @ObservedObject var moleculeVM: MoleculeViewModel
+    @StateObject var moleculeVM = MoleculeViewModel()
     
     var body: some View {
         ZStack {
@@ -75,5 +75,7 @@ struct MainWindow: View {
         .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
             moleculeVM.handlePickedFile(fileURL)
         }
+        
     }
+    
 }

@@ -10,23 +10,22 @@ import SwiftUI
 @main
 struct Atomic_macOSApp: App {
     
-    @StateObject var moleculeVM = MoleculeViewModel.shared
     @StateObject var commandMenu = CommandMenuController.shared
     
     var body: some Scene {
         WindowGroup {
-            MainWindow(moleculeVM: moleculeVM).navigationTitle("Atomic")
+            MainWindow().navigationTitle("Atomic")
         }
         .commands {
             CommandGroup(replacing: .newItem) {
                 Button("New molecule") {
-                    moleculeVM.newFile()
+                    //moleculeVM.newFile()
                 }.keyboardShortcut("N")
                 Button("Open file") {
-                    moleculeVM.openFileImporter = true
+                    //moleculeVM.openFileImporter = true
                 }.keyboardShortcut("O")
                 Button("Close file") {
-                    moleculeVM.resetFile()
+                    //moleculeVM.resetFile()
                 }.keyboardShortcut("W")
                 Button("Save") {
                     let file = GJFWritter.sceneToGJF(scene: commandMenu.currentScene!)
@@ -45,29 +44,34 @@ struct Atomic_macOSApp: App {
                     ToolsController.shared.selected2Tool = .removeAtom
                 }
                     Button("Bond selected") {
-                        moleculeVM.renderer?.bondSelectedAtoms()
+                        //moleculeVM.renderer?.bondSelectedAtoms()
                     }.keyboardShortcut("B")
                     Button("Remove selected") {
-                        moleculeVM.renderer?.eraseSelectedAtoms()
+                        //moleculeVM.renderer?.eraseSelectedAtoms()
                     }.keyboardShortcut("R")
             }
-            CommandMenu("Tools") {
-                Button("Frequencies...") {
-                    if let freqs = moleculeVM.renderer?.showingStep.frequencys {
-                        FreqsView(freqs: freqs).openNewWindow(with: "Frequencies")
-                    }
-                }.disabled(!commandMenu.hasfreq)
-            }
-            CommandMenu("Input/Output") {
-                Button("Show input file") {
-                    if let gReader = moleculeVM.gReader {
-                        InputfileView(fileInput: gReader.inputFile).openNewWindow(with: "Input file")
-                    }
-                }.disabled(moleculeVM.gReader == nil)
-                Button("Show output file") {
-                    OutputFileView(fileInput: moleculeVM.fileAsString!).openNewWindow(with: "Output file")
-                }.disabled(moleculeVM.fileAsString == nil)
-            }
+//            CommandMenu("Tools") {
+//                Button("Frequencies...") {
+//                    if let freqs = moleculeVM.renderer?.showingStep.frequencys {
+//                        FreqsView(freqs: freqs).openNewWindow(with: "Frequencies")
+//                    }
+//                }.disabled(!commandMenu.hasfreq)
+//            }
+//            CommandMenu("Input/Output") {
+//                Button("Show input file") {
+//                    if let gReader = moleculeVM.gReader {
+//                        InputfileView(fileInput: gReader.inputFile).openNewWindow(with: "Input file")
+//                    }
+//                }.disabled(moleculeVM.gReader == nil)
+//                Button("Show output file") {
+//                    OutputFileView(fileInput: moleculeVM.fileAsString!).openNewWindow(with: "Output file")
+//                }.disabled(moleculeVM.fileAsString == nil)
+//            }
+        }
+        Settings {
+            VStack {
+                Text("Settings")
+            }.padding()
         }
     }
 }

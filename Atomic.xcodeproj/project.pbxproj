@@ -23,6 +23,8 @@
 		C09441352761F76F00680075 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* CustomViews.swift */; };
 		C0A7F09F276F7FBB00E69E0F /* SharedRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* SharedRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */; };
+		C0BE59E3278A038200423CF3 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE59E2278A038200423CF3 /* Commands.swift */; };
+		C0BE59E4278A038800423CF3 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE59E2278A038200423CF3 /* Commands.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D01B52274EC95000556EDA /* ToolsController.swift */; };
@@ -78,6 +80,7 @@
 		C066B780277E15140036F404 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRenderer.swift; sourceTree = "<group>"; };
+		C0BE59E2278A038200423CF3 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C0D01B52274EC95000556EDA /* ToolsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsController.swift; sourceTree = "<group>"; };
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -169,6 +172,7 @@
 		C0DCCEBF276A3CF20085CD1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				C0BE59E2278A038200423CF3 /* Commands.swift */,
 				C05F5CA82785A48C00F3B588 /* Extensions.swift */,
 				C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */,
 				F0D5D7F027144539004E78B5 /* Tools */,
@@ -447,6 +451,7 @@
 				C0E13722277F3CD7009ACCB6 /* CommandMenuController.swift in Sources */,
 				C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */,
 				C0DCCED5276A3E980085CD1D /* MoleculeViewController.swift in Sources */,
+				C0BE59E3278A038200423CF3 /* Commands.swift in Sources */,
 				C0DCCEC0276A3D540085CD1D /* ToolsController.swift in Sources */,
 				C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */,
@@ -474,6 +479,7 @@
 				C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */,
 				F0F6552726F7C89600DD4F25 /* SettingsView.swift in Sources */,
+				C0BE59E4278A038800423CF3 /* Commands.swift in Sources */,
 				F0D5D7F227144544004E78B5 /* ToolsModel.swift in Sources */,
 				F06AA49A26E7801200387EBA /* PeriodicTable.swift in Sources */,
 				F06AA49D26E7801200387EBA /* FileManager.swift in Sources */,

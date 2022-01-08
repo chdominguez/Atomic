@@ -23,3 +23,14 @@ extension CGFloat {
         }
     }
 }
+
+extension Float {
+    func stringWith(_ decimals: Int) -> String {
+        if self < 0 {
+            return String(format: "%.\(decimals)f", self)
+        }
+        else {
+            return " \(String(format: "%.\(decimals)f", self))"
+        }
+    }
+}

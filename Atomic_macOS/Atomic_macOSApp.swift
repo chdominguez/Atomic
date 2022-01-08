@@ -15,8 +15,9 @@ struct Atomic_macOSApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainWindow(moleculeVM: moleculeVM)
-        }.commands {
+            MainWindow(moleculeVM: moleculeVM).navigationTitle("Atomic")
+        }
+        .commands {
             CommandGroup(replacing: .newItem) {
                 Button("New molecule") {
                     moleculeVM.newFile()
@@ -28,13 +29,14 @@ struct Atomic_macOSApp: App {
                     moleculeVM.resetFile()
                 }.keyboardShortcut("W")
                 Button("Save") {
-                    let file = GJFWritter.SceneToGJF(scene: commandMenu.currentScene!)
+                    let file = GJFWritter.sceneToGJF(scene: commandMenu.currentScene!)
                     InputfileView(fileInput: file).openNewWindow(with: "New file")
                 }.keyboardShortcut("S").disabled(commandMenu.currentScene == nil)
             }
             CommandMenu("Molecule") {
-                Button("Add atoms") {
+                Button("Periodic table") {
                     ToolsController.shared.selected2Tool = .addAtom
+                    PTable().openNewWindow(with: "Periodic Table")
                 }
                 Button("Select") {
                     ToolsController.shared.selected2Tool = .selectAtom

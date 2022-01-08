@@ -10,7 +10,7 @@ import SceneKit
 
 class GJFWritter {
     
-    static func SceneToGJF(scene: SCNScene) -> String {
+    static func sceneToGJF(scene: SCNScene) -> String {
         
         var fileToBeSaved: String = ""
         

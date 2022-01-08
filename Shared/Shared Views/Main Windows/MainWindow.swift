@@ -11,6 +11,7 @@ import Combine
 struct MainWindow: View {
     
     @StateObject var moleculeVM = MoleculeViewModel()
+    @State var window: NSWindow? = nil
     
     var body: some View {
         ZStack {
@@ -19,6 +20,12 @@ struct MainWindow: View {
             }
             else {
                 VStack(spacing: 50) {
+                    Text("Open window").onTapGesture {
+                        
+                    }
+                    Text("Close window").onTapGesture {
+                        
+                    }
                     WelcomeMessage()
                     ZStack {
                         if moleculeVM.loading {
@@ -78,4 +85,13 @@ struct MainWindow: View {
         
     }
     
+}
+
+struct NewWindow: View {
+    
+    //let window: NSWindow
+    
+    var body: some View {
+        Text("Close window")
+    }
 }

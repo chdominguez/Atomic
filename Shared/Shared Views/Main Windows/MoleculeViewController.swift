@@ -8,12 +8,10 @@
 import Foundation
 import SwiftUI
 import SceneKit
-import UniformTypeIdentifiers
-import Combine
 
-class MoleculeViewModel: ObservableObject, DropDelegate {
+class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     
-    static let shared = MoleculeViewModel()
+    let id = UUID()
     
     var renderer: RendererController? = nil
     var fileURL: URL? = nil
@@ -32,9 +30,13 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     
     var gReader: GaussianReader? = nil
     
+    #if os(macOS)
+    var openedWindows: [WindowTypes] = []
+    #endif
+    
     var errorDescription = ""
     
-    var popoverContent: AnyView = AnyView(EmptyView())
+    var sheetContent: AnyView = AnyView(EmptyView())
     
     func newFile() {
         fileURL = nil
@@ -46,19 +48,18 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     
     func handlePickedFile(_ picked: Result<URL, Error>) {
         loading = true
-//        DispatchQueue.global(qos: .background).async { [self] in
-            guard let url = FileOpener.getFileURLForPicked(picked) else {
+        guard let url = FileOpener.getFileURLForPicked(picked) else {
+            showErrorFileAlert = true
+            return
+        }
+        guard url.startAccessingSecurityScopedResource() else {
+            DispatchQueue.main.sync {
                 showErrorFileAlert = true
-                return
+                loading = false
             }
-            guard url.startAccessingSecurityScopedResource() else {
-                DispatchQueue.main.sync {
-                    showErrorFileAlert = true
-                    loading = false
-                }
-                return
-            }
-            processFile(url: url)
+            return
+        }
+        processFile(url: url)
     }
 
     private func initializeController(steps: [Step]) {

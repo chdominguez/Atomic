@@ -44,7 +44,7 @@ extension MainWindow {
                     }.atomicButton()
                     Button {
                         let file = GJFWritter.sceneToGJF(scene: moleculeVM.renderer!.scene)
-                        moleculeVM.popoverContent = AnyView(InputfileView(fileInput: file))
+                        moleculeVM.sheetContent = AnyView(InputfileView(fileInput: file))
                         moleculeVM.showPopover = true
                     } label: {
                         HStack{
@@ -63,7 +63,7 @@ extension MainWindow {
                     }.atomicButton()
                     
                     Button {
-                        moleculeVM.popoverContent = AnyView(OutputFileView(fileInput: moleculeVM.fileAsString!))
+                        moleculeVM.sheetContent = AnyView(OutputFileView(fileInput: moleculeVM.fileAsString!))
                         moleculeVM.showPopover = true
                     } label: {
                         Image(systemName: "doc")
@@ -93,7 +93,7 @@ extension MainWindow {
                 VStack {
                     Button {
                         ToolsController.shared.selected2Tool = .addAtom
-                        moleculeVM.popoverContent = AnyView(PTable())
+                        moleculeVM.sheetContent = AnyView(PTable())
                         moleculeVM.showPopover = true
                     } label: {
                             Text("Periodic table")

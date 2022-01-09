@@ -12,20 +12,36 @@ class WindowManager: NSObject, ObservableObject {
     
     static let shared = WindowManager()
     
+    @Published var currentController: MoleculeViewModel? = nil
     var openedWindows = Set<AtomicWindow>()
+    let commandController = CommandMenuController.shared
+    
+    func updateCommands() {
+        guard let currentController = currentController else {return}
+        let freqWindow = currentController.renderer?.showingStep.frequencys?.isEmpty
+        if let freqWindow = freqWindow {
+            commandController.hasfreq = !freqWindow
+        } else {
+            commandController.hasfreq = false
+        }
+        
+        
+        
+    }
 }
 
 extension WindowManager: NSWindowDelegate {
-  func windowWillClose(_ notification: Notification) {
-      if let window = notification.object as? AtomicWindow {
-          WindowManager.shared.openedWindows.remove(window)
-      }
-  }
-  func windowDidBecomeKey(_ notification: Notification) {
-    if let _ = notification.object as? AtomicWindow {
-      print("Did become key")
+    func windowWillClose(_ notification: Notification) {
+        if let window = notification.object as? AtomicWindow {
+            self.openedWindows.remove(window)
+            self.currentController?.openedWindows.removeAll(where: {$0 == window.windowType} )
+        }
     }
-  }
+    func windowDidBecomeKey(_ notification: Notification) {
+        if let window = notification.object as? AtomicWindow {
+            self.currentController = window.associatedController
+        }
+    }
 }
 
 extension View {
@@ -43,17 +59,23 @@ extension View {
         return window
     }
     
-    func openNewWindow(with title: String = "New Window", and type: WindowTypes = .multiple) {
+    func openNewWindow(with title: String = "New Window", and type: WindowTypes = .multiple, controller: MoleculeViewModel? = nil) {
         
         if type != .multiple {
-            if let window = WindowManager.shared.openedWindows.first(where: {$0.windowType == type}) {
-                window.becomeKey()
-                window.orderFrontRegardless()
-                return
+            if let controller = controller {
+                if controller.openedWindows.contains(type) {
+                    if let window = WindowManager.shared.openedWindows.first(where: {$0.windowType == type}) {
+                        window.becomeKey()
+                        window.orderFrontRegardless()
+                        return
+                    }
+                }
+                controller.openedWindows.append(type)
             }
         }
         
         let newWindow = self.newWindowInternal(with: title, and: type)
+        newWindow.associatedController = controller
         newWindow.contentView = NSHostingView(rootView: self)
         newWindow.delegate = WindowManager.shared
         WindowManager.shared.openedWindows.insert(newWindow)
@@ -62,9 +84,47 @@ extension View {
 
 class AtomicWindow: NSWindow {
     var windowType: WindowTypes = .multiple
+    var associatedController: MoleculeViewModel? = nil
 }
 
 enum WindowTypes: CaseIterable {
     case ptable
+    case freqs
     case multiple
+}
+
+struct WindowAccessor: NSViewRepresentable {
+    
+    let controller: MoleculeViewModel
+    @State var window: NSWindow? = nil
+    
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            self.window = view.window!
+            self.window!.delegate = context.coordinator
+        }
+        return view
+    }
+    
+    func updateNSView(_ nsView: NSView, context: Context) {}
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, NSWindowDelegate {
+        
+        let parent: WindowAccessor
+        
+        init(_ parent: WindowAccessor) {
+            self.parent = parent
+        }
+        
+        func windowDidBecomeKey(_ notification: Notification) {
+            WindowManager.shared.currentController = parent.controller
+            WindowManager.shared.updateCommands()
+        }
+        
+    }
 }

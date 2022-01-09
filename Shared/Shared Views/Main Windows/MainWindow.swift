@@ -11,7 +11,6 @@ import Combine
 struct MainWindow: View {
     
     @StateObject var moleculeVM = MoleculeViewModel()
-    @State var window: NSWindow? = nil
     
     var body: some View {
         ZStack {
@@ -20,12 +19,6 @@ struct MainWindow: View {
             }
             else {
                 VStack(spacing: 50) {
-                    Text("Open window").onTapGesture {
-                        Text("HELOOOO").padding().openNewWindow()
-                    }
-                    Text("Close window").onTapGesture {
-                        
-                    }
                     WelcomeMessage()
                     ZStack {
                         if moleculeVM.loading {
@@ -72,7 +65,7 @@ struct MainWindow: View {
             #endif
         }
         .sheet(isPresented: $moleculeVM.showPopover, onDismiss: {}, content: {
-            moleculeVM.popoverContent
+            moleculeVM.sheetContent
         })
         .alert(isPresented: $moleculeVM.showErrorFileAlert) {
             Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
@@ -82,16 +75,9 @@ struct MainWindow: View {
         .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
             moleculeVM.handlePickedFile(fileURL)
         }
-        
+        #if os(macOS)
+        .background(WindowAccessor(controller: moleculeVM))
+        #endif
     }
     
-}
-
-struct NewWindow: View {
-    
-    //let window: NSWindow
-    
-    var body: some View {
-        Text("Close window")
-    }
 }

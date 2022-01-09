@@ -21,7 +21,7 @@ struct MainWindow: View {
             else {
                 VStack(spacing: 50) {
                     Text("Open window").onTapGesture {
-                        
+                        Text("HELOOOO").padding().openNewWindow()
                     }
                     Text("Close window").onTapGesture {
                         

@@ -14,12 +14,12 @@ struct Atomic_macOSApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainWindow().navigationTitle("Atomic")
+            MainWindow()
         }
         .commands {
             CommandGroup(replacing: .newItem) {
                 Button("New molecule") {
-                    //moleculeVM.newFile()
+                    MainWindow().openNewWindow(with: "New Molecule", and: .multiple)
                 }.keyboardShortcut("N")
                 Button("Open file") {
                     //moleculeVM.openFileImporter = true
@@ -35,7 +35,7 @@ struct Atomic_macOSApp: App {
             CommandMenu("Molecule") {
                 Button("Periodic table") {
                     ToolsController.shared.selected2Tool = .addAtom
-                    PTable().openNewWindow(with: "Periodic Table")
+                    PTable().openNewWindow(with: "Periodic Table", and: .ptable)
                 }
                 Button("Select") {
                     ToolsController.shared.selected2Tool = .selectAtom
@@ -74,43 +74,4 @@ struct Atomic_macOSApp: App {
             }.padding()
         }
     }
-}
-
-extension View {
-    private func newWindowInternal(with title: String) -> NSWindow {
-        let window = NSWindow(
-            contentRect: NSRect(x: 20, y: 20, width: 680, height: 600),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered,
-            defer: false)
-        window.center()
-        window.isReleasedWhenClosed = false
-        window.title = title
-        window.makeKeyAndOrderFront(nil)
-        return window
-    }
-    
-    func openNewWindow(with title: String = "New Window") {
-        self.newWindowInternal(with: title).contentView = NSHostingView(rootView: self)
-    }
-    
-    func openNewWindow2(with title: String = "New Window") -> NSWindow {
-        let window = self.newWindowInternal(with: title)
-        window.contentView = NSHostingView(rootView: self)
-       return window
-    }
-}
-
-func openAsWindow(view: AnyView ,with title: String = "New Window") -> NSWindow {
-    let window = NSWindow(
-        contentRect: NSRect(x: 20, y: 20, width: 680, height: 600),
-        styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-        backing: .buffered,
-        defer: false)
-    window.center()
-    window.isReleasedWhenClosed = false
-    window.title = title
-    window.makeKeyAndOrderFront(nil)
-    window.contentView = NSHostingView(rootView: view)
-   return window
 }

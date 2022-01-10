@@ -57,11 +57,9 @@ class GaussianReader {
         self.fileInput = file.components(separatedBy: "\n")
     }
     
-    public func getStepsFromLog() throws -> [Step]? {
+    public func getStepsFromLog() throws {
         do {
             try readlogFile()
-            print(inputFile)
-            return steps
         }
         catch let error as ReadingErrors {
             ErrorManager.shared.lineError = errorLine
@@ -74,10 +72,9 @@ class GaussianReader {
         }
     }
     
-    public func getStepsFromGJF() throws -> [Step]? {
+    public func getStepsFromGJF() throws {
         do {
             try readgjfFile()
-            return steps
         }
         catch let error as ReadingErrors {
             readError = error
@@ -305,11 +302,12 @@ class GaussianReader {
         
         var atom: Atom?
         
-        let fixedLine = line.replacingOccurrences(of: "\t", with: " ")
+        let fixedLine = line.replacingOccurrences(of: "\t", with: " ").replacingOccurrences(of: "\r", with: "")
         for atomName in Element.allCases {
             if fixedLine.contains("\(atomName.rawValue) ") {
                 let lineComponents = fixedLine.split(separator: " ")
-                guard let x = Float(lineComponents[1]), let y = Float(lineComponents[2]), let z = Float(lineComponents[3]) else {break}
+                print(lineComponents)
+                guard let x = Float(lineComponents[1]), let y = Float(lineComponents[2]), let z = Float(lineComponents[3]) else {throw ReadingErrors.badInputCoords}
                 #if os(macOS)
                 let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
                 #else

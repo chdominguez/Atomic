@@ -76,7 +76,9 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             do {
                 let fileString = try FileOpener.getFileAsString(from: url)
-                guard let steps = try FileOpener.getMolecules(fromFileURL: url) else {return}
+                guard let greader = try FileOpener.getMolecules(fromFileURL: url) else {return}
+                self.gReader = greader
+                let steps = greader.steps
                 url.stopAccessingSecurityScopedResource()
                 DispatchQueue.main.sync {
                     self.fileAsString = fileString

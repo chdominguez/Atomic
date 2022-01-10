@@ -12,12 +12,12 @@ import SwiftUI
 
 final class MolReader {
     
-    public func readFile(fileURL: URL, dataString: String) throws -> [Step]? {
+    func readFile(fileURL: URL, dataString: String) throws -> GaussianReader? {
         switch fileURL.pathExtension {
         case "gjf", "com":
             let gReader = GaussianReader(file: dataString)
-            let steps = try gReader.getStepsFromGJF()
-            return steps
+            try gReader.getStepsFromGJF()
+            return gReader
         case "log", "qfi":
             return try readLOG(data: dataString)
         default:
@@ -25,7 +25,7 @@ final class MolReader {
         }
     }
     
-    func readLOG(data: String) throws -> [Step]? {
+    private func readLOG(data: String) throws -> GaussianReader? {
         
         // Check from what software the log file came from
         var logFrom: logSoftware? = nil
@@ -43,10 +43,10 @@ final class MolReader {
         switch logFrom {
         case .gaussian:
             let gReader = GaussianReader(file: data)
-            let steps = try gReader.getStepsFromLog()
+            try gReader.getStepsFromLog()
             WindowManager.shared.currentController?.gReader = gReader
             
-            return steps
+            return gReader
         case .gamess:
             //guard let steps = readGAMESSlog(lines: separatedData) else {return nil}
             return nil
@@ -55,12 +55,12 @@ final class MolReader {
     }
     
     //Recognized computational software
-    enum logSoftware: String, CaseIterable {
+    private enum logSoftware: String, CaseIterable {
         case gaussian = "Entering Gaussian System"
         case gamess = "GAMESS"
     }
     
-    enum SoftwareErrors: Error, LocalizedError {
+    private enum SoftwareErrors: Error, LocalizedError {
         case unrecognized
         
         public var errorDescription: String? {

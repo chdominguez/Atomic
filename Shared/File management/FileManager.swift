@@ -38,11 +38,10 @@ class FileOpener: ObservableObject {
         }
     }
     
-    static func getMolecules(fromFileURL fileURL: URL) throws -> [Step]? {
+    static func getMolecules(fromFileURL fileURL: URL) throws -> GaussianReader? {
         let fileData = try String(contentsOf: fileURL)
         let molreader = MolReader()
-        let steps = try molreader.readFile(fileURL: fileURL, dataString: fileData)
-        return steps
+        return try molreader.readFile(fileURL: fileURL, dataString: fileData)
     }
     
     static func getURL(fromDroppedFile file: [NSItemProvider], completion: @escaping (URL) -> Void) {

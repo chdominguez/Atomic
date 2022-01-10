@@ -90,6 +90,8 @@ class AtomicWindow: NSWindow {
 enum WindowTypes: CaseIterable {
     case ptable
     case freqs
+    case outputfile
+    case inputfile
     case multiple
 }
 

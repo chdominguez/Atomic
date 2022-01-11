@@ -70,7 +70,11 @@ struct MainWindow: View {
         .alert(isPresented: $moleculeVM.showErrorFileAlert) {
             Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
         }
+        #if os(macOS)
         .onDrop(of: [.fileURL], delegate: moleculeVM)
+        #else
+        .onDrop(of: FileOpener.types, delegate: moleculeVM)
+        #endif
         .frame(minWidth: 800, minHeight: 600)
         .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
             moleculeVM.handlePickedFile(fileURL)

@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>Atomic</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -16,6 +14,20 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.Atomic.gjf</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>NSDocument</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>XYZ</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.Atomic.xyz</string>
 			</array>
 			<key>NSDocumentClass</key>
 			<string>NSDocument</string>

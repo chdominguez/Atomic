@@ -25,6 +25,8 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     @Published var showEditMenu: Bool = false
     @Published var phase: CGFloat = 0
     @Published var showPopover: Bool = false
+    @Published var fileExporter: Bool = false
+    @Published var fileToSave: xyzFile? = nil
     
     @Published var fileAsString: String? = nil
     
@@ -44,6 +46,11 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
         fileReady = true
         let emptyStep = Step()
         renderer = RendererController([emptyStep])
+    }
+    
+    func saveFile(_ file: xyzFile) {
+        fileToSave = file
+        fileExporter = true
     }
     
     func handlePickedFile(_ picked: Result<URL, Error>) {

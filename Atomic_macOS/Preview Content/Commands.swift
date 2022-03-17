@@ -28,8 +28,9 @@ struct AtomicCommands: Commands {
                 controller.resetFile()
             }
             Button("Save") {
-                let file = GJFWritter.sceneToGJF(scene: commandMenu.currentScene!)
-                InputfileView(fileInput: file).openNewWindow(with: "New file")
+                let file = XYZWritter.sceneToXYZ(scene: commandMenu.currentScene!)
+                windowManager.currentController?.saveFile(file)
+//                InputfileView(fileInput: file).openNewWindow(with: "New file")
             }.keyboardShortcut("S").disabled(commandMenu.currentScene == nil)
             Divider()
             Button("New window") {
@@ -39,7 +40,8 @@ struct AtomicCommands: Commands {
         CommandMenu("Molecule") {
             Button("Periodic table") {
                 ToolsController.shared.selected2Tool = .addAtom
-                PTable().openNewWindow(with: "Periodic Table", and: .ptable)
+                guard let controller = windowManager.currentController else {return}
+                PTable().openNewWindow(with: "Periodic Table", and: .ptable, controller: controller)
             }
             Button("Select") {
                 ToolsController.shared.selected2Tool = .selectAtom
@@ -48,10 +50,10 @@ struct AtomicCommands: Commands {
                 ToolsController.shared.selected2Tool = .removeAtom
             }
             Button("Bond selected") {
-                //moleculeVM.renderer?.bondSelectedAtoms()
+                windowManager.currentController?.renderer?.bondSelectedAtoms()
             }.keyboardShortcut("B")
             Button("Remove selected") {
-                //moleculeVM.renderer?.eraseSelectedAtoms()
+                windowManager.currentController?.renderer?.eraseSelectedAtoms()
             }.keyboardShortcut("R")
         }
         CommandMenu("Tools") {
@@ -67,7 +69,7 @@ struct AtomicCommands: Commands {
                     
                     InputfileView(fileInput: gReader.inputFile).openNewWindow(with: "Input file", and: .inputfile)
                 } else {
-                    print("No greader")
+                    //print("No greader")
                 }
             }//.disabled(moleculeVM.gReader == nil)
             Button("Show output file") {

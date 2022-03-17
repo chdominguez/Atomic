@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 
+// This class manages instances of MoleculeViewModel across different windows under macOS
 class WindowManager: NSObject, ObservableObject {
     
     static let shared = WindowManager()
@@ -24,9 +25,6 @@ class WindowManager: NSObject, ObservableObject {
         } else {
             commandController.hasfreq = false
         }
-        
-        
-        
     }
 }
 
@@ -60,7 +58,6 @@ extension View {
     }
     
     func openNewWindow(with title: String = "New Window", and type: WindowTypes = .multiple, controller: MoleculeViewModel? = nil) {
-        
         if type != .multiple {
             if let controller = controller {
                 if controller.openedWindows.contains(type) {
@@ -69,11 +66,11 @@ extension View {
                         window.orderFrontRegardless()
                         return
                     }
+                } else {
+                    controller.openedWindows.append(type)
                 }
-                controller.openedWindows.append(type)
             }
         }
-        
         let newWindow = self.newWindowInternal(with: title, and: type)
         newWindow.associatedController = controller
         newWindow.contentView = NSHostingView(rootView: self)
@@ -95,6 +92,7 @@ enum WindowTypes: CaseIterable {
     case multiple
 }
 
+// SwiftUI workaround to access underlying NSWindow properties on SwiftUI macOS windows
 struct WindowAccessor: NSViewRepresentable {
     
     let controller: MoleculeViewModel

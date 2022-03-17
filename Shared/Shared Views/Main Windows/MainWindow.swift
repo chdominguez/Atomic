@@ -67,6 +67,9 @@ struct MainWindow: View {
         .sheet(isPresented: $moleculeVM.showPopover, onDismiss: {}, content: {
             moleculeVM.sheetContent
         })
+        .fileExporter(isPresented: $moleculeVM.fileExporter, document: moleculeVM.fileToSave, contentType: FileOpener.xyz, defaultFilename: "molecule", onCompletion: { result in
+            print("Save file")
+        })
         .alert(isPresented: $moleculeVM.showErrorFileAlert) {
             Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
         }

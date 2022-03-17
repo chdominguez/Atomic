@@ -25,7 +25,7 @@ extension MainWindow {
                 
                 VStack {
                     Button {
-                        print("New file")
+                        moleculeVM.newFile()
                     } label: {
                         HStack{
                             Image(systemName: "doc.badge.plus")
@@ -43,7 +43,9 @@ extension MainWindow {
                         }
                     }.atomicButton()
                     Button {
-                        print("Save file")
+                        let file = GJFWritter.sceneToGJF(scene: moleculeVM.renderer!.scene)
+                        moleculeVM.sheetContent = AnyView(InputfileView(fileInput: file))
+                        moleculeVM.showPopover = true
                     } label: {
                         HStack{
                             Image(systemName: "square.and.arrow.down.fill")
@@ -61,11 +63,11 @@ extension MainWindow {
                     }.atomicButton()
                     
                     Button {
-                        moleculeVM.popoverContent = AnyView(OutputFileView(fileInput: moleculeVM.fileAsString!))
+                        moleculeVM.sheetContent = AnyView(OutputFileView(fileInput: moleculeVM.fileAsString!))
                         moleculeVM.showPopover = true
                     } label: {
                         Image(systemName: "doc")
-                        Text("Show output...")
+                        Text("Show output")
                     }
                     .atomicButton()
                     .disabled(moleculeVM.fileAsString == nil)
@@ -89,6 +91,13 @@ extension MainWindow {
                 .atomicButton()
                 
                 VStack {
+                    Button {
+                        ToolsController.shared.selected2Tool = .addAtom
+                        moleculeVM.sheetContent = AnyView(PTable())
+                        moleculeVM.showPopover = true
+                    } label: {
+                            Text("Periodic table")
+                    }.atomicButton()
                     Button {
                         moleculeVM.renderer?.eraseSelectedAtoms()
                     } label: {

@@ -14,7 +14,6 @@ class CommandMenuController: ObservableObject {
     
     @Published var hasfreq: Bool = false
     @Published var inputLoaded: Bool = false
-    
     @Published var currentScene: SCNScene? = nil
-    
+    @Published var renderer: RendererController? = nil
 }

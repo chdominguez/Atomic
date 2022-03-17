@@ -8,12 +8,10 @@
 import Foundation
 import SwiftUI
 import SceneKit
-import UniformTypeIdentifiers
-import Combine
 
-class MoleculeViewModel: ObservableObject, DropDelegate {
+class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     
-    static let shared = MoleculeViewModel()
+    let id = UUID()
     
     var renderer: RendererController? = nil
     var fileURL: URL? = nil
@@ -27,14 +25,20 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
     @Published var showEditMenu: Bool = false
     @Published var phase: CGFloat = 0
     @Published var showPopover: Bool = false
+    @Published var fileExporter: Bool = false
+    @Published var fileToSave: xyzFile? = nil
     
     @Published var fileAsString: String? = nil
     
     var gReader: GaussianReader? = nil
     
+    #if os(macOS)
+    var openedWindows: [WindowTypes] = []
+    #endif
+    
     var errorDescription = ""
     
-    var popoverContent: AnyView = AnyView(EmptyView())
+    var sheetContent: AnyView = AnyView(EmptyView())
     
     func newFile() {
         fileURL = nil
@@ -44,21 +48,25 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
         renderer = RendererController([emptyStep])
     }
     
+    func saveFile(_ file: xyzFile) {
+        fileToSave = file
+        fileExporter = true
+    }
+    
     func handlePickedFile(_ picked: Result<URL, Error>) {
         loading = true
-//        DispatchQueue.global(qos: .background).async { [self] in
-            guard let url = FileOpener.getFileURLForPicked(picked) else {
+        guard let url = FileOpener.getFileURLForPicked(picked) else {
+            showErrorFileAlert = true
+            return
+        }
+        guard url.startAccessingSecurityScopedResource() else {
+            DispatchQueue.main.sync {
                 showErrorFileAlert = true
-                return
+                loading = false
             }
-            guard url.startAccessingSecurityScopedResource() else {
-                DispatchQueue.main.sync {
-                    showErrorFileAlert = true
-                    loading = false
-                }
-                return
-            }
-            processFile(url: url)
+            return
+        }
+        processFile(url: url)
     }
 
     private func initializeController(steps: [Step]) {
@@ -75,7 +83,9 @@ class MoleculeViewModel: ObservableObject, DropDelegate {
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             do {
                 let fileString = try FileOpener.getFileAsString(from: url)
-                guard let steps = try FileOpener.getMolecules(fromFileURL: url) else {return}
+                guard let greader = try FileOpener.getMolecules(fromFileURL: url) else {return}
+                self.gReader = greader
+                let steps = greader.steps
                 url.stopAccessingSecurityScopedResource()
                 DispatchQueue.main.sync {
                     self.fileAsString = fileString

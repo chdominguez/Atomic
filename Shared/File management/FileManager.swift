@@ -7,15 +7,21 @@
 import UniformTypeIdentifiers
 import SwiftUI
 import SceneKit
-
+// TODO: Change FILEOPENER to AtomicFileTypes
 class FileOpener: ObservableObject {
     
     private init() {}
     
+    static let gjf = UTType(filenameExtension: "gjf")!
+    static let log = UTType(filenameExtension: "log")!
+    static let qfi = UTType(filenameExtension: "qfi")!
+    static let xyz = UTType(filenameExtension: "xyz")!
+    
     //File types that the app supports.
-    static let types: [UTType] = [UTType(filenameExtension: "gjf")!,
-                                  UTType(filenameExtension: "log")!,
-                                  UTType(filenameExtension: "qfi")!]
+    static let types: [UTType] = [gjf,
+                                log,
+                                qfi,
+                                xyz]
     
     //Function to get the url when opening the file from the document picker.
     static func getFileURLForPicked(_ res: Result<URL, Error>) -> URL? {
@@ -28,7 +34,7 @@ class FileOpener: ObservableObject {
             return nil
         }
     }
-    
+    /// File from URL gets returned as a String.
     static func getFileAsString(from file: URL) throws -> String {
         do {
             return try String(contentsOf: file)
@@ -38,11 +44,10 @@ class FileOpener: ObservableObject {
         }
     }
     
-    static func getMolecules(fromFileURL fileURL: URL) throws -> [Step]? {
+    static func getMolecules(fromFileURL fileURL: URL) throws -> GaussianReader? {
         let fileData = try String(contentsOf: fileURL)
         let molreader = MolReader()
-        let steps = try molreader.readFile(fileURL: fileURL, dataString: fileData)
-        return steps
+        return try molreader.readFile(fileURL: fileURL, dataString: fileData)
     }
     
     static func getURL(fromDroppedFile file: [NSItemProvider], completion: @escaping (URL) -> Void) {
@@ -62,4 +67,31 @@ class FileOpener: ObservableObject {
             }
         }
     }
+}
+
+struct xyzFile: FileDocument {
+    
+    static var readableContentTypes = [FileOpener.xyz]
+    
+    var text: String = ""
+    
+    init(initialText: String = "") {
+        text = initialText
+    }
+    
+    init(configuration: ReadConfiguration) throws {
+        guard let data = configuration.file.regularFileContents,
+            let string = String(data: data, encoding: .utf8)
+        else {
+            throw CocoaError(.fileReadCorruptFile)
+        }
+        text = string
+    }
+
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        let data = text.data(using: .utf8)!
+        return .init(regularFileWithContents: data)
+    }
+    
+    
 }

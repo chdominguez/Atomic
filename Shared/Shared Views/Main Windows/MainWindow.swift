@@ -10,7 +10,7 @@ import Combine
 
 struct MainWindow: View {
     
-    @ObservedObject var moleculeVM: MoleculeViewModel
+    @StateObject var moleculeVM = MoleculeViewModel()
     
     var body: some View {
         ZStack {
@@ -65,7 +65,10 @@ struct MainWindow: View {
             #endif
         }
         .sheet(isPresented: $moleculeVM.showPopover, onDismiss: {}, content: {
-            moleculeVM.popoverContent
+            moleculeVM.sheetContent
+        })
+        .fileExporter(isPresented: $moleculeVM.fileExporter, document: moleculeVM.fileToSave, contentType: FileOpener.xyz, defaultFilename: "molecule", onCompletion: { result in
+            print("Save file")
         })
         .alert(isPresented: $moleculeVM.showErrorFileAlert) {
             Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
@@ -79,5 +82,9 @@ struct MainWindow: View {
         .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
             moleculeVM.handlePickedFile(fileURL)
         }
+        #if os(macOS)
+        .background(WindowAccessor(controller: moleculeVM))
+        #endif
     }
+    
 }

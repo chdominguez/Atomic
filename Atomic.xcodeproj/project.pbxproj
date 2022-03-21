@@ -9,7 +9,10 @@
 /* Begin PBXBuildFile section */
 		C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */; };
 		C01FD3AF278B4E9F00E0A5AD /* CommandMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E13720277F3CD7009ACCB6 /* CommandMenuController.swift */; };
+		C021717F27E3E269007ACD2F /* ToolsBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolsBar.swift */; };
+		C021718027E3E269007ACD2F /* ToolsBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolsBar.swift */; };
 		C0265CA52766A30100C5219E /* WelcomeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0265CA42766A30100C5219E /* WelcomeMessage.swift */; };
+		C02C1BDC27E4B23F00BCDF01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
 		C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
 		C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
 		C041E26027752250005790EE /* Representable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCECC276A3E710085CD1D /* Representable.swift */; };
@@ -24,14 +27,13 @@
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C09441352761F76F00680075 /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* CustomViews.swift */; };
+		C09BFB2F27E78A8E00D4B969 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE59E2278A038200423CF3 /* Commands.swift */; };
 		C0A7F09F276F7FBB00E69E0F /* SharedRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* SharedRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */; };
-		C0BE59E3278A038200423CF3 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE59E2278A038200423CF3 /* Commands.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D01B52274EC95000556EDA /* ToolsController.swift */; };
 		C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */; };
-		C0DCCE9B276A3C9C0085CD1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0DCCE9A276A3C9C0085CD1D /* Assets.xcassets */; };
 		C0DCCE9E276A3C9C0085CD1D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0DCCE9D276A3C9C0085CD1D /* Preview Assets.xcassets */; };
 		C0DCCEC0276A3D540085CD1D /* ToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D01B52274EC95000556EDA /* ToolsController.swift */; };
 		C0DCCEC1276A3D540085CD1D /* ToolsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D5D7F127144544004E78B5 /* ToolsModel.swift */; };
@@ -57,7 +59,6 @@
 		C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
 		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
 		F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA47926E77F5100387EBA /* AtomicApp.swift */; };
-		F06AA47E26E77F5200387EBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
 		F06AA48126E77F5200387EBA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA48026E77F5200387EBA /* Preview Assets.xcassets */; };
 		F06AA49A26E7801200387EBA /* PeriodicTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48A26E7801200387EBA /* PeriodicTable.swift */; };
 		F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48B26E7801200387EBA /* AtomModel.swift */; };
@@ -73,6 +74,7 @@
 
 /* Begin PBXFileReference section */
 		C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceManager.swift; sourceTree = "<group>"; };
+		C021717E27E3E269007ACD2F /* ToolsBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsBar.swift; sourceTree = "<group>"; };
 		C0265CA42766A30100C5219E /* WelcomeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeMessage.swift; sourceTree = "<group>"; };
 		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
 		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
@@ -83,13 +85,12 @@
 		C066B780277E15140036F404 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* SharedRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedRenderer.swift; sourceTree = "<group>"; };
-		C0BE59E2278A038200423CF3 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Commands.swift; path = "Preview Content/Commands.swift"; sourceTree = "<group>"; };
+		C0BE59E2278A038200423CF3 /* Commands.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Commands.swift; path = "Preview Content/Commands.swift"; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C0D01B52274EC95000556EDA /* ToolsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsController.swift; sourceTree = "<group>"; };
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		C0DCCE94276A3C9B0085CD1D /* Atomic_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0DCCE94276A3C9B0085CD1D /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic_macOSApp.swift; sourceTree = "<group>"; };
-		C0DCCE9A276A3C9C0085CD1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0DCCE9D276A3C9C0085CD1D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Atomic_macOS.entitlements; sourceTree = "<group>"; };
 		C0DCCECC276A3E710085CD1D /* Representable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Representable.swift; sourceTree = "<group>"; };
@@ -99,7 +100,7 @@
 		C0E13720277F3CD7009ACCB6 /* CommandMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandMenuController.swift; sourceTree = "<group>"; };
 		C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianGJFWriter.swift; sourceTree = "<group>"; };
 		F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableView.swift; sourceTree = "<group>"; };
-		F06AA47626E77F5100387EBA /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F06AA47626E77F5100387EBA /* Atomic_ipad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic_ipad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F06AA47926E77F5100387EBA /* AtomicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicApp.swift; sourceTree = "<group>"; };
 		F06AA47D26E77F5200387EBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F06AA48026E77F5200387EBA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -157,7 +158,6 @@
 			children = (
 				C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */,
 				C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */,
-				C0DCCE9A276A3C9C0085CD1D /* Assets.xcassets */,
 				C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */,
 				C0DCCE9C276A3C9C0085CD1D /* Preview Content */,
 				C064B3D0278AAE5D0086E7BD /* WindowManager.swift */,
@@ -177,6 +177,7 @@
 		C0DCCEBF276A3CF20085CD1D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F06AA47D26E77F5200387EBA /* Assets.xcassets */,
 				C0E13720277F3CD7009ACCB6 /* CommandMenuController.swift */,
 				C05F5CA82785A48C00F3B588 /* Extensions.swift */,
 				C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */,
@@ -226,8 +227,8 @@
 		F06AA47726E77F5100387EBA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F06AA47626E77F5100387EBA /* Atomic.app */,
-				C0DCCE94276A3C9B0085CD1D /* Atomic_macOS.app */,
+				F06AA47626E77F5100387EBA /* Atomic_ipad.app */,
+				C0DCCE94276A3C9B0085CD1D /* Atomic.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -240,7 +241,6 @@
 				C0D04A89274D66E30049E8ED /* Info.plist */,
 				F0F55A0C27305DC2003730BA /* Atomic.entitlements */,
 				F06AA47F26E77F5200387EBA /* Preview Content */,
-				F06AA47D26E77F5200387EBA /* Assets.xcassets */,
 				C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */,
 			);
 			path = Atomic_iPadOS;
@@ -304,6 +304,7 @@
 			children = (
 				F0D5D7F127144544004E78B5 /* ToolsModel.swift */,
 				C0D01B52274EC95000556EDA /* ToolsController.swift */,
+				C021717E27E3E269007ACD2F /* ToolsBar.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -329,9 +330,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C0DCCE93276A3C9B0085CD1D /* Atomic_macOS */ = {
+		C0DCCE93276A3C9B0085CD1D /* Atomic */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C0DCCEBC276A3C9C0085CD1D /* Build configuration list for PBXNativeTarget "Atomic_macOS" */;
+			buildConfigurationList = C0DCCEBC276A3C9C0085CD1D /* Build configuration list for PBXNativeTarget "Atomic" */;
 			buildPhases = (
 				C0DCCE90276A3C9B0085CD1D /* Sources */,
 				C0DCCE91276A3C9B0085CD1D /* Frameworks */,
@@ -341,16 +342,16 @@
 			);
 			dependencies = (
 			);
-			name = Atomic_macOS;
+			name = Atomic;
 			packageProductDependencies = (
 			);
 			productName = Atomic_macOS;
-			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic_macOS.app */;
+			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F06AA47526E77F5100387EBA /* Atomic */ = {
+		F06AA47526E77F5100387EBA /* Atomic_ipad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F06AA48426E77F5200387EBA /* Build configuration list for PBXNativeTarget "Atomic" */;
+			buildConfigurationList = F06AA48426E77F5200387EBA /* Build configuration list for PBXNativeTarget "Atomic_ipad" */;
 			buildPhases = (
 				F06AA47226E77F5100387EBA /* Sources */,
 				F06AA47326E77F5100387EBA /* Frameworks */,
@@ -360,11 +361,11 @@
 			);
 			dependencies = (
 			);
-			name = Atomic;
+			name = Atomic_ipad;
 			packageProductDependencies = (
 			);
 			productName = Atomic;
-			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
+			productReference = F06AA47626E77F5100387EBA /* Atomic_ipad.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -401,8 +402,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F06AA47526E77F5100387EBA /* Atomic */,
-				C0DCCE93276A3C9B0085CD1D /* Atomic_macOS */,
+				F06AA47526E77F5100387EBA /* Atomic_ipad */,
+				C0DCCE93276A3C9B0085CD1D /* Atomic */,
 			);
 		};
 /* End PBXProject section */
@@ -412,8 +413,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C02C1BDC27E4B23F00BCDF01 /* Assets.xcassets in Resources */,
 				C0DCCE9E276A3C9C0085CD1D /* Preview Assets.xcassets in Resources */,
-				C0DCCE9B276A3C9C0085CD1D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,7 +423,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F06AA48126E77F5200387EBA /* Preview Assets.xcassets in Resources */,
-				F06AA47E26E77F5200387EBA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +446,7 @@
 				C0DCCECD276A3E710085CD1D /* Representable.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
 				C0DCCEC5276A3D600085CD1D /* FileReader.swift in Sources */,
+				C09BFB2F27E78A8E00D4B969 /* Commands.swift in Sources */,
 				C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */,
 				C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */,
@@ -457,11 +458,11 @@
 				C0E13722277F3CD7009ACCB6 /* CommandMenuController.swift in Sources */,
 				C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */,
 				C0DCCED5276A3E980085CD1D /* MoleculeViewController.swift in Sources */,
-				C0BE59E3278A038200423CF3 /* Commands.swift in Sources */,
 				C0DCCEC0276A3D540085CD1D /* ToolsController.swift in Sources */,
 				C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */,
 				C0E1371C277F33D3009ACCB6 /* InputfileView.swift in Sources */,
+				C021718027E3E269007ACD2F /* ToolsBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,6 +499,7 @@
 				F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */,
 				C0E1371B277F33D3009ACCB6 /* InputfileView.swift in Sources */,
 				C05F5CA92785A48C00F3B588 /* Extensions.swift in Sources */,
+				C021717F27E3E269007ACD2F /* ToolsBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,14 +522,15 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Atomic-macOS-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "cdominguez.Atomic-macOS";
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = cdominguez.Atomic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -551,14 +554,15 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Atomic-macOS-Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "cdominguez.Atomic-macOS";
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = cdominguez.Atomic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -618,6 +622,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -673,6 +678,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -708,8 +714,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kris.Atomic;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kris.Atomic.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -746,8 +752,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kris.Atomic;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kris.Atomic.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -760,7 +766,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C0DCCEBC276A3C9C0085CD1D /* Build configuration list for PBXNativeTarget "Atomic_macOS" */ = {
+		C0DCCEBC276A3C9C0085CD1D /* Build configuration list for PBXNativeTarget "Atomic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C0DCCEB6276A3C9C0085CD1D /* Debug */,
@@ -778,7 +784,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F06AA48426E77F5200387EBA /* Build configuration list for PBXNativeTarget "Atomic" */ = {
+		F06AA48426E77F5200387EBA /* Build configuration list for PBXNativeTarget "Atomic_ipad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F06AA48526E77F5200387EBA /* Debug */,

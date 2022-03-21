@@ -16,12 +16,12 @@ struct Molecule3DView: View {
             VStack {
                 ZStack {
                     SceneUI(controller: controller)
-                        
                     VStack {
-                        Spacer()
                         if !controller.didLoadAllScenes {
-                            progressview.foregroundColor(.black)
+                            progressview.foregroundColor(.primary)
                         }
+                        Spacer()
+                        ToolsBar(currentController: controller)
                     }
                 }
                 toolbar2
@@ -31,8 +31,8 @@ struct Molecule3DView: View {
             VStack {
                 Spacer()
                 progressview.onAppear {
-                        controller.loadAllScenes()
-                    }
+                    controller.loadAllScenes()
+                }
             }
         }
         
@@ -42,9 +42,10 @@ struct Molecule3DView: View {
 extension Molecule3DView {
     
     private var progressview: some View {
-        VStack {
-            Image(systemName: "atom")
+        HStack {
             Text("Loading: \(controller.stepsPreloaded)/\(controller.steps.count)")
+                .foregroundColor(.primary)
+                .frame(maxWidth: 100)
             ProgressView(value: controller.progress)
         }.padding()
     }
@@ -81,12 +82,12 @@ extension Molecule3DView {
             }
         }
         .padding(.horizontal)
-        #if os(macOS)
+#if os(macOS)
         .padding(.bottom, 5)
-        #else
+#else
         .padding(.vertical, 5)
         .background(Color.gray)
-        #endif
+#endif
         
     }
 }

@@ -43,8 +43,8 @@ extension MainWindow {
                         }
                     }.atomicButton()
                     Button {
-                        let file = GJFWritter.sceneToGJF(scene: moleculeVM.renderer!.scene)
-                        moleculeVM.sheetContent = AnyView(InputfileView(fileInput: file))
+                        let file = XYZWritter.sceneToXYZ(scene: moleculeVM.renderer!.scene)
+                        moleculeVM.sheetContent = AnyView(InputfileView(fileInput: file.text))
                         moleculeVM.showPopover = true
                     } label: {
                         HStack{
@@ -75,48 +75,6 @@ extension MainWindow {
                 }
                 .offset(x: 0, y: moleculeVM.showFileMenu ? 100 : 40)
                 .opacity(moleculeVM.showFileMenu ? 1 : 0)
-                
-            }
-            ZStack {
-                Button {
-                    withAnimation {
-                        moleculeVM.showEditMenu.toggle()
-                    }
-                } label: {
-                    Image(systemName: "paintbrush.pointed")
-                        .rotationEffect(Angle(degrees: moleculeVM.showEditMenu ? 45 : 0))
-                    Text("Edit")
-                }
-                .zIndex(1)
-                .atomicButton()
-                
-                VStack {
-                    Button {
-                        ToolsController.shared.selected2Tool = .addAtom
-                        moleculeVM.sheetContent = AnyView(PTable())
-                        moleculeVM.showPopover = true
-                    } label: {
-                            Text("Periodic table")
-                    }.atomicButton()
-                    Button {
-                        moleculeVM.renderer?.eraseSelectedAtoms()
-                    } label: {
-                        HStack{
-                            Image(systemName: "trash")
-                            Text("Erase")
-                        }
-                    }.atomicButton()
-                    Button {
-                        moleculeVM.renderer?.bondSelectedAtoms()
-                    } label: {
-                        HStack{
-                            Image(systemName: "link")
-                            Text("Bond")
-                        }
-                    }.atomicButton()
-                }
-                .offset(x: 0, y: moleculeVM.showEditMenu ? 60 : 10)
-                .opacity(moleculeVM.showEditMenu ? 1 : 0)
                 
             }
             Spacer()

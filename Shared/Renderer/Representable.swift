@@ -1,5 +1,5 @@
 
-// Custom view representables. Usually, the AppKit/UIKit counterparts of SwiftUI views are faster.
+// Custom view representables. Usually, the AppKit/UIKit counterparts of SwiftUI views are faster and more customizable.
 
 import SwiftUI
 import SceneKit
@@ -13,6 +13,7 @@ typealias Representable = NSViewRepresentable
 struct SceneUI: Representable {
     
     @ObservedObject var controller: RendererController
+    @Environment(\.colorScheme) var colorScheme
     
     #if os(macOS)
     
@@ -36,6 +37,7 @@ struct SceneUI: Representable {
         return controller.sceneView
     }
     func updateNSView(_ uiView: SCNView, context: Context) {
+        colorScheme == .dark ? (uiView.backgroundColor = .black) : (uiView.backgroundColor = .white)
     }
     
     #else

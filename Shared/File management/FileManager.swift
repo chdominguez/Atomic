@@ -16,12 +16,14 @@ class FileOpener: ObservableObject {
     static let log = UTType(filenameExtension: "log")!
     static let qfi = UTType(filenameExtension: "qfi")!
     static let xyz = UTType(filenameExtension: "xyz")!
+    static let pdb = UTType(filenameExtension: "pdb")!
     
     //File types that the app supports.
     static let types: [UTType] = [gjf,
                                 log,
                                 qfi,
-                                xyz]
+                                xyz,
+                                pdb]
     
     //Function to get the url when opening the file from the document picker.
     static func getFileURLForPicked(_ res: Result<URL, Error>) -> URL? {
@@ -44,7 +46,7 @@ class FileOpener: ObservableObject {
         }
     }
     
-    static func getMolecules(fromFileURL fileURL: URL) throws -> GaussianReader? {
+    static func getMolecules(fromFileURL fileURL: URL) throws -> [Step]? {
         let fileData = try String(contentsOf: fileURL)
         let molreader = MolReader()
         return try molreader.readFile(fileURL: fileURL, dataString: fileData)

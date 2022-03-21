@@ -12,20 +12,31 @@ import SwiftUI
 
 final class MolReader {
     
-    func readFile(fileURL: URL, dataString: String) throws -> GaussianReader? {
+    func readFile(fileURL: URL, dataString: String) throws -> [Step]? {
         switch fileURL.pathExtension {
+        case "pdb":
+            let pdbReader = PDBreader(file: dataString)
+            let steps = try pdbReader.getSteps()
+            return steps
+        case "xyz":
+            let xyzReader = XYZReader(file: dataString)
+            let steps = try xyzReader.getSteps()
+            return steps
         case "gjf", "com":
             let gReader = GaussianReader(file: dataString)
             try gReader.getStepsFromGJF()
-            return gReader
+            
+            /// TO DO: Check bugs when returning only the steps and not the reader
+            return gReader.steps
         case "log", "qfi":
-            return try readLOG(data: dataString)
+            let gReader = try readLOG(data: dataString)
+            return gReader.steps
         default:
             return nil
         }
     }
     
-    private func readLOG(data: String) throws -> GaussianReader? {
+    private func readLOG(data: String) throws -> GaussianReader {
         
         // Check from what software the log file came from
         var logFrom: logSoftware? = nil
@@ -49,7 +60,7 @@ final class MolReader {
             return gReader
         case .gamess:
             //guard let steps = readGAMESSlog(lines: separatedData) else {return nil}
-            return nil
+            throw ReadingErrors.internalFailure
         }
         
     }

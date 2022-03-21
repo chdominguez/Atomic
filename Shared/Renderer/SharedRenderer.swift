@@ -79,10 +79,14 @@ class RendererController: ObservableObject {
         
         let material = SCNMaterial()
         material.diffuse.contents = RColor(atom.type.color)
+        material.lightingModel = .physicallyBased
+        material.metalness.contents = 0.4
+        material.roughness.contents = 0.5
         
         atomNode.geometry = sphere
         atomNode.geometry!.materials = [material]
         atomNode.position = atom.position
+        
         
         atomNode.constraints = [SCNBillboardConstraint()]
         atomNode.name = "atom_\(atom.type.rawValue)"
@@ -102,7 +106,7 @@ class RendererController: ObservableObject {
             timer.invalidate()
         }
         else {
-            timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { timer in
+            timer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { timer in
                 self.nextScene()
             }
         }
@@ -134,13 +138,22 @@ class RendererController: ObservableObject {
     func loadAllScenes() {
         let totalSteps = Double(steps.count)
         let progressStep = 1 / totalSteps
+        
+        if totalSteps > 100 {
+            loadNumberOfScenes(100, progress: progressStep)
+        } else {
+            loadNumberOfScenes(steps.count, progress: progressStep)
+        }
+    }
+    
+    func loadNumberOfScenes(_ nscenes: Int, progress: Double) {
         DispatchQueue.global(qos: .background).async { [self] in
-            for step in steps {
-                let newNode = setupScene(step: step)
+            for i in 0..<nscenes {
+                let newNode = setupScene(step: steps[i])
                 newNode.name = "Step"
                 atomChildNodes.append(newNode)
                 DispatchQueue.main.sync {
-                    progress += progressStep
+                    self.progress += progress
                     stepsPreloaded += 1
                     didLoadAtLeastOne = true
                 }
@@ -176,10 +189,14 @@ class RendererController: ObservableObject {
             
             let material = SCNMaterial()
             material.diffuse.contents = RColor(atom.type.color)
+            material.lightingModel = .physicallyBased
+            material.metalness.contents = 0.4
+            material.roughness.contents = 0.5
             
             atomNode.geometry = sphere
             atomNode.geometry!.materials = [material]
             atomNode.position = atom.position
+            
             
             atomNode.constraints = [SCNBillboardConstraint()]
             atomNode.name = "atom_\(atom.type.rawValue)"
@@ -222,7 +239,7 @@ class RendererController: ObservableObject {
                 let y = (pos1.y - pos2.y)
                 let z = (pos1.z - pos2.z)
                 let distance = sqrt(x*x+y*y+z*z)
-                if distance < 1.2 {
+                if distance < 1.5 {
                     node.addChildNode(lineBetweenNodes(node: node, positionA: pos1, positionB: pos2))
                 }
             }
@@ -241,6 +258,9 @@ class RendererController: ObservableObject {
         lineGeometry.height = CGFloat(distance)
         lineGeometry.radialSegmentCount = 5
         lineGeometry.firstMaterial!.diffuse.contents = RColor.lightGray
+        lineGeometry.firstMaterial!.lightingModel = .physicallyBased
+        lineGeometry.firstMaterial!.metalness.contents = 0.4
+        lineGeometry.firstMaterial!.roughness.contents = 0.5
         
         let lineNode = SCNNode(geometry: lineGeometry)
         lineNode.position = midPosition
@@ -289,7 +309,7 @@ class AtomRenderer {
             }
             let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
             let unprojected = controller.sceneView.unprojectPoint(position)
-            let atom = Atom(id: UUID(), position: unprojected, type: selectedAtom, number: count + 1)
+            let atom = Atom(position: unprojected, type: selectedAtom, number: count + 1)
             controller.showingStep.molecule!.atoms.append(atom)
             controller.newAtom(atom: atom)
         case .removeAtom:

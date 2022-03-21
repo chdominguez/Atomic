@@ -273,7 +273,8 @@ class GaussianReader {
                 #else
                 let position = SCNVector3(x: x, y: y, z: z)
                 #endif
-                atom = Atom(id: UUID(), position: position, type: atomName, number: atomNumber)
+                atom = Atom(position: position, type: atomName, number: atomNumber)
+                break
             }
         }
         guard let atom = atom else {throw ReadingErrors.badInputCoords}
@@ -313,7 +314,7 @@ class GaussianReader {
                 #else
                 let position = SCNVector3(x: x, y: y, z: z)
                 #endif
-                atom = Atom(id: UUID(), position: position, type: atomName, number: number)
+                atom = Atom(position: position, type: atomName, number: number)
             }
         }
         return atom
@@ -341,32 +342,42 @@ class GaussianReader {
         case title = " ----------" // The title of the job is written between two of those.
         case title2 = " ------------"
     }
-    
-    enum ReadingErrors: Error, LocalizedError {
-        case badInputCoords
-        case internalFailure
-        case badTermination
-        case badFreqs
-        case badEnergy
-        case unknown
-        
-        public var errorDescription: String? {
-            switch self {
-            case .badInputCoords:
-                return "Input coordinates are wrong"
-            case .internalFailure:
-                return "Internal failure"
-            case .badTermination:
-                return "Bad termination"
-            case .badFreqs:
-                return "Bad frequencies"
-            case .badEnergy:
-                return "Bad energy"
-            case .unknown:
-                return "Unknown error. Contact developer."
-            }
-        }
-    }
-    
 }
 
+enum ReadingErrors: Error, LocalizedError {
+    case badInputCoords
+    case internalFailure
+    case badTermination
+    case badFreqs
+    case badEnergy
+    
+    case xyzError
+    
+    case pdbError
+    
+    case unknown
+    
+    public var errorDescription: String? {
+        switch self {
+        case .badInputCoords:
+            return "Input coordinates are wrong"
+        case .internalFailure:
+            return "Internal failure"
+        case .badTermination:
+            return "Bad termination"
+        case .badFreqs:
+            return "Bad frequencies"
+        case .badEnergy:
+            return "Bad energy"
+        
+        case .xyzError:
+            return "Error in xyz"
+            
+        case .pdbError:
+            return "Error in pdb"
+            
+        case .unknown:
+            return "Unknown error. Contact developer."
+        }
+    }
+}

@@ -31,6 +31,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     @Published var fileAsString: String? = nil
     
     var gReader: GaussianReader? = nil
+    var xyzReader: XYZReader? = nil
     
     #if os(macOS)
     var openedWindows: [WindowTypes] = []
@@ -83,9 +84,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             do {
                 let fileString = try FileOpener.getFileAsString(from: url)
-                guard let greader = try FileOpener.getMolecules(fromFileURL: url) else {return}
-                self.gReader = greader
-                let steps = greader.steps
+                guard let steps = try FileOpener.getMolecules(fromFileURL: url) else {return}
                 url.stopAccessingSecurityScopedResource()
                 DispatchQueue.main.sync {
                     self.fileAsString = fileString

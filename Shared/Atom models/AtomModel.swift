@@ -9,7 +9,7 @@ import Foundation
 import SceneKit
 
 struct Atom: Identifiable {
-    let id: UUID
+    let id = UUID()
     
     var position: SCNVector3
     var type: Element

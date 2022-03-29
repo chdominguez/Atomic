@@ -7,7 +7,8 @@
 import UniformTypeIdentifiers
 import SwiftUI
 import SceneKit
-// TODO: Change FILEOPENER to AtomicFileTypes
+
+#warning("TODO: Change FILEOPENER to AtomicFileTypes")
 class FileOpener: ObservableObject {
     
     static let shared = FileOpener()

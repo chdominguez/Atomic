@@ -15,7 +15,7 @@ import UniformTypeIdentifiers
 //
 //    }
 //
-//    ///TO DO: Reading LOGS is disabled momentarely
+    #warning("TODO: Reading LOGS is disabled momentarely")
 ////    private func readLOG(data: String) throws -> GaussianReader {
 ////
 ////        // Check from what software the log file came from
@@ -109,7 +109,7 @@ class BaseReader {
             }
         }
         
-        // Implement each of the allowed files
+        #warning ("TODO Implement each of the allowed files")
         switch FE {
         case .pdb:
             try readPDBSteps()

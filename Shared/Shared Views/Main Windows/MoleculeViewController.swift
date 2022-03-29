@@ -86,7 +86,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
                 let fileString = try FileOpener.getFileAsString(from: url)
                 let BR = try BaseReader(fileURL: url)
                 try BR.readSteps()
-                // TO DO: Clean up this shit
+                #warning("TODO: Clean up this shit. Base reader now comes to action")
                 self.BR = BR
                 url.stopAccessingSecurityScopedResource()
                 DispatchQueue.main.sync {

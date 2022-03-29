@@ -68,8 +68,9 @@ struct MainWindow: View {
         .sheet(isPresented: $moleculeVM.showPopover, onDismiss: {}, content: {
             moleculeVM.sheetContent
         })
-        ///TO DO Change expoerter to clean XYZ
+        
         .fileExporter(isPresented: $moleculeVM.fileExporter, document: moleculeVM.fileToSave, contentType: UTType(filenameExtension: "xyz")!, defaultFilename: "molecule", onCompletion: { result in
+            #warning("Change exporter to use multiple file types, not only xyz")
         })
         .alert(isPresented: $moleculeVM.showErrorFileAlert) {
             Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))

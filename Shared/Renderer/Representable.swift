@@ -15,6 +15,7 @@ struct SceneUI: Representable {
     @ObservedObject var controller: RendererController
     @Environment(\.colorScheme) var colorScheme
     
+    #warning("BUG: Strange behaviour on zooming on Apple Silicon")
     #if os(macOS)
     
     func makeNSView(context: Context) -> SCNView {
@@ -35,7 +36,7 @@ struct SceneUI: Representable {
         
         camera.zFar = 200
         
-        /// TO DO: Change to mean position
+        #warning("Change to mean position")
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         if var position = (controller.steps.first?.molecule?.atoms.first?.position) {
             position.z = position.z + 10

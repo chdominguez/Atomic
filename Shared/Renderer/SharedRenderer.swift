@@ -221,9 +221,8 @@ class RendererController: ObservableObject {
             newAtom.castsShadow = false
             
             atomNodes.addChildNode(newAtom)
-            //if molecule.atoms.count < 10000 {
-                checkBondingBasedOnDistance(atomIndex: i, molecule: molecule)
-            //}
+            #warning("TODO: Check bonding improvements. Mayble implement C")
+            checkBondingBasedOnDistance(atomIndex: i, molecule: molecule)
             
         }
         atomNodes.name = "atoms"
@@ -232,7 +231,7 @@ class RendererController: ObservableObject {
         bondNodes = bondNodes.flattenedClone()
         scene.rootNode.addChildNode(atomNodes)
         scene.rootNode.addChildNode(bondNodes)
-        ///TO DO: Check bonding on distance
+        
         //atomsNodes = checkBondingBasedOnDistance(node: atomsNodes, molecule: molecule)
         
         
@@ -434,10 +433,10 @@ class SCNAtomNode: SCNNode {
     var atomType: Element!
 }
 
+#warning("TODO: Explore in detail Geometries and making them available for the editor also")
 struct AllGeometries {
     let allAtomGeometries: [Element : SCNSphere]
     //let allAtomGeometries: [Element : SCNBox]
-    ///TO DO: Save this array outside for using everywhere (adding new atoms, etc...)
     let singleBondGeom: SCNCylinder
     let material: SCNMaterial
     

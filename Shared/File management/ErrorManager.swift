@@ -12,6 +12,7 @@ class ErrorManager {
     static let shared = ErrorManager()
     
     var errorType: Error?
+    var errorDescription: String?
     var lineError: Int = 0
     
 }

@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
+import Combine
 
 struct Molecule3DView: View {
     
     @ObservedObject var controller: RendererController
     
     var body: some View {
-        if controller.didLoadAtLeastOne {
+        if controller.didLoadAtoms {
             VStack {
                 ZStack {
                     SceneUI(controller: controller)
                     VStack {
-                        if !controller.didLoadAllScenes {
+                        if !controller.didLoadAtoms {
                             progressview.foregroundColor(.primary)
                         }
                         Spacer()
@@ -28,11 +29,8 @@ struct Molecule3DView: View {
             }
         }
         else {
-            VStack {
-                Spacer()
-                progressview.onAppear {
-                    controller.loadAllScenes()
-                }
+            progressview.onAppear {
+                controller.loadScenes()
             }
         }
         
@@ -42,17 +40,24 @@ struct Molecule3DView: View {
 extension Molecule3DView {
     
     private var progressview: some View {
-        HStack {
-            Text("Loading: \(controller.stepsPreloaded)/\(controller.steps.count)")
-                .foregroundColor(.primary)
-                .frame(maxWidth: 100)
-            ProgressView(value: controller.progress)
-        }.padding()
+        VStack {
+            ProgressView()
+            Text("Rendering atoms...")
+        }
     }
     
     private var toolbar2: some View {
         HStack {
-            Text("\(controller.selectedIndex + 1) / \(controller.steps.count)")
+            HStack {
+                Text("\(controller.stringStep)")
+//                TextField("Step", text: $controller.stringStep)
+//                    .frame(maxWidth: 100)
+//                    .onReceive(Just(controller.stringStep)) { newValue in
+//                        controller.filterValue(newValue)
+//                    }
+                Text("\(controller.steps.count)")
+            }
+            //Text("\(controller.selectedIndex + 1) / \(controller.steps.count)")
             Button {
                 controller.previousScene()
             } label: {
@@ -74,6 +79,12 @@ extension Molecule3DView {
                 Text("Input geometry for job \(controller.showingStep.jobNumber)")
             }
             Spacer()
+            Text("FPS:")
+            TextField("FPS", text: $controller.playBack)
+                .frame(maxWidth: 50)
+                .onReceive(Just(controller.playBack)) { newValue in
+                    controller.filterPlayBackValue(newValue)
+                }
             Text("Play")
             Button {
                 controller.playAnimation()

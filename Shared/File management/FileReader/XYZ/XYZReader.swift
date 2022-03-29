@@ -1,76 +1,77 @@
 //
 //  XYZReader.swift
-//  Atomic_ipad
-//
 //  Created by Christian Dominguez on 21/3/22.
 //
 
-import Foundation
-import SceneKit
+import SceneKit // For SCN3Vectors used for atoms positions
 
-class XYZReader {
-    
-    private var natoms = 0
-    private var currentMolecule: Molecule? = nil
-    private var stepNumber = 0
-    private var currentLine = 0
-    
-    private let fileInput: [String]
-    public var steps: [Step] = []
-    
-    init(file: String) {
-        self.fileInput = file.components(separatedBy: "\n")
-    }
-    
-    func getSteps() throws -> [Step] {
-        do {
-            try readSteps()
-            return self.steps
-        } catch let error as ReadingErrors {
-            ErrorManager.shared.lineError = currentLine
-            throw error
-        }
-    }
-    
-    private func readSteps() throws {
-        var natoms = 0
-        for line in fileInput {
-            currentLine += 1
-            let splitted = line.components(separatedBy: " ")
-            if splitted.count == 1 {
-                guard let _ = currentMolecule else {currentMolecule = Molecule(); continue}
-                let step = Step(stepNumber: stepNumber, molecule: currentMolecule)
-                steps.append(step)
-                currentMolecule = Molecule()
-            }
-            else if line.contains("Atom") {
-                continue
-            }
-            else if splitted.count == 4 {
-                natoms += 1
-                var currentElement: Element = .hydrogen
+extension BaseReader {
+    internal func readXYZSteps() throws {
+        // Assign the XYZ error for cleaner code
+        let xyzError = ReadingErrors.xyzError
+        
+        // Variable to save current step atom positions
+        var currentMolecule: Molecule? = nil
+        
+        // Variable to count the current step. Initialized to 1
+        var stepNumber = 1
+        
+        // For molecular dynamics simulations, account for the time step.
+        var timeStep: Int? = nil
+        
+        // Keep track of the number of atoms
+        var numberOfAtoms = 0
+        
+        for line in openedFile {
+            
+            //Increment current line by 1 to keep track if an error happens
+            errorLine += 1
+            
+            let splitted = line.split(separator: " ") // Split the line to verify what's on the input
+            
+            // If the line contains 1 element, then it's the atom count for that molecule, then continue the code.
+            guard splitted.count != 1 else {
                 
-                guard let atomNumber = Int(splitted[0]) else {throw ReadingErrors.xyzError}
-                
-                for atom in Element.allCases {
-                    if atomNumber == atom.atomicNumber {
-                        currentElement = atom
-                        break
-                    }
+                // Check whether its the first molecule and assign a new Molecule to currentMolecule.
+                if currentMolecule == nil {
+                    currentMolecule = Molecule()
+                    continue
                 }
                 
-                guard let x = Float(splitted[1]), let y = Float(splitted[2]), let z = Float(splitted[3]) else {throw ReadingErrors.xyzError}
-                
-                let position = SCNVector3(x, y, z)
-                
-                let atom = Atom(position: position, type: currentElement, number: atomNumber)
-                currentMolecule?.atoms.append(atom)
-            }
-            else {
-                throw ReadingErrors.xyzError
+                // If an existing Molecule is present, then append the previous molecule to Steps and create a new instance.
+                let step = Step(stepNumber: stepNumber, molecule: currentMolecule, timestep: timeStep); steps.append(step);
+                currentMolecule = Molecule() // Append the new step and reinit the variable with a new molecule
+                stepNumber += 1 // Increment the number of steps for the next one
+                continue // Skip loop to next line
             }
             
+            // Obtain timestep for Molecular dynamics simulations
+            guard !line.contains("Timestep") else {
+                guard let time = Int(splitted.last!) else {throw xyzError}
+                timeStep = time
+                continue // Skip loop as in timestep lines that is the only useful information
+            }
+            
+            // Saving atom coordinates
+            guard let currentElement = getAtom(fromString: String(splitted[0])),
+                  let x = Float(splitted[1]),
+                  let y = Float(splitted[2]),
+                  let z = Float(splitted[3])
+            else {throw xyzError}
+            
+            numberOfAtoms += 1
+            
+            let position = SCNVector3(x, y, z) // Position for rendering the atoms later
+            
+            let atom = Atom(position: position, type: currentElement, number: numberOfAtoms) // Generating atom instance and appending it to the current molecule
+            
+            guard let _ = currentMolecule else {throw xyzError} // Something went wrong if the molecule at this point is not assigned. Possible an error on the XYZ file.
+            currentMolecule!.atoms.append(atom)
         }
+        
+        // Save final step and end the function
+        guard let _ = currentMolecule else {throw xyzError}
+        let step = Step(stepNumber: stepNumber, molecule: currentMolecule, isFinalStep: true, timestep: timeStep)
+        steps.append(step)
     }
 }
-

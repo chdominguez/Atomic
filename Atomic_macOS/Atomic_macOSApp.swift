@@ -37,15 +37,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-//
-//  Commands.swift
-//  Atomic_macOS
-//
-//  Created by Christian Dominguez on 8/1/22.
-//
-
-import SwiftUI
-
 
 struct AtomicCommands: Commands {
     
@@ -104,11 +95,9 @@ struct AtomicCommands: Commands {
         }
         CommandMenu("Input/Output") {
             Button("Show input file") {
-                if let gReader = windowManager.currentController!.gReader {
-                    
-                    InputfileView(fileInput: gReader.inputFile).openNewWindow(with: "Input file", and: .inputfile)
-                } else {
-                    //print("No greader")
+                if let BR = windowManager.currentController!.BR {
+                    let fileAsString = BR.openedFile.joined(separator: "\n")
+                    InputfileView(fileInput: fileAsString).openNewWindow(with: "Input file", and: .inputfile)
                 }
             }//.disabled(moleculeVM.gReader == nil)
             Button("Show output file") {

@@ -10,20 +10,20 @@ import SceneKit
 // TODO: Change FILEOPENER to AtomicFileTypes
 class FileOpener: ObservableObject {
     
-    private init() {}
+    static let shared = FileOpener()
     
-    static let gjf = UTType(filenameExtension: "gjf")!
-    static let log = UTType(filenameExtension: "log")!
-    static let qfi = UTType(filenameExtension: "qfi")!
-    static let xyz = UTType(filenameExtension: "xyz")!
-    static let pdb = UTType(filenameExtension: "pdb")!
+    //File types that the app supports as UTTypes
+    internal let types: [UTType]
     
-    //File types that the app supports.
-    static let types: [UTType] = [gjf,
-                                log,
-                                qfi,
-                                xyz,
-                                pdb]
+    //Initialize the class with the allowed file extensions present in the AllowedFileExtension enum
+    private init() {
+        var types: [UTType] = []
+        for fileExt in AFE.allCases {
+            let uttype = UTType(filenameExtension: fileExt.rawValue)!
+            types.append(uttype)
+        }
+        self.types = types
+    }
     
     //Function to get the url when opening the file from the document picker.
     static func getFileURLForPicked(_ res: Result<URL, Error>) -> URL? {
@@ -46,16 +46,15 @@ class FileOpener: ObservableObject {
         }
     }
     
-    static func getMolecules(fromFileURL fileURL: URL) throws -> [Step]? {
-        let fileData = try String(contentsOf: fileURL)
-        let molreader = MolReader()
-        return try molreader.readFile(fileURL: fileURL, dataString: fileData)
-    }
+//    static func getMolecules(fromFileURL fileURL: URL) throws -> [Step]? {
+//        let fileData = try String(contentsOf: fileURL)
+//        let molreader = MolReader()
+//        return try molreader.readFile(fileURL: fileURL, dataString: fileData)
+//    }
     
     static func getURL(fromDroppedFile file: [NSItemProvider], completion: @escaping (URL) -> Void) {
         _ = file.first?.loadObject(ofClass: String.self, completionHandler: { value, error in
             guard let url = value else {return}
-            print(url)
             completion(URL(string: url)!)
         })
     }
@@ -71,9 +70,10 @@ class FileOpener: ObservableObject {
     }
 }
 
+
 struct xyzFile: FileDocument {
     
-    static var readableContentTypes = [FileOpener.xyz]
+    static var readableContentTypes = [UTType(filenameExtension: AFE.xyz.rawValue)!]
     
     var text: String = ""
     

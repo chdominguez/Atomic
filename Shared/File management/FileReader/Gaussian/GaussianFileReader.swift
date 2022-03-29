@@ -307,7 +307,6 @@ class GaussianReader {
         for atomName in Element.allCases {
             if fixedLine.contains("\(atomName.rawValue) ") {
                 let lineComponents = fixedLine.split(separator: " ")
-                print(lineComponents)
                 guard let x = Float(lineComponents[1]), let y = Float(lineComponents[2]), let z = Float(lineComponents[3]) else {throw ReadingErrors.badInputCoords}
                 #if os(macOS)
                 let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
@@ -345,17 +344,24 @@ class GaussianReader {
 }
 
 enum ReadingErrors: Error, LocalizedError {
+    
+    // Gaussian Errors
     case badInputCoords
-    case internalFailure
     case badTermination
     case badFreqs
     case badEnergy
     
+    // XYZ errors
     case xyzError
     
+    // PDB errors
     case pdbError
     
+    // Misc
     case unknown
+    case internalFailure
+    case notImplemented
+    
     
     public var errorDescription: String? {
         switch self {
@@ -378,6 +384,8 @@ enum ReadingErrors: Error, LocalizedError {
             
         case .unknown:
             return "Unknown error. Contact developer."
+        case .notImplemented:
+            return "File type not implemented yet!"
         }
     }
 }

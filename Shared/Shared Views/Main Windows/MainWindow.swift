@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import UniformTypeIdentifiers
 
 struct MainWindow: View {
     
@@ -67,8 +68,8 @@ struct MainWindow: View {
         .sheet(isPresented: $moleculeVM.showPopover, onDismiss: {}, content: {
             moleculeVM.sheetContent
         })
-        .fileExporter(isPresented: $moleculeVM.fileExporter, document: moleculeVM.fileToSave, contentType: FileOpener.xyz, defaultFilename: "molecule", onCompletion: { result in
-            print("Save file")
+        ///TO DO Change expoerter to clean XYZ
+        .fileExporter(isPresented: $moleculeVM.fileExporter, document: moleculeVM.fileToSave, contentType: UTType(filenameExtension: "xyz")!, defaultFilename: "molecule", onCompletion: { result in
         })
         .alert(isPresented: $moleculeVM.showErrorFileAlert) {
             Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
@@ -79,7 +80,7 @@ struct MainWindow: View {
         .onDrop(of: FileOpener.types, delegate: moleculeVM)
         #endif
         .frame(minWidth: 800, minHeight: 600)
-        .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.types) { fileURL in
+        .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.shared.types) { fileURL in
             moleculeVM.handlePickedFile(fileURL)
         }
         #if os(macOS)

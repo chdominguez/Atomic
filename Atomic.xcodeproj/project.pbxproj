@@ -21,8 +21,8 @@
 		C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E57277B985400561AAA /* GaussianKeywords.swift */; };
 		C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E57277B985400561AAA /* GaussianKeywords.swift */; };
 		C05F5CA72784720B00F3B588 /* UIToolbars_iPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */; };
-		C05F5CA92785A48C00F3B588 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* Extensions.swift */; };
-		C05F5CAA2785A7D800F3B588 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* Extensions.swift */; };
+		C05F5CA92785A48C00F3B588 /* UsefulExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* UsefulExtensions.swift */; };
+		C05F5CAA2785A7D800F3B588 /* UsefulExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* UsefulExtensions.swift */; };
 		C064B3D1278AAE5D0086E7BD /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064B3D0278AAE5D0086E7BD /* WindowManager.swift */; };
 		C064ED4E27E8E21F0056CAB6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064ED4D27E8E21F0056CAB6 /* Settings.swift */; };
 		C064ED4F27E8E2210056CAB6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064ED4D27E8E21F0056CAB6 /* Settings.swift */; };
@@ -87,7 +87,7 @@
 		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
 		C0455E57277B985400561AAA /* GaussianKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianKeywords.swift; sourceTree = "<group>"; };
 		C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIToolbars_iPad.swift; sourceTree = "<group>"; };
-		C05F5CA82785A48C00F3B588 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		C05F5CA82785A48C00F3B588 /* UsefulExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulExtensions.swift; sourceTree = "<group>"; };
 		C064B3D0278AAE5D0086E7BD /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		C064ED4D27E8E21F0056CAB6 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		C066B780277E15140036F404 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 			children = (
 				F06AA47D26E77F5200387EBA /* Assets.xcassets */,
 				C0E13720277F3CD7009ACCB6 /* CommandMenuController.swift */,
-				C05F5CA82785A48C00F3B588 /* Extensions.swift */,
+				C05F5CA82785A48C00F3B588 /* UsefulExtensions.swift */,
 				C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */,
 				C064ED4C27E8E2130056CAB6 /* ViewSettings */,
 				F0D5D7F027144539004E78B5 /* Tools */,
@@ -419,10 +419,11 @@
 				TargetAttributes = {
 					C0DCCE93276A3C9B0085CD1D = {
 						CreatedOnToolsVersion = 13.1;
+						LastSwiftMigration = 1330;
 					};
 					F06AA47526E77F5100387EBA = {
 						CreatedOnToolsVersion = 13.0;
-						LastSwiftMigration = 1310;
+						LastSwiftMigration = 1330;
 					};
 				};
 			};
@@ -473,7 +474,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0DCCED0276A3E8F0085CD1D /* PeriodicTableView.swift in Sources */,
-				C05F5CAA2785A7D800F3B588 /* Extensions.swift in Sources */,
+				C05F5CAA2785A7D800F3B588 /* UsefulExtensions.swift in Sources */,
 				C0DCCEC1276A3D540085CD1D /* ToolsModel.swift in Sources */,
 				C0A7F0A0276F7FBB00E69E0F /* SharedRenderer.swift in Sources */,
 				C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
@@ -544,7 +545,7 @@
 				F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */,
 				F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */,
 				C0E1371B277F33D3009ACCB6 /* InputfileView.swift in Sources */,
-				C05F5CA92785A48C00F3B588 /* Extensions.swift in Sources */,
+				C05F5CA92785A48C00F3B588 /* UsefulExtensions.swift in Sources */,
 				C021717F27E3E269007ACD2F /* ToolsBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -557,8 +558,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Atomic_macOS/Atomic_macOS.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -575,11 +577,12 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cdominguez.Atomic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -589,8 +592,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Atomic_macOS/Atomic_macOS.entitlements;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -607,7 +611,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = cdominguez.Atomic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -766,6 +770,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "C_Reading/Atomic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -804,6 +809,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "C_Reading/Atomic-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};

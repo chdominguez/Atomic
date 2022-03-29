@@ -25,15 +25,19 @@ struct SceneUI: Representable {
         controller.sceneView.cameraControlConfiguration.autoSwitchToFreeCamera = true
         controller.sceneView.cameraControlConfiguration.allowsTranslation = true
         controller.sceneView.autoenablesDefaultLighting = true
-        controller.scene.fogEndDistance = 0
         controller.sceneView.scene = controller.scene
+        //MARK: Remove on release
+        //controller.sceneView.showsStatistics = true
+        controller.sceneView.preferredFramesPerSecond = 60
         
         let cameraNode = SCNNode()
         let camera = SCNCamera()
         
+        camera.zFar = 200
+        
         /// TO DO: Change to mean position
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        if var position = (controller.steps.first?.molecule?.atoms[1].position) {
+        if var position = (controller.steps.first?.molecule?.atoms.first?.position) {
             position.z = position.z + 10
             cameraNode.position = position
         }

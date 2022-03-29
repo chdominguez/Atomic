@@ -5,9 +5,9 @@
 //  Created by Christian Dominguez on 22/8/21.
 //
 
-import Foundation
 import SwiftUI
 import SceneKit
+import UniformTypeIdentifiers
 
 class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     
@@ -30,8 +30,8 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     
     @Published var fileAsString: String? = nil
     
-    var gReader: GaussianReader? = nil
-    var xyzReader: XYZReader? = nil
+    // Base reader class for reading files and handling Steps
+    var BR: BaseReader? = nil
     
     #if os(macOS)
     var openedWindows: [WindowTypes] = []
@@ -84,21 +84,24 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             do {
                 let fileString = try FileOpener.getFileAsString(from: url)
-                guard let steps = try FileOpener.getMolecules(fromFileURL: url) else {return}
+                let BR = try BaseReader(fileURL: url)
+                try BR.readSteps()
+                // TO DO: Clean up this shit
+                self.BR = BR
                 url.stopAccessingSecurityScopedResource()
                 DispatchQueue.main.sync {
                     self.fileAsString = fileString
-                    if steps.isEmpty {
+                    if BR.steps.isEmpty {
                         errorDescription = "Could not load any molecule"
                         showErrorFileAlert = true
                         loading = false
                     }
                     else {
-                        if !steps.last!.isFinalStep {
+                        if !BR.steps.last!.isFinalStep {
                             errorDescription = "Job did not terminate"
                             showErrorFileAlert = true
                         }
-                        initializeController(steps: steps)
+                        initializeController(steps: BR.steps)
                         fileURL = url
                         fileReady = true
                         loading = false
@@ -107,7 +110,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
             }
             catch {
                 DispatchQueue.main.sync {
-                    self.errorDescription = error.localizedDescription + " at line:  \(ErrorManager.shared.lineError)"
+                    self.errorDescription = error.localizedDescription + " at line:  \(ErrorManager.shared.lineError) \n \(ErrorManager.shared.errorDescription ?? "Error") "
                     self.showErrorFileAlert = true
                     self.loading = false
                 }
@@ -153,11 +156,10 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
                 guard let fileURL = value, let url = URL(string: fileURL) else { return }
                 
                 // verify type of content by URL
-                for allowedExtensions in FileOpener.types {
-                    let flag = try? url.resourceValues(forKeys: [.contentTypeKey]).contentType == allowedExtensions
+                for allowedExtensions in AFE.allCases {
+                    let flag = try? url.resourceValues(forKeys: [.contentTypeKey]).contentType == UTType(filenameExtension: allowedExtensions.rawValue)
                     if flag == true {
                         result = flag ?? false
-                        
                     }
                 }
             }

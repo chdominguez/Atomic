@@ -5,67 +5,71 @@
 //  Created by Christian Dominguez on 21/3/22.
 //
 
-import Foundation
 import SceneKit
 
 
-class PDBreader {
-    private var natoms = 0
-    private var currentMolecule: Molecule? = nil
-    private var stepNumber = 0
-    private var currentLine = 0
-    
-    private let fileInput: [String]
-    public var steps: [Step] = []
-    
-    init(file: String) {
-        self.fileInput = file.components(separatedBy: "\n")
-    }
-    
-    func getSteps() throws -> [Step] {
-        do {
-            try readSteps()
-            return self.steps
-        } catch let error as ReadingErrors {
-            ErrorManager.shared.lineError = currentLine
-            throw error
-        }
-    }
-    
-    private func readSteps() throws {
-        currentMolecule = Molecule()
-        for line in fileInput {
-            currentLine += 1
-            if line.prefix(4) == "ATOM" {
-                let splitted = line.split(separator: " ")
-                var column = 6
-                /// TO DO : Improve this PDB reader for different columns
-                if splitted.count == 10 { // Special case for amber generated PDBS
-                    column = 5
-                }
-                
-                guard let natoms = Int(splitted[1]) else {ErrorManager.shared.lineError = currentLine; throw ReadingErrors.pdbError}
-                
-                let atomType = splitted[2].prefix(1)
+extension BaseReader {
+    internal func readPDBSteps() throws {
+        // Assign the PDB error for cleaner code
+        let pdbError = ReadingErrors.pdbError
+        
+        // Variable to save current step atom positions
+        var currentMolecule = Molecule()
+        
+        // Some pdbs have variable column size, with data placed in different columns
+        var ncolumns = 0 // Number of columns
+        var dI = 0 // Distance index. Column where X coordinates are.
+        
+        // Keep track of the number of atoms
+        var natoms = 0
+        
+        for line in openedFile {
             
-                var currentElement: Element = .hydrogen
-                
-                for atom in Element.allCases {
-                    if atomType == atom.rawValue {
-                        currentElement = atom
-                        break
+            //Increment current line by 1 to keep track if an error happens
+            errorLine += 1
+            
+            let splitted = line.split(separator: " ")
+            
+            /// TO DO: PDB helix, residues, solvent...
+            // Temporal implementation of PDB files.
+            switch splitted.first {
+            //MARK: ATOM
+            case "ATOM":
+                do {
+                    //Increment number of atoms
+                    natoms += 1
+                    // First check number of columns to see if it's a compatible PDB
+                    if ncolumns == 0 {
+                        ncolumns = splitted.count
+                        switch ncolumns {
+                        case 12:
+                            dI = 6 // X values start at index 6
+                        case 10:
+                            dI = 5 // X values start at index 5
+                            /// TO DO : Improve this PDB reader for different columns
+                        default:
+                            ErrorManager.shared.lineError = errorLine
+                            ErrorManager.shared.errorDescription = "Invalid PDB"
+                            throw pdbError
+                        }
                     }
+
+                    guard let element = getAtom(fromString: String(splitted[2])), let x = Float(splitted[dI]), let y = Float(splitted[dI + 1]), let z = Float(splitted[dI + 2]) else {throw pdbError}
+                    
+                    let position = SCNVector3(x, y, z)
+                    
+                    let atom = Atom(position: position, type: element, number: natoms)
+                    currentMolecule.atoms.append(atom)
                 }
-                
-                guard let x = Float(splitted[column]), let y = Float(splitted[column + 1]), let z = Float(splitted[column + 2]) else {throw ReadingErrors.pdbError}
-                
-                let position = SCNVector3(x, y, z)
-                
-                let atom = Atom(position: position, type: currentElement, number: natoms)
-                currentMolecule?.atoms.append(atom)
+            //MARK: Default
+            default: continue
             }
         }
-        let step = Step(molecule: currentMolecule)
+        
+        // Create the step corresponding to this protein
+        let step = Step(molecule: currentMolecule, isFinalStep: true)
         steps.append(step)
     }
+    
+    
 }

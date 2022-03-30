@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension GaussianReader {
+extension BaseReader {
     
     // General gaussian job types
     enum jobKeywords: String, CaseIterable {
@@ -103,12 +103,13 @@ extension GaussianReader {
         // Hartree-Fock
         case hf         = "HF"
         
-        // Coupled-cluster and multi-perturbation
+        // Coupled-cluster and Møller–Plesset
         case ccsdt      = "CCSD(T)"
         case ccsd       = "CCSD"
         case mp2        = "MP2"
         case mp4        = "MP4"
         
+        #warning("TODO: Gaussian keywords")
         // Fallthrought WIP
     }
 }

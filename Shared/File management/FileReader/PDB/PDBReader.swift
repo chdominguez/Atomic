@@ -68,7 +68,7 @@ extension BaseReader {
         
         // Create the step corresponding to this protein
         let step = Step(molecule: currentMolecule, isFinalStep: true)
-        steps.append(step)
+        self.steps.append(step)
     }
     
     

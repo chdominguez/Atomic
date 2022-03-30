@@ -30,7 +30,7 @@ extension BaseReader {
             
             let splitted = line.split(separator: " ")
             
-            /// TO DO: PDB helix, residues, solvent...
+            #warning("TODO: PDB helix, residues, solvent...")
             // Temporal implementation of PDB files.
             switch splitted.first {
             //MARK: ATOM
@@ -46,7 +46,7 @@ extension BaseReader {
                             dI = 6 // X values start at index 6
                         case 10:
                             dI = 5 // X values start at index 5
-                            /// TO DO : Improve this PDB reader for different columns
+                            #warning("TODO : Improve this PDB reader for different columns")
                         default:
                             ErrorManager.shared.lineError = errorLine
                             ErrorManager.shared.errorDescription = "Invalid PDB"

@@ -8,6 +8,62 @@
 import Foundation
 import UniformTypeIdentifiers
 
+
+//final class MolReader {
+//
+//    func readFile(fileURL: URL, dataString: String) throws -> [Step]? {
+//
+//    }
+//
+    #warning("TODO: Reading LOGS is disabled momentarely")
+////    private func readLOG(data: String) throws -> GaussianReader {
+////
+////        // Check from what software the log file came from
+////        var logFrom: logSoftware? = nil
+////
+////        //First check Gaussian or GAMESS
+////        for software in logSoftware.allCases {
+////            if data.contains(software.rawValue) {
+////                logFrom = software
+////            }
+////        }
+////
+////        guard let logFrom = logFrom else {throw SoftwareErrors.unrecognized}
+////
+////        //Read specifically one of the softwares
+////        switch logFrom {
+////        case .gaussian:
+////            let gReader = GaussianReader(file: data)
+////            try gReader.getStepsFromLog()
+////            WindowManager.shared.currentController?.BR = gReader
+////
+////            return gReader
+////        case .gamess:
+////            //guard let steps = readGAMESSlog(lines: separatedData) else {return nil}
+////            throw ReadingErrors.internalFailure
+////        }
+////
+////    }
+//
+//    //Recognized computational software
+//    private enum logSoftware: String, CaseIterable {
+//        case gaussian = "Entering Gaussian System"
+//        case gamess = "GAMESS"
+//    }
+//
+//    private enum SoftwareErrors: Error, LocalizedError {
+//        case unrecognized
+//
+//        public var errorDescription: String? {
+//            switch self {
+//            case .unrecognized:
+//                return "Unrecognized file type"
+//            }
+//        }
+//    }
+//
+//}
+
 /// Main class that processed files to be read and transformed into [Step] for teh visualizer to work. Each file type has his own function. Support for new files can be added extending the class.
 class BaseReader {
     
@@ -53,7 +109,7 @@ class BaseReader {
             }
         }
         
-        // Implement each of the allowed files
+        #warning ("TODO Implement each of the allowed files")
         switch FE {
         case .pdb:
             try readPDBSteps()

@@ -29,7 +29,10 @@ extension BaseReader {
             
             let splitted = line.split(separator: " ") // Split the line to verify what's on the input
             
-            // If the line contains 1 element, then it's the atom count for that molecule, then continue the code.
+            // Exit the loop on empty line
+            if splitted.isEmpty {continue}
+            
+            // If the line contains 1 element, then it's the atom count for that molecule
             guard splitted.count != 1 else {
                 
                 // Check whether its the first molecule and assign a new Molecule to currentMolecule.

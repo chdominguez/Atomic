@@ -43,7 +43,7 @@ struct Step {
     // Keeping track if its a step from an input file
     var isInput: Bool?
     
-    /// TO DO: Change this variable to another struct or class. Here does not make any sense
+    #warning("TODO: Change this variable to another struct or class. Here does not make any sense")
     // If the reading process is able to determine the  input file that produced such output, its saved in this variable
     var inputFile: String?
     

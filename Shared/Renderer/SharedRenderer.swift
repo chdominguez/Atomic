@@ -169,6 +169,7 @@ class RendererController: ObservableObject {
     func updateScene() {
         let intScene = Int(stringStep)! - 1
         moveNodes(toStep: steps[intScene])
+        showingStep = steps[intScene]
     }
     
     
@@ -222,8 +223,8 @@ class RendererController: ObservableObject {
             
             atomNodes.addChildNode(newAtom)
             #warning("TODO: Check bonding improvements. Mayble implement in C")
-            //checkBondingBasedOnDistance(atomIndex: i, molecule: molecule)
-            checkAllBondings()
+            checkBondingBasedOnDistance(atomIndex: i, molecule: molecule)
+            //checkAllBondings()
             
         }
         atomNodes.name = "atoms"
@@ -259,8 +260,10 @@ class RendererController: ObservableObject {
     }
     
     private func checkAllBondings()  {
+        var copyNodes = atomNodes.childNodes
         for node1 in atomNodes.childNodes {
-            for node2 in atomNodes.childNodes {
+            copyNodes.removeAll(where: {$0 == node1})
+            for node2 in copyNodes {
                 let x = (node1.position.x - node2.position.x)
                 let y = (node1.position.y - node2.position.y)
                 let z = (node1.position.z - node2.position.z)
@@ -273,27 +276,27 @@ class RendererController: ObservableObject {
     }
     
     private func checkBondingBasedOnDistance(atomIndex: Int, molecule: Molecule) {
-        var endIndex = atomIndex + 10
-        
-        if endIndex > molecule.atoms.count - 1 {
-            endIndex = molecule.atoms.count - 1
-        }
+//        var endIndex = atomIndex + 1000
+//
+//        if endIndex > molecule.atoms.count - 1 {
+//            endIndex = molecule.atoms.count - 1
+//        }
         
         let pos1 = molecule.atoms[atomIndex].position
-        for i in atomIndex...endIndex {
+        for i in atomIndex..<molecule.atoms.count {
             let pos2 = molecule.atoms[i].position
             let x = (pos1.x - pos2.x)
             let y = (pos1.y - pos2.y)
             let z = (pos1.z - pos2.z)
             let distance = sqrt(x*x+y*y+z*z)
-            if distance <= 1.53 && distance > 0.1 {
+            if distance <= 1.50 && distance > 0.1 {
                 bondNodes.addChildNode(lineBetweenNodes(positionA: pos1, positionB: pos2))
             }
         }
     }
     
     private func checkBondingBasedOnDistance(nodeIndex: Int, nodes: SCNNode) {
-        var endIndex = nodeIndex + 10
+        var endIndex = nodeIndex + 50
         
         if endIndex > nodes.childNodes.count - 1 {
             endIndex = nodes.childNodes.count - 1
@@ -306,7 +309,7 @@ class RendererController: ObservableObject {
             let y = (pos1.y - pos2.y)
             let z = (pos1.z - pos2.z)
             let distance = sqrt(x*x+y*y+z*z)
-            if distance <= 1.6 && distance > 0.1 {
+            if distance <= 1.50 && distance > 0.1 {
                 bondNodes.addChildNode(lineBetweenNodes(positionA: pos1, positionB: pos2))
             }
         }

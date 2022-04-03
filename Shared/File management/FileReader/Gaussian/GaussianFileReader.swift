@@ -9,7 +9,7 @@ import SceneKit
 
 extension BaseReader {
     
-    #warning("TODO: Gaussian separators. Maybe RegEx a better approach?")
+#warning("TODO: Gaussian log reading. Maybe RegEx a better approach?")
     // Typealias for the gaussian separators. Uses less coding space
     private typealias GS = GaussianSeparators
     
@@ -28,7 +28,7 @@ extension BaseReader {
         case title                  = " ----------"
         case title2                 = " ------------"
     }
-
+    
     internal func readGaussianLogSteps() throws {
         
         // The resulting input file written as a GJF file
@@ -37,43 +37,40 @@ extension BaseReader {
         // Variables for reading the output file
         var orientSeparators: Int  = 0
         var jobNumber:        Int  = 1
-        var readFinished:     Bool = false
         var orientCoords:     Bool = false
-        var startStep:        Bool = false
+        //var startStep:        Bool = false
         var standardOrient:   Bool = false
         
         var finalString: String = ""
+        var readFinal = false
         
-        // All of the steps in the output file are saved in an array of Step objects.
-        var steps: [Step] = []
         var currentMolecule = Molecule()
         // The current step that is going to be appended
         var currentStep: Step? = nil
         
-        // Error handling
-        var readError: ReadingErrors? = nil
-        
         // Variables for reading the input Gaussian file located inside the log file
         var asteriscs:       Int  =  0
         var inputSeparators: Int  =  0
-        var titleSeparators: Int  =  0
+        //var titleSeparators: Int  =  0
         var readInput:       Bool = false
-        var readTitle:       Bool = false
-        var readInputCoords: Bool = false
+        //var readTitle:       Bool = false
+        //var readInputCoords: Bool = false
         var readingKeywords: Bool = false
         var readOldGeom:     Bool = false
         var didReadInput:    Bool = false
         var chkGeom:         Bool = false
         
-        for line in openedFile {
-            errorLine += 1
+        for line in self.openedFile {
+            self.errorLine += 1
             if didReadInput {
                 //MARK: Read log file
-                switch line {
-                case GS.standardOrientation.rawValue:
+                if line.contains(GS.standardOrientation.rawValue) {
                     standardOrient = true
                     if currentStep == nil {currentStep = Step()}
-                case GS.orientationSeparator.rawValue:
+                    continue
+                }
+                
+                if line.contains(GS.orientationSeparator.rawValue) {
                     if standardOrient { // Refactor all of this please...
                         orientSeparators += 1
                         if orientSeparators == 2 {orientCoords = true}
@@ -81,7 +78,7 @@ extension BaseReader {
                             orientCoords = false
                             standardOrient = false
                             orientSeparators = 0
-
+                            
                             guard let _ = currentStep else {throw ReadingErrors.internalFailure}
                             currentStep!.jobNumber = jobNumber
                             currentStep!.molecule = currentMolecule
@@ -91,68 +88,69 @@ extension BaseReader {
                             
                         }
                     }
-                default:
-                    if orientCoords {
-                        let atom = try gaussInputOrientationToAtom(line)
-                        currentMolecule.atoms.append(atom)
-                    }
-                    if line.contains("Frequencies") {
-                        let components = line.split(separator: " ")
-                        guard let freq1 = Double(components[2]), let freq2 = Double(components[3]), let freq3 = Double(components[4]) else {throw ReadingErrors.badFreqs}
-                        guard let _ = currentStep else {throw ReadingErrors.badFreqs}
-                        if let _ = currentStep!.frequencys {
-                            currentStep!.frequencys?.append(contentsOf: [freq1, freq2, freq3])
-                        }
-                        else  {
-                            currentStep!.frequencys = []
-                            currentStep!.frequencys!.append(contentsOf: [freq1, freq2, freq3])
-                        }
-                        break
-                            
-                    }
-                    
-                    if line.contains("A.U.") {
-                        let components = line.split(separator: " ")
-                        guard let energy = Double(components[4]) else {throw ReadingErrors.badEnergy}
-                        currentStep?.energy = energy
-                        break
-                    }
-                    
-                    if line.contains("1\\1\\") { // When a job sucessfully ends, Gaussian writes the summary of the calculation, the proverb and finally "Normal termination of Gaussian.
-                        readFinished = true
-                    }
-                    if readFinished {
-                        finalString += line
-                    }
-                    if line.contains("\\@") {
-                        guard let _ = currentStep else {throw ReadingErrors.internalFailure}
-                        readFinished = false
-                        let components = finalString.split(separator: "\\").reversed()
-                        componentsLoop: for component in components {
-                            for method in EnergyMethods.allCases {
-                                if String(component).contains(method.rawValue) {
-                                    let subcomponent = component.replacingOccurrences(of: " ", with: "").split(separator: "=")
-                                    guard let energy = Double(subcomponent[1]) else {throw ReadingErrors.badTermination}
-                                    currentStep!.energy = energy
-                                    break componentsLoop
-                                }
-                            }
-                        }
-                        currentStep?.jobNumber = jobNumber
-                        currentStep!.molecule = steps.last?.molecule
-                        currentStep!.isFinalStep = true
-                        steps.append(currentStep!)
-                        currentStep = nil
-                        jobNumber += 1
-                    }
-                    if line.contains("Initial command:") {
-                        didReadInput = false
-                        //skipOneGeom = true
-                        #warning("TODO: Reimplement cleaning the variables")
-                        //restoreInputReader()
-                        inputFile += "\n--link1--\n"
-                    }
+                    continue
                 }
+                if orientCoords {
+                    let atom = try gaussInputOrientationToAtom(line)
+                    currentMolecule.atoms.append(atom)
+                    continue
+                }
+                if line.contains("Frequencies") {
+                    let components = line.split(separator: " ")
+                    guard let freq1 = Double(components[2]), let freq2 = Double(components[3]), let freq3 = Double(components[4]) else {throw ReadingErrors.gaussLogError}
+                    guard let _ = currentStep else {throw ReadingErrors.gaussLogError}
+                    if let _ = currentStep!.frequencys {
+                        currentStep!.frequencys?.append(contentsOf: [freq1, freq2, freq3])
+                    }
+                    else  {
+                        currentStep!.frequencys = []
+                        currentStep!.frequencys!.append(contentsOf: [freq1, freq2, freq3])
+                    }
+                    continue
+                    
+                }
+                
+                if line.contains("A.U.") {
+                    let components = line.split(separator: " ")
+                    guard let energy = Double(components[4]) else {throw ReadingErrors.gaussLogError}
+                    currentStep?.energy = energy
+                    continue
+                }
+                
+                if line.contains("1\\1\\") { // When a job sucessfully ends, Gaussian writes the summary of the calculation, the proverb and finally "Normal termination of Gaussian.
+                    finalString += line
+                    readFinal = true
+                    continue
+                }
+                if readFinal {
+                    finalString += line
+                }
+                if line.contains("\\@") {
+                    readFinal = false
+                    guard let _ = currentStep else {throw ReadingErrors.internalFailure}
+                    
+                    for method in EnergyMethods.allCases {
+                        if finalString.contains(method.rawValue) {
+                            currentStep!.energy = steps.last?.energy
+                            break
+                        }
+                    }
+                    currentStep!.jobNumber = jobNumber
+                    currentStep!.molecule = steps.last!.molecule
+                    currentStep!.isFinalStep = true
+                    steps.append(currentStep!)
+                    currentStep = nil
+                    jobNumber += 1
+                    continue
+                }
+                if line.contains("Initial command:") {
+                    didReadInput = false
+#warning("TODO: Reimplement cleaning the variables")
+                    //restoreInputReader()
+                    inputFile += "\n--link1--\n"
+                    continue
+                }
+                
             }
             else {
                 //MARK: Read input inside log file
@@ -235,11 +233,11 @@ extension BaseReader {
                       let y = Float(components[4]),
                       let z = Float(components[5])
                 else {throw ReadingErrors.badInputCoords}
-                #if os(macOS)
+#if os(macOS)
                 let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
-                #else
+#else
                 let position = SCNVector3(x: x, y: y, z: z)
-                #endif
+#endif
                 atom = Atom(position: position, type: atomName, number: atomNumber)
                 break
             }
@@ -256,7 +254,7 @@ extension BaseReader {
         }
         return Step(molecule: molecule)
     }
-      
+    
     
     internal func readGJFSteps() throws {
         var molecule = Molecule()
@@ -276,11 +274,11 @@ extension BaseReader {
             if fixedLine.contains("\(atomName.rawValue) ") {
                 let lineComponents = fixedLine.split(separator: " ")
                 guard let x = Float(lineComponents[1]), let y = Float(lineComponents[2]), let z = Float(lineComponents[3]) else {throw ReadingErrors.badInputCoords}
-                #if os(macOS)
+#if os(macOS)
                 let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
-                #else
+#else
                 let position = SCNVector3(x: x, y: y, z: z)
-                #endif
+#endif
                 atom = Atom(position: position, type: atomName, number: number)
             }
         }
@@ -289,49 +287,3 @@ extension BaseReader {
     
 }
 
-enum ReadingErrors: Error, LocalizedError {
-    
-    // Gaussian Errors
-    case badInputCoords
-    case badTermination
-    case badFreqs
-    case badEnergy
-    
-    // XYZ errors
-    case xyzError
-    
-    // PDB errors
-    case pdbError
-    
-    // Misc
-    case unknown
-    case internalFailure
-    case notImplemented
-    
-    
-    public var errorDescription: String? {
-        switch self {
-        case .badInputCoords:
-            return "Input coordinates are wrong"
-        case .internalFailure:
-            return "Internal failure"
-        case .badTermination:
-            return "Bad termination"
-        case .badFreqs:
-            return "Bad frequencies"
-        case .badEnergy:
-            return "Bad energy"
-        
-        case .xyzError:
-            return "Error in xyz"
-            
-        case .pdbError:
-            return "Error in pdb"
-            
-        case .unknown:
-            return "Unknown error. Contact developer."
-        case .notImplemented:
-            return "File type not implemented yet!"
-        }
-    }
-}

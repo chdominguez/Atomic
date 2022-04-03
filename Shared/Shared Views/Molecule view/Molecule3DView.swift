@@ -69,13 +69,18 @@ extension Molecule3DView {
                 Image(systemName: "chevron.right").atomicButton()
             }
             Spacer()
-            if let energy = controller.showingStep.energy {
-                if controller.showingStep.isFinalStep {
+            if controller.showingStep.isFinalStep {
+                if let energy = controller.showingStep.energy {
                     Text("Final energy for job \(controller.showingStep.jobNumber) : \(energy)")
-                } else {
-                    Text("Energy: \(energy)")
                 }
-            } else {
+                else {
+                    Text("Final geometry")
+                }
+            }
+            else if let energy = controller.showingStep.energy {
+                   Text("Energy: \(energy)")
+            }
+             else {
                 Text("Input geometry for job \(controller.showingStep.jobNumber)")
             }
             Spacer()

@@ -6,6 +6,7 @@
 //
 
 import CoreGraphics
+import SceneKit
 
 extension Double {
     func stringWith(_ decimals: Int) -> String {
@@ -34,3 +35,4 @@ extension Float {
         }
     }
 }
+

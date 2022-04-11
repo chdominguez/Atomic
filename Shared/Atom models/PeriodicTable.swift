@@ -127,6 +127,7 @@ enum Element: String, CaseIterable {
     case livermorium    = "Lv"
     case tenessine      = "Ts"
     case oganesson      = "Og"
+    case dummy          = "X"
     
     var name: String {
         switch self {
@@ -366,9 +367,12 @@ enum Element: String, CaseIterable {
             return "Tenessine"
         case .oganesson:
             return "Oganesson"
+        case .dummy:
+            return "Dummy atom"
         }
     }
-
+    
+    // Default atom colors
     var color: Color {
         switch self {
         case .hydrogen:
@@ -411,6 +415,8 @@ enum Element: String, CaseIterable {
             return .brown
         case .iodine:
             return .purple
+        case .dummy:
+            return .blue
         default:
             return .gray
         }
@@ -697,6 +703,8 @@ enum Element: String, CaseIterable {
             return 117
         case .oganesson:
             return 118
+        case .dummy:
+            return 119
         }
     }
 
@@ -711,33 +719,7 @@ enum Element: String, CaseIterable {
         case .beryllium:
             return false
         case .boron:
-            return true
-        case .carbon:
-            return true
-        case .nitrogen:
-            return true
-        case .oxygen:
-            return true
-        case .fluorine:
-            return true
-        case .neon:
-            return true
-        case .sodium:
-            return true
-        case .magnesium:
-            return true
-        case .aluminium:
-            return true
-        case .silicon:
-            return true
-        case .phosphorus:
-            return true
-        case .sulphur:
-            return true
-        case .chlorine:
-            return true
-        case .argon:
-            return true
+            return false
         default:
             return true
         }

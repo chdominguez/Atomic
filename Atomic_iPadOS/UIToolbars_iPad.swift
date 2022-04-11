@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+// Due to the lack of a toolbar similar to what macOS offers, the same actions and buttons are shown above the main view.
 extension MainWindow {
     var toolbars: some View {
         HStack(spacing: 5) {
@@ -21,7 +23,7 @@ extension MainWindow {
                     Text("File")
                 }
                 .zIndex(1)
-                .atomicButton()
+                .atomicButton(fixed: true)
                 
                 VStack {
                     Button {
@@ -31,7 +33,7 @@ extension MainWindow {
                             Image(systemName: "doc.badge.plus")
                             Text("New")
                         }
-                    }.atomicButton()
+                    }.atomicButton(fixed: true)
                     
                     
                     Button {
@@ -41,17 +43,16 @@ extension MainWindow {
                             Image(systemName: "doc.on.doc")
                             Text("Open")
                         }
-                    }.atomicButton()
+                    }.atomicButton(fixed: true)
                     Button {
                         let file = XYZWritter.sceneToXYZ(scene: moleculeVM.renderer!.scene)
-                        moleculeVM.sheetContent = AnyView(InputfileView(fileInput: file.text))
-                        moleculeVM.showPopover = true
+                        moleculeVM.saveFile(file)
                     } label: {
                         HStack{
                             Image(systemName: "square.and.arrow.down.fill")
                             Text("Save")
                         }
-                    }.atomicButton()
+                    }.atomicButton(fixed: true)
                     Button {
                         moleculeVM.showFileMenu = false
                         moleculeVM.resetFile()
@@ -60,23 +61,31 @@ extension MainWindow {
                             Image(systemName: "xmark")
                             Text("Close")
                         }
-                    }.atomicButton()
+                    }.atomicButton(fixed: true)
                     
                     Button {
                         moleculeVM.sheetContent = AnyView(OutputFileView(fileInput: moleculeVM.fileAsString!))
                         moleculeVM.showPopover = true
                     } label: {
                         Image(systemName: "doc")
-                        Text("Show output")
+                        Text("Read")
                     }
-                    .atomicButton()
+                    .atomicButton(fixed: true)
                     .disabled(moleculeVM.fileAsString == nil)
                     
                 }
-                .offset(x: 0, y: moleculeVM.showFileMenu ? 100 : 40)
+                .offset(x: 0, y: moleculeVM.showFileMenu ? 120 : 40)
                 .opacity(moleculeVM.showFileMenu ? 1 : 0)
                 
             }
+            Button {
+                moleculeVM.sheetContent = AnyView(SettingsView())
+                moleculeVM.showPopover = true
+            } label: {
+                Image(systemName: "gear")
+                Text("Settings")
+            }
+            .atomicButton()
             Spacer()
         }
         .frame(maxHeight: 20)

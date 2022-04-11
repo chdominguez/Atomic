@@ -4,10 +4,13 @@
 import SwiftUI
 import SceneKit
 
+// Cross-platform APIs compatibilities
 #if os(iOS)
 typealias Representable = UIViewRepresentable
+typealias Gesture = TapGesture
 #elseif os(macOS)
 typealias Representable = NSViewRepresentable
+typealias Gesture = NSClickGestureRecognizer
 #endif
 
 struct SceneUI: Representable {
@@ -16,92 +19,67 @@ struct SceneUI: Representable {
     @Environment(\.colorScheme) var colorScheme
     
     #warning("BUG: Strange behaviour on zooming on Apple Silicon")
+    #warning("BUG: macOS zooming different from iOS zooming. Implement custom camera movement")
+    
+    // View representables functions are different for each platform. Even tough the codes are exactly the same. Why Apple?
     #if os(macOS)
-    
-    func makeNSView(context: Context) -> SCNView {
-        let gesture = NSClickGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
-        controller.sceneView.addGestureRecognizer(gesture)
-        controller.sceneView.allowsCameraControl = true
-        controller.sceneView.defaultCameraController.interactionMode = .orbitTurntable
-        controller.sceneView.cameraControlConfiguration.autoSwitchToFreeCamera = true
-        controller.sceneView.cameraControlConfiguration.allowsTranslation = true
-        controller.sceneView.autoenablesDefaultLighting = true
-        controller.sceneView.scene = controller.scene
-        //MARK: Remove on release
-        //controller.sceneView.showsStatistics = true
-        controller.sceneView.preferredFramesPerSecond = 60
-        
-        let cameraNode = SCNNode()
-        let camera = SCNCamera()
-        
-        camera.zFar = 200
-        
-        #warning("Change to mean position")
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
-        if var position = (controller.steps.first?.molecule?.atoms.first?.position) {
-            position.z = position.z + 10
-            cameraNode.position = position
-        }
-        cameraNode.camera = camera
-        controller.sceneView.pointOfView = cameraNode
-        return controller.sceneView
-    }
-    func updateNSView(_ uiView: SCNView, context: Context) {
-        colorScheme == .dark ? (uiView.backgroundColor = .black) : (uiView.backgroundColor = .white)
-    }
-    
+    func makeNSView(context: Context) -> SCNView { makeView(context: context) }
+    func updateNSView(_ uiView: SCNView, context: Context) { updateView(uiView, context: context) }
     #else
-    
-    func makeUIView(context: Context) -> SCNView {
-        let gesture = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
-        controller.sceneView.addGestureRecognizer(gesture)
-        controller.sceneView.allowsCameraControl = true
-        controller.sceneView.defaultCameraController.interactionMode = .orbitTurntable
-        controller.sceneView.cameraControlConfiguration.autoSwitchToFreeCamera = true
-        controller.sceneView.cameraControlConfiguration.allowsTranslation = true
-        controller.sceneView.autoenablesDefaultLighting = true
-        controller.sceneView.scene = controller.scene
-        return controller.sceneView
-    }
-    func updateUIView(_ uiView: SCNView, context: Context) {
-    }
-    
+    func makeUIView(context: Context) -> SCNView { makeView(context: context) }
+    func updateUIView(_ uiView: SCNView, context: Context) { updateView(uiView, context: context) }
     #endif
     
+    // AtomRenderer class as the coordinator for the SceneKit representable. To handle taps, gestures...
     func makeCoordinator() -> AtomRenderer {
-        AtomRenderer(self, controller: controller)
-    }
-}
-
-struct TextEditorView: Representable {
-    
-    let text: String
-#if os(iOS)
-    func makeUIView(context: Context) -> UITextView {
-        let textView = UITextView()
-        textView.isScrollEnabled = true
-        textView.textStorage.append(NSAttributedString(string: text))
-        textView.isEditable = false
-        textView.textColor = .label
-        return textView
-    }
-    func updateUIView(_ uiView: UITextView, context: Context) {}
-    
-#elseif os(macOS)
-    func makeNSView(context: Context) -> NSScrollView {
-        let scrollView = NSTextView.scrollableTextView()
-        let textView = scrollView.documentView as? NSTextView
-        guard let _ = textView else {return NSScrollView()}
-        textView!.textStorage?.append(NSAttributedString(string: text))
-        textView!.isEditable = false
-        textView?.textColor = .labelColor
-        return scrollView
+        #warning("Setup renderer in makeView")
+        let renderer = AtomRenderer(self, controller: controller)
+        controller.sceneView.delegate = renderer
+        return renderer
     }
     
-    func updateNSView(_ nsView: NSScrollView, context: Context) {
+    private func makeView(context: Context) -> SCNView {
         
-    }
-#endif
+        // Gesture recognizer for placing atoms, bonds...
+        let gesture = Gesture(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
+        controller.sceneView.addGestureRecognizer(gesture)
+        
+        // Scene view controls
+        controller.sceneView.allowsCameraControl = true
+        controller.sceneView.defaultCameraController.interactionMode = .orbitCenteredArcball
+        controller.sceneView.autoenablesDefaultLighting = true
 
+        // Attach the scene to the sceneview
+        controller.sceneView.scene = controller.scene
+        
+        // Setup the camera node
+        let camera = SCNCamera()
+        camera.zNear = 0.5
+        camera.zFar = 200
+        
+        let cameraNode = SCNNode()
+        cameraNode.camera = camera
+        cameraNode.position = SCNVector3Make(0, 0, 5)
+        
+        controller.sceneView.pointOfView = cameraNode
+        guard let molecule = controller.steps.first?.molecule else {return controller.sceneView}
+        
+        let positions = molecule.atoms.map {$0.position}
+        cameraNode.position = averageDistance(of: positions)
+        controller.sceneView.defaultCameraController.target = cameraNode.position
+        
+        // Add more space to entirely see the molecule. 10 is an okay value
+        #if os(macOS)
+        cameraNode.position.z = viewingZPositionCGFloat(toSee: positions) + 10
+        #elseif os(iOS)
+        cameraNode.position.z = viewingZPositionFloat(toSee: positions) + 10
+        #endif
+        
+        return controller.sceneView
+    }
+    
+    private func updateView(_ uiView: SCNView, context: Context) {
+        uiView.backgroundColor = RColor(ColorSettings.shared.backgroundColor)
+    }
     
 }

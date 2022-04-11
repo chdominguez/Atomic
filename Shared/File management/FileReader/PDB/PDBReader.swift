@@ -23,12 +23,22 @@ extension BaseReader {
         // Keep track of the number of atoms
         var natoms = 0
         
+        // Keep track of number of residues
+        var nResidue = 0
+        
+        // Backbone atoms
+        var backBone = Molecule()
+        
         for line in openedFile {
             
             //Increment current line by 1 to keep track if an error happens
             errorLine += 1
-            
+
             let splitted = line.split(separator: " ")
+            #warning("TODO: Hide / unhide solvent")
+            if String(splitted.first!) == "TER" {
+                break
+            }
             
             #warning("TODO: PDB helix, residues, solvent...")
             // Temporal implementation of PDB files.
@@ -46,20 +56,28 @@ extension BaseReader {
                             dI = 6 // X values start at index 6
                         case 10:
                             dI = 5 // X values start at index 5
-                            #warning("TODO : Improve this PDB reader for different columns")
+                            #warning("TODO: Improve this PDB reader for different columns")
                         default:
                             ErrorManager.shared.lineError = errorLine
                             ErrorManager.shared.errorDescription = "Invalid PDB"
                             throw pdbError
                         }
                     }
-
+                    
+                    
                     guard let element = getAtom(fromString: String(splitted[2])), let x = Float(splitted[dI]), let y = Float(splitted[dI + 1]), let z = Float(splitted[dI + 2]) else {throw pdbError}
                     
                     let position = SCNVector3(x, y, z)
                     
                     let atom = Atom(position: position, type: element, number: natoms)
                     currentMolecule.atoms.append(atom)
+                    
+                    let cRes = Int(splitted[dI-1])!
+                    
+                    if cRes != nResidue {
+                        nResidue = cRes
+                        backBone.atoms.append(atom)
+                    }
                 }
             //MARK: Default
             default: continue
@@ -67,9 +85,12 @@ extension BaseReader {
         }
         
         // Create the step corresponding to this protein
-        let step = Step(molecule: currentMolecule, isFinalStep: true)
+        let step = Step(molecule: currentMolecule, isFinalStep: true, isProtein: true, backBone: backBone)
         self.steps.append(step)
     }
     
     
 }
+
+
+

@@ -14,9 +14,9 @@ struct Molecule3DView: View {
     
     var body: some View {
         if controller.didLoadAtoms {
-            VStack {
+            VStack(spacing: 0) {
                 ZStack {
-                    SceneUI(controller: controller)
+                    SceneUI(controller: controller).ignoresSafeArea()
                     VStack {
                         if !controller.didLoadAtoms {
                             progressview.foregroundColor(.primary)
@@ -26,6 +26,9 @@ struct Molecule3DView: View {
                     }
                 }
                 toolbar2
+                #if os(macOS)
+                    .padding(.top, 5)
+                #endif
             }
         }
         else {

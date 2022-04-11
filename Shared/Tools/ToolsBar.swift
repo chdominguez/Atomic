@@ -24,7 +24,12 @@ struct ToolsBar: View {
                 .onTapGesture {
                     ToolsController.shared.selected2Tool = .addAtom
                     guard let controller = windowManager.currentController else {return}
+                    #warning("TODO: Better implementation of new windows for both ios and macos")
+                    #if os(macOS)
                     PTable().openNewWindow(with: "Periodic Table", and: .ptable, controller: controller)
+                    #elseif os(iOS)
+                    PTable().openNewWindow(controller: controller)
+                    #endif
                 }
             HStack {
                 Image(systemName: "hand.tap")
@@ -64,19 +69,3 @@ struct ToolsBar: View {
         .frame(maxHeight: 50)
     }
 }
-
-
-//        }.atomicButton()
-//        Button {
-//            moleculeVM.renderer?.bondSelectedAtoms()
-//        } label: {
-//            HStack{
-//                Image(systemName: "link")
-//                Text("Bond")
-//            }
-//        }.atomicButton()
-//    }
-//    .offset(x: 0, y: moleculeVM.showEditMenu ? 60 : 10)
-//    .opacity(moleculeVM.showEditMenu ? 1 : 0)
-//
-//}

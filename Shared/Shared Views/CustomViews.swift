@@ -8,22 +8,34 @@
 import SwiftUI
 
 struct AtomicButton: ViewModifier {
-
-    var widthButton: CGFloat = 80
+    
+    let fixed: Bool
     
     func body(content: Content) -> some View {
         #if os(macOS)
         content
         #else
-        content
-            .buttonStyle(.plain)
-            .frame(height: 30)
-            .frame(minWidth: 60)
-            .padding(.horizontal)
-            .background {
-                CustomColors.gradientColor
-            }
-            .cornerRadius(15)
+        if fixed {
+            content
+                .buttonStyle(.plain)
+                .frame(height: 30)
+                .frame(width: 80)
+                .padding(.horizontal)
+                .background {
+                    CustomColors.gradientColor
+                }
+                .cornerRadius(15)
+        } else {
+            content
+                .buttonStyle(.plain)
+                .frame(height: 30)
+                .frame(minWidth: 60)
+                .padding(.horizontal)
+                .background {
+                    CustomColors.gradientColor
+                }
+                .cornerRadius(15)
+        }
         #endif
     }
 }
@@ -46,8 +58,12 @@ struct AtomicNoButton: ViewModifier {
 
 
 extension View {
-    func atomicButton() -> some View {
-        modifier(AtomicButton())
+    func atomicButton(fixed: Bool = false) -> some View {
+        if fixed {
+            return modifier(AtomicButton(fixed: true))
+        } else {
+            return modifier(AtomicButton(fixed: false))
+        }
     }
     func atomicNoButton() -> some View {
         modifier(AtomicNoButton())

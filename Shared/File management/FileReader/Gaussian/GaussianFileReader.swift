@@ -9,7 +9,7 @@ import SceneKit
 
 extension BaseReader {
     
-#warning("TODO: Gaussian log reading. Maybe RegEx a better approach?")
+    #warning("Possible improvement: Gaussian log reading. Maybe RegEx a better approach? or reading in C, C++...")
     // Typealias for the gaussian separators. Uses less coding space
     private typealias GS = GaussianSeparators
     
@@ -145,7 +145,7 @@ extension BaseReader {
                 }
                 if line.contains("Initial command:") {
                     didReadInput = false
-#warning("TODO: Reimplement cleaning the variables")
+                    #warning("Potential bug: variables not cleaned")
                     //restoreInputReader()
                     inputFile += "\n--link1--\n"
                     continue

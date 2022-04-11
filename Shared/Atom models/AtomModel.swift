@@ -16,16 +16,8 @@ struct Atom: Identifiable {
     var number: Int
 }
 
-struct Bond {
-    var pos1: SCNVector3
-    var pos2: SCNVector3
-    
-    var type: bondTypes = .single
-}
-
 struct Molecule {
-    var atoms = [Atom]()
-    var bonds = [Bond]()
+    var atoms: [Atom] = []
 }
 
 /// Step struct. Describes any molecular scene possible. Contains different optional variables depending on which
@@ -43,10 +35,6 @@ struct Step {
     // Keeping track if its a step from an input file
     var isInput: Bool?
     
-    #warning("TODO: Change this variable to another struct or class. Here does not make any sense")
-    // If the reading process is able to determine the  input file that produced such output, its saved in this variable
-    var inputFile: String?
-    
     // The energy of the system at this step
     var energy: Double?
     
@@ -61,6 +49,12 @@ struct Step {
     
     // For MD calculations, the time of this step.
     var timestep: Int?
+    
+    // For PDBs. Tell the renderer if the step contains a protein
+    var isProtein: Bool = false
+    
+    // For PDBs. Rendering the backbone only implies rendering these atoms
+    var backBone: Molecule?
 }
 
 struct Frequencies {

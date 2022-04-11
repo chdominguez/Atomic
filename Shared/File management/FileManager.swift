@@ -8,7 +8,6 @@ import UniformTypeIdentifiers
 import SwiftUI
 import SceneKit
 
-#warning("TODO: Change FILEOPENER to AtomicFileTypes")
 class FileOpener: ObservableObject {
     
     static let shared = FileOpener()
@@ -26,7 +25,7 @@ class FileOpener: ObservableObject {
         self.types = types
     }
     
-    //Function to get the url when opening the file from the document picker.
+    ///Get the url when opening the file from the document picker.
     static func getFileURLForPicked(_ res: Result<URL, Error>) -> URL? {
         do {
             let fileURL = try res.get()
@@ -47,11 +46,6 @@ class FileOpener: ObservableObject {
         }
     }
     
-//    static func getMolecules(fromFileURL fileURL: URL) throws -> [Step]? {
-//        let fileData = try String(contentsOf: fileURL)
-//        let molreader = MolReader()
-//        return try molreader.readFile(fileURL: fileURL, dataString: fileData)
-//    }
     
     static func getURL(fromDroppedFile file: [NSItemProvider], completion: @escaping (URL) -> Void) {
         _ = file.first?.loadObject(ofClass: String.self, completionHandler: { value, error in

@@ -10,11 +10,11 @@ import SwiftUI
 @main
 struct AtomicApp: App {
     
-    @StateObject var moleculeVM = MoleculeViewModel()
+    @StateObject var windowManager = WindowManager.shared
     
     var body: some Scene {
         WindowGroup {
-            MainWindow(moleculeVM: moleculeVM)
+            MainWindow()
         }
     }
 }

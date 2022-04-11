@@ -70,23 +70,22 @@ struct MainWindow: View {
         })
         
         .fileExporter(isPresented: $moleculeVM.fileExporter, document: moleculeVM.fileToSave, contentType: UTType(filenameExtension: "xyz")!, defaultFilename: "molecule", onCompletion: { result in
-            #warning("Change exporter to use multiple file types, not only xyz")
+            #warning("TODO: Add more extensions for saving the file")
         })
         .alert(isPresented: $moleculeVM.showErrorFileAlert) {
             Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
         }
         #if os(macOS)
+        .background(WindowAccessor(controller: moleculeVM))
         .onDrop(of: [.fileURL], delegate: moleculeVM)
         #else
-        .onDrop(of: FileOpener.types, delegate: moleculeVM)
+        .onAppear(perform: {WindowManager.shared.currentController = moleculeVM})
+        .onDrop(of: FileOpener.shared.types, delegate: moleculeVM)
         #endif
         .frame(minWidth: 800, minHeight: 600)
         .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.shared.types) { fileURL in
             moleculeVM.handlePickedFile(fileURL)
         }
-        #if os(macOS)
-        .background(WindowAccessor(controller: moleculeVM))
-        #endif
     }
     
 }

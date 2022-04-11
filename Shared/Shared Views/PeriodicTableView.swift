@@ -11,10 +11,26 @@ import SwiftUI
 struct PTable: View {
     
     @ObservedObject var ptableController = PeriodicTableViewController.shared
+    @ObservedObject var colorSettings = ColorSettings.shared
     
     var body: some View {
         VStack {
-            Text("Selected: \(ptableController.selectedAtom.name)")
+            VStack {
+                HStack {
+                    Spacer()
+                    ColorPicker("Atom color", selection: $colorSettings.atomColors[ptableController.selectedAtom.atomicNumber - 1])
+                    Spacer()
+                }
+                VStack(alignment: .center) {
+                    HStack {
+                        Text("\(ptableController.selectedAtom.atomicNumber)").padding(.horizontal, 1)
+                    }
+                    Text(ptableController.selectedAtom.rawValue).font(.headline).bold()
+                }
+                .frame(width: 50, height: 70)
+                .background(Color(red: 237/255, green: 240/255, blue: 241/255))
+                .border(Color.black)
+            }
             VStack(spacing: 2) {
                 period1
                 period2
@@ -40,14 +56,12 @@ struct ElementView: View {
     
     @ObservedObject var ptablecontroller = PeriodicTableViewController.shared
     
-#if os(macOS)
     private var height: CGFloat {45}
     private var width: CGFloat {35}
-#else
-    let height = UIScreen.main.bounds.height / 8
-    private var width: CGFloat {height / 1.2}
-    private var fontSize: CGFloat { width / 20 }
-#endif
+//    let height = UIScreen.main.bounds.height / 8
+//    private var width: CGFloat {height / 1.2}
+//    private var fontSize: CGFloat { width / 20 }
+//#endif
 
     let element: Element?
     

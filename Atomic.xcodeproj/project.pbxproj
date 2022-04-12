@@ -22,8 +22,8 @@
 		C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E57277B985400561AAA /* GaussianKeywords.swift */; };
 		C05472AC280428CF00F51E6E /* TextViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */; };
 		C05472AD280428CF00F51E6E /* TextViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */; };
-		C05472B22804C3EE00F51E6E /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472B12804C3EE00F51E6E /* ColorSettings.swift */; };
-		C05472B32804C3EE00F51E6E /* ColorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472B12804C3EE00F51E6E /* ColorSettings.swift */; };
+		C05472B22804C3EE00F51E6E /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472B12804C3EE00F51E6E /* GlobalSettings.swift */; };
+		C05472B32804C3EE00F51E6E /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472B12804C3EE00F51E6E /* GlobalSettings.swift */; };
 		C05F5CA72784720B00F3B588 /* UIToolbars_iPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */; };
 		C05F5CA92785A48C00F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
 		C05F5CAA2785A7D800F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
@@ -91,7 +91,7 @@
 		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
 		C0455E57277B985400561AAA /* GaussianKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianKeywords.swift; sourceTree = "<group>"; };
 		C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewRepresentable.swift; sourceTree = "<group>"; };
-		C05472B12804C3EE00F51E6E /* ColorSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSettings.swift; sourceTree = "<group>"; };
+		C05472B12804C3EE00F51E6E /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIToolbars_iPad.swift; sourceTree = "<group>"; };
 		C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralExtensions.swift; sourceTree = "<group>"; };
 		C064B3D0278AAE5D0086E7BD /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
@@ -359,7 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				F0F6552626F7C89600DD4F25 /* SettingsView.swift */,
-				C05472B12804C3EE00F51E6E /* ColorSettings.swift */,
+				C05472B12804C3EE00F51E6E /* GlobalSettings.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -506,7 +506,7 @@
 				C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */,
 				C0E1371C277F33D3009ACCB6 /* InputfileView.swift in Sources */,
 				C021718027E3E269007ACD2F /* ToolsBar.swift in Sources */,
-				C05472B32804C3EE00F51E6E /* ColorSettings.swift in Sources */,
+				C05472B32804C3EE00F51E6E /* GlobalSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,7 +548,7 @@
 				C0E1371B277F33D3009ACCB6 /* InputfileView.swift in Sources */,
 				C05F5CA92785A48C00F3B588 /* GeneralExtensions.swift in Sources */,
 				C021717F27E3E269007ACD2F /* ToolsBar.swift in Sources */,
-				C05472B22804C3EE00F51E6E /* ColorSettings.swift in Sources */,
+				C05472B22804C3EE00F51E6E /* GlobalSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

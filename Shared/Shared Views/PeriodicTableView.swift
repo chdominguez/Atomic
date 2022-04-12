@@ -11,7 +11,7 @@ import SwiftUI
 struct PTable: View {
     
     @ObservedObject var ptableController = PeriodicTableViewController.shared
-    @ObservedObject var colorSettings = ColorSettings.shared
+    @ObservedObject var colorSettings = GlobalSettings.shared
     
     var body: some View {
         VStack {

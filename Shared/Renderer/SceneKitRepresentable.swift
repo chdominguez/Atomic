@@ -16,6 +16,7 @@ typealias Gesture = NSClickGestureRecognizer
 struct SceneUI: Representable {
     
     @ObservedObject var controller: RendererController
+    @ObservedObject var settings = GlobalSettings.shared
     @Environment(\.colorScheme) var colorScheme
     
     #warning("BUG: Strange behaviour on zooming on Apple Silicon")
@@ -33,9 +34,7 @@ struct SceneUI: Representable {
     // AtomRenderer class as the coordinator for the SceneKit representable. To handle taps, gestures...
     func makeCoordinator() -> AtomRenderer {
         #warning("Setup renderer in makeView")
-        let renderer = AtomRenderer(self, controller: controller)
-        controller.sceneView.delegate = renderer
-        return renderer
+        return AtomRenderer(self, controller: controller)
     }
     
     private func makeView(context: Context) -> SCNView {
@@ -48,6 +47,7 @@ struct SceneUI: Representable {
         controller.sceneView.allowsCameraControl = true
         controller.sceneView.defaultCameraController.interactionMode = .orbitCenteredArcball
         controller.sceneView.autoenablesDefaultLighting = true
+        //controller.sceneView.showsStatistics = true
 
         // Attach the scene to the sceneview
         controller.sceneView.scene = controller.scene
@@ -74,12 +74,16 @@ struct SceneUI: Representable {
         #elseif os(iOS)
         cameraNode.position.z = viewingZPositionFloat(toSee: positions) + 10
         #endif
-        
+        controller.sceneView.backgroundColor = RColor(settings.backgroundColor)
         return controller.sceneView
     }
     
     private func updateView(_ uiView: SCNView, context: Context) {
-        uiView.backgroundColor = RColor(ColorSettings.shared.backgroundColor)
+        uiView.backgroundColor = RColor(settings.backgroundColor)
+        controller.allGeometries.material.diffuse.contents = RColor(settings.bondColor)
+        controller.backBone.isHidden = !(settings.atomStyle == .backBone)
+        controller.atomNodes.isHidden = !(settings.atomStyle == .ballAndStick)
+        controller.bondNodes.isHidden = !(settings.atomStyle == .ballAndStick)
     }
     
 }

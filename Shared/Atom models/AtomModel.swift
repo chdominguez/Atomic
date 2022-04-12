@@ -63,6 +63,7 @@ struct Frequencies {
     var raman: Double?
 }
 
+#warning("TODO: Implement different bond types")
 enum bondTypes {
     case single
     case double
@@ -70,3 +71,8 @@ enum bondTypes {
     case resonant
 }
 
+enum AtomStyle: String, CaseIterable {
+    case ballAndStick = "Ball and Stick"
+    case backBone = "Backbone"
+    case cartoon = "Cartoon"
+}

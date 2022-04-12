@@ -47,7 +47,7 @@ struct GeneralSettings: View {
     }
 }
 struct ViewSettings: View {
-    @ObservedObject var settings = ColorSettings.shared
+    @ObservedObject var settings = GlobalSettings.shared
     var body: some View {
         ScrollView {
             HStack {

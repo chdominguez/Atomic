@@ -6,6 +6,7 @@ struct AtomicCommands: Commands {
     
     @ObservedObject var commandMenu = CommandMenuController.shared
     @ObservedObject var windowManager = WindowManager.shared
+    @ObservedObject var settings = GlobalSettings.shared
     
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
@@ -24,7 +25,6 @@ struct AtomicCommands: Commands {
             Button("Save") {
                 let file = XYZWritter.sceneToXYZ(scene: commandMenu.currentScene!)
                 windowManager.currentController?.saveFile(file)
-//                InputfileView(fileInput: file).openNewWindow(with: "New file")
             }.keyboardShortcut("S").disabled(commandMenu.currentScene == nil)
             Divider()
             Button("New window") {
@@ -32,6 +32,9 @@ struct AtomicCommands: Commands {
             }
         }
         CommandMenu("Molecule") {
+            Picker("Atom style", selection: $settings.atomStyle) {
+                ForEach(AtomStyle.allCases, id: \.self) { Text($0.rawValue) }
+            }
             Button("Periodic table") {
                 ToolsController.shared.selected2Tool = .addAtom
                 guard let controller = windowManager.currentController else {return}
@@ -51,11 +54,18 @@ struct AtomicCommands: Commands {
             }.keyboardShortcut("R")
         }
         CommandMenu("Tools") {
-            Button("Frequencies...") {
+            #warning("TODO: Implement tools for macOS and iOS")
+            Button("Energy") {
+                
+            }
+            Button("Frequencies") {
                 if let freqs = windowManager.currentController!.renderer?.showingStep.frequencys {
                     FreqsView(freqs: freqs).openNewWindow(with: "Frequencies", and: .freqs, controller: windowManager.currentController!)
                 }
             }.disabled(!commandMenu.hasfreq)
+            Button("Summary") {
+                
+            }
         }
         CommandMenu("Input/Output") {
             Button("Show input file") {

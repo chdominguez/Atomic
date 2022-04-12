@@ -8,16 +8,21 @@ import SceneKit
 import SwiftUI
 
 
-class ColorSettings: ObservableObject {
+class GlobalSettings: ObservableObject {
     
     #warning("TODO: Auto update color changes")
     
-    static let shared = ColorSettings()
+    static let shared = GlobalSettings()
+    
     
     @Published var backgroundColor: Color = .white
+    
     @Published var bondColor: Color = .gray
     
+    #warning("TODO: Change dynamically present atoms")
     @Published var atomColors: [Color] = []
+    
+    @Published var atomStyle: AtomStyle = .ballAndStick
     
     init() {
         for atom in Element.allCases {

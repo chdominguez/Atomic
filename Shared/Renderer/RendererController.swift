@@ -29,6 +29,7 @@ class RendererController: ObservableObject {
     
     var atomNodes = SCNNode()
     var bondNodes = SCNNode()
+    var backBone = SCNNode()
     
     let sceneView = SCNView()
     let scene = SCNScene()
@@ -56,7 +57,6 @@ class RendererController: ObservableObject {
         self.steps = steps
         self.showingStep = steps.first!
         self.scene.rootNode.addChildNode(atomNodes)
-        self.scene.rootNode.addChildNode(bondNodes)
     }
     
     func newAtom(atom: Atom) {
@@ -70,7 +70,7 @@ class RendererController: ObservableObject {
         atomNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
         
         let material = SCNMaterial()
-        material.diffuse.contents = RColor(ColorSettings.shared.atomColors[atom.type.atomicNumber - 1])
+        material.diffuse.contents = RColor(GlobalSettings.shared.atomColors[atom.type.atomicNumber - 1])
         material.lightingModel = .physicallyBased
         material.metalness.contents = 0.4
         material.roughness.contents = 0.5
@@ -218,20 +218,30 @@ class RendererController: ObservableObject {
             checkBondingBasedOnDistance(atomIndex: i, molecule: molecule)
         }
         
-        //Cylinders cause a significant drop in performance.If more than 1000 bonds are present. They become a flattened cone. The downside of this is that they are converted to a big node hence individual bonds cannot be broken
-        if bondNodes.childNodes.count > 1000 {
-            bondNodes = bondNodes.flattenedClone()
+        if let backBone = step.backBone {
+            backBonds(backBone)
+            //TODO: Implement backbone visibility based on settings
+            self.backBone.isHidden = true
+            scene.rootNode.addChildNode(self.backBone)
         }
         
         bondNodes.name = "bonds"
-
+        
+        //Cylinders cause a significant drop in performance.If more than 1000 bonds are present. They become a flattened cone. The downside of this is that they are converted to a big node hence individual bonds cannot be broken
+        if bondNodes.childNodes.count > 1000 {
+            self.bondNodes = bondNodes.flattenedClone()
+            scene.rootNode.addChildNode(bondNodes)
+        }
+        else {
+            scene.rootNode.addChildNode(bondNodes)
+        }
     }
     
-    func backBonds(molecule: Molecule) {
+    func backBonds(_ molecule: Molecule) {
         for i in 0..<molecule.atoms.endIndex - 1 {
             let pos1 = molecule.atoms[i].position
             let pos2 = molecule.atoms[i+1].position
-            bondNodes.addChildNode(lineBetweenNodes(positionA: pos1, positionB: pos2, radius: 0.3))
+            backBone.addChildNode(lineBetweenNodes(positionA: pos1, positionB: pos2, radius: 0.3))
         }
     }
     
@@ -298,8 +308,6 @@ class RendererController: ObservableObject {
         let lineGeometry = SCNCylinder()
         lineGeometry.radius = 0.1
         lineGeometry.materials = [allGeometries.material]
-        lineGeometry.firstMaterial!.diffuse.contents = RColor(ColorSettings.shared.bondColor)
-        lineGeometry.firstMaterial!.lightingModel = .physicallyBased
         lineGeometry.height = distance(from: positionA, to: positionB)
         
         let bondNode = SCNNode(geometry: lineGeometry)
@@ -469,12 +477,13 @@ struct AllGeometries {
         material.lightingModel = .physicallyBased
         material.metalness.contents = 0.4
         material.roughness.contents = 0.5
+        material.diffuse.contents = GlobalSettings.shared.bondColor
         
         self.material = material
         
         for atom in Element.allCases {
             let atomMaterial = material.copy() as! SCNMaterial
-            atomMaterial.diffuse.contents = RColor(ColorSettings.shared.atomColors[atom.atomicNumber - 1])
+            atomMaterial.diffuse.contents = RColor(GlobalSettings.shared.atomColors[atom.atomicNumber - 1])
             let sphere = SCNSphere(radius: atom.radius)
             sphere.materials = [atomMaterial]
             allAtomGeometries[atom] = sphere

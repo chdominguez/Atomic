@@ -12,6 +12,7 @@ import UniformTypeIdentifiers
 struct MainWindow: View {
     
     @StateObject var moleculeVM = MoleculeViewModel()
+    @ObservedObject var cSettings = GlobalSettings.shared
     
     var body: some View {
         ZStack {
@@ -32,7 +33,7 @@ struct MainWindow: View {
                             HStack(spacing: 100) {
                                 VStack {
                                     Image(systemName: "plus").resizable().scaledToFit().frame(width: 100, height: 100).foregroundColor(.secondary)
-                                    Text("New molecule")
+                                    Text("New")
                                 }.onTapGesture {
                                     moleculeVM.newFile()
                                 }
@@ -48,7 +49,13 @@ struct MainWindow: View {
                                         moleculeVM.openFileImporter.toggle()
                                     }
                                 }
-                                
+                                VStack {
+                                    Image(systemName: "gear").resizable().scaledToFit().frame(width: 100, height: 100).foregroundColor(.secondary)
+                                    Text("Settings")
+                                }.onTapGesture {
+                                    moleculeVM.sheetContent = AnyView(SettingsView())
+                                    moleculeVM.showPopover = true
+                                }
                             }
                         }
                         

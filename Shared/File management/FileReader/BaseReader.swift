@@ -53,7 +53,7 @@ class BaseReader {
             }
         }
         
-        #warning ("TODO Implement each of the allowed files")
+        // For eveyr allowed file extension, a reader function is assigned.
         switch FE {
         case .pdb:
             try readPDBSteps()
@@ -62,7 +62,6 @@ class BaseReader {
         case .gjf, .com:
             try readGJFSteps()
         case .log, .qfi:
-            #warning("TODO: Fix Job did not terminate")
             try readGaussianLogSteps()
         case .none:
             throw ReadingErrors.notImplemented

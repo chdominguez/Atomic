@@ -10,8 +10,8 @@ import SwiftUI
 struct WelcomeMessage: View {
     var body: some View {
         VStack {
+            Image("icon").resizable().frame(width: 150, height: 150, alignment: .center)
             Text("Welcome to Atomic!").font(.title)
-            Text("A modern molecular visualizer for Apple decives").font(.headline)
         }
     }
 }

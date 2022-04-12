@@ -18,6 +18,7 @@ With Atomic, a cross-platform molecular visualizer, you can use the full power o
 - [ ] Custom camera controller for iOS / Zooming
 - [ ] Hide/unhide solvent for proteic systems
 - [ ] Support for exporting Gaussian, Gamess... input files
+- [ ] Optimize reading/rendering speed
 
 ## Contribute
 Atomic is a free, open-source molecular visualizer and anybody with knwoledge of macOS, iOS, Swift or SwiftUI is welcomed to participate into the project.

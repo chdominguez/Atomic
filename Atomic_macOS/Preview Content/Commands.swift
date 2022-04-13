@@ -36,15 +36,15 @@ struct AtomicCommands: Commands {
                 ForEach(AtomStyle.allCases, id: \.self) { Text($0.rawValue) }
             }
             Button("Periodic table") {
-                ToolsController.shared.selected2Tool = .addAtom
+                ToolsController.shared.selectedTool = .addAtom
                 guard let controller = windowManager.currentController else {return}
                 PTable().openNewWindow(with: "Periodic Table", and: .ptable, controller: controller)
             }
             Button("Select") {
-                ToolsController.shared.selected2Tool = .selectAtom
+                ToolsController.shared.selectedTool = .selectAtom
             }
             Button("Erase") {
-                ToolsController.shared.selected2Tool = .removeAtom
+                ToolsController.shared.selectedTool = .removeAtom
             }
             Button("Bond selected") {
                 windowManager.currentController?.renderer?.bondSelectedAtoms()
@@ -59,10 +59,8 @@ struct AtomicCommands: Commands {
                 
             }
             Button("Frequencies") {
-                if let freqs = windowManager.currentController!.renderer?.showingStep.frequencys {
-                    FreqsView(freqs: freqs).openNewWindow(with: "Frequencies", and: .freqs, controller: windowManager.currentController!)
-                }
-            }.disabled(!commandMenu.hasfreq)
+            }
+            
             Button("Summary") {
                 
             }

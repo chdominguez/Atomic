@@ -20,7 +20,6 @@ class XYZWritter {
         scene.rootNode.enumerateChildNodes { node, _ in
             guard let atomName = node.name else {return}
             if atomName.contains("atom") {
-                print(atomName)
                 natoms += 1
                 let posx = node.position.x.stringWith(5)
                 let posy = node.position.y.stringWith(5)

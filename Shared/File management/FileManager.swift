@@ -32,7 +32,6 @@ class FileOpener: ObservableObject {
             return fileURL
         }
         catch {
-            print(error.localizedDescription)
             return nil
         }
     }

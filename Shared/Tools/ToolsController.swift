@@ -12,7 +12,12 @@ class ToolsController: ObservableObject {
     
     static let shared = ToolsController()
     
-    @Published var selected1Tool: mainTools = .manipulate
-    @Published var selected2Tool: editTools = .selectAtom
+    @Published var selectedTool: mainTools = .selectAtom
+    
+    enum mainTools {
+        case addAtom
+        case removeAtom
+        case selectAtom
+    }
     
 }

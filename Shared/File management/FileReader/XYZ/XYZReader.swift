@@ -8,7 +8,7 @@ import SceneKit // For SCN3Vectors used for atoms positions
 extension BaseReader {
     internal func readXYZSteps() throws {
         // Assign the XYZ error for cleaner code
-        let xyzError = ReadingErrors.xyzError
+        let xyzError = AtomicErrors.xyzError
         
         // Variable to save current step atom positions
         var currentMolecule: Molecule? = nil
@@ -42,7 +42,11 @@ extension BaseReader {
                 }
                 
                 // If an existing Molecule is present, then append the previous molecule to Steps and create a new instance.
-                let step = Step(stepNumber: stepNumber, molecule: currentMolecule, timestep: timeStep); steps.append(step);
+                let step = Step();
+                step.stepNumber = stepNumber
+                step.molecule = currentMolecule
+                step.timestep = timeStep
+                steps.append(step)
                 currentMolecule = Molecule() // Append the new step and reinit the variable with a new molecule
                 stepNumber += 1 // Increment the number of steps for the next one
                 continue // Skip loop to next line
@@ -74,7 +78,11 @@ extension BaseReader {
         
         // Save final step and end the function
         guard let _ = currentMolecule else {throw xyzError}
-        let step = Step(stepNumber: stepNumber, molecule: currentMolecule, isFinalStep: true, timestep: timeStep)
+        let step = Step()
+        step.stepNumber = stepNumber
+        step.molecule = currentMolecule
+        step.isFinalStep = true
+        step.timestep = timeStep
         steps.append(step)
     }
 }

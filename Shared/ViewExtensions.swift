@@ -7,39 +7,27 @@
 
 import SwiftUI
 
+/// View modifier for UI buttons
 struct AtomicButton: ViewModifier {
-    
-    let fixed: Bool
     
     func body(content: Content) -> some View {
         #if os(macOS)
         content
         #else
-        if fixed {
-            content
-                .buttonStyle(.plain)
-                .frame(height: 30)
-                .frame(width: 80)
-                .padding(.horizontal)
-                .background {
-                    CustomColors.gradientColor
-                }
-                .cornerRadius(15)
-        } else {
             content
                 .buttonStyle(.plain)
                 .frame(height: 30)
                 .frame(minWidth: 60)
                 .padding(.horizontal)
                 .background {
-                    CustomColors.gradientColor
+                    Color.buttonGradient
                 }
                 .cornerRadius(15)
-        }
         #endif
     }
 }
 
+// View modifier for custom buttons that are not part of SwiftUI class "Button". I.e. a Text with .onTapGesture
 struct AtomicNoButton: ViewModifier {
 
     var widthButton: CGFloat = 80
@@ -50,20 +38,17 @@ struct AtomicNoButton: ViewModifier {
             .frame(minWidth: 60)
             .padding(.horizontal)
             .background {
-                CustomColors.gradientColor
+                Color.buttonGradient
             }
             .cornerRadius(15)
     }
 }
 
 
+// Add view modifiers directly as a View extension
 extension View {
     func atomicButton(fixed: Bool = false) -> some View {
-        if fixed {
-            return modifier(AtomicButton(fixed: true))
-        } else {
-            return modifier(AtomicButton(fixed: false))
-        }
+        modifier(AtomicButton())
     }
     func atomicNoButton() -> some View {
         modifier(AtomicNoButton())

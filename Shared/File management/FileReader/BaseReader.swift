@@ -64,7 +64,7 @@ class BaseReader {
         case .log, .qfi:
             try readGaussianLogSteps()
         case .none:
-            throw ReadingErrors.notImplemented
+            throw AtomicErrors.notImplemented
         }
         
     }
@@ -82,7 +82,8 @@ enum AFE: String, CaseIterable {
     case qfi = "qfi"
 }
 
-enum ReadingErrors: Error, LocalizedError {
+/// Atomic errors for handling file reading, scene setup...
+enum AtomicErrors: Error, LocalizedError {
     
     // Gaussian Errors
     case badInputCoords

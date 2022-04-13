@@ -20,9 +20,9 @@ struct ToolsBar: View {
                 Image(systemName: "atom")
                 Text(ptableController.selectedAtom.rawValue)
             }.atomicNoButton()
-                .foregroundColor(toolsController.selected2Tool == .addAtom ? .red : .primary)
+                .foregroundColor(toolsController.selectedTool == .addAtom ? .red : .primary)
                 .onTapGesture {
-                    ToolsController.shared.selected2Tool = .addAtom
+                    ToolsController.shared.selectedTool = .addAtom
                     guard let controller = windowManager.currentController else {return}
                     #warning("TODO: Better implementation of new windows for both ios and macos")
                     #if os(macOS)
@@ -35,9 +35,9 @@ struct ToolsBar: View {
                 Image(systemName: "hand.tap")
                 Text("Select")
             }.atomicNoButton()
-                .foregroundColor(toolsController.selected2Tool == .selectAtom ? .red : .primary)
+                .foregroundColor(toolsController.selectedTool == .selectAtom ? .red : .primary)
                 .onTapGesture {
-                    ToolsController.shared.selected2Tool = .selectAtom
+                    ToolsController.shared.selectedTool = .selectAtom
                 }
             HStack {
                 Image(systemName: "link")
@@ -51,9 +51,9 @@ struct ToolsBar: View {
                 Text("Erase")
             }
             .atomicNoButton()
-            .foregroundColor(toolsController.selected2Tool == .removeAtom ? .red : Color.primary)
+            .foregroundColor(toolsController.selectedTool == .removeAtom ? .red : Color.primary)
             .onTapGesture {
-                ToolsController.shared.selected2Tool = .removeAtom
+                ToolsController.shared.selectedTool = .removeAtom
             }
             if !(windowManager.currentController?.renderer?.selectedAtoms.isEmpty ?? true){
                 HStack {

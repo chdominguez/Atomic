@@ -8,6 +8,8 @@
 import Foundation
 import SceneKit
 
+
+/// Singleton class for traking the properties of the molecule.
 class CommandMenuController: ObservableObject {
     
     static let shared = CommandMenuController()

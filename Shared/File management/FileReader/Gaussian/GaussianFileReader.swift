@@ -79,7 +79,7 @@ extension BaseReader {
                             standardOrient = false
                             orientSeparators = 0
                             
-                            guard let _ = currentStep else {throw ReadingErrors.internalFailure}
+                            guard let _ = currentStep else {throw AtomicErrors.internalFailure}
                             currentStep!.jobNumber = jobNumber
                             currentStep!.molecule = currentMolecule
                             self.steps.append(currentStep!)
@@ -97,8 +97,8 @@ extension BaseReader {
                 }
                 if line.contains("Frequencies") {
                     let components = line.split(separator: " ")
-                    guard let freq1 = Double(components[2]), let freq2 = Double(components[3]), let freq3 = Double(components[4]) else {throw ReadingErrors.gaussLogError}
-                    guard let _ = currentStep else {throw ReadingErrors.gaussLogError}
+                    guard let freq1 = Double(components[2]), let freq2 = Double(components[3]), let freq3 = Double(components[4]) else {throw AtomicErrors.gaussLogError}
+                    guard let _ = currentStep else {throw AtomicErrors.gaussLogError}
                     if let _ = currentStep!.frequencys {
                         currentStep!.frequencys?.append(contentsOf: [freq1, freq2, freq3])
                     }
@@ -112,7 +112,7 @@ extension BaseReader {
                 
                 if line.contains("A.U.") {
                     let components = line.split(separator: " ")
-                    guard let energy = Double(components[4]) else {throw ReadingErrors.gaussLogError}
+                    guard let energy = Double(components[4]) else {throw AtomicErrors.gaussLogError}
                     currentStep?.energy = energy
                     continue
                 }
@@ -127,7 +127,7 @@ extension BaseReader {
                 }
                 if line.contains("\\@") {
                     readFinal = false
-                    guard let _ = currentStep else {throw ReadingErrors.internalFailure}
+                    guard let _ = currentStep else {throw AtomicErrors.internalFailure}
                     
                     for method in EnergyMethods.allCases {
                         if finalString.contains(method.rawValue) {
@@ -183,7 +183,7 @@ extension BaseReader {
                         let splitted = line.split(separator: " ")
                         guard let charge = Int(splitted[2]),
                               let multiplicty = Int(splitted[5])
-                        else {throw ReadingErrors.badInputCoords}
+                        else {throw AtomicErrors.badInputCoords}
                         inputFile += "\(charge)" + " " + "\(multiplicty)" + "\n"
                         readInput = true
                         if chkGeom {
@@ -208,7 +208,7 @@ extension BaseReader {
                             let separated = line.split(separator: ",")
                             let element = separated[0]
                             guard let x = Float(separated[2]), let y = Float(separated[3]), let z = Float(separated[4]) else {
-                                throw ReadingErrors.badInputCoords
+                                throw AtomicErrors.badInputCoords
                             }
                             inputFile += element + "\t\t\t" + String(format: "%.7f", x) + "\t\t" + String(format: "%.7f", y) + "\t\t" + String(format: "%.7f", z) + "\n"
                             break
@@ -225,14 +225,14 @@ extension BaseReader {
         var atom: Atom? = nil
         
         let components = line.split(separator: " ")
-        guard let atomNumber = Int(components[0]) else {throw ReadingErrors.badInputCoords}
+        guard let atomNumber = Int(components[0]) else {throw AtomicErrors.badInputCoords}
         
         for atomName in Element.allCases {
             if atomName.atomicNumber == Int(components[1]) {
                 guard let x = Float(components[3]),
                       let y = Float(components[4]),
                       let z = Float(components[5])
-                else {throw ReadingErrors.badInputCoords}
+                else {throw AtomicErrors.badInputCoords}
 #if os(macOS)
                 let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
 #else
@@ -242,27 +242,32 @@ extension BaseReader {
                 break
             }
         }
-        guard let atom = atom else {throw ReadingErrors.badInputCoords}
+        guard let atom = atom else {throw AtomicErrors.badInputCoords}
         return atom
     }
     
     internal func readgjfFile(fromlog: String) throws -> Step {
-        var molecule = Molecule()
+        let molecule = Molecule()
         for line in fromlog.components(separatedBy: "\n") {
             guard let atom = try gjfToAtom(line: line, number: molecule.atoms.count + 1) else {continue}
             molecule.atoms.append(atom)
         }
-        return Step(molecule: molecule)
+        let step = Step()
+        step.molecule = molecule
+        return step
     }
     
     
     internal func readGJFSteps() throws {
-        var molecule = Molecule()
+        let molecule = Molecule()
         for line in openedFile {
             guard let atom = try gjfToAtom(line: line, number: molecule.atoms.count + 1) else {continue}
             molecule.atoms.append(atom)
         }
-        self.steps = [Step(molecule: molecule, isFinalStep: true)]
+        let step = Step()
+        step.molecule = molecule
+        step.isFinalStep = true
+        self.steps = [step]
     }
     
     private func gjfToAtom(line: String, number: Int) throws -> Atom? {
@@ -273,7 +278,7 @@ extension BaseReader {
         for atomName in Element.allCases {
             if fixedLine.contains("\(atomName.rawValue) ") {
                 let lineComponents = fixedLine.split(separator: " ")
-                guard let x = Float(lineComponents[1]), let y = Float(lineComponents[2]), let z = Float(lineComponents[3]) else {throw ReadingErrors.badInputCoords}
+                guard let x = Float(lineComponents[1]), let y = Float(lineComponents[2]), let z = Float(lineComponents[3]) else {throw AtomicErrors.badInputCoords}
 #if os(macOS)
                 let position = SCNVector3(x: CGFloat(x), y: CGFloat(y), z: CGFloat(z))
 #else

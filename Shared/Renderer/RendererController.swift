@@ -7,256 +7,252 @@
 import SwiftUI
 import SceneKit
 
-// Depending on the platform, different frameworks have to be used
-#if os(iOS)
-import UIKit
-typealias RView = UIView
-typealias RColor = UIColor
-typealias TapGesture = UITapGestureRecognizer
-#elseif os(macOS)
-import AppKit
-typealias RView = NSView
-typealias RColor = NSColor
-typealias TapGesture = NSClickGestureRecognizer
-#endif
-
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
 class RendererController: ObservableObject {
     
-    var timer = Timer()
+    //MARK: Init
+    
+    private let settings = GlobalSettings.shared
+    
+    /// The steps to display
     let steps: [Step]
-    let allGeometries = AllGeometries()
+    
+    /// The current step showed
+    var showingStep: Step {
+        steps[stepToShow - 1]
+    }
+    
+    init(_ steps: [Step]) {
+        self.steps = steps
+    }
+    
+    //MARK: Step control
+    
+    /// For moving the steps in sequential order
+    private var timer = Timer()
+    
+    @Published var isPlaying = false
+    @Published var playBack = 25
+    @Published var stepToShow = 1 {
+        didSet {
+            moveNodes(toStep: steps[stepToShow - 1])
+        }
+    }
+    
+    /// Pauses or plays the movmenet of the atoms. Uses a Timer in order to move the atoms.
+    func playAnimation() {
+        if isPlaying {timer.invalidate()} // Stop the timer
+        else { // Start the timer
+            timer = Timer.scheduledTimer(withTimeInterval: 1/Double(playBack), repeats: true) { _ in
+                self.nextScene()
+            }
+        }
+        isPlaying.toggle() // Togle the isPlaying property to update the playing button shown in the view.
+    }
+    
+    /// Changes the step to show to the next one
+    func nextScene() {
+        if stepToShow == steps.count {
+            stepToShow = 1
+        }
+        else {
+            stepToShow += 1
+        }
+    }
+    
+    /// Changes the step to show to the previous one
+    func previousScene() {
+        if stepToShow == 1 {
+            stepToShow = steps.count
+        }
+        else {
+            stepToShow -= 1
+        }
+    }
+    
+    //MARK: Scene
+    
+    /// Geometries for the nodes
+    private let nodeGeom = NodeGeometries()
     
     var atomNodes = SCNNode()
     var bondNodes = SCNNode()
     var backBone = SCNNode()
+    //var cartoonNodes = SCNNode() TODO: implement cartoon
+    var selectionNodes = SCNNode()
     
+    // SceneKit classes
     let sceneView = SCNView()
     let scene = SCNScene()
     let cameraNode = SCNNode()
-
-    @Published var showingStep: Step {
-        didSet {
-            //updateChildNode()
-            if let _ = showingStep.frequencys {
-                CommandMenuController.shared.hasfreq = true
-            }
-            else {
-                CommandMenuController.shared.hasfreq = false
-            }
-        }
-    }
-    @Published var selectedAtoms: [(atom: SCNNode, orb: SCNNode)] = []
+    
+    /// An array of tuples. The atoms selected with its selection orb node.
+    var selectedAtoms: [(atom: SCNNode, orb: SCNNode)] = []
+    
+    /// Turns to true when loadScenes() has finished
     @Published var didLoadAtoms = false
-    @Published var isPlaying = false
-    @Published var playBack = "25"
-    @Published var stringStep = "1"
     
     
-    init(_ steps: [Step]) {
-        self.steps = steps
-        self.showingStep = steps.first!
-        self.scene.rootNode.addChildNode(atomNodes)
-    }
-    
-    func newAtom(atom: Atom) {
-        
-        let atomNode = SCNAtomNode()
-        
-        let radius = atom.type.radius
-        let sphere = SCNSphere(radius: radius)
-
-        atomNode.atomType = atom.type
-        atomNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        
-        let material = SCNMaterial()
-        material.diffuse.contents = RColor(GlobalSettings.shared.atomColors[atom.type.atomicNumber - 1])
-        material.lightingModel = .physicallyBased
-        material.metalness.contents = 0.4
-        material.roughness.contents = 0.5
-        
-        atomNode.geometry = sphere
-        atomNode.geometry!.materials = [material]
-        atomNode.position = atom.position
-        
-        
-        //atomNode.constraints = [SCNBillboardConstraint()]
-        atomNode.name = "atom_\(atom.type.rawValue)"
-        scene.rootNode.addChildNode(atomNode)
-    }
-    
-    func playAnimation() {
-        if isPlaying {
-            timer.invalidate()
-        }
-        else {
-            timer = Timer.scheduledTimer(withTimeInterval: 1/(Double(playBack) ?? 1), repeats: true) { timer in
-                self.nextScene()
-            }
-        }
-        isPlaying.toggle()
-    }
-    
-    func filterValue(_ newValue: String) {
-//        if newValue == self.playBack {
-//            return
-//        }
-//        if newValue.isEmpty {
-//            self.stringStep = "1"
-//        }
-//        let filtered = newValue.filter { "0123456789".contains($0) }
-//        let intFiltered = Int(filtered) ?? 0
-//        if intFiltered < 1 {
-//            self.stringStep = "1"
-//        }
-//        if intFiltered > self.steps.count {
-//            self.stringStep = String(self.steps.count)
-//        }
-//        if filtered != newValue {
-//            if filtered.isEmpty {
-//                self.stringStep = "1"
-//            } else {
-//                self.stringStep = filtered
-//            }
-//        }
-    }
-    
-    func filterPlayBackValue(_ newValue: String) {
-        if newValue.isEmpty {
-            self.playBack = "1"
-        }
-        let filtered = newValue.filter { "0123456789".contains($0) }
-        let intFiltered = Int(filtered) ?? 1
-        if intFiltered < 1 {
-            self.playBack = "1"
-        }
-        if intFiltered > 25 {
-            self.playBack = "25"
-        }
-        if filtered != newValue {
-            if filtered.isEmpty {
-                self.playBack = "1"
-            } else {
-                self.playBack = filtered
-            }
-        }
-    }
-    
-    func nextScene() {
-        let count = steps.count
-        var intStep = Int(stringStep)! - 1
-        if intStep == count - 1 {
-            intStep = 0
-        }
-        else {
-            intStep += 1
-        }
-        self.stringStep = String(intStep + 1)
-        moveNodes(toStep: steps[intStep])
-    }
-    
-    func previousScene() {
-        let count = steps.count
-        var intStep = Int(stringStep)! - 1
-        if intStep == 0 {
-            intStep = count - 1
-        }
-        else {
-            intStep -= 1
-        }
-        self.stringStep = String(intStep + 1)
-        moveNodes(toStep: steps[intStep])
-    }
-    
+    /// Loads the first step and places the child nodes in the scene
     func loadScenes() {
-        DispatchQueue.global(qos: .background).async { [self] in
-            setupScene(step: steps.first!)
+        guard let firstStep = steps.first else {fatalError("Here a step should be present")}
+        if firstStep.molecule == nil { // in case we start with a new file
+            firstStep.molecule = Molecule()
+        }
+        DispatchQueue.global(qos: .userInitiated).async { [self] in
+            setupScene(firstStep)
             DispatchQueue.main.sync {
-                self.didLoadAtoms = true
+                didLoadAtoms = true
             }
         }
     }
     
+    /// Maybe this function is not needed...
     func resetRenderer() {
         didLoadAtoms = false
-        stringStep = "1"
+        stepToShow = 1
         selectedAtoms.removeAll()
     }
     
-    func moveNodes(toStep currentStep: Step) {
+    /// Animate the atoms and move them from one position to another
+    private func moveNodes(toStep currentStep: Step) {
         for (i, atomNode) in atomNodes.childNodes.enumerated() {
             atomNode.position = currentStep.molecule!.atoms[i].position
         }
-        updateBonds()
+        // Slow movement for animatios if there are too much bonds to compute. Therefore better to not show onl for the first step
+        if currentStep.molecule!.atoms.count < 500 {
+            updateBonds()
+        } else {
+            if currentStep.stepNumber == 1 {
+                scene.rootNode.addChildNode(bondNodes)
+            } else {
+                bondNodes.removeFromParentNode()
+            }
+        }
     }
-
-    func updateBonds() {
-        scene.rootNode.childNode(withName: "bonds", recursively: false)?.removeFromParentNode()
-        bondNodes = SCNNode()
-        bondNodes.name = "bonds"
+    
+    /// Recompute the bonds by checking the distance between adjacent atoms
+    private func updateBonds() {
+        //TODO: Find a way to also move the bonds for nicer animations, if that's possible
+        bondNodes.enumerateChildNodes { node, _ in
+            node.removeFromParentNode()
+        }
         for i in atomNodes.childNodes.indices {
-            checkBondingBasedOnDistance(nodeIndex: i, nodes: atomNodes)
+            checkBondingBasedOnDistance(nodeIndex: i)
         }
-        scene.rootNode.addChildNode(bondNodes)
     }
     
-    ///MARK: Setup scene function
-    func setupScene(step: Step) {
+    //MARK: Setup scene
     
+    /// Populates the SCNodes with atoms and bonds from the step molecule
+    private func setupScene(_ step: Step) {
+        
         guard let molecule = step.molecule else {return}
-
-        for (i,atom) in molecule.atoms.enumerated() {
-            
-            let newAtom = SCNAtomNode()
-            newAtom.geometry = allGeometries.allAtomGeometries[atom.type]
-            newAtom.name = "atom_\(atom.type.rawValue)"
-            newAtom.position = atom.position
-            newAtom.name?.append("_\(atom.number)")
-            newAtom.castsShadow = false
-            
-            atomNodes.addChildNode(newAtom)
-            checkBondingBasedOnDistance(atomIndex: i, molecule: molecule)
-        }
         
-        if let backBone = step.backBone {
-            backBonds(backBone)
-            //TODO: Implement backbone visibility based on settings
-            self.backBone.isHidden = true
-            scene.rootNode.addChildNode(self.backBone)
-        }
-        
+        atomNodes.name = "atoms"
         bondNodes.name = "bonds"
+        backBone.name = "backBone"
         
-        //Cylinders cause a significant drop in performance.If more than 1000 bonds are present. They become a flattened cone. The downside of this is that they are converted to a big node hence individual bonds cannot be broken
+        for atom in molecule.atoms {
+            atomNodes.addChildNode(newAtom(atom))
+            checkBondingBasedOnDistance(nodeIndex: atomNodes.childNodes.endIndex - 1) // Check bonding between the adjacent atoms
+        }
+        
+        // Add the newly created atomNodes to the root scene
+        scene.rootNode.addChildNode(atomNodes)
+        
+        // Cylinders cause a significant drop in performance.If more than 1000 bonds are present. They become a flattened cone. The downside of this is that they are converted to a big node hence individual bonds cannot be broken
         if bondNodes.childNodes.count > 1000 {
             self.bondNodes = bondNodes.flattenedClone()
-            scene.rootNode.addChildNode(bondNodes)
         }
-        else {
-            scene.rootNode.addChildNode(bondNodes)
-        }
+        
+        scene.rootNode.addChildNode(bondNodes)
+        
+        // Compute the backbone for proteins
+        if let backBone = step.backBone { backBonds(backBone) }
+        
+        // Add selection node as child of the main node
+        
+        scene.rootNode.addChildNode(selectionNodes)
+        
     }
     
-    func backBonds(_ molecule: Molecule) {
+    private func newAtom(_ atom: Atom) -> SCNAtomNode {
+        
+        let atomNode = SCNAtomNode()
+        
+        atomNode.position = atom.position
+        atomNode.atomType = atom.type
+        atomNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        atomNode.geometry = nodeGeom.atoms[atom.type]
+        
+        atomNode.constraints = [SCNBillboardConstraint()]
+        atomNode.name = "atom_\(atom.type.rawValue)"
+        
+        return atomNode
+    }
+    
+    private func backBonds(_ molecule: Molecule) {
         for i in 0..<molecule.atoms.endIndex - 1 {
             let pos1 = molecule.atoms[i].position
             let pos2 = molecule.atoms[i+1].position
-            backBone.addChildNode(lineBetweenNodes(positionA: pos1, positionB: pos2, radius: 0.3))
+            backBone.addChildNode(createBondNode(from: pos1, to: pos2, radius: 0.3))
+        }
+        //TODO: Implement backbone visibility based on default settings
+        backBone.isHidden = true
+        scene.rootNode.addChildNode(backBone)
+    }
+    
+    /// Adds a bond node to bondNodes checking the distance between thgiven atom and the following 8 atoms (in list order) in the molecule.
+    /// - Parameters:
+    ///   - nodeIndex: The index of the atom node to bond
+    private func checkBondingBasedOnDistance(nodeIndex endIndex: Int) {
+        var firstIndex = endIndex - 8
+        
+        if firstIndex < 0 {
+            firstIndex = 0
+        }
+        
+        let pos1 = atomNodes.childNodes[endIndex].position
+        for i in firstIndex...endIndex {
+            let pos2 = atomNodes.childNodes[i].position
+            let distance = distance(from: pos1, to: pos2)
+            if distance <= 1.54 && distance > 0.1 {
+                let newBond = createBondNode(from: pos1, to: pos2)
+                bondNodes.addChildNode(newBond)
+            }
         }
     }
     
+    /// Creates a bond node between the given positions with a default radius of 0.2
+    private func createBondNode(from positionA: SCNVector3, to positionB: SCNVector3, radius: Double = 0.2) -> SCNNode {
+        
+        let midPosition = SCNVector3Make((positionA.x + positionB.x) / 2,(positionA.y + positionB.y) / 2,(positionA.z + positionB.z) / 2)
+        
+        let bondGeometry = nodeGeom.bond!.copy() as! SCNCylinder
+        bondGeometry.height = distance(from: positionA, to: positionB)
+        
+        let bondNode = SCNNode(geometry: bondGeometry)
+        bondNode.name = "bond"
+        
+        bondNode.position = midPosition
+        bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
+        
+        return bondNode
+        
+    }
+    
+    /// Creates a custom bond between two selected atoms
     func bondSelectedAtoms() {
-        if selectedAtoms.count == 2 {
-            let atom1 = selectedAtoms[0].atom
-            let atom2 = selectedAtoms[1].atom
-            let position1 = atom1.position
-            let position2 = atom2.position
-            let bonds = lineBetweenNodes(positionA: position1, positionB: position2)
+        if selectedAtoms.count == 2 { // If more or less than 2 atoms selected, do nothing
+            let position1 = selectedAtoms[0].atom.position
+            let position2 = selectedAtoms[1].atom.position
+            let bonds = createBondNode(from: position1, to: position2)
             bondNodes.addChildNode(bonds)
-            
         }
     }
     
+    /// Removes the selected atoms from the scene and from the selectedAtoms array
     func eraseSelectedAtoms() {
         for atom in selectedAtoms {
             atom.atom.removeFromParentNode()
@@ -265,230 +261,202 @@ class RendererController: ObservableObject {
         selectedAtoms.removeAll()
     }
     
-    private func checkBondingBasedOnDistance(atomIndex: Int, molecule: Molecule) {
-        var endIndex = atomIndex + 8
-
-        if endIndex > molecule.atoms.count - 1 {
-            endIndex = molecule.atoms.count - 1
-        }
-        
-        let pos1 = molecule.atoms[atomIndex].position
-        for i in atomIndex..<endIndex {
-            let pos2 = molecule.atoms[i].position
-            let x = (pos1.x - pos2.x)
-            let y = (pos1.y - pos2.y)
-            let z = (pos1.z - pos2.z)
-            let distance = sqrt(x*x+y*y+z*z)
-            if distance <= 1.54 && distance > 0.1 {
-                bondNodes.addChildNode(lineBetweenNodes(positionA: pos1, positionB: pos2))
-            }
-        }
-    }
+    //MARK: Scene renderer controller
     
-    private func checkBondingBasedOnDistance(nodeIndex: Int, nodes: SCNNode) {
-        var endIndex = nodeIndex + 50
-        
-        if endIndex > nodes.childNodes.count - 1 {
-            endIndex = nodes.childNodes.count - 1
-        }
-        
-        let pos1 = nodes.childNodes[nodeIndex].position
-        for i in nodeIndex...endIndex {
-            let pos2 = nodes.childNodes[i].position
-            let distance = distance(from: pos1, to: pos2)
-            if distance <= 1.50 && distance > 0.1 {
-                bondNodes.addChildNode(lineBetweenNodes(positionA: pos1, positionB: pos2))
-            }
-        }
-    }
+    private var selectedAtom: Element {PeriodicTableViewController.shared.selectedAtom}
     
-    private func lineBetweenNodes(positionA: SCNVector3, positionB: SCNVector3, radius: Double = 0.2) -> SCNNode {
-        let midPosition = SCNVector3 (x:(positionA.x + positionB.x) / 2, y:(positionA.y + positionB.y) / 2, z:(positionA.z + positionB.z) / 2)
+    private var world0: SCNVector3 { sceneView.projectPoint(SCNVector3Zero) }
+    
+#warning("TODO: Clean up handleTaps")
+    @objc func handleTaps(gesture: Gesture) {
         
-        let lineGeometry = SCNCylinder()
-        lineGeometry.radius = 0.1
-        lineGeometry.materials = [allGeometries.material]
-        lineGeometry.height = distance(from: positionA, to: positionB)
+        let location = gesture.location(in: sceneView)
+        guard let molecule = showingStep.molecule else {return}
         
-        let bondNode = SCNNode(geometry: lineGeometry)
-        bondNode.name = "bond"
-        bondNode.castsShadow = false
-        
-        bondNode.position = midPosition
-        bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
-        
-        return bondNode
-        
-    }
-}
-
-class AtomRenderer: NSObject, SCNSceneRendererDelegate {
-    
-    @ObservedObject var controller: RendererController
-        
-    var selectedAtom: Element {PeriodicTableViewController.shared.selectedAtom}
-    
-    var selected1Tool: mainTools {ToolsController.shared.selected1Tool}
-    
-    var selected2Tool: editTools {ToolsController.shared.selected2Tool}
-    
-    var touch1:SCNVector3?
-    
-    var touch2:SCNVector3?
-    
-    var world0: SCNVector3 { controller.sceneView.projectPoint(SCNVector3Zero) }
-    
-    init(_ sceneView: SceneUI, controller: RendererController) {
-        self.controller = controller
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        //TODO: Implement light movement with camera
-    }
-    
-    #warning("TODO: Clean up handleTaps")
-    @objc func handleTaps(gesture: TapGesture) {
-        
-        let location = gesture.location(in: controller.sceneView)
-        
-        switch selected2Tool {
+        switch ToolsController.shared.selectedTool {
         case .addAtom:
-            var count = 0
-            if let molecule = controller.showingStep.molecule {
-                count = molecule.atoms.count
-            } else {
-                controller.showingStep.molecule = Molecule()
-            }
-            let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
-            let unprojected = controller.sceneView.unprojectPoint(position)
-            let atom = Atom(position: unprojected, type: selectedAtom, number: count + 1)
-            controller.showingStep.molecule!.atoms.append(atom)
-            controller.newAtom(atom: atom)
-        case .removeAtom:
-            let hitResult = controller.sceneView.hitTest(location).first
-            guard let hitNode = hitResult?.node else {return}
-            if hitNode.name == "selection" {
-                guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
-                controller.selectedAtoms[i].atom.removeFromParentNode()
-                controller.selectedAtoms[i].orb.removeFromParentNode()
-                controller.selectedAtoms.remove(at: i)
-            }
-            hitNode.removeFromParentNode()
+            newAtomOnTouch(molecule: molecule, at: location)
         case .selectAtom:
-            let hitResult = controller.sceneView.hitTest(location).first
-            if let hitNode = hitResult?.node {
-                guard let name = hitNode.name else {return}
-                if name.contains("atom") {
-                    let atomOrbSelection = SCNNode()
-                    atomOrbSelection.position = hitNode.position
-                    
-                    let selectionOrb = SCNSphere()
-                    
-                    selectionOrb.radius = CGFloat(hitNode.geometry!.boundingSphere.radius + 0.1)
-                    
-                    let selectionMaterial = SCNMaterial()
-                    
-                    selectionMaterial.diffuse.contents = RColor.systemBlue
-                    
-                    
-                    selectionOrb.materials = [selectionMaterial]
-                    
-                    atomOrbSelection.name = "selection"
-                    atomOrbSelection.geometry = selectionOrb
-                    
-                    atomOrbSelection.opacity = 0.35
-                    controller.sceneView.scene?.rootNode.addChildNode(atomOrbSelection)
-                    
-                    controller.selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
-                    controller.sceneView.defaultCameraController.target = hitNode.position
-                    break
-                }
-                if hitNode.name == "selection"  {
-                    guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
-                    controller.selectedAtoms.remove(at: i)
-                    hitNode.removeFromParentNode()
-                    break
-                }
-                if hitNode.name == "bond" {
-                    
-                    let material = SCNMaterial()
-                    material.lightingModel = .physicallyBased
-                    material.metalness.contents = 0.4
-                    material.roughness.contents = 0.5
-                    
-                    let lineGeometry = hitNode.geometry?.copy() as! SCNGeometry
-                    
-                    let bondSelection = SCNNode(geometry: lineGeometry)
-                    bondSelection.name = "bond"
-                    bondSelection.castsShadow = false
-                    
-                    bondSelection.orientation = hitNode.orientation
-                    
-                    bondSelection.position = hitNode.position
-                    
-                    bondSelection.scale = SCNVector3Make(1.1, 1.1, 1.1)
-                    
-                    let selectionMaterial = SCNMaterial()
-                    
-                    selectionMaterial.diffuse.contents = RColor.systemBlue
-                    selectionMaterial.transparency = 0.35
-                    
-                    bondSelection.geometry?.materials = [selectionMaterial]
-                    
-                    bondSelection.name = "selection"
-
-                    controller.sceneView.scene?.rootNode.addChildNode(bondSelection)
-                    
-                    controller.selectedAtoms.append((atom: hitNode, orb: bondSelection))
-                    break
-                }
-
-            }
-            else {
-                controller.selectedAtoms.removeAll()
-                controller.sceneView.scene?.rootNode.childNodes.filter({ $0.name == "selection" }).forEach({ $0.removeFromParentNode() })
-
-            }
+            selectAtomsOnTouch(at: location)
+        default: return
+            //                case .removeAtom:
+            //                    let hitResult = controller.sceneView.hitTest(location).first
+            //                    guard let hitNode = hitResult?.node else {return}
+            //                    if hitNode.name == "selection" {
+            //                        guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
+            //                        controller.selectedAtoms[i].atom.removeFromParentNode()
+            //                        controller.selectedAtoms[i].orb.removeFromParentNode()
+            //                        controller.selectedAtoms.remove(at: i)
+            //                    }
+            //                    hitNode.removeFromParentNode()
+            //                case .selectAtom:
+            //                    let hitResult = controller.sceneView.hitTest(location).first
+            //                    if let hitNode = hitResult?.node {
+            //                        guard let name = hitNode.name else {return}
+            //                        if name.contains("atom") {
+            //                            let atomOrbSelection = SCNNode()
+            //                            atomOrbSelection.position = hitNode.position
+            //
+            //                            let selectionOrb = SCNSphere()
+            //
+            //                            selectionOrb.radius = CGFloat(hitNode.geometry!.boundingSphere.radius + 0.1)
+            //
+            //                            let selectionMaterial = SCNMaterial()
+            //
+            //                            selectionMaterial.diffuse.contents = UColor.systemBlue
+            //
+            //
+            //                            selectionOrb.materials = [selectionMaterial]
+            //
+            //                            atomOrbSelection.name = "selection"
+            //                            atomOrbSelection.geometry = selectionOrb
+            //
+            //                            atomOrbSelection.opacity = 0.35
+            //                            controller.sceneView.scene?.rootNode.addChildNode(atomOrbSelection)
+            //
+            //                            controller.selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
+            //                            controller.sceneView.defaultCameraController.target = hitNode.position
+            //                            break
+            //                        }
+            //                        if hitNode.name == "selection"  {
+            //                            guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
+            //                            controller.selectedAtoms.remove(at: i)
+            //                            hitNode.removeFromParentNode()
+            //                            break
+            //                        }
+            //                        if hitNode.name == "bond" {
+            //
+            //                            let material = SCNMaterial()
+            //                            material.lightingModel = .physicallyBased
+            //                            material.metalness.contents = 0.4
+            //                            material.roughness.contents = 0.5
+            //
+            //                            let lineGeometry = hitNode.geometry?.copy() as! SCNGeometry
+            //
+            //                            let bondSelection = SCNNode(geometry: lineGeometry)
+            //                            bondSelection.name = "bond"
+            //                            bondSelection.castsShadow = false
+            //
+            //                            bondSelection.orientation = hitNode.orientation
+            //
+            //                            bondSelection.position = hitNode.position
+            //
+            //                            bondSelection.scale = SCNVector3Make(1.1, 1.1, 1.1)
+            //
+            //                            let selectionMaterial = SCNMaterial()
+            //
+            //                            selectionMaterial.diffuse.contents = UColor.systemBlue
+            //                            selectionMaterial.transparency = 0.35
+            //
+            //                            bondSelection.geometry?.materials = [selectionMaterial]
+            //
+            //                            bondSelection.name = "selection"
+            //
+            //                            controller.sceneView.scene?.rootNode.addChildNode(bondSelection)
+            //
+            //                            controller.selectedAtoms.append((atom: hitNode, orb: bondSelection))
+            //                            break
+            //                        }
+            //
+            //                    }
+            //                    else {
+            //                        controller.selectedAtoms.removeAll()
+            //                        controller.sceneView.scene?.rootNode.childNodes.filter({ $0.name == "selection" }).forEach({ $0.removeFromParentNode() })
+            //
+            //                    }
         }
         
     }
     
-
+    private func newAtomOnTouch(molecule: Molecule, at location: CGPoint) {
+        let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
+        let unprojected = sceneView.unprojectPoint(position)
+        let atom = Atom(position: unprojected, type: selectedAtom, number: molecule.atoms.count + 1)
+        molecule.atoms.append(atom)
+        atomNodes.addChildNode(newAtom(atom))
+    }
+    
+    private func selectAtomsOnTouch(at location: CGPoint) {
+        
+        let hitResult = sceneView.hitTest(location).first
+        guard let hitNode = hitResult?.node else {removeSelectionOrbs(); return}
+        guard let name = hitNode.name else {return}
+        
+        if name.contains("atom") {
+            selectionAtomNode(hitNode: hitNode)
+            return
+        }
+        if hitNode.name == "selection"  {
+//            guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
+//            controller.selectedAtoms.remove(at: i)
+//            hitNode.removeFromParentNode()
+//            break
+        }
+        if hitNode.name == "bond" {
+//
+//            let material = SCNMaterial()
+//            material.lightingModel = .physicallyBased
+//            material.metalness.contents = 0.4
+//            material.roughness.contents = 0.5
+//
+//            let lineGeometry = hitNode.geometry?.copy() as! SCNGeometry
+//
+//            let bondSelection = SCNNode(geometry: lineGeometry)
+//            bondSelection.name = "bond"
+//            bondSelection.castsShadow = false
+//
+//            bondSelection.orientation = hitNode.orientation
+//
+//            bondSelection.position = hitNode.position
+//
+//            bondSelection.scale = SCNVector3Make(1.1, 1.1, 1.1)
+//
+//            let selectionMaterial = SCNMaterial()
+//
+//            selectionMaterial.diffuse.contents = UColor.systemBlue
+//            selectionMaterial.transparency = 0.35
+//
+//            bondSelection.geometry?.materials = [selectionMaterial]
+//
+//            bondSelection.name = "selection"
+//
+//            controller.sceneView.scene?.rootNode.addChildNode(bondSelection)
+//
+//            controller.selectedAtoms.append((atom: hitNode, orb: bondSelection))
+//            break
+        }
+        
+    }
+    
+    private func selectionAtomNode(hitNode: SCNNode) {
+        
+        let atomOrbSelection = hitNode.copy() as! SCNNode
+        atomOrbSelection.geometry = atomOrbSelection.geometry?.copy() as! SCNSphere
+        atomOrbSelection.scale = SCNVector3Make(1.2, 1.2, 1.2)
+        atomOrbSelection.geometry?.materials = [settings.colorSettings.selectionMaterial]
+        atomOrbSelection.name = "selection"
+        atomOrbSelection.opacity = 0.35
+        
+        selectionNodes.addChildNode(atomOrbSelection)
+        selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
+        sceneView.defaultCameraController.target = hitNode.position
+        
+        print("Placed new sphere")
+    }
+    
+    private func selectionBondNode() {
+        
+    }
+    
+    private func removeSelectionOrbs() {
+        selectedAtoms.removeAll()
+        selectionNodes.enumerateChildNodes { node, _ in
+            node.removeFromParentNode()
+        }
+    }
+    
 }
 
 class SCNAtomNode: SCNNode {
     var atomType: Element!
-}
-
-#warning("TODO: Explore in detail Geometries and making them available for the editor also")
-#warning("TODO: 3D structures for folded proteins: Helix, Beta-sheet, turns...")
-struct AllGeometries {
-    
-    static let shared = AllGeometries()
-    
-    let allAtomGeometries: [Element : SCNSphere]
-    let material: SCNMaterial
-    
-    init() {
-        
-        var allAtomGeometries: [Element : SCNSphere] = [:]
-        
-        let material = SCNMaterial()
-        material.lightingModel = .physicallyBased
-        material.metalness.contents = 0.4
-        material.roughness.contents = 0.5
-        material.diffuse.contents = GlobalSettings.shared.bondColor
-        
-        self.material = material
-        
-        for atom in Element.allCases {
-            let atomMaterial = material.copy() as! SCNMaterial
-            atomMaterial.diffuse.contents = RColor(GlobalSettings.shared.atomColors[atom.atomicNumber - 1])
-            let sphere = SCNSphere(radius: atom.radius)
-            sphere.materials = [atomMaterial]
-            allAtomGeometries[atom] = sphere
-        }
-        
-        self.allAtomGeometries = allAtomGeometries
-    }
 }

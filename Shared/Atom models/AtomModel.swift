@@ -16,15 +16,16 @@ struct Atom: Identifiable {
     var number: Int
 }
 
-struct Molecule {
+/// Molecule class. Contains an array of atoms as its single property
+class Molecule {
     var atoms: [Atom] = []
 }
 
-/// Step struct. Describes any molecular scene possible. Contains different optional variables depending on which
+/// Step class. Describes any molecular scene possible. Contains different optional variables depending on which
 /// type of file has been opened. It has support for accomodating multiple job types like:
 /// Gaussian - energy, isFinalStep, jobNumber, isInput
 /// XYZ - timestep
-struct Step {
+class Step {
     
     // The step number of the job (for example in optimization calculations)
     var stepNumber: Int?

@@ -17,15 +17,6 @@ class WindowManager: NSObject, ObservableObject {
     var openedWindows = Set<AtomicWindow>()
     let commandController = CommandMenuController.shared
     
-    func updateCommands() {
-        guard let currentController = currentController else {return}
-        let freqWindow = currentController.renderer?.showingStep.frequencys?.isEmpty
-        if let freqWindow = freqWindow {
-            commandController.hasfreq = !freqWindow
-        } else {
-            commandController.hasfreq = false
-        }
-    }
 }
 
 extension WindowManager: NSWindowDelegate {
@@ -123,7 +114,7 @@ struct WindowAccessor: NSViewRepresentable {
         
         func windowDidBecomeKey(_ notification: Notification) {
             WindowManager.shared.currentController = parent.controller
-            WindowManager.shared.updateCommands()
+            //WindowManager.shared.updateCommands()
         }
         
     }

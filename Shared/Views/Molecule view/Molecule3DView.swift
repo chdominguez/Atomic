@@ -27,7 +27,7 @@ struct Molecule3DView: View {
                 }
                 toolbar2
                 #if os(macOS)
-                    .padding(.top, 5)
+                .padding(.top, 5)
                 #endif
             }
         }
@@ -52,15 +52,12 @@ extension Molecule3DView {
     private var toolbar2: some View {
         HStack {
             HStack {
-                Text("\(controller.stringStep)")
-//                TextField("Step", text: $controller.stringStep)
-//                    .frame(maxWidth: 100)
-//                    .onReceive(Just(controller.stringStep)) { newValue in
-//                        controller.filterValue(newValue)
-//                    }
-                Text("\(controller.steps.count)")
+                TextField("Step", text: Binding(get: {
+                    String(controller.stepToShow)
+                }, set: {controller.stepToShow = filterStoI($0, maxValue: controller.steps.count)}))
+                    .frame(maxWidth: 50)
+                Text("of \(controller.steps.count)")
             }
-            //Text("\(controller.selectedIndex + 1) / \(controller.steps.count)")
             Button {
                 controller.previousScene()
             } label: {
@@ -88,11 +85,10 @@ extension Molecule3DView {
             }
             Spacer()
             Text("FPS:")
-            TextField("FPS", text: $controller.playBack)
+            TextField("FPS", text: Binding(get: {
+                String(controller.playBack)
+            }, set: {controller.playBack = filterStoI($0, maxValue: 60)}))
                 .frame(maxWidth: 50)
-                .onReceive(Just(controller.playBack)) { newValue in
-                    controller.filterPlayBackValue(newValue)
-                }
             Text("Play")
             Button {
                 controller.playAnimation()

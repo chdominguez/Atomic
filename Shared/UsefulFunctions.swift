@@ -41,10 +41,14 @@ func averageDistance(of positions: [SCNVector3]) -> SCNVector3 {
     return meanPos
 }
 
-/// Returns the biggest distance either from the x axis or the y axis between positions. Useful wehn computen distances between atoms
+/// Returns the biggest distance (CGFloat number) either from the x axis or the y axis between positions.
 /// - Parameter positions: The positions of the atoms to compare
 /// - Returns: The value that corresponds to the biggest distance in either axis
 func viewingZPositionCGFloat(toSee positions: [SCNVector3]) -> CGFloat {
+    
+    if positions.isEmpty {
+        return 0
+    }
     
     var maxx = positions.first!.x
     var minx = positions.first!.x
@@ -74,6 +78,9 @@ func viewingZPositionCGFloat(toSee positions: [SCNVector3]) -> CGFloat {
     
 }
 
+/// Returns the biggest distance (Float number) either from the x axis or the y axis between positions.
+/// - Parameter positions: The positions of the atoms to compare
+/// - Returns: The value that corresponds to the biggest distance in either axis
 func viewingZPositionFloat(toSee positions: [SCNVector3]) -> Float {
     
     var maxx = positions.first!.x
@@ -102,4 +109,27 @@ func viewingZPositionFloat(toSee positions: [SCNVector3]) -> Float {
     
     return distanceX >= distanceY ? Float(distanceX) : Float(distanceY)
     
+}
+
+/// Filters a string value to a integer value between a max and a min value
+/// - Parameters:
+///   - newValue: String to filter
+///   - maxValue: Max value allowed
+///   - minValue: Min value allowed
+/// - Returns: An integer of the filtered string
+func filterStoI(_ newValue: String, maxValue: Int, minValue: Int = 1) -> Int {
+    
+    if newValue.isEmpty { return 1 }
+    
+    let filtered = Int(newValue.filter { "0123456789".contains($0) }) ?? 1
+    
+    if filtered < minValue {
+        return minValue
+    }
+    
+    if filtered > maxValue {
+        return maxValue
+    }
+
+    return filtered // Fallthrough
 }

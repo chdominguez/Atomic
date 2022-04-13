@@ -8,7 +8,7 @@
 import SwiftUI
 import SceneKit
 
-//MARK: View
+//MARK: Settings main view
 struct SettingsView: View {
     var body: some View {
         NavigationView {
@@ -51,9 +51,9 @@ struct ViewSettings: View {
     var body: some View {
         ScrollView {
             HStack {
-                ColorPicker("Background color: ", selection: $settings.backgroundColor)
+                ColorPicker("Background color: ", selection: $settings.colorSettings.backgroundColor)
                 Spacer()
-                ColorPicker("Bond color: ", selection: $settings.bondColor)
+                ColorPicker("Bond color: ", selection: $settings.colorSettings.bondColor).onChange(of: settings.colorSettings.bondColor) {_ in settings.colorSettings.updateBondNodeMaterial()}
             }
             .padding()
             Divider()

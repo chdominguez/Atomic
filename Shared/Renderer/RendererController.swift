@@ -86,8 +86,8 @@ class RendererController: ObservableObject {
     let scene = SCNScene()
     let cameraNode = SCNNode()
     
-    /// An array of tuples. The atoms selected with its selection orb node.
-    var selectedAtoms: [(atom: SCNNode, orb: SCNNode)] = []
+    /// An array of tuples. The nodes selected with its selection orb node.
+    var selectedAtoms: [(selectedNode: SCNNode, selectionOrb: SCNNode)] = []
     
     /// Turns to true when loadScenes() has finished
     @Published var didLoadAtoms = false
@@ -245,8 +245,8 @@ class RendererController: ObservableObject {
     /// Creates a custom bond between two selected atoms
     func bondSelectedAtoms() {
         if selectedAtoms.count == 2 { // If more or less than 2 atoms selected, do nothing
-            let position1 = selectedAtoms[0].atom.position
-            let position2 = selectedAtoms[1].atom.position
+            let position1 = selectedAtoms[0].selectedNode.position
+            let position2 = selectedAtoms[1].selectedNode.position
             let bonds = createBondNode(from: position1, to: position2)
             bondNodes.addChildNode(bonds)
         }
@@ -255,15 +255,14 @@ class RendererController: ObservableObject {
     /// Removes the selected atoms from the scene and from the selectedAtoms array
     func eraseSelectedAtoms() {
         for atom in selectedAtoms {
-            atom.atom.removeFromParentNode()
-            atom.orb.removeFromParentNode()
+            atom.selectedNode.removeFromParentNode()
         }
-        selectedAtoms.removeAll()
+        unSelectAll()
     }
     
     //MARK: Scene renderer controller
     
-    private var selectedAtom: Element {PeriodicTableViewController.shared.selectedAtom}
+    private var selectedFromPtable: Element {PeriodicTableViewController.shared.selectedAtom}
     
     private var world0: SCNVector3 { sceneView.projectPoint(SCNVector3Zero) }
     
@@ -277,159 +276,47 @@ class RendererController: ObservableObject {
         case .addAtom:
             newAtomOnTouch(molecule: molecule, at: location)
         case .selectAtom:
-            selectAtomsOnTouch(at: location)
-        default: return
-            //                case .removeAtom:
-            //                    let hitResult = controller.sceneView.hitTest(location).first
-            //                    guard let hitNode = hitResult?.node else {return}
-            //                    if hitNode.name == "selection" {
-            //                        guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
-            //                        controller.selectedAtoms[i].atom.removeFromParentNode()
-            //                        controller.selectedAtoms[i].orb.removeFromParentNode()
-            //                        controller.selectedAtoms.remove(at: i)
-            //                    }
-            //                    hitNode.removeFromParentNode()
-            //                case .selectAtom:
-            //                    let hitResult = controller.sceneView.hitTest(location).first
-            //                    if let hitNode = hitResult?.node {
-            //                        guard let name = hitNode.name else {return}
-            //                        if name.contains("atom") {
-            //                            let atomOrbSelection = SCNNode()
-            //                            atomOrbSelection.position = hitNode.position
-            //
-            //                            let selectionOrb = SCNSphere()
-            //
-            //                            selectionOrb.radius = CGFloat(hitNode.geometry!.boundingSphere.radius + 0.1)
-            //
-            //                            let selectionMaterial = SCNMaterial()
-            //
-            //                            selectionMaterial.diffuse.contents = UColor.systemBlue
-            //
-            //
-            //                            selectionOrb.materials = [selectionMaterial]
-            //
-            //                            atomOrbSelection.name = "selection"
-            //                            atomOrbSelection.geometry = selectionOrb
-            //
-            //                            atomOrbSelection.opacity = 0.35
-            //                            controller.sceneView.scene?.rootNode.addChildNode(atomOrbSelection)
-            //
-            //                            controller.selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
-            //                            controller.sceneView.defaultCameraController.target = hitNode.position
-            //                            break
-            //                        }
-            //                        if hitNode.name == "selection"  {
-            //                            guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
-            //                            controller.selectedAtoms.remove(at: i)
-            //                            hitNode.removeFromParentNode()
-            //                            break
-            //                        }
-            //                        if hitNode.name == "bond" {
-            //
-            //                            let material = SCNMaterial()
-            //                            material.lightingModel = .physicallyBased
-            //                            material.metalness.contents = 0.4
-            //                            material.roughness.contents = 0.5
-            //
-            //                            let lineGeometry = hitNode.geometry?.copy() as! SCNGeometry
-            //
-            //                            let bondSelection = SCNNode(geometry: lineGeometry)
-            //                            bondSelection.name = "bond"
-            //                            bondSelection.castsShadow = false
-            //
-            //                            bondSelection.orientation = hitNode.orientation
-            //
-            //                            bondSelection.position = hitNode.position
-            //
-            //                            bondSelection.scale = SCNVector3Make(1.1, 1.1, 1.1)
-            //
-            //                            let selectionMaterial = SCNMaterial()
-            //
-            //                            selectionMaterial.diffuse.contents = UColor.systemBlue
-            //                            selectionMaterial.transparency = 0.35
-            //
-            //                            bondSelection.geometry?.materials = [selectionMaterial]
-            //
-            //                            bondSelection.name = "selection"
-            //
-            //                            controller.sceneView.scene?.rootNode.addChildNode(bondSelection)
-            //
-            //                            controller.selectedAtoms.append((atom: hitNode, orb: bondSelection))
-            //                            break
-            //                        }
-            //
-            //                    }
-            //                    else {
-            //                        controller.selectedAtoms.removeAll()
-            //                        controller.sceneView.scene?.rootNode.childNodes.filter({ $0.name == "selection" }).forEach({ $0.removeFromParentNode() })
-            //
-            //                    }
+            newSelection(at: location)
+        case .removeAtom:
+            eraseNode(molecule: molecule, at: location)
         }
-        
     }
     
     private func newAtomOnTouch(molecule: Molecule, at location: CGPoint) {
         let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
         let unprojected = sceneView.unprojectPoint(position)
-        let atom = Atom(position: unprojected, type: selectedAtom, number: molecule.atoms.count + 1)
+        let atom = Atom(position: unprojected, type: selectedFromPtable, number: molecule.atoms.count + 1)
         molecule.atoms.append(atom)
         atomNodes.addChildNode(newAtom(atom))
     }
     
-    private func selectAtomsOnTouch(at location: CGPoint) {
-        
-        let hitResult = sceneView.hitTest(location).first
-        guard let hitNode = hitResult?.node else {removeSelectionOrbs(); return}
+    private func eraseNode(molecule: Molecule, at location: CGPoint) {
+        guard let hitNode = sceneView.hitTest(location).first?.node else {return}
         guard let name = hitNode.name else {return}
-        
-        if name.contains("atom") {
-            selectionAtomNode(hitNode: hitNode)
-            return
-        }
-        if hitNode.name == "selection"  {
-//            guard let i = controller.selectedAtoms.firstIndex(where: {$0.orb == hitNode}) else {return}
-//            controller.selectedAtoms.remove(at: i)
-//            hitNode.removeFromParentNode()
-//            break
-        }
-        if hitNode.name == "bond" {
-//
-//            let material = SCNMaterial()
-//            material.lightingModel = .physicallyBased
-//            material.metalness.contents = 0.4
-//            material.roughness.contents = 0.5
-//
-//            let lineGeometry = hitNode.geometry?.copy() as! SCNGeometry
-//
-//            let bondSelection = SCNNode(geometry: lineGeometry)
-//            bondSelection.name = "bond"
-//            bondSelection.castsShadow = false
-//
-//            bondSelection.orientation = hitNode.orientation
-//
-//            bondSelection.position = hitNode.position
-//
-//            bondSelection.scale = SCNVector3Make(1.1, 1.1, 1.1)
-//
-//            let selectionMaterial = SCNMaterial()
-//
-//            selectionMaterial.diffuse.contents = UColor.systemBlue
-//            selectionMaterial.transparency = 0.35
-//
-//            bondSelection.geometry?.materials = [selectionMaterial]
-//
-//            bondSelection.name = "selection"
-//
-//            controller.sceneView.scene?.rootNode.addChildNode(bondSelection)
-//
-//            controller.selectedAtoms.append((atom: hitNode, orb: bondSelection))
-//            break
-        }
-        
+        if name.contains("atom") {internalAtomDelete(hitNode: hitNode, molecule: molecule); return}
+        if name.contains("selection") {unSelect(hitNode)}
+        if name.contains("bond") {hitNode.removeFromParentNode()}
     }
     
-    private func selectionAtomNode(hitNode: SCNNode) {
+    private func internalAtomDelete(hitNode: SCNNode, molecule: Molecule) {
+        hitNode.removeFromParentNode()
+        molecule.atoms.removeAll { atom in
+            hitNode.position == atom.position
+        }
+    }
+    
+    
+    private func newSelection(at location: CGPoint) {
         
+        guard let hitNode = sceneView.hitTest(location).first?.node else {unSelectAll(); return}
+        guard let name = hitNode.name else {return}
+        
+        if name.contains("atom") {internalSelectionAtomNode(hitNode);return}
+        if hitNode.name == "bond" {internalSelectionBond(hitNode);return}
+        if hitNode.name == "selection" {unSelect(hitNode);return}
+    }
+    
+    private func internalSelectionAtomNode(_ hitNode: SCNNode) {
         let atomOrbSelection = hitNode.copy() as! SCNNode
         atomOrbSelection.geometry = atomOrbSelection.geometry?.copy() as! SCNSphere
         atomOrbSelection.scale = SCNVector3Make(1.2, 1.2, 1.2)
@@ -438,17 +325,32 @@ class RendererController: ObservableObject {
         atomOrbSelection.opacity = 0.35
         
         selectionNodes.addChildNode(atomOrbSelection)
-        selectedAtoms.append((atom: hitNode, orb: atomOrbSelection))
+        selectedAtoms.append((hitNode, atomOrbSelection))
         sceneView.defaultCameraController.target = hitNode.position
-        
-        print("Placed new sphere")
     }
     
-    private func selectionBondNode() {
+    private func internalSelectionBond(_ hitNode: SCNNode) {
+        let bondOrbSelection = hitNode.copy() as! SCNNode
+        bondOrbSelection.geometry = bondOrbSelection.geometry?.copy() as! SCNCylinder
+        bondOrbSelection.scale = SCNVector3Make(1.2, 1.2, 1.2)
+        bondOrbSelection.geometry?.materials = [settings.colorSettings.selectionMaterial]
+        bondOrbSelection.name = "selection"
+        bondOrbSelection.opacity = 0.35
         
+        selectionNodes.addChildNode(bondOrbSelection)
+        selectedAtoms.append((hitNode, bondOrbSelection))
+        //Temporal adjusting camera's target to the selected bond. Future implementation: rotate the scene around the center of the view, as if an invisible atomwas present in front of the camera.
+        sceneView.defaultCameraController.target = hitNode.position
     }
     
-    private func removeSelectionOrbs() {
+    /// Unselect the hitted selection
+    private func unSelect(_ hitNode: SCNNode) {
+        hitNode.removeFromParentNode()
+        selectedAtoms.removeAll { $0.selectedNode == hitNode }
+    }
+    
+    /// Unselects all the selected nodes
+    private func unSelectAll() {
         selectedAtoms.removeAll()
         selectionNodes.enumerateChildNodes { node, _ in
             node.removeFromParentNode()

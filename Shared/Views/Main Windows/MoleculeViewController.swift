@@ -34,7 +34,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     var BR: BaseReader? = nil
     
     #if os(macOS)
-    var openedWindows: [WindowTypes] = []
+    var openedWindows = Set<AtomicWindow>()
     #endif
     
     var errorDescription = ""

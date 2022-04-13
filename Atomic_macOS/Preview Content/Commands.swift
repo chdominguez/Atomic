@@ -28,7 +28,7 @@ struct AtomicCommands: Commands {
             }.keyboardShortcut("S").disabled(commandMenu.currentScene == nil)
             Divider()
             Button("New window") {
-                MainWindow().openNewWindow(with: "Atomic", and: .multiple)
+                MainWindow().openNewWindow(with: "Atomic", multiple: true)
             }
         }
         CommandMenu("Molecule") {
@@ -38,7 +38,7 @@ struct AtomicCommands: Commands {
             Button("Periodic table") {
                 ToolsController.shared.selectedTool = .addAtom
                 guard let controller = windowManager.currentController else {return}
-                PTable().openNewWindow(with: "Periodic Table", and: .ptable, controller: controller)
+                PTable().openNewWindow(with: "Periodic Table", multiple: false, controller: controller)
             }
             Button("Select") {
                 ToolsController.shared.selectedTool = .selectAtom
@@ -69,7 +69,7 @@ struct AtomicCommands: Commands {
             Button("Show input file") {
                 if let BR = windowManager.currentController!.BR {
                     let fileAsString = BR.openedFile.joined(separator: "\n")
-                    InputfileView(fileInput: fileAsString).openNewWindow(with: "Input file", and: .inputfile)
+                    InputfileView(fileInput: fileAsString).openNewWindow(with: "Input file", multiple: false, controller: windowManager.currentController)
                 }
             }//.disabled(moleculeVM.gReader == nil)
             Button("Show output file") {

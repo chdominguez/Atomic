@@ -53,9 +53,17 @@ struct ViewSettings: View {
             HStack {
                 ColorPicker("Background color: ", selection: $settings.colorSettings.backgroundColor)
                 Spacer()
-                ColorPicker("Bond color: ", selection: $settings.colorSettings.bondColor).onChange(of: settings.colorSettings.bondColor) {_ in settings.colorSettings.updateBondNodeMaterial()}
-            }
-            .padding()
+                ColorPicker("Bond color: ", selection: $settings.colorSettings.bondColor)
+                Spacer()
+                ColorPicker("Selection color: ", selection: $settings.colorSettings.selectionColor)
+            }.padding()
+            Divider()
+            Slider(value: $settings.colorSettings.roughness, in: 0...1) {
+                Text("Roughness")
+            }.padding()
+            Slider(value: $settings.colorSettings.metalness, in: 0...1) {
+                Text("Metalness")
+            }.padding()
             Divider()
             PTable()
         }

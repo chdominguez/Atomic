@@ -7,14 +7,16 @@
 
 import SwiftUI
 import AppKit
-
+#warning("Remake window manager")
 // This class manages instances of MoleculeViewModel across different windows under macOS
 class WindowManager: NSObject, ObservableObject {
     
     static let shared = WindowManager()
     
+    var openedPtable = false
+    
     @Published var currentController: MoleculeViewModel? = nil
-    var openedWindows = Set<AtomicWindow>()
+    
     let commandController = CommandMenuController.shared
     
 }
@@ -22,8 +24,7 @@ class WindowManager: NSObject, ObservableObject {
 extension WindowManager: NSWindowDelegate {
     func windowWillClose(_ notification: Notification) {
         if let window = notification.object as? AtomicWindow {
-            self.openedWindows.remove(window)
-            self.currentController?.openedWindows.removeAll(where: {$0 == window.windowType} )
+            self.currentController?.openedWindows.remove(window)
         }
     }
     func windowDidBecomeKey(_ notification: Notification) {
@@ -34,54 +35,50 @@ extension WindowManager: NSWindowDelegate {
 }
 
 extension View {
-    private func newWindowInternal(with title: String, and type: WindowTypes) -> AtomicWindow {
+    private func newWindowInternal(with title: String, multiple: Bool) -> AtomicWindow {
         let window = AtomicWindow(
             contentRect: NSRect(x: 20, y: 20, width: 680, height: 600),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered,
             defer: false)
-        window.windowType = type
+        window.multipleWindows = multiple
         window.center()
         window.isReleasedWhenClosed = false
         window.title = title
-        window.makeKeyAndOrderFront(nil)
+        window.makeKeyAndOrderFront(true)
+        
+        window.contentView = NSHostingView(rootView: self)
+        //newWindow.delegate = WindowManager.shared
+        
         return window
     }
     
-    func openNewWindow(with title: String = "New Window", and type: WindowTypes = .multiple, controller: MoleculeViewModel? = nil) {
-        if type != .multiple {
-            if let controller = controller {
-                if controller.openedWindows.contains(type) {
-                    if let window = WindowManager.shared.openedWindows.first(where: {$0.windowType == type}) {
-                        window.becomeKey()
-                        window.orderFrontRegardless()
-                        return
-                    }
-                } else {
-                    controller.openedWindows.append(type)
+    func windowInternalMacOS(_ title: String = "New Window", _ multiple: Bool = true, _ controller: MoleculeViewModel? = nil) {
+        
+        if let controller = controller {
+            if multiple {
+                let newWindow = newWindowInternal(with: title, multiple: multiple)
+                controller.openedWindows.insert(newWindow)
+            } else {
+                let presentWindow = controller.openedWindows.first { window in
+                    window.title == title
                 }
+                guard let presentWindow = presentWindow else {
+                    return
+                }
+                presentWindow.becomeFirstResponder()
             }
+        } else {
+            newWindowInternal(with: title, multiple: multiple)
         }
-        let newWindow = self.newWindowInternal(with: title, and: type)
-        newWindow.associatedController = controller
-        newWindow.contentView = NSHostingView(rootView: self)
-        newWindow.delegate = WindowManager.shared
-        WindowManager.shared.openedWindows.insert(newWindow)
     }
 }
 
 class AtomicWindow: NSWindow {
-    var windowType: WindowTypes = .multiple
+    var multipleWindows = true
     var associatedController: MoleculeViewModel? = nil
 }
 
-enum WindowTypes: CaseIterable {
-    case ptable
-    case freqs
-    case outputfile
-    case inputfile
-    case multiple
-}
 
 // SwiftUI workaround to access underlying NSWindow properties on SwiftUI macOS windows
 struct WindowAccessor: NSViewRepresentable {

@@ -82,6 +82,10 @@ struct MainWindow: View {
         .alert(isPresented: $moleculeVM.showErrorFileAlert) {
             Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
         }
+        .frame(minWidth: 800, minHeight: 600)
+        .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.shared.types) { fileURL in
+            moleculeVM.handlePickedFile(fileURL)
+        }
         #if os(macOS)
         .background(WindowAccessor(controller: moleculeVM))
         .onDrop(of: [.fileURL], delegate: moleculeVM)
@@ -89,10 +93,6 @@ struct MainWindow: View {
         .onAppear(perform: {WindowManager.shared.currentController = moleculeVM})
         .onDrop(of: FileOpener.shared.types, delegate: moleculeVM)
         #endif
-        .frame(minWidth: 800, minHeight: 600)
-        .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.shared.types) { fileURL in
-            moleculeVM.handlePickedFile(fileURL)
-        }
     }
     
 }

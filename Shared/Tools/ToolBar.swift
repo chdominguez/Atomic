@@ -25,11 +25,7 @@ struct ToolsBar: View {
                     ToolsController.shared.selectedTool = .addAtom
                     guard let controller = windowManager.currentController else {return}
                     #warning("TODO: Better implementation of new windows for both ios and macos")
-                    #if os(macOS)
-                    PTable().openNewWindow(with: "Periodic Table", and: .ptable, controller: controller)
-                    #elseif os(iOS)
-                    PTable().openNewWindow(controller: controller)
-                    #endif
+                    PTable().openNewWindow(with: "Periodic Table", multiple: false, controller: controller)
                 }
             HStack {
                 Image(systemName: "hand.tap")

@@ -18,7 +18,7 @@ class WindowManager: ObservableObject {
 
 
 extension View {
-    func openNewWindow(controller: MoleculeViewModel? = nil) {
+    func WindowInternaliOS(controller: MoleculeViewModel? = nil) {
         controller?.sheetContent = AnyView(self)
         controller?.showPopover = true
     }

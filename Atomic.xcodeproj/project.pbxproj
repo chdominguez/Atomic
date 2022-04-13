@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */; };
 		C01FD3AF278B4E9F00E0A5AD /* CommandMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E13720277F3CD7009ACCB6 /* CommandMenuController.swift */; };
-		C021717F27E3E269007ACD2F /* ToolsBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolsBar.swift */; };
-		C021718027E3E269007ACD2F /* ToolsBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolsBar.swift */; };
+		C021717F27E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
+		C021718027E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C0265CA52766A30100C5219E /* WelcomeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0265CA42766A30100C5219E /* WelcomeMessage.swift */; };
 		C02C1BDC27E4B23F00BCDF01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
 		C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
@@ -83,7 +83,7 @@
 
 /* Begin PBXFileReference section */
 		C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceManager.swift; sourceTree = "<group>"; };
-		C021717E27E3E269007ACD2F /* ToolsBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsBar.swift; sourceTree = "<group>"; };
+		C021717E27E3E269007ACD2F /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 		C0265CA42766A30100C5219E /* WelcomeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeMessage.swift; sourceTree = "<group>"; };
 		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
 		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
@@ -336,7 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				C0D01B52274EC95000556EDA /* ToolsController.swift */,
-				C021717E27E3E269007ACD2F /* ToolsBar.swift */,
+				C021717E27E3E269007ACD2F /* ToolBar.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -500,7 +500,7 @@
 				C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */,
 				C0E1371C277F33D3009ACCB6 /* InputfileView.swift in Sources */,
-				C021718027E3E269007ACD2F /* ToolsBar.swift in Sources */,
+				C021718027E3E269007ACD2F /* ToolBar.swift in Sources */,
 				C05472B32804C3EE00F51E6E /* GlobalSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -541,7 +541,7 @@
 				F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */,
 				C0E1371B277F33D3009ACCB6 /* InputfileView.swift in Sources */,
 				C05F5CA92785A48C00F3B588 /* GeneralExtensions.swift in Sources */,
-				C021717F27E3E269007ACD2F /* ToolsBar.swift in Sources */,
+				C021717F27E3E269007ACD2F /* ToolBar.swift in Sources */,
 				C05472B22804C3EE00F51E6E /* GlobalSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

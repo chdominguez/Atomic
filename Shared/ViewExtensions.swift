@@ -55,3 +55,14 @@ extension View {
     }
 }
 
+// New window for both platforms
+
+extension View {
+    func openNewWindow(with title: String = "New Window", multiple: Bool = true, controller: MoleculeViewModel? = nil) {
+        #if os(macOS)
+        windowInternalMacOS(title, multiple, controller)
+        #elseif os(iOS)
+        WindowInternaliOS(controller: controller)
+        #endif
+    }
+}

@@ -30,7 +30,11 @@ class ColorSettings: ObservableObject {
     
     //MARK: Bonds
     /// The color of the bond. Default: .gray
-    @Published var bondColor: Color = .gray
+    @Published var bondColor: Color = .gray {
+        didSet {
+            updateBondNodeMaterial()
+        }
+    }
     
     /// The material of the bond, defaulted to coreMaterial
     var bondMaterial: SCNMaterial!
@@ -41,7 +45,11 @@ class ColorSettings: ObservableObject {
     /// Materials for each atom. Default of coreMaterial + color of each atom
     var atomMaterials: [Element : SCNMaterial]!
     
-    var selectionColor: Color = .cyan
+    var selectionColor: Color = .cyan {
+        didSet {
+            updateSelectionMaterial()
+        }
+    }
     var selectionMaterial: SCNMaterial!
     
     //Backbone                  |
@@ -49,6 +57,17 @@ class ColorSettings: ObservableObject {
     //Cartoon helix             | TODO: implement
     //                          |
     //Cartoon beta sheets       |
+    
+    @Published var metalness: Float = 0.35 {
+        didSet {
+            updateMetalness()
+        }
+    } // How shiny the material is
+    @Published var roughness: Float = 0.40 {
+        didSet {
+            updateRoughness()
+        }
+    } // How rough the material is
     
     init() {
         self.coreMaterial = setupCoreMaterial()
@@ -62,8 +81,8 @@ class ColorSettings: ObservableObject {
         let material = SCNMaterial()
         material.diffuse.contents = UColor.gray // Default coreMaterial color is equal to the bond color
         material.lightingModel = .physicallyBased
-        material.metalness.contents = 0.4
-        material.roughness.contents = 0.5
+        material.metalness.contents = metalness
+        material.roughness.contents = roughness
         
         return material
     }
@@ -106,12 +125,28 @@ class ColorSettings: ObservableObject {
         atomMaterials[element]!.diffuse.contents = atomColors[element.atomicNumber].uColor // Force unwrap as the element should exist
     }
     /// SwiftUI color picker changes a Color type. After the color is set, the material corresponding to the bond has to be updated with the new color
-    func updateBondNodeMaterial() {
+    private func updateBondNodeMaterial() {
         bondMaterial.diffuse.contents = bondColor.uColor
     }
     
-    func updateSelectionMaterial() {
+    private func updateSelectionMaterial() {
         selectionMaterial.diffuse.contents = selectionColor.uColor
+    }
+    
+    private func updateMetalness() {
+        bondMaterial.metalness.contents = metalness
+        selectionMaterial.metalness.contents = metalness
+        for material in atomMaterials.values {
+            material.metalness.contents = metalness
+        }
+    }
+    
+    private func updateRoughness() {
+        bondMaterial.roughness.contents = roughness
+        selectionMaterial.roughness.contents = roughness
+        for material in atomMaterials.values {
+            material.roughness.contents = roughness
+        }
     }
     
 }

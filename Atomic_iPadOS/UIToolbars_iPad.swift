@@ -35,7 +35,8 @@ extension MainWindow {
                             }
                         }.atomicButton(fixed: true)
                         Button {
-                            let file = XYZWritter.sceneToXYZ(scene: moleculeVM.renderer!.scene)
+                            guard let renderer = moleculeVM.renderer else {return}
+                            let file = XYZWritter.sceneToXYZ(atomNodes: renderer.atomNodes)
                             moleculeVM.saveFile(file)
                         } label: {
                             HStack{

@@ -23,9 +23,12 @@ struct AtomicCommands: Commands {
                 controller.resetFile()
             }
             Button("Save") {
-                let file = XYZWritter.sceneToXYZ(scene: commandMenu.currentScene!)
-                windowManager.currentController?.saveFile(file)
-            }.keyboardShortcut("S").disabled(commandMenu.currentScene == nil)
+                #warning("Temporary saving files of the first controller")
+                guard let controller = windowManager.currentController else {return}
+                guard let renderer = controller.renderer else {return}
+                let file = XYZWritter.sceneToXYZ(atomNodes: renderer.atomNodes)
+                controller.saveFile(file)
+            }.keyboardShortcut("S")//.disabled(commandMenu.currentScene == nil)
             Divider()
             Button("New window") {
                 MainWindow().openNewWindow(with: "Atomic", multiple: true)

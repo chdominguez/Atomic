@@ -24,10 +24,12 @@ extension BaseReader {
         
         for line in openedFile {
             
+            let filteredLine = line.replacingOccurrences(of: "\t", with: "")
+            
             //Increment current line by 1 to keep track if an error happens
             errorLine += 1
             
-            let splitted = line.split(separator: " ") // Split the line to verify what's on the input
+            let splitted = filteredLine.split(separator: " ") // Split the line to verify what's on the input
             
             // Exit the loop on empty line
             if splitted.isEmpty {continue}
@@ -53,7 +55,7 @@ extension BaseReader {
             }
             
             // Obtain timestep for Molecular dynamics simulations
-            guard !line.contains("Timestep") else {
+            guard !filteredLine.contains("Timestep") else {
                 guard let time = Int(splitted.last!) else {throw xyzError}
                 timeStep = time
                 continue // Skip loop as in timestep lines that is the only useful information

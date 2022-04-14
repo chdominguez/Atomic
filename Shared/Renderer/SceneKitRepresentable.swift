@@ -7,7 +7,7 @@ import SceneKit
 // Cross-platform APIs compatibilities
 #if os(iOS)
 typealias Representable = UIViewRepresentable
-typealias Gesture = TapGesture
+typealias Gesture = UITapGestureRecognizer
 #elseif os(macOS)
 typealias Representable = NSViewRepresentable
 typealias Gesture = NSClickGestureRecognizer

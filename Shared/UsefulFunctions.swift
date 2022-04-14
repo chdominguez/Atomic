@@ -83,6 +83,10 @@ func viewingZPositionCGFloat(toSee positions: [SCNVector3]) -> CGFloat {
 /// - Returns: The value that corresponds to the biggest distance in either axis
 func viewingZPositionFloat(toSee positions: [SCNVector3]) -> Float {
     
+    if positions.count < 2 {
+        return 0
+    }
+    
     var maxx = positions.first!.x
     var minx = positions.first!.x
     

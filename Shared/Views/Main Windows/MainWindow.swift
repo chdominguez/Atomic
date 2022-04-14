@@ -89,6 +89,7 @@ struct MainWindow: View {
         #if os(macOS)
         .background(WindowAccessor(controller: moleculeVM))
         .onDrop(of: [.fileURL], delegate: moleculeVM)
+        .onAppear(perform: {WindowManager.shared.currentController = moleculeVM})
         #else
         .onAppear(perform: {WindowManager.shared.currentController = moleculeVM})
         .onDrop(of: FileOpener.shared.types, delegate: moleculeVM)

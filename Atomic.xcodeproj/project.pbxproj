@@ -27,13 +27,13 @@
 		C05F5CA72784720B00F3B588 /* UIToolbars_iPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */; };
 		C05F5CA92785A48C00F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
 		C05F5CAA2785A7D800F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
-		C064B3D1278AAE5D0086E7BD /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064B3D0278AAE5D0086E7BD /* WindowManager.swift */; };
+		C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */; };
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C09441352761F76F00680075 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
 		C09BFB2F27E78A8E00D4B969 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE59E2278A038200423CF3 /* Commands.swift */; };
-		C0A7F09F276F7FBB00E69E0F /* RendererController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* RendererController.swift */; };
-		C0A7F0A0276F7FBB00E69E0F /* RendererController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* RendererController.swift */; };
+		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
+		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0CE163928006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
@@ -55,7 +55,7 @@
 		C0DCCED2276A3E920085CD1D /* WelcomeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0265CA42766A30100C5219E /* WelcomeMessage.swift */; };
 		C0DCCED3276A3E920085CD1D /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552126F7C61500DD4F25 /* MainWindow.swift */; };
 		C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552626F7C89600DD4F25 /* SettingsView.swift */; };
-		C0DCCED5276A3E980085CD1D /* MoleculeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49726E7801200387EBA /* MoleculeViewController.swift */; };
+		C0DCCED5276A3E980085CD1D /* AtomicMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49726E7801200387EBA /* AtomicMainController.swift */; };
 		C0DFA43427E89C2A00F6BA9A /* XYZReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DFA43327E89C2A00F6BA9A /* XYZReader.swift */; };
 		C0DFA43727E8A28500F6BA9A /* XYZReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DFA43327E89C2A00F6BA9A /* XYZReader.swift */; };
 		C0DFA43A27E8BDAC00F6BA9A /* PDBReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DFA43927E8BDAC00F6BA9A /* PDBReader.swift */; };
@@ -75,7 +75,7 @@
 		F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48C26E7801200387EBA /* ChartsViews.swift */; };
 		F06AA49D26E7801200387EBA /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48E26E7801200387EBA /* FileManager.swift */; };
 		F06AA49E26E7801200387EBA /* BaseReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48F26E7801200387EBA /* BaseReader.swift */; };
-		F06AA4A526E7801200387EBA /* MoleculeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49726E7801200387EBA /* MoleculeViewController.swift */; };
+		F06AA4A526E7801200387EBA /* AtomicMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49726E7801200387EBA /* AtomicMainController.swift */; };
 		F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */; };
 		F0F6552226F7C61500DD4F25 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552126F7C61500DD4F25 /* MainWindow.swift */; };
 		F0F6552726F7C89600DD4F25 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552626F7C89600DD4F25 /* SettingsView.swift */; };
@@ -92,10 +92,10 @@
 		C05472B12804C3EE00F51E6E /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIToolbars_iPad.swift; sourceTree = "<group>"; };
 		C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralExtensions.swift; sourceTree = "<group>"; };
-		C064B3D0278AAE5D0086E7BD /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSWindowManager.swift; sourceTree = "<group>"; };
 		C066B780277E15140036F404 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
-		C0A7F09E276F7FBB00E69E0F /* RendererController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererController.swift; sourceTree = "<group>"; };
+		C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
 		C0BE59E2278A038200423CF3 /* Commands.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Commands.swift; path = "Preview Content/Commands.swift"; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunctions.swift; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 		F06AA48C26E7801200387EBA /* ChartsViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartsViews.swift; sourceTree = "<group>"; };
 		F06AA48E26E7801200387EBA /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F06AA48F26E7801200387EBA /* BaseReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseReader.swift; sourceTree = "<group>"; };
-		F06AA49726E7801200387EBA /* MoleculeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoleculeViewController.swift; sourceTree = "<group>"; };
+		F06AA49726E7801200387EBA /* AtomicMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomicMainController.swift; sourceTree = "<group>"; };
 		F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableViewController.swift; sourceTree = "<group>"; };
 		F0F55A0C27305DC2003730BA /* Atomic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Atomic.entitlements; sourceTree = "<group>"; };
 		F0F6552126F7C61500DD4F25 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 				C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */,
 				C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */,
 				C0DCCE9C276A3C9C0085CD1D /* Preview Content */,
-				C064B3D0278AAE5D0086E7BD /* WindowManager.swift */,
+				C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */,
 				C0BE59E2278A038200423CF3 /* Commands.swift */,
 			);
 			path = Atomic_macOS;
@@ -198,6 +198,7 @@
 				C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */,
 				C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */,
 				C09441342761F76F00680075 /* ViewExtensions.swift */,
+				F06AA49726E7801200387EBA /* AtomicMainController.swift */,
 				F0F6552526F7C88800DD4F25 /* Settings */,
 				F0D5D7F027144539004E78B5 /* Tools */,
 				F06AA48926E7801200387EBA /* Atom models */,
@@ -327,7 +328,7 @@
 				F06AA48C26E7801200387EBA /* ChartsViews.swift */,
 				C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */,
 				C0DCCECC276A3E710085CD1D /* SceneKitRepresentable.swift */,
-				C0A7F09E276F7FBB00E69E0F /* RendererController.swift */,
+				C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -344,7 +345,6 @@
 		F0F6552026F7C60200DD4F25 /* Main Windows */ = {
 			isa = PBXGroup;
 			children = (
-				F06AA49726E7801200387EBA /* MoleculeViewController.swift */,
 				F0F6552126F7C61500DD4F25 /* MainWindow.swift */,
 				C0265CA42766A30100C5219E /* WelcomeMessage.swift */,
 			);
@@ -471,7 +471,7 @@
 				C05472AD280428CF00F51E6E /* TextViewRepresentable.swift in Sources */,
 				C0DCCED0276A3E8F0085CD1D /* PeriodicTableView.swift in Sources */,
 				C05F5CAA2785A7D800F3B588 /* GeneralExtensions.swift in Sources */,
-				C0A7F0A0276F7FBB00E69E0F /* RendererController.swift in Sources */,
+				C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
 				C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
 				C0DFA43727E8A28500F6BA9A /* XYZReader.swift in Sources */,
 				C0DCCEC2276A3D5C0085CD1D /* PeriodicTable.swift in Sources */,
@@ -486,7 +486,7 @@
 				C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */,
 				C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */,
-				C064B3D1278AAE5D0086E7BD /* WindowManager.swift in Sources */,
+				C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */,
 				C0DFA43B27E8BFD800F6BA9A /* PDBReader.swift in Sources */,
 				C0DCCED3276A3E920085CD1D /* MainWindow.swift in Sources */,
 				C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */,
@@ -494,7 +494,7 @@
 				C0DCCECF276A3E8F0085CD1D /* ViewExtensions.swift in Sources */,
 				C0E13722277F3CD7009ACCB6 /* CommandMenuController.swift in Sources */,
 				C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */,
-				C0DCCED5276A3E980085CD1D /* MoleculeViewController.swift in Sources */,
+				C0DCCED5276A3E980085CD1D /* AtomicMainController.swift in Sources */,
 				C0DCCEC0276A3D540085CD1D /* ToolsController.swift in Sources */,
 				C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */,
 				C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */,
@@ -511,8 +511,8 @@
 			files = (
 				C05472AC280428CF00F51E6E /* TextViewRepresentable.swift in Sources */,
 				C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */,
-				C0A7F09F276F7FBB00E69E0F /* RendererController.swift in Sources */,
-				F06AA4A526E7801200387EBA /* MoleculeViewController.swift in Sources */,
+				C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
+				F06AA4A526E7801200387EBA /* AtomicMainController.swift in Sources */,
 				C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
 				F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */,
 				C0DFA43427E89C2A00F6BA9A /* XYZReader.swift in Sources */,

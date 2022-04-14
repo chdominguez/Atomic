@@ -15,7 +15,7 @@ typealias Gesture = NSClickGestureRecognizer
 
 struct SceneUI: Representable {
     
-    @ObservedObject var controller: RendererController
+    @ObservedObject var controller: MoleculeRenderer
     @ObservedObject var settings = GlobalSettings.shared
     @Environment(\.colorScheme) var colorScheme
     
@@ -32,7 +32,7 @@ struct SceneUI: Representable {
     #endif
     
     // AtomRenderer class as the coordinator for the SceneKit representable. To handle taps, gestures...
-    func makeCoordinator() -> RendererController {
+    func makeCoordinator() -> MoleculeRenderer {
         return controller
     }
     

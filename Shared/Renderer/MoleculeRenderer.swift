@@ -8,7 +8,7 @@ import SwiftUI
 import SceneKit
 
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
-class RendererController: ObservableObject {
+class MoleculeRenderer: ObservableObject {
     
     //MARK: Init
     

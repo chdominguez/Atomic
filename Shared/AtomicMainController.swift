@@ -9,11 +9,13 @@ import SwiftUI
 import SceneKit
 import UniformTypeIdentifiers
 
-class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
+class AtomicMainController: ObservableObject {
     
-    let id = UUID()
+    //MARK: Init
     
-    var renderer: RendererController? = nil
+    /// ID for keeping track of opened controllers
+    var id = UUID()
+    var renderer: MoleculeRenderer? = nil
     var fileURL: URL? = nil
     
     @Published var loading: Bool = false
@@ -24,7 +26,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     @Published var showFileMenu: Bool  = false
     @Published var showEditMenu: Bool = false
     @Published var phase: CGFloat = 0
-    @Published var showPopover: Bool = false
+    @Published var showSheet: Bool = false
     @Published var fileExporter: Bool = false
     @Published var fileToSave: xyzFile? = nil
     
@@ -33,20 +35,22 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     // Base reader class for reading files and handling Steps
     var BR: BaseReader? = nil
     
-    #if os(macOS)
-    var openedWindows = Set<AtomicWindow>()
-    #endif
-    
     var errorDescription = ""
     
     var sheetContent: AnyView = AnyView(EmptyView())
+    
+    private func initializeController(steps: [Step]) {
+        self.renderer = MoleculeRenderer(steps)
+    }
+    
+    //MARK: File manager
     
     func newFile() {
         fileURL = nil
         fileAsString = nil
         fileReady = true
         let emptyStep = Step()
-        renderer = RendererController([emptyStep])
+        renderer = MoleculeRenderer([emptyStep])
     }
     
     func saveFile(_ file: xyzFile) {
@@ -56,7 +60,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     
     func handlePickedFile(_ picked: Result<URL, Error>) {
         loading = true
-        guard let url = FileOpener.getFileURLForPicked(picked) else {
+        guard let url = AtomicFileOpener.getFileURLForPicked(picked) else {
             showErrorFileAlert = true
             return
         }
@@ -69,10 +73,6 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
         }
         processFile(url: url)
     }
-
-    private func initializeController(steps: [Step]) {
-        self.renderer = RendererController(steps)
-    }
     
     func resetFile() {
         renderer = nil
@@ -83,7 +83,7 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
     private func processFile(url: URL) {
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             do {
-                let fileString = try FileOpener.getFileAsString(from: url)
+                let fileString = try AtomicFileOpener.getFileAsString(from: url)
                 let BR = try BaseReader(fileURL: url)
                 try BR.readSteps()
                 #warning("TODO: Clean up this becasue BaseReader makes this easy")
@@ -117,12 +117,15 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
             }
         }
     }
-    
+}
+
+//MARK: Drop delegate
+extension AtomicMainController: DropDelegate {
     func performDrop(info: DropInfo) -> Bool {
         fileReady = false
         loading = true
         let drop = info.itemProviders(for: [.fileURL])
-        FileOpener.getURL(fromDroppedFile: drop) { url in
+        AtomicFileOpener.getURL(fromDroppedFile: drop) { url in
             self.processFile(url: url)
         }
         return true
@@ -171,7 +174,5 @@ class MoleculeViewModel: ObservableObject, DropDelegate, Identifiable {
         }
         return result
     }
-    
 }
-
 

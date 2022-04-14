@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ToolsBar: View {
     
-    @ObservedObject var windowManager = WindowManager.shared
+    #warning("ToolsBar view needs to be refactored")
+    @ObservedObject var windowManager = MacOSWindowManager.shared
     @ObservedObject var toolsController = ToolsController.shared
-    @ObservedObject var currentController: RendererController
+    @ObservedObject var currentController: MoleculeRenderer
     @ObservedObject var ptableController = PeriodicTableViewController.shared
     
     var body: some View {
@@ -23,9 +24,7 @@ struct ToolsBar: View {
                 .foregroundColor(toolsController.selectedTool == .addAtom ? .red : .primary)
                 .onTapGesture {
                     ToolsController.shared.selectedTool = .addAtom
-                    guard let controller = windowManager.currentController else {return}
-                    #warning("TODO: Better implementation of new windows for both ios and macos")
-                    PTable().openNewWindow(with: "Periodic Table", multiple: false, controller: controller)
+                    PTable().openPTableinWindow()
                 }
             HStack {
                 Image(systemName: "hand.tap")
@@ -40,7 +39,7 @@ struct ToolsBar: View {
                 Text("Bond")
             }.atomicNoButton()
                 .onTapGesture {
-                    windowManager.currentController?.renderer?.bondSelectedAtoms()
+                    //windowManager.currentController?.renderer?.bondSelectedAtoms()
                 }
             HStack {
                 Image(systemName: "trash")
@@ -51,16 +50,16 @@ struct ToolsBar: View {
             .onTapGesture {
                 ToolsController.shared.selectedTool = .removeAtom
             }
-            if !(windowManager.currentController?.renderer?.selectedAtoms.isEmpty ?? true){
-                HStack {
-                    Image(systemName: "trash.slash.circle")
-                    Text("Erase selected")
-                }
-                .atomicNoButton()
-                .onTapGesture {
-                    windowManager.currentController?.renderer?.eraseSelectedAtoms()
-                }
-            }
+//            if !(windowManager.currentController?.renderer?.selectedAtoms.isEmpty ?? true){
+//                HStack {
+//                    Image(systemName: "trash.slash.circle")
+//                    Text("Erase selected")
+//                }
+//                .atomicNoButton()
+//                .onTapGesture {
+//                    windowManager.currentController?.renderer?.eraseSelectedAtoms()
+//                }
+//            }
         }
         .frame(maxHeight: 50)
     }

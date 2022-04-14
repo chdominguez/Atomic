@@ -10,7 +10,7 @@ import Combine
 
 struct Molecule3DView: View {
     
-    @ObservedObject var controller: RendererController
+    @ObservedObject var controller: MoleculeRenderer
     
     var body: some View {
         if controller.didLoadAtoms {

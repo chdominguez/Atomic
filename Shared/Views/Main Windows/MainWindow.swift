@@ -11,19 +11,46 @@ import UniformTypeIdentifiers
 
 struct MainWindow: View {
     
-    @StateObject var moleculeVM = MoleculeViewModel()
-    @ObservedObject var cSettings = GlobalSettings.shared
+    @StateObject var controller = AtomicMainController()
     
     var body: some View {
+        content
+        // Minimum size of macOS window
+        .frame(minWidth: 800, minHeight: 600)
+        // Assign modifiers to import and export files
+        .fileExporter(isPresented: $controller.fileExporter,
+                      document: controller.fileToSave,
+                      contentType: UTType(filenameExtension: "xyz")!,
+                      defaultFilename: "molecule")
+                      {_ in}
+        .fileImporter(isPresented: $controller.openFileImporter,
+                      allowedContentTypes: AtomicFileOpener.shared.types)
+                      { fileURL in controller.handlePickedFile(fileURL) }
+        // Assign alert for error in the files
+        .alert(isPresented: $controller.showErrorFileAlert) { alert }
+        // Custom view modifier for allowing dropping on macOS and iOS
+        .onDropOfAtomic(delegate: controller)
+        // Obtaining the NSWindow instance associated with this view
+        .background(WindowAccessor(associatedController: controller))
+    }
+    
+}
+
+/// Extension for assigning modifiers to the main view easily
+extension MainWindow {
+    
+    // MainWindow's content
+    #warning("TODO: Clean main window view")
+    private var content: some View {
         ZStack {
-            if moleculeVM.fileReady {
-                Molecule3DView(controller: moleculeVM.renderer!)
+            if controller.fileReady {
+                Molecule3DView(controller: controller.renderer!)
             }
             else {
                 VStack(spacing: 50) {
                     WelcomeMessage()
                     ZStack {
-                        if moleculeVM.loading {
+                        if controller.loading {
                             VStack {
                                 ProgressView()
                                 Text("Reading file")
@@ -35,26 +62,26 @@ struct MainWindow: View {
                                     Image(systemName: "plus").resizable().scaledToFit().frame(width: 100, height: 100).foregroundColor(.secondary)
                                     Text("New")
                                 }.onTapGesture {
-                                    moleculeVM.newFile()
+                                    controller.newFile()
                                 }
                                 ZStack {
                                     VStack {
-                                        Image(systemName: moleculeVM.isDragginFile ? "square.and.arrow.down" : "doc")
+                                        Image(systemName: controller.isDragginFile ? "square.and.arrow.down" : "doc")
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: 100, height: 100)
-                                            .foregroundColor(moleculeVM.isDragginFile ? .green : .secondary)
-                                        Text(moleculeVM.isDragginFile ? "Drop file" : "Open file")
+                                            .foregroundColor(controller.isDragginFile ? .green : .secondary)
+                                        Text(controller.isDragginFile ? "Drop file" : "Open file")
                                     }.onTapGesture {
-                                        moleculeVM.openFileImporter.toggle()
+                                        controller.openFileImporter.toggle()
                                     }
                                 }
                                 VStack {
                                     Image(systemName: "gear").resizable().scaledToFit().frame(width: 100, height: 100).foregroundColor(.secondary)
                                     Text("Settings")
                                 }.onTapGesture {
-                                    moleculeVM.sheetContent = AnyView(SettingsView())
-                                    moleculeVM.showPopover = true
+                                    controller.sheetContent = AnyView(SettingsView())
+                                    controller.showSheet = true
                                 }
                             }
                         }
@@ -72,28 +99,13 @@ struct MainWindow: View {
             }
             #endif
         }
-        .sheet(isPresented: $moleculeVM.showPopover, onDismiss: {}, content: {
-            moleculeVM.sheetContent
-        })
-        
-        .fileExporter(isPresented: $moleculeVM.fileExporter, document: moleculeVM.fileToSave, contentType: UTType(filenameExtension: "xyz")!, defaultFilename: "molecule", onCompletion: { result in
-            #warning("TODO: Add more extensions for saving the file")
-        })
-        .alert(isPresented: $moleculeVM.showErrorFileAlert) {
-            Alert(title: Text("File error"), message: Text(moleculeVM.errorDescription), dismissButton: .default(Text("Ok")))
-        }
-        .frame(minWidth: 800, minHeight: 600)
-        .fileImporter(isPresented: $moleculeVM.openFileImporter, allowedContentTypes: FileOpener.shared.types) { fileURL in
-            moleculeVM.handlePickedFile(fileURL)
-        }
-        #if os(macOS)
-        .background(WindowAccessor(controller: moleculeVM))
-        .onDrop(of: [.fileURL], delegate: moleculeVM)
-        .onAppear(perform: {WindowManager.shared.currentController = moleculeVM})
-        #else
-        .onAppear(perform: {WindowManager.shared.currentController = moleculeVM})
-        .onDrop(of: FileOpener.shared.types, delegate: moleculeVM)
-        #endif
+    }
+    
+    private var alert: Alert {
+        Alert(title: Text("File error"),
+              message: Text(controller.errorDescription),
+              dismissButton: .default(Text("Ok")))
     }
     
 }
+

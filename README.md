@@ -12,9 +12,9 @@ Usually, current molecular visualizers for macOS are old and use deprecated APIs
 With Atomic, a cross-platform molecular visualizer, you can use the full power of the Apple hardware, integrating native APIs such as SwiftUI or SceneKit. Hence, Atomic will always work on the most recent software.
 
 ## TODO
+- [X] Update already placed atom colors as preferences change
 - [ ] Work on the website
 - [ ] Implement 3D structures for proteins
-- [ ] Update already placed atom colors as preferences change
 - [ ] Custom camera controller for iOS / Zooming
 - [ ] Hide/unhide solvent for proteic systems
 - [ ] Support for exporting Gaussian, Gamess... input files

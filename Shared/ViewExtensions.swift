@@ -37,15 +37,13 @@ struct AtomicNoButton: ViewModifier {
             .frame(height: 30)
             .frame(minWidth: 60)
             .padding(.horizontal)
-            .background {
-                Color.buttonGradient
-            }
+            .background(Color.buttonGradient)
             .cornerRadius(15)
     }
 }
 
 
-// Add view modifiers directly as a View extension
+// Custom view modifiers
 extension View {
     
     /// Custom modifier for UI buttons
@@ -56,15 +54,6 @@ extension View {
     /// Custom modifier for other views that acts as buttons but are not buttons
     func atomicNoButton() -> some View {
         modifier(AtomicNoButton())
-    }
-        
-    /// New window for macOS and new controller for iOS
-    func openNewWindow(with title: String = "New Window", multiple: Bool = true, controller: AtomicMainController? = nil) {
-        #if os(macOS)
-        //windowInternalMacOS(title, multiple, controller)
-        #elseif os(iOS)
-        WindowInternaliOS(controller: controller)
-        #endif
     }
     
     /// .onDrop of modifier adapted for both platforms

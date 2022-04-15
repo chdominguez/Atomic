@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+/// View that hosts the SceneKit representable and shows the tools + the molecule
 struct Molecule3DView: View {
     
     @ObservedObject var controller: MoleculeRenderer
@@ -22,10 +23,10 @@ struct Molecule3DView: View {
                             progressview.foregroundColor(.primary)
                         }
                         Spacer()
-                        ToolsBar(currentController: controller)
+                        AtomicToolsView(controller: controller)
                     }
                 }
-                toolbar2
+                stepsToolbar
                 #if os(macOS)
                 .padding(.top, 5)
                 #endif
@@ -49,7 +50,7 @@ extension Molecule3DView {
         }
     }
     
-    private var toolbar2: some View {
+    private var stepsToolbar: some View {
         HStack {
             HStack {
                 TextField("Step", text: Binding(get: {

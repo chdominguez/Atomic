@@ -9,17 +9,22 @@ import SwiftUI
 
 //Window manager version for iOS
 
-class WindowManager: ObservableObject {
+class InstanceManager: ObservableObject {
     
-    static let shared = WindowManager()
+    static let shared = InstanceManager()
     
-    @Published var currentController: MoleculeViewModel? = nil
+    @Published var currentController: AtomicMainController? = nil
 }
 
 
 extension View {
-    func WindowInternaliOS(controller: MoleculeViewModel? = nil) {
-        controller?.sheetContent = AnyView(self)
-        controller?.showPopover = true
+    func openNewWindow(controller: AtomicMainController? = nil) {
+        if let controller = controller {
+            controller.sheetContent = AnyView(self)
+            controller.showSheet = true
+        } else if let controller = InstanceManager.shared.currentController {
+            controller.sheetContent = AnyView(self)
+            controller.showSheet = true
+        }
     }
 }

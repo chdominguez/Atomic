@@ -13,6 +13,7 @@ With Atomic, a cross-platform molecular visualizer, you can use the full power o
 
 ## TODO
 - [X] Update already placed atom colors as preferences change
+- [ ] Change color of selection
 - [ ] Work on the website
 - [ ] Implement 3D structures for proteins
 - [ ] Custom camera controller for iOS / Zooming

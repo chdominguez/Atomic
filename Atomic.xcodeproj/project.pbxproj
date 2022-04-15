@@ -39,10 +39,8 @@
 		C0CE163928006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
 		C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
 		C0CE163B28007DAA00A35AA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
-		C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D01B52274EC95000556EDA /* ToolsController.swift */; };
 		C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */; };
 		C0DCCE9E276A3C9C0085CD1D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0DCCE9D276A3C9C0085CD1D /* Preview Assets.xcassets */; };
-		C0DCCEC0276A3D540085CD1D /* ToolsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D01B52274EC95000556EDA /* ToolsController.swift */; };
 		C0DCCEC2276A3D5C0085CD1D /* PeriodicTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48A26E7801200387EBA /* PeriodicTable.swift */; };
 		C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48B26E7801200387EBA /* AtomModel.swift */; };
 		C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48E26E7801200387EBA /* FileManager.swift */; };
@@ -99,7 +97,6 @@
 		C0BE59E2278A038200423CF3 /* Commands.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Commands.swift; path = "Preview Content/Commands.swift"; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunctions.swift; sourceTree = "<group>"; };
-		C0D01B52274EC95000556EDA /* ToolsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsController.swift; sourceTree = "<group>"; };
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C0DCCE94276A3C9B0085CD1D /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic_macOSApp.swift; sourceTree = "<group>"; };
@@ -336,7 +333,6 @@
 		F0D5D7F027144539004E78B5 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				C0D01B52274EC95000556EDA /* ToolsController.swift */,
 				C021717E27E3E269007ACD2F /* ToolBar.swift */,
 			);
 			path = Tools;
@@ -495,7 +491,6 @@
 				C0E13722277F3CD7009ACCB6 /* CommandMenuController.swift in Sources */,
 				C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */,
 				C0DCCED5276A3E980085CD1D /* AtomicMainController.swift in Sources */,
-				C0DCCEC0276A3D540085CD1D /* ToolsController.swift in Sources */,
 				C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */,
 				C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */,
@@ -510,7 +505,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C05472AC280428CF00F51E6E /* TextViewRepresentable.swift in Sources */,
-				C0D01B53274EC95000556EDA /* ToolsController.swift in Sources */,
 				C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
 				F06AA4A526E7801200387EBA /* AtomicMainController.swift in Sources */,
 				C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
@@ -572,7 +566,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 0.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cdominguez.Atomic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -606,7 +600,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 0.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = cdominguez.Atomic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -752,10 +746,11 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -792,10 +787,11 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

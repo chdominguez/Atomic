@@ -45,7 +45,7 @@ class ColorSettings: ObservableObject {
     /// Materials for each atom. Default of coreMaterial + color of each atom
     var atomMaterials: [Element : SCNMaterial]!
     
-    var selectionColor: Color = .cyan {
+    var selectionColor: Color = .blue {
         didSet {
             updateSelectionMaterial()
         }

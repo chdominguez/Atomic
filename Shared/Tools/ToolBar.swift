@@ -7,12 +7,10 @@
 
 import SwiftUI
 
-struct ToolsBar: View {
+struct AtomicToolsView: View {
     
     #warning("ToolsBar view needs to be refactored")
-    @ObservedObject var windowManager = MacOSWindowManager.shared
-    @ObservedObject var toolsController = ToolsController.shared
-    @ObservedObject var currentController: MoleculeRenderer
+    @ObservedObject var controller: MoleculeRenderer
     @ObservedObject var ptableController = PeriodicTableViewController.shared
     
     var body: some View {
@@ -21,45 +19,35 @@ struct ToolsBar: View {
                 Image(systemName: "atom")
                 Text(ptableController.selectedAtom.rawValue)
             }.atomicNoButton()
-                .foregroundColor(toolsController.selectedTool == .addAtom ? .red : .primary)
+                .foregroundColor(controller.selectedTool == .addAtom ? .red : .primary)
                 .onTapGesture {
-                    ToolsController.shared.selectedTool = .addAtom
-                    PTable().openPTableinWindow()
+                    controller.selectedTool = .addAtom
+                    PTable().openNewWindow()
                 }
             HStack {
                 Image(systemName: "hand.tap")
                 Text("Select")
             }.atomicNoButton()
-                .foregroundColor(toolsController.selectedTool == .selectAtom ? .red : .primary)
+                .foregroundColor(controller.selectedTool == .selectAtom ? .red : .primary)
                 .onTapGesture {
-                    ToolsController.shared.selectedTool = .selectAtom
+                    controller.selectedTool = .selectAtom
                 }
             HStack {
                 Image(systemName: "link")
                 Text("Bond")
             }.atomicNoButton()
                 .onTapGesture {
-                    //windowManager.currentController?.renderer?.bondSelectedAtoms()
+                    controller.bondSelectedAtoms()
                 }
             HStack {
                 Image(systemName: "trash")
-                Text("Erase")
+                Text(controller.selectedAtoms.isEmpty ? "Erase" : "Erase selected")
             }
             .atomicNoButton()
-            .foregroundColor(toolsController.selectedTool == .removeAtom ? .red : Color.primary)
+            .foregroundColor(controller.selectedTool == .removeAtom ? .red : Color.primary)
             .onTapGesture {
-                ToolsController.shared.selectedTool = .removeAtom
+                controller.selectedAtoms.isEmpty ? controller.selectedTool = .removeAtom : controller.eraseSelectedAtoms()
             }
-//            if !(windowManager.currentController?.renderer?.selectedAtoms.isEmpty ?? true){
-//                HStack {
-//                    Image(systemName: "trash.slash.circle")
-//                    Text("Erase selected")
-//                }
-//                .atomicNoButton()
-//                .onTapGesture {
-//                    windowManager.currentController?.renderer?.eraseSelectedAtoms()
-//                }
-//            }
         }
         .frame(maxHeight: 50)
     }

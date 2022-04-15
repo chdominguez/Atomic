@@ -26,6 +26,18 @@ class MoleculeRenderer: ObservableObject {
         self.steps = steps
     }
     
+    //MARK: Tools
+    
+    /// Selected tool on this scene
+    @Published var selectedTool: Tools = .selectAtom
+    
+    /// Available tools
+    enum Tools {
+        case addAtom
+        case removeAtom
+        case selectAtom
+    }
+    
     //MARK: Step control
     
     /// For moving the steps in sequential order
@@ -87,7 +99,7 @@ class MoleculeRenderer: ObservableObject {
     let cameraNode = SCNNode()
     
     /// An array of tuples. The nodes selected with its selection orb node.
-    var selectedAtoms: [(selectedNode: SCNNode, selectionOrb: SCNNode)] = []
+    @Published var selectedAtoms: [(selectedNode: SCNNode, selectionOrb: SCNNode)] = []
     
     /// Turns to true when loadScenes() has finished
     @Published var didLoadAtoms = false
@@ -272,7 +284,7 @@ class MoleculeRenderer: ObservableObject {
         let location = gesture.location(in: sceneView)
         guard let molecule = showingStep.molecule else {return}
         
-        switch ToolsController.shared.selectedTool {
+        switch selectedTool {
         case .addAtom:
             newAtomOnTouch(molecule: molecule, at: location)
         case .selectAtom:
@@ -311,6 +323,8 @@ class MoleculeRenderer: ObservableObject {
         guard let hitNode = sceneView.hitTest(location).first?.node else {unSelectAll(); return}
         guard let name = hitNode.name else {return}
         
+        print("Hitted: \(hitNode.name)")
+        
         if name.contains("atom") {internalSelectionAtomNode(hitNode);return}
         if hitNode.name == "bond" {internalSelectionBond(hitNode);return}
         if hitNode.name == "selection" {unSelect(hitNode);return}
@@ -332,7 +346,7 @@ class MoleculeRenderer: ObservableObject {
     private func internalSelectionBond(_ hitNode: SCNNode) {
         let bondOrbSelection = hitNode.copy() as! SCNNode
         bondOrbSelection.geometry = bondOrbSelection.geometry?.copy() as! SCNCylinder
-        bondOrbSelection.scale = SCNVector3Make(1.2, 1.2, 1.2)
+        bondOrbSelection.scale = SCNVector3Make(1.2, 1, 1.2)
         bondOrbSelection.geometry?.materials = [settings.colorSettings.selectionMaterial]
         bondOrbSelection.name = "selection"
         bondOrbSelection.opacity = 0.35

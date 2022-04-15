@@ -11,7 +11,11 @@ import UniformTypeIdentifiers
 
 struct MainWindow: View {
     
+    @ObservedObject var settings = GlobalSettings.shared
     @StateObject var controller = AtomicMainController()
+    
+    /// Keep track if the app is minimized on iOS.
+    @Environment(\.scenePhase) var scenePhase
     
     var body: some View {
         content
@@ -30,8 +34,19 @@ struct MainWindow: View {
         .alert(isPresented: $controller.showErrorFileAlert) { alert }
         // Custom view modifier for allowing dropping on macOS and iOS
         .onDropOfAtomic(delegate: controller)
+        #if os(macOS)
         // Obtaining the NSWindow instance associated with this view
         .background(WindowAccessor(associatedController: controller))
+        #elseif os(iOS)
+        // Assigning the root view a sheet for displaying new views as a "little window inside the app".
+        .sheet(isPresented: $controller.showSheet, content: {controller.sheetContent})
+        .onChange(of: scenePhase) { phase in
+            if phase == .active {
+                InstanceManager.shared.currentController = controller
+            }
+        }
+        #endif
+        
     }
     
 }
@@ -94,7 +109,7 @@ extension MainWindow {
             }
             #if os(iOS)
             VStack {
-                toolbars
+                iOSToolBarReplacement
                 Spacer()
             }
             #endif

@@ -93,10 +93,11 @@ class AtomicWindow: Hashable {
     
     /// Window types. This enum allows for keeping track of already opened windows for each controller. Making it easir to bring them back instead of creating a new one. RawValue is the window title.
     public enum WindowType: String {
-        case ptable = "Periodic Table"
         case energyGraph = "Energy"
         case vibrations = "Vibrations"
         case mainWindow = "Atomic"
+        
+        case ptable = "Periodic table"
     }
     
 }
@@ -105,17 +106,29 @@ class AtomicWindow: Hashable {
 
 extension View {
     
+    func openNewWindow(type: AtomicWindow.WindowType? = nil, controller: AtomicMainController? = nil) {
+        openNewMacOSWindow(type: type, controller: controller)
+    }
+    
     /// Checks if there is already an opened window for the type of window trying to open
-    private func openNewMacOSWindow(type: AtomicWindow.WindowType, controller: AtomicMainController) {
+    private func openNewMacOSWindow(type: AtomicWindow.WindowType?, controller: AtomicMainController? = nil) {
+        
+        guard let type = type else {
+            openPTableinWindow()
+            return
+        }
+        
+        guard let controller = controller else {
+            return
+        }
+        
         let openedWindows = MacOSWindowManager.shared.openedWindows
         if let alreadyOpened = openedWindows.first(where: { window in
             window.windowType == type && window.associatedController.id == controller.id}) {
             alreadyOpened.window.makeMain()
             return
         }
-        if type != .ptable {
-            newWindowInternal(type: type, controller: controller)
-        }
+        newWindowInternal(type: type, controller: controller)
     }
     
     /// Internal function for opening windows. The actual window is created by this function
@@ -128,7 +141,7 @@ extension View {
         MacOSWindowManager.shared.openedWindows.insert(atomicWindow)
     }
     
-    func openPTableinWindow() {
+    private func openPTableinWindow() {
         
         let manager = MacOSWindowManager.shared
         

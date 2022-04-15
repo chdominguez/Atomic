@@ -10,14 +10,14 @@ import SwiftUI
 
 // Due to the lack of a toolbar similar to what macOS offers, the same actions and buttons are shown above the main view.
 extension MainWindow {
-    var toolbars: some View {
+    var iOSToolBarReplacement: some View {
         HStack(spacing: 5) {
-            if moleculeVM.fileReady {
+            if controller.fileReady {
                 Group {
                     //MARK: File menu
                     Menu {
                         Button {
-                            moleculeVM.newFile()
+                            controller.newFile()
                         } label: {
                             HStack{
                                 Image(systemName: "doc.badge.plus")
@@ -27,7 +27,7 @@ extension MainWindow {
                         
                         
                         Button {
-                            moleculeVM.openFileImporter.toggle()
+                            controller.openFileImporter.toggle()
                         } label: {
                             HStack{
                                 Image(systemName: "doc.on.doc")
@@ -35,9 +35,9 @@ extension MainWindow {
                             }
                         }.atomicButton(fixed: true)
                         Button {
-                            guard let renderer = moleculeVM.renderer else {return}
+                            guard let renderer = controller.renderer else {return}
                             let file = XYZWritter.sceneToXYZ(atomNodes: renderer.atomNodes)
-                            moleculeVM.saveFile(file)
+                            controller.saveFile(file)
                         } label: {
                             HStack{
                                 Image(systemName: "square.and.arrow.down.fill")
@@ -45,8 +45,8 @@ extension MainWindow {
                             }
                         }.atomicButton(fixed: true)
                         Button {
-                            moleculeVM.showFileMenu = false
-                            moleculeVM.resetFile()
+                            controller.showFileMenu = false
+                            controller.resetFile()
                         } label: {
                             HStack{
                                 Image(systemName: "xmark")
@@ -55,27 +55,27 @@ extension MainWindow {
                         }.atomicButton(fixed: true)
                         
                         Button {
-                            moleculeVM.sheetContent = AnyView(OutputFileView(fileInput: moleculeVM.fileAsString!))
-                            moleculeVM.showPopover = true
+                            controller.sheetContent = AnyView(OutputFileView(fileInput: controller.fileAsString!))
+                            controller.showSheet = true
                         } label: {
                             Image(systemName: "doc")
                             Text("Read")
                         }
                         .atomicButton(fixed: true)
-                        .disabled(moleculeVM.fileAsString == nil)
+                        .disabled(controller.fileAsString == nil)
                         
                         
-                        .offset(x: 0, y: moleculeVM.showFileMenu ? 120 : 40)
-                        .opacity(moleculeVM.showFileMenu ? 1 : 0)
+                        .offset(x: 0, y: controller.showFileMenu ? 120 : 40)
+                        .opacity(controller.showFileMenu ? 1 : 0)
                         
                     } label: {
                         Image(systemName: "plus.circle.fill")
-                            .rotationEffect(Angle(degrees: moleculeVM.showFileMenu ? 45 : 0))
+                            .rotationEffect(Angle(degrees: controller.showFileMenu ? 45 : 0))
                         Text("File")
                     }.atomicButton()
                     //MARK: View menu
                     Menu {
-                        Picker("Atom style", selection: $cSettings.atomStyle) {
+                        Picker("Atom style", selection: $settings.atomStyle) {
                             ForEach(AtomStyle.allCases, id: \.self) {
                                 Text($0.rawValue)
                             }
@@ -101,8 +101,8 @@ extension MainWindow {
                     .atomicButton()
                     //MARK: Settings
                     Button {
-                        moleculeVM.sheetContent = AnyView(SettingsView())
-                        moleculeVM.showPopover = true
+                        controller.sheetContent = AnyView(SettingsView())
+                        controller.showSheet = true
                     } label: {
                         Image(systemName: "gear")
                         Text("Settings")

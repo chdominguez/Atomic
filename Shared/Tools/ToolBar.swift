@@ -52,7 +52,7 @@ struct AtomicToolsView: View {
                 .animation(.easeIn, value: controller.selectedAtoms.isEmpty)
             if controller.measuredDistance != nil {
                 HStack {
-                    Text(controller.measuredDistance!.stringWith(3) + " Å")
+                    Text(controller.measuredDistance!)
                         .atomicNoButton()
                         .padding(.horizontal)
                     Spacer()

@@ -273,7 +273,7 @@ class MoleculeRenderer: ObservableObject {
     @Published var selectedTool: Tools = .selectAtom
     
     /// Distance of selected nodes
-    @Published var measuredDistance: Double? = nil
+    @Published var measuredDistance: String? = nil
     
     /// Available tools
     enum Tools {
@@ -282,15 +282,27 @@ class MoleculeRenderer: ObservableObject {
         case selectAtom
     }
     
+    /// Measures the distance or the angle between two and three selected nodes, respectively and depending on the selected nodes quantity.
     func measureNodes() {
-        print("count: \(selectedAtoms.count)")
         if selectedAtoms.count == 2 {
-            guard let pos1 = selectedAtoms.first?.selectedNode.position else {return}
-            guard let pos2 = selectedAtoms.last?.selectedNode.position else {return}
-            measuredDistance = distance(from: pos1, to: pos2)
-        } else {
-            measuredDistance = nil
+            let pos1 = selectedAtoms[0].selectedNode.position
+            let pos2 = selectedAtoms[1].selectedNode.position
+            measuredDistance = distance(from: pos1, to: pos2).stringWith(3) + " Å"
+            return
+            
         }
+        
+        if selectedAtoms.count == 3 {
+            let pos1 = selectedAtoms[0].selectedNode.position
+            let pos2 = selectedAtoms[1].selectedNode.position
+            let pos3 = selectedAtoms[2].selectedNode.position
+            
+            measuredDistance = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + " º"
+            return
+        }
+        
+        // Fallthrough
+        measuredDistance = nil
     }
     
     //MARK: Scene renderer controller

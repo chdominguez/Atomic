@@ -8,14 +8,60 @@
 import SceneKit
 
 
+extension SCNVector3: AdditiveArithmetic {
+    
+    /// The norm of the vector
+    var norm: Float {
+        let floatx = Float(x)
+        let floaty = Float(y)
+        let floatz = Float(z)
+        
+        return sqrt(floatx*floatx + floaty*floaty + floatz*floaty)
+    }
+    
+    func normalizedVector() -> SCNVector3 {
+        #if os(macOS)
+        return SCNVector3Make(x/CGFloat(norm), y/CGFloat(norm), z/CGFloat(norm))
+        #elseif os(iOS)
+        return SCNVector3Make(x/norm, y/norm, z/norm)
+        #endif
+    }
+    
+    public static func * (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 {
+        SCNVector3Make(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z)
+    }
+    
+    public static func - (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 {
+        SCNVector3Make(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z)
+    }
+    
+    public static func + (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 {
+        SCNVector3Make(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z)
+    }
+    
+    public static var zero: SCNVector3 {
+        return SCNVector3Make(0, 0, 0)
+    }
+}
+
 /// Returns the distance from two separated positions
 /// - Parameters:
 ///   - pos1: Position of atom 1
 ///   - pos2: position of atom 2
 /// - Returns: The square root of the diference of the vectors
 func distance(from pos1: SCNVector3, to pos2: SCNVector3) -> Double {
-    let x = (pos1.x - pos2.x), y = (pos1.y - pos2.y), z = (pos1.z - pos2.z)
-    return Double(sqrt(x*x+y*y+z*z))
+    let distanceVector = pos1 - pos2
+    return Double(distanceVector.norm)
+}
+
+/// Returns the angle between three vectors in degrees
+func angle(pos1: SCNVector3, pos2: SCNVector3, pos3: SCNVector3) -> Double {
+    let vector1 = (pos1 - pos2).normalizedVector()
+    let vector2 = (pos2 - pos3).normalizedVector()
+    
+    let dotProduct = vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z
+    
+    return Double(acos(dotProduct)) * 57.2958 /// Transformation to degrees
 }
 
 

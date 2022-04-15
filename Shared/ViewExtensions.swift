@@ -19,9 +19,7 @@ struct AtomicButton: ViewModifier {
                 .frame(height: 30)
                 .frame(minWidth: 60)
                 .padding(.horizontal)
-                .background {
-                    Color.buttonGradient
-                }
+                .background(Color.buttonGradient)
                 .cornerRadius(15)
         #endif
     }

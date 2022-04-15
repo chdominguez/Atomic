@@ -26,18 +26,6 @@ class MoleculeRenderer: ObservableObject {
         self.steps = steps
     }
     
-    //MARK: Tools
-    
-    /// Selected tool on this scene
-    @Published var selectedTool: Tools = .selectAtom
-    
-    /// Available tools
-    enum Tools {
-        case addAtom
-        case removeAtom
-        case selectAtom
-    }
-    
     //MARK: Step control
     
     /// For moving the steps in sequential order
@@ -99,7 +87,13 @@ class MoleculeRenderer: ObservableObject {
     let cameraNode = SCNNode()
     
     /// An array of tuples. The nodes selected with its selection orb node.
-    @Published var selectedAtoms: [(selectedNode: SCNNode, selectionOrb: SCNNode)] = []
+    @Published var selectedAtoms: [(selectedNode: SCNNode, selectionOrb: SCNNode)] = [] {
+        didSet {
+            withAnimation {
+                measureNodes()
+            }
+        }
+    }
     
     /// Turns to true when loadScenes() has finished
     @Published var didLoadAtoms = false
@@ -272,13 +266,39 @@ class MoleculeRenderer: ObservableObject {
         unSelectAll()
     }
     
+    
+    //MARK: Tools
+    
+    /// Selected tool on this scene
+    @Published var selectedTool: Tools = .selectAtom
+    
+    /// Distance of selected nodes
+    @Published var measuredDistance: Double? = nil
+    
+    /// Available tools
+    enum Tools {
+        case addAtom
+        case removeAtom
+        case selectAtom
+    }
+    
+    func measureNodes() {
+        print("count: \(selectedAtoms.count)")
+        if selectedAtoms.count == 2 {
+            guard let pos1 = selectedAtoms.first?.selectedNode.position else {return}
+            guard let pos2 = selectedAtoms.last?.selectedNode.position else {return}
+            measuredDistance = distance(from: pos1, to: pos2)
+        } else {
+            measuredDistance = nil
+        }
+    }
+    
     //MARK: Scene renderer controller
     
     private var selectedFromPtable: Element {PeriodicTableViewController.shared.selectedAtom}
     
     private var world0: SCNVector3 { sceneView.projectPoint(SCNVector3Zero) }
     
-#warning("TODO: Clean up handleTaps")
     @objc func handleTaps(gesture: Gesture) {
         
         let location = gesture.location(in: sceneView)
@@ -320,14 +340,14 @@ class MoleculeRenderer: ObservableObject {
     
     private func newSelection(at location: CGPoint) {
         
-        guard let hitNode = sceneView.hitTest(location).first?.node else {unSelectAll(); return}
+        guard let hitNode = sceneView.hitTest(location).first?.node else {unSelectAll();measureNodes(); return}
         guard let name = hitNode.name else {return}
         
-        print("Hitted: \(hitNode.name)")
+        if name.contains("atom") {internalSelectionAtomNode(hitNode)}
+        if hitNode.name == "bond" {internalSelectionBond(hitNode)}
+        if hitNode.name == "selection" {unSelect(hitNode)}
         
-        if name.contains("atom") {internalSelectionAtomNode(hitNode);return}
-        if hitNode.name == "bond" {internalSelectionBond(hitNode);return}
-        if hitNode.name == "selection" {unSelect(hitNode);return}
+        measureNodes()
     }
     
     private func internalSelectionAtomNode(_ hitNode: SCNNode) {
@@ -360,7 +380,7 @@ class MoleculeRenderer: ObservableObject {
     /// Unselect the hitted selection
     private func unSelect(_ hitNode: SCNNode) {
         hitNode.removeFromParentNode()
-        selectedAtoms.removeAll { $0.selectedNode == hitNode }
+        selectedAtoms.removeAll { $0.selectionOrb == hitNode }
     }
     
     /// Unselects all the selected nodes

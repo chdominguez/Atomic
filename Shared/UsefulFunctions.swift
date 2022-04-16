@@ -57,9 +57,13 @@ func distance(from pos1: SCNVector3, to pos2: SCNVector3) -> Double {
 /// Returns the angle between three vectors in degrees
 func angle(pos1: SCNVector3, pos2: SCNVector3, pos3: SCNVector3) -> Double {
     let vector1 = (pos1 - pos2).normalizedVector()
-    let vector2 = (pos2 - pos3).normalizedVector()
+    let vector2 = (pos3 - pos2).normalizedVector()
     
     let dotProduct = vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z
+    
+    let cosAngle = Float(dotProduct) / (vector1.norm*vector2.norm)
+    
+    print(acos(cosAngle)*57.2958)
     
     return Double(acos(dotProduct)) * 57.2958 /// Transformation to degrees
 }

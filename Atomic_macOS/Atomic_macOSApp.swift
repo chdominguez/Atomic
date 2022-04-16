@@ -19,7 +19,7 @@ struct Atomic_macOSApp: App {
             MainWindow()
         }
         .commands {
-            //AtomicCommands()
+            AtomicCommands()
         }
         Settings {
             SettingsView()

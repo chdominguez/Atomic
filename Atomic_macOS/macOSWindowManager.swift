@@ -38,10 +38,29 @@ extension MacOSWindowManager: NSWindowDelegate {
                 return // If the window is the periodic table, do nothing. The periodic table window can then be reopened again in openPTableinWindow()
             }
             
-            let atomicWindow = openedWindows.first { aWindow in
+            let atomicWindow = openedWindows.first { aWindow in // Obtain the atomicWindow class that hosts the closing window
                 aWindow.window == window
             }
-            openedWindows.remove(atomicWindow!) // The window must exsit. If not, better to crash the app.
+            
+            guard let atomicWindow = atomicWindow else {fatalError("Atomic window manager had a fatal error. Contact developer")} // The window must exsit. If not, better to crash the app.
+            
+            
+            if atomicWindow.windowType == .mainWindow {
+                let controller = atomicWindow.associatedController
+                let associatedWindows = openedWindows.filter { aWindow in
+                    aWindow.associatedController.id == controller.id
+                }
+                
+                for opened in associatedWindows {
+                    if opened.window.windowNumber != window.windowNumber { // Remove associated windows (the ones that share the controller)
+                        opened.window.close()
+                        openedWindows.remove(opened)
+                    }
+                }
+            }
+            
+            // Remove from the set the closing window
+            openedWindows.remove(atomicWindow)
         }
     }
 }
@@ -91,12 +110,15 @@ class AtomicWindow: Hashable {
         hasher.combine(window.windowNumber)
     }
     
+    //MARK: Window types
     /// Window types. This enum allows for keeping track of already opened windows for each controller. Making it easir to bring them back instead of creating a new one. RawValue is the window title.
     public enum WindowType: String {
         case energyGraph = "Energy"
         case vibrations = "Vibrations"
         case mainWindow = "Atomic"
+        case openedFile = "Edit file"
         
+        case settings = "Settings"
         case ptable = "Periodic table"
     }
     
@@ -106,21 +128,31 @@ class AtomicWindow: Hashable {
 
 extension View {
     
-    func openNewWindow(type: AtomicWindow.WindowType? = nil, controller: AtomicMainController? = nil) {
+    func openNewWindow(type: AtomicWindow.WindowType, controller: AtomicMainController? = nil) {
         openNewMacOSWindow(type: type, controller: controller)
     }
     
     /// Checks if there is already an opened window for the type of window trying to open
     private func openNewMacOSWindow(type: AtomicWindow.WindowType?, controller: AtomicMainController? = nil) {
         
-        guard let type = type else {
+        guard let type = type else {return}
+        
+        if type == .ptable {
             openPTableinWindow()
             return
         }
         
-        guard let controller = controller else {
+        if type == .settings {
+            NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
             return
         }
+        
+        if type == .mainWindow {
+            openNewMain()
+            return
+        }
+        
+        guard let controller = controller else {return}
         
         let openedWindows = MacOSWindowManager.shared.openedWindows
         if let alreadyOpened = openedWindows.first(where: { window in
@@ -133,14 +165,19 @@ extension View {
     
     /// Internal function for opening windows. The actual window is created by this function
     private func newWindowInternal(type: AtomicWindow.WindowType, controller: AtomicMainController) {
-        let atomicWindow = AtomicWindow(window: NSWindow(), type: type, controller: controller)
-        atomicWindow.window.center()
-        atomicWindow.window.isReleasedWhenClosed = false
-        atomicWindow.window.title = type.rawValue
-        atomicWindow.window.delegate = MacOSWindowManager.shared
+        let window = newNSWindowInternal()
+        window.title = type.rawValue
+        let atomicWindow = AtomicWindow(window: window, type: type, controller: controller)
         MacOSWindowManager.shared.openedWindows.insert(atomicWindow)
     }
     
+    /// Opens a new main window
+    private func openNewMain() {
+        let window = newNSWindowInternal()
+        window.title = AtomicWindow.WindowType.mainWindow.rawValue
+    }
+    
+    /// Opens the periodic table
     private func openPTableinWindow() {
         
         let manager = MacOSWindowManager.shared
@@ -150,21 +187,25 @@ extension View {
             return
         }
         
+        let newWindow = newNSWindowInternal()
+        
+        newWindow.title = AtomicWindow.WindowType.ptable.rawValue
+        manager.periodicTable = newWindow
+        
+    }
+    
+    private func newNSWindowInternal() -> NSWindow {
         let window = NSWindow(contentRect: NSRect(x: 20, y: 20, width: 800, height: 600),
         styleMask: [.titled, .closable, .miniaturizable, .fullSizeContentView],
         backing: .buffered,
         defer: false)
-        
         window.center()
-        window.title = AtomicWindow.WindowType.ptable.rawValue
         window.delegate = MacOSWindowManager.shared
-        window.makeKeyAndOrderFront(nil)
         window.isReleasedWhenClosed = false
-        
+        window.makeKeyAndOrderFront(nil)
         window.contentView = NSHostingView(rootView: self)
         
-        manager.periodicTable = window
-        
+        return window
     }
 }
 

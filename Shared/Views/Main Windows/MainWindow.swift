@@ -95,8 +95,7 @@ extension MainWindow {
                                     Image(systemName: "gear").resizable().scaledToFit().frame(width: 100, height: 100).foregroundColor(.secondary)
                                     Text("Settings")
                                 }.onTapGesture {
-                                    controller.sheetContent = AnyView(SettingsView())
-                                    controller.showSheet = true
+                                    SettingsView().openNewWindow(type: .settings)
                                 }
                             }
                         }

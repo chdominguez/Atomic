@@ -22,7 +22,7 @@ struct AtomicToolsView: View {
                     .foregroundColor(controller.selectedTool == .addAtom ? .red : .primary)
                     .onTapGesture {
                         controller.selectedTool = .addAtom
-                        PTable().openNewWindow()
+                        PTable().openNewWindow(type: .ptable)
                     }
                 HStack {
                     Image(systemName: "hand.tap")

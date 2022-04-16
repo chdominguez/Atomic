@@ -16,7 +16,7 @@ extension SCNVector3: AdditiveArithmetic {
         let floaty = Float(y)
         let floatz = Float(z)
         
-        return sqrt(floatx*floatx + floaty*floaty + floatz*floaty)
+        return sqrt(floatx*floatx + floaty*floaty + floatz*floatz)
     }
     
     func normalizedVector() -> SCNVector3 {

@@ -13,35 +13,43 @@ class AtomicMainController: ObservableObject {
     
     //MARK: Init
     
+    /// Initializes the renderer that manages the 3D view with the given steps
+    private func initializeController(steps: [Step]) {
+        self.renderer = MoleculeRenderer(steps)
+    }
+    
     /// ID for keeping track of opened controllers
     var id = UUID()
     var renderer: MoleculeRenderer? = nil
     var fileURL: URL? = nil
     
+    // Drag and drop related variables
+    @Published var isDragginFile: Bool  = false
+    /// Used to animate the view with a green dashed moving line
+    @Published var phase: CGFloat = 0
+    
+    // If ture, the loading screen shows
     @Published var loading: Bool = false
+    
     @Published var showErrorFileAlert: Bool  = false
     @Published var fileReady: Bool  = false
     @Published var openFileImporter: Bool  = false
-    @Published var isDragginFile: Bool  = false
-    @Published var showFileMenu: Bool  = false
-    @Published var showEditMenu: Bool = false
-    @Published var phase: CGFloat = 0
-    @Published var showSheet: Bool = false
+    
     @Published var fileExporter: Bool = false
     @Published var fileToSave: xyzFile? = nil
     
+    /// Opened file. In case the user wants to see the file
     @Published var fileAsString: String? = nil
     
     // Base reader class for reading files and handling Steps
     var BR: BaseReader? = nil
     
+    /// Error shown when the opened file cannot be loaded
     var errorDescription = ""
     
+    /// The content to be displayed on a sheey. Used mainly in iOS when a window cannot be displayed
     var sheetContent: AnyView = AnyView(EmptyView())
-    
-    private func initializeController(steps: [Step]) {
-        self.renderer = MoleculeRenderer(steps)
-    }
+    @Published var showSheet: Bool = false
     
     //MARK: File manager
     

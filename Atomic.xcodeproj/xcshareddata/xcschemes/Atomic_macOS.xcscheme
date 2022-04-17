@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C0DCCE93276A3C9B0085CD1D"
                BuildableName = "Atomic.app"
-               BlueprintName = "Atomic"
+               BlueprintName = "Atomic_macos"
                ReferencedContainer = "container:Atomic.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C0DCCE93276A3C9B0085CD1D"
             BuildableName = "Atomic.app"
-            BlueprintName = "Atomic"
+            BlueprintName = "Atomic_macos"
             ReferencedContainer = "container:Atomic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C0DCCE93276A3C9B0085CD1D"
             BuildableName = "Atomic.app"
-            BlueprintName = "Atomic"
+            BlueprintName = "Atomic_macos"
             ReferencedContainer = "container:Atomic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

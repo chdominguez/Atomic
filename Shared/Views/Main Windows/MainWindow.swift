@@ -95,7 +95,11 @@ extension MainWindow {
                                     Image(systemName: "gear").resizable().scaledToFit().frame(width: 100, height: 100).foregroundColor(.secondary)
                                     Text("Settings")
                                 }.onTapGesture {
+                                    #if os(macOS)
                                     SettingsView().openNewWindow(type: .settings)
+                                    #elseif os(iOS)
+                                    SettingsView().openNewWindow(controller: controller)
+                                    #endif
                                 }
                             }
                         }

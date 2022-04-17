@@ -43,7 +43,6 @@
 		C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
 		C0CE163B28007DAA00A35AA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
 		C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */; };
-		C0DCCE9E276A3C9C0085CD1D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0DCCE9D276A3C9C0085CD1D /* Preview Assets.xcassets */; };
 		C0DCCEC2276A3D5C0085CD1D /* PeriodicTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48A26E7801200387EBA /* PeriodicTable.swift */; };
 		C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48B26E7801200387EBA /* AtomModel.swift */; };
 		C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48E26E7801200387EBA /* FileManager.swift */; };
@@ -69,7 +68,6 @@
 		C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
 		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
 		F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA47926E77F5100387EBA /* AtomicApp.swift */; };
-		F06AA48126E77F5200387EBA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA48026E77F5200387EBA /* Preview Assets.xcassets */; };
 		F06AA49A26E7801200387EBA /* PeriodicTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48A26E7801200387EBA /* PeriodicTable.swift */; };
 		F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48B26E7801200387EBA /* AtomModel.swift */; };
 		F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48C26E7801200387EBA /* ChartsViews.swift */; };
@@ -103,7 +101,6 @@
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C0DCCE94276A3C9B0085CD1D /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic_macOSApp.swift; sourceTree = "<group>"; };
-		C0DCCE9D276A3C9C0085CD1D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Atomic_macOS.entitlements; sourceTree = "<group>"; };
 		C0DCCECC276A3E710085CD1D /* SceneKitRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitRepresentable.swift; sourceTree = "<group>"; };
 		C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Atomic-macOS-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -116,7 +113,6 @@
 		F06AA47626E77F5100387EBA /* Atomic_ipad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic_ipad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F06AA47926E77F5100387EBA /* AtomicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicApp.swift; sourceTree = "<group>"; };
 		F06AA47D26E77F5200387EBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F06AA48026E77F5200387EBA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F06AA48A26E7801200387EBA /* PeriodicTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodicTable.swift; sourceTree = "<group>"; };
 		F06AA48B26E7801200387EBA /* AtomModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomModel.swift; sourceTree = "<group>"; };
 		F06AA48C26E7801200387EBA /* ChartsViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartsViews.swift; sourceTree = "<group>"; };
@@ -177,17 +173,8 @@
 				C0205A6A280C632200BCD688 /* Commands.swift */,
 				C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */,
 				C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */,
-				C0DCCE9C276A3C9C0085CD1D /* Preview Content */,
 			);
 			path = Atomic_macOS;
-			sourceTree = "<group>";
-		};
-		C0DCCE9C276A3C9C0085CD1D /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				C0DCCE9D276A3C9C0085CD1D /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		C0DCCEBF276A3CF20085CD1D /* Shared */ = {
@@ -276,17 +263,8 @@
 				C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */,
 				C0D04A89274D66E30049E8ED /* Info.plist */,
 				F0F55A0C27305DC2003730BA /* Atomic.entitlements */,
-				F06AA47F26E77F5200387EBA /* Preview Content */,
 			);
 			path = Atomic_iPadOS;
-			sourceTree = "<group>";
-		};
-		F06AA47F26E77F5200387EBA /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				F06AA48026E77F5200387EBA /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		F06AA48926E7801200387EBA /* Atom models */ = {
@@ -451,7 +429,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C02C1BDC27E4B23F00BCDF01 /* Assets.xcassets in Resources */,
-				C0DCCE9E276A3C9C0085CD1D /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,7 +437,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0CE163B28007DAA00A35AA3 /* Assets.xcassets in Resources */,
-				F06AA48126E77F5200387EBA /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

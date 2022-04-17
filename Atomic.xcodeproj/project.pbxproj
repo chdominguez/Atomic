@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C00B7C0F280B84C500D17E62 /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C00B7C0E280B84C500D17E62 /* LineChartView */; };
 		C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */; };
 		C021717F27E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C021718027E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
@@ -129,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C00B7C0F280B84C500D17E62 /* LineChartView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +371,7 @@
 			);
 			name = Atomic;
 			packageProductDependencies = (
+				C00B7C0E280B84C500D17E62 /* LineChartView */,
 			);
 			productName = Atomic_macOS;
 			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
@@ -423,6 +426,7 @@
 			);
 			mainGroup = F06AA46D26E77F5100387EBA;
 			packageReferences = (
+				C00B7C0D280B84C500D17E62 /* XCRemoteSwiftPackageReference "LineChartView" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
 			projectDirPath = "";
@@ -834,6 +838,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C00B7C0D280B84C500D17E62 /* XCRemoteSwiftPackageReference "LineChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Jonathan-Gander/LineChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C00B7C0E280B84C500D17E62 /* LineChartView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C00B7C0D280B84C500D17E62 /* XCRemoteSwiftPackageReference "LineChartView" */;
+			productName = LineChartView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F06AA46E26E77F5100387EBA /* Project object */;
 }

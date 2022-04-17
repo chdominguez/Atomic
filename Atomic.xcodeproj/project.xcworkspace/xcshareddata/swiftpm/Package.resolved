@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "linechartview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Jonathan-Gander/LineChartView",
+      "state" : {
+        "revision" : "fc317ad276edfbedbb47f4945b14fe6760611bd9",
+        "version" : "1.2.2"
+      }
+    }
+  ],
+  "version" : 2
+}

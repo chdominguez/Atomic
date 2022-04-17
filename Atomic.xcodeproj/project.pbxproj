@@ -12,6 +12,7 @@
 		C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C01D7FC7280C5F7C003EBA5D /* LineChartView */; };
 		C01D7FCA280C5F86003EBA5D /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C01D7FC9280C5F86003EBA5D /* LineChartView */; };
 		C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */; };
+		C0205A6B280C632200BCD688 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0205A6A280C632200BCD688 /* Commands.swift */; };
 		C021717F27E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C021718027E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C0265CA52766A30100C5219E /* WelcomeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0265CA42766A30100C5219E /* WelcomeMessage.swift */; };
@@ -34,7 +35,6 @@
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C09441352761F76F00680075 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
-		C09BFB2F27E78A8E00D4B969 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE59E2278A038200423CF3 /* Commands.swift */; };
 		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
@@ -84,6 +84,7 @@
 /* Begin PBXFileReference section */
 		C01D7FA5280C4734003EBA5D /* AtomicLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicLineChartView.swift; sourceTree = "<group>"; };
 		C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceManager.swift; sourceTree = "<group>"; };
+		C0205A6A280C632200BCD688 /* Commands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		C021717E27E3E269007ACD2F /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 		C0265CA42766A30100C5219E /* WelcomeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeMessage.swift; sourceTree = "<group>"; };
 		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
@@ -97,7 +98,6 @@
 		C066B780277E15140036F404 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
-		C0BE59E2278A038200423CF3 /* Commands.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Commands.swift; path = "Preview Content/Commands.swift"; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunctions.swift; sourceTree = "<group>"; };
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -172,12 +172,12 @@
 		C0DCCE95276A3C9B0085CD1D /* Atomic_macOS */ = {
 			isa = PBXGroup;
 			children = (
-				C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */,
 				C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */,
+				C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */,
+				C0205A6A280C632200BCD688 /* Commands.swift */,
+				C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */,
 				C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */,
 				C0DCCE9C276A3C9C0085CD1D /* Preview Content */,
-				C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */,
-				C0BE59E2278A038200423CF3 /* Commands.swift */,
 			);
 			path = Atomic_macOS;
 			sourceTree = "<group>";
@@ -271,12 +271,12 @@
 		F06AA47826E77F5100387EBA /* Atomic_iPadOS */ = {
 			isa = PBXGroup;
 			children = (
-				C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */,
 				F06AA47926E77F5100387EBA /* AtomicApp.swift */,
+				C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */,
+				C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */,
 				C0D04A89274D66E30049E8ED /* Info.plist */,
 				F0F55A0C27305DC2003730BA /* Atomic.entitlements */,
 				F06AA47F26E77F5200387EBA /* Preview Content */,
-				C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */,
 			);
 			path = Atomic_iPadOS;
 			sourceTree = "<group>";
@@ -485,7 +485,6 @@
 				C0DCCECD276A3E710085CD1D /* SceneKitRepresentable.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
 				C0DCCEC5276A3D600085CD1D /* BaseReader.swift in Sources */,
-				C09BFB2F27E78A8E00D4B969 /* Commands.swift in Sources */,
 				C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */,
 				C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */,
@@ -500,6 +499,7 @@
 				C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */,
 				C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */,
+				C0205A6B280C632200BCD688 /* Commands.swift in Sources */,
 				C01D7FA7280C4734003EBA5D /* AtomicLineChartView.swift in Sources */,
 				C0E1371C277F33D3009ACCB6 /* InputfileView.swift in Sources */,
 				C021718027E3E269007ACD2F /* ToolBar.swift in Sources */,

@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		C01D7FA6280C4734003EBA5D /* AtomicLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D7FA5280C4734003EBA5D /* AtomicLineChartView.swift */; };
 		C01D7FA7280C4734003EBA5D /* AtomicLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01D7FA5280C4734003EBA5D /* AtomicLineChartView.swift */; };
-		C01D7FBE280C57CB003EBA5D /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C01D7FBD280C57CB003EBA5D /* LineChartView */; };
-		C01D7FC0280C57D3003EBA5D /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C01D7FBF280C57D3003EBA5D /* LineChartView */; };
+		C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C01D7FC7280C5F7C003EBA5D /* LineChartView */; };
+		C01D7FCA280C5F86003EBA5D /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C01D7FC9280C5F86003EBA5D /* LineChartView */; };
 		C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */; };
 		C021717F27E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C021718027E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
@@ -83,7 +83,6 @@
 
 /* Begin PBXFileReference section */
 		C01D7FA5280C4734003EBA5D /* AtomicLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicLineChartView.swift; sourceTree = "<group>"; };
-		C01D7FBC280C57C1003EBA5D /* LineChartView_macOS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LineChartView_macOS; path = ../LineChartView_macOS; sourceTree = "<group>"; };
 		C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceManager.swift; sourceTree = "<group>"; };
 		C021717E27E3E269007ACD2F /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 		C0265CA42766A30100C5219E /* WelcomeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeMessage.swift; sourceTree = "<group>"; };
@@ -135,7 +134,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C01D7FBE280C57CB003EBA5D /* LineChartView in Frameworks */,
+				C01D7FCA280C5F86003EBA5D /* LineChartView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,21 +142,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C01D7FC0280C57D3003EBA5D /* LineChartView in Frameworks */,
+				C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C01D7FBB280C57C1003EBA5D /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				C01D7FBC280C57C1003EBA5D /* LineChartView_macOS */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		C01FB1F62775D2C60012FD88 /* FileReader */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,7 +251,6 @@
 		F06AA46D26E77F5100387EBA = {
 			isa = PBXGroup;
 			children = (
-				C01D7FBB280C57C1003EBA5D /* Packages */,
 				C0DCCEBF276A3CF20085CD1D /* Shared */,
 				F06AA47826E77F5100387EBA /* Atomic_iPadOS */,
 				C0DCCE95276A3C9B0085CD1D /* Atomic_macOS */,
@@ -387,7 +377,7 @@
 			);
 			name = Atomic;
 			packageProductDependencies = (
-				C01D7FBD280C57CB003EBA5D /* LineChartView */,
+				C01D7FC9280C5F86003EBA5D /* LineChartView */,
 			);
 			productName = Atomic_macOS;
 			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
@@ -407,7 +397,7 @@
 			);
 			name = Atomic_ipad;
 			packageProductDependencies = (
-				C01D7FBF280C57D3003EBA5D /* LineChartView */,
+				C01D7FC7280C5F7C003EBA5D /* LineChartView */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic_ipad.app */;
@@ -443,6 +433,7 @@
 			);
 			mainGroup = F06AA46D26E77F5100387EBA;
 			packageReferences = (
+				C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
 			projectDirPath = "";
@@ -564,6 +555,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Atomic_macOS/Atomic_macOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -598,6 +590,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Atomic_macOS/Atomic_macOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -857,13 +850,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Jonathan-Gander/LineChartView";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		C01D7FBD280C57CB003EBA5D /* LineChartView */ = {
+		C01D7FC7280C5F7C003EBA5D /* LineChartView */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */;
 			productName = LineChartView;
 		};
-		C01D7FBF280C57D3003EBA5D /* LineChartView */ = {
+		C01D7FC9280C5F86003EBA5D /* LineChartView */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */;
 			productName = LineChartView;
 		};
 /* End XCSwiftPackageProductDependency section */

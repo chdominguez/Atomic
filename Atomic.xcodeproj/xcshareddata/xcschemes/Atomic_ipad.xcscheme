@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F06AA47526E77F5100387EBA"
-               BuildableName = "Atomic_ipad.app"
+               BuildableName = "Atomic.app"
                BlueprintName = "Atomic_ipad"
                ReferencedContainer = "container:Atomic.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F06AA47526E77F5100387EBA"
-            BuildableName = "Atomic_ipad.app"
+            BuildableName = "Atomic.app"
             BlueprintName = "Atomic_ipad"
             ReferencedContainer = "container:Atomic.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F06AA47526E77F5100387EBA"
-            BuildableName = "Atomic_ipad.app"
+            BuildableName = "Atomic.app"
             BlueprintName = "Atomic_ipad"
             ReferencedContainer = "container:Atomic.xcodeproj">
          </BuildableReference>

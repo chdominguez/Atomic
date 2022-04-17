@@ -14,6 +14,7 @@ struct AtomicToolsView: View {
     
     var body: some View {
         ZStack {
+            //MARK: Main toolbar
             HStack {
                 HStack {
                     Image(systemName: "atom")
@@ -54,9 +55,17 @@ struct AtomicToolsView: View {
                 }
             }.frame(maxHeight: 50)
                 .animation(.easeIn, value: controller.selectedAtoms.isEmpty)
+            
+            //MARK: Distance/angle
             if controller.measuredDistance != nil {
                 HStack {
-                    Text(controller.measuredDistance!)
+                    TextField("", text: Binding(get: {
+                        guard let distance = controller.measuredDistance else {return ""}
+                        return distance.stringWith(3)
+                    }, set: { newValue in
+                        controller.measuredDistance = controller.editDistance(newValue)
+                    }))
+                        .textFieldStyle(.plain)
                         .atomicNoButton()
                         .padding(.horizontal)
                     Spacer()

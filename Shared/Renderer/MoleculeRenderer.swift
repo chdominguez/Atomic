@@ -273,7 +273,7 @@ class MoleculeRenderer: ObservableObject {
     @Published var selectedTool: Tools = .selectAtom
     
     /// Distance of selected nodes
-    @Published var measuredDistance: String? = nil
+    @Published var measuredDistance: Double? = nil
     
     /// Available tools
     enum Tools {
@@ -283,11 +283,11 @@ class MoleculeRenderer: ObservableObject {
     }
     
     /// Measures the distance or the angle between two and three selected nodes, respectively and depending on the selected nodes quantity.
-    func measureNodes() {
+    private func measureNodes() {
         if selectedAtoms.count == 2 {
             let pos1 = selectedAtoms[0].selectedNode.position
             let pos2 = selectedAtoms[1].selectedNode.position
-            measuredDistance = distance(from: pos1, to: pos2).stringWith(3) + " Å"
+            measuredDistance = distance(from: pos1, to: pos2)
             return
             
         }
@@ -297,12 +297,36 @@ class MoleculeRenderer: ObservableObject {
             let pos2 = selectedAtoms[1].selectedNode.position
             let pos3 = selectedAtoms[2].selectedNode.position
             
-            measuredDistance = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + " º"
+            measuredDistance = angle(pos1: pos1, pos2: pos2, pos3: pos3)
             return
         }
         
         // Fallthrough
         measuredDistance = nil
+    }
+    
+    /// If the user changes manually measuredDistance, the selected nodes are updated to reflect the change.
+    func editDistance(_ newValue: String) -> Double? {
+        if selectedAtoms.isEmpty {return nil}
+        let pos1 = selectedAtoms[0].selectedNode.position
+        let pos2 = selectedAtoms[1].selectedNode.position
+        let vector = (pos1 - pos2).normalizedVector()
+        
+        guard let i = Float(newValue) else {return nil}
+        
+        if i < 0.01 {return nil}
+        
+        let j = CGFloat(i)
+        
+        let newPosition = SCNVector3Make(vector.x * j, vector.y * j, vector.z * j)
+        
+        selectedAtoms[1].selectedNode.position = newPosition
+        selectedAtoms[1].selectionOrb.position = newPosition
+        
+        let newDistance = newPosition - pos1
+        
+        return Double(newDistance.norm)
+        
     }
     
     //MARK: Scene renderer controller

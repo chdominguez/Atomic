@@ -1,5 +1,4 @@
-![MainImage](https://user-images.githubusercontent.com/34599976/162983599-2196412f-b70e-4bbf-951f-7485212ae5ca.png)
-
+![MainImage2](https://user-images.githubusercontent.com/34599976/163733266-275fbd1d-d1b3-4a4a-9caa-b6bfa0246ef8.png)
 # Atomic
 Modern molecular visualizer for macOS and iPadOS
 

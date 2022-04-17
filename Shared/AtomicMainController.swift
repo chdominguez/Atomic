@@ -54,11 +54,10 @@ class AtomicMainController: ObservableObject {
     //MARK: File manager
     
     func newFile() {
-        fileURL = nil
-        fileAsString = nil
-        fileReady = true
+        resetFile()
         let emptyStep = Step()
         renderer = MoleculeRenderer([emptyStep])
+        fileReady = true
     }
     
     func saveFile(_ file: xyzFile) {
@@ -67,6 +66,7 @@ class AtomicMainController: ObservableObject {
     }
     
     func handlePickedFile(_ picked: Result<URL, Error>) {
+        fileReady = false
         loading = true
         guard let url = AtomicFileOpener.getFileURLForPicked(picked) else {
             showErrorFileAlert = true
@@ -83,9 +83,11 @@ class AtomicMainController: ObservableObject {
     }
     
     func resetFile() {
+        fileAsString = nil
         renderer = nil
         fileReady = false
         fileURL = nil
+        BR = nil
     }
     
     private func processFile(url: URL) {

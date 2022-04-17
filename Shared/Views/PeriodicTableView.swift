@@ -48,9 +48,7 @@ struct PTable: View {
                 }
             }
         }
-        .padding()
-        .navigationTitle("Periodic table")
-        
+        .padding()       
     }
 }
 

@@ -2,6 +2,7 @@
 
 import SwiftUI
 
+//MARK: Commands view
 /// macOS menus on top of the screen
 struct AtomicCommands: Commands {
     
@@ -56,7 +57,9 @@ struct AtomicCommands: Commands {
         CommandMenu("Tools") {
             #warning("TODO: Implement views for for macOS and iOS")
             Button("Energy") {
-
+                guard let energy = commands.getStepsEnergy() else {return}
+                AtomicLineChartView(data: energy).openNewWindow(type: .energyGraph, controller: commands.activeController)
+                print("opened widnow")
             }
             Button("Frequencies") {
             }
@@ -72,6 +75,8 @@ struct AtomicCommands: Commands {
         }
     }
 }
+
+//MARK: Commands controller
 
 class AtomicComandsController: ObservableObject {
     
@@ -112,5 +117,13 @@ class AtomicComandsController: ObservableObject {
     func viewInputFIle() {
         guard let file = activeController?.fileAsString else {return}
         InputfileView(fileInput: file).openNewWindow(type: .openedFile, controller: activeController)
+    }
+    
+    func getStepsEnergy() -> [Double]? {
+        guard let steps = activeController?.BR?.steps else {return nil}
+        let energies = steps.compactMap { step in
+            step.energy
+        }
+        return energies
     }
 }

@@ -45,7 +45,6 @@ extension MainWindow {
                             }
                         }.atomicButton(fixed: true)
                         Button {
-                            controller.showFileMenu = false
                             controller.resetFile()
                         } label: {
                             HStack{
@@ -63,14 +62,8 @@ extension MainWindow {
                         }
                         .atomicButton(fixed: true)
                         .disabled(controller.fileAsString == nil)
-                        
-                        
-                        .offset(x: 0, y: controller.showFileMenu ? 120 : 40)
-                        .opacity(controller.showFileMenu ? 1 : 0)
-                        
                     } label: {
                         Image(systemName: "plus.circle.fill")
-                            .rotationEffect(Angle(degrees: controller.showFileMenu ? 45 : 0))
                         Text("File")
                     }.atomicButton()
                     //MARK: View menu
@@ -87,6 +80,11 @@ extension MainWindow {
                     //MARK: Tools menu
                     Menu {
                         Button("Energy") {
+                            guard let steps = controller.BR?.steps else {return}
+                            let energies = steps.compactMap { step in
+                                step.energy
+                            }
+                            AtomicLineChartView(data: energies).openNewWindow(controller: controller)
                         }
                         Button("Vibrations") {
                             
@@ -101,8 +99,7 @@ extension MainWindow {
                     .atomicButton()
                     //MARK: Settings
                     Button {
-                        controller.sheetContent = AnyView(SettingsView())
-                        controller.showSheet = true
+                        SettingsView().openNewWindow(controller: controller)
                     } label: {
                         Image(systemName: "gear")
                         Text("Settings")

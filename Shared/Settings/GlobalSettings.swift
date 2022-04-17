@@ -19,6 +19,7 @@ class GlobalSettings: ObservableObject {
 }
 
 
+//MARK: Color settings
 /// Colors of atoms, bonds, and other properties of the SceneKit scene. This class is meant to reside in GlobalSettings as a property.
 class ColorSettings: ObservableObject {
     
@@ -149,9 +150,14 @@ class ColorSettings: ObservableObject {
         }
     }
     
+    //MARK: Charts
+    
+    @Published var chartColor: Color = .blue
+    
 }
 
 #warning("TODO: 3D structures for folded proteins: Helix, Beta-sheet, turns...")
+//MARK: Node geometries
 
 /// Geometries for SceneKit nodes. These geometries implement the materials defined in the ColorSettings class
 class NodeGeometries {

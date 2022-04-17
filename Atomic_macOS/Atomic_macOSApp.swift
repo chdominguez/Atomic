@@ -12,8 +12,7 @@ struct Atomic_macOSApp: App {
     
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
-    @StateObject var commandMenu = CommandMenuController.shared
-    @StateObject var windowManager = WindowManager.shared
+    @StateObject var windowManager = MacOSWindowManager.shared
     
     var body: some Scene {
         WindowGroup {

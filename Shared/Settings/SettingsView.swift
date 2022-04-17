@@ -8,7 +8,7 @@
 import SwiftUI
 import SceneKit
 
-//MARK: View
+//MARK: Settings main view
 struct SettingsView: View {
     var body: some View {
         NavigationView {
@@ -28,7 +28,7 @@ struct SettingsView: View {
                 } label: {
                     Label("About Atomic", systemImage: "atom")
                 }
- 
+                
             }
             .navigationTitle("Settings")
         }
@@ -37,7 +37,7 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-            SettingsView().previewDevice(PreviewDevice(rawValue: "Mac")).frame(width: 800, height: 600, alignment: .center)
+        SettingsView().previewDevice(PreviewDevice(rawValue: "Mac")).frame(width: 800, height: 600, alignment: .center)
     }
 }
 
@@ -50,15 +50,55 @@ struct ViewSettings: View {
     @ObservedObject var settings = GlobalSettings.shared
     var body: some View {
         ScrollView {
-            HStack {
-                ColorPicker("Background color: ", selection: $settings.backgroundColor)
-                Spacer()
-                ColorPicker("Bond color: ", selection: $settings.bondColor)
+            Section {
+                ColorPicker("Line color: ", selection: $settings.colorSettings.chartColor).padding()
+            } header: {
+                HStack {
+                    Text("Charts").bold().padding()
+                    Spacer()
+                }
             }
-            .padding()
+            
+            
             Divider()
-            PTable()
-        }
+            
+            Section {
+                VStack(alignment: .leading) {
+                    ColorPicker("Background color: ", selection: $settings.colorSettings.backgroundColor)
+                    Spacer()
+                    ColorPicker("Bond color: ", selection: $settings.colorSettings.bondColor)
+                    Spacer()
+                    ColorPicker("Selection color: ", selection: $settings.colorSettings.selectionColor)
+                }.padding()
+            } header: {
+                HStack {
+                    Text("Scene").bold().padding()
+                    Spacer()
+                }
+            }
+            
+            Divider()
+            
+            Section {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Roughness")
+                        Slider(value: $settings.colorSettings.roughness, in: 0...1)
+                    }.padding()
+                    HStack {
+                        Text("Metalness")
+                        Slider(value: $settings.colorSettings.metalness, in: 0...1)
+                    }.padding()
+                    
+                    PTable()
+                }
+            } header: {
+                HStack {
+                    Text("Atoms").bold().padding()
+                    Spacer()
+                }
+            }
+        }.navigationTitle("View")
     }
 }
 struct AboutAtomic: View {

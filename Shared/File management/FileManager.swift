@@ -4,13 +4,14 @@
 //
 //  Created by Christian Dominguez on 16/8/21.
 //
+
 import UniformTypeIdentifiers
 import SwiftUI
-import SceneKit
 
-class FileOpener: ObservableObject {
+/// Manages file extensions and file URLs.
+class AtomicFileOpener: ObservableObject {
     
-    static let shared = FileOpener()
+    static let shared = AtomicFileOpener()
     
     //File types that the app supports as UTTypes
     internal let types: [UTType]
@@ -32,7 +33,6 @@ class FileOpener: ObservableObject {
             return fileURL
         }
         catch {
-            print(error.localizedDescription)
             return nil
         }
     }
@@ -65,7 +65,7 @@ class FileOpener: ObservableObject {
     }
 }
 
-
+/// XYZ files are saved from this struct, which conforms to FileDocument.
 struct xyzFile: FileDocument {
     
     static var readableContentTypes = [UTType(filenameExtension: AFE.xyz.rawValue)!]

@@ -372,13 +372,14 @@ enum Element: String, CaseIterable {
         }
     }
     
+    #warning("TODO: Assign custom RGB colors")
     // Default atom colors
     var color: Color {
         switch self {
         case .hydrogen:
             return .white
         case .helium:
-            return .cyan
+            return .blue
         case .lithium:
             return .yellow
         case .beryllium:
@@ -392,7 +393,7 @@ enum Element: String, CaseIterable {
         case .oxygen:
             return .red
         case .fluorine:
-            return .cyan
+            return .purple
         case .neon:
             return .black
         case .sodium:
@@ -412,7 +413,7 @@ enum Element: String, CaseIterable {
         case .argon:
             return .black // TEMPORARY
         case .bromine:
-            return .brown
+            return .yellow
         case .iodine:
             return .purple
         case .dummy:

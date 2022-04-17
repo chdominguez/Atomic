@@ -10,8 +10,6 @@ import SwiftUI
 @main
 struct AtomicApp: App {
     
-    @StateObject var windowManager = WindowManager.shared
-    
     var body: some Scene {
         WindowGroup {
             MainWindow()

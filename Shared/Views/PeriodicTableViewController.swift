@@ -14,5 +14,4 @@ class PeriodicTableViewController: ObservableObject {
     
     @Published var selectedAtom = Element.hydrogen
     
-    @Published var selectedTool = editTools.addAtom
 }

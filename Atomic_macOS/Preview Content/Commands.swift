@@ -2,81 +2,128 @@
 
 import SwiftUI
 
+//MARK: Commands view
+/// macOS menus on top of the screen
 struct AtomicCommands: Commands {
     
-    @ObservedObject var commandMenu = CommandMenuController.shared
-    @ObservedObject var windowManager = WindowManager.shared
-    @ObservedObject var settings = GlobalSettings.shared
+    @ObservedObject var commands = AtomicComandsController()
+
+    #warning("TODO: Disable buttons when required")
     
     var body: some Commands {
         CommandGroup(replacing: .newItem) {
+            
             Button("New molecule") {
-                guard let controller = windowManager.currentController else {return}
-                controller.newFile()
-            }.keyboardShortcut("N")
-            Button("Open file") {
-                guard let controller = windowManager.currentController else {return}
-                controller.openFileImporter = true
-            }.keyboardShortcut("O")
-            Button("Close file") {
-                guard let controller = windowManager.currentController else {return}
-                controller.resetFile()
+                commands.newMolecule()
             }
+            .keyboardShortcut("N")
+            
+            Button("Open file") {
+                commands.openFile()
+            }
+            .keyboardShortcut("O")
+            
+            Button("Close file") {
+                commands.closeFile()
+            }
+            
             Button("Save") {
-                let file = XYZWritter.sceneToXYZ(scene: commandMenu.currentScene!)
-                windowManager.currentController?.saveFile(file)
-            }.keyboardShortcut("S").disabled(commandMenu.currentScene == nil)
+                commands.saveFile()
+            }.keyboardShortcut("S")
+            
             Divider()
+            
             Button("New window") {
-                MainWindow().openNewWindow(with: "Atomic", and: .multiple)
+                commands.newWindow()
             }
         }
         CommandMenu("Molecule") {
-            Picker("Atom style", selection: $settings.atomStyle) {
+            Picker("Atom style", selection: $commands.settings.atomStyle) {
                 ForEach(AtomStyle.allCases, id: \.self) { Text($0.rawValue) }
             }
             Button("Periodic table") {
-                ToolsController.shared.selected2Tool = .addAtom
-                guard let controller = windowManager.currentController else {return}
-                PTable().openNewWindow(with: "Periodic Table", and: .ptable, controller: controller)
+                PTable().openNewWindow(type: .ptable)
             }
             Button("Select") {
-                ToolsController.shared.selected2Tool = .selectAtom
+                commands.activeController?.renderer?.selectedTool = .selectAtom
             }
             Button("Erase") {
-                ToolsController.shared.selected2Tool = .removeAtom
+                commands.activeController?.renderer?.selectedTool = .removeAtom
             }
             Button("Bond selected") {
-                windowManager.currentController?.renderer?.bondSelectedAtoms()
+                commands.activeController?.renderer?.bondSelectedAtoms()
             }.keyboardShortcut("B")
-            Button("Remove selected") {
-                windowManager.currentController?.renderer?.eraseSelectedAtoms()
-            }.keyboardShortcut("R")
         }
         CommandMenu("Tools") {
-            #warning("TODO: Implement tools for macOS and iOS")
+            #warning("TODO: Implement views for for macOS and iOS")
             Button("Energy") {
-                
+                guard let energy = commands.getStepsEnergy() else {return}
+                AtomicLineChartView(data: energy).openNewWindow(type: .energyGraph, controller: commands.activeController)
+                print("opened widnow")
             }
             Button("Frequencies") {
-                if let freqs = windowManager.currentController!.renderer?.showingStep.frequencys {
-                    FreqsView(freqs: freqs).openNewWindow(with: "Frequencies", and: .freqs, controller: windowManager.currentController!)
-                }
-            }.disabled(!commandMenu.hasfreq)
+            }
+
             Button("Summary") {
-                
+
             }
         }
         CommandMenu("Input/Output") {
-            Button("Show input file") {
-                if let BR = windowManager.currentController!.BR {
-                    let fileAsString = BR.openedFile.joined(separator: "\n")
-                    InputfileView(fileInput: fileAsString).openNewWindow(with: "Input file", and: .inputfile)
-                }
-            }//.disabled(moleculeVM.gReader == nil)
-            Button("Show output file") {
-                //OutputFileView(fileInput: moleculeVM.fileAsString!).openNewWindow(with: "Output file")
-            }//.disabled(moleculeVM.fileAsString == nil)
+            Button("View file") {
+                commands.viewInputFIle()
+            }
         }
+    }
+}
+
+//MARK: Commands controller
+
+class AtomicComandsController: ObservableObject {
+    
+    @Published var wManager = MacOSWindowManager.shared
+    @Published var settings = GlobalSettings.shared
+    
+    /// The active AtomicMainController. NOT to be used to define views. As its not a @Published var
+    var activeController: AtomicMainController? { wManager.activeController }
+    
+    /// Erases the active controller and creates a new one on the active window
+    func newMolecule() {
+        activeController?.newFile()
+    }
+    
+    /// Opens the file picker on the active controller
+    func openFile() {
+        activeController?.openFileImporter = true
+    }
+    
+    /// Erases the active controller and presents the Welcome window
+    func closeFile() {
+        activeController?.resetFile()
+    }
+    
+    /// Generates a new file with the active controller scene.
+    func saveFile() {
+        guard let atomNodes = activeController?.renderer?.atomNodes else {return}
+        let file = XYZWritter.sceneToXYZ(atomNodes: atomNodes)
+        activeController?.saveFile(file)
+    }
+    
+    /// Opens a new Main window
+    func newWindow() {
+        MainWindow().openNewWindow(type: .mainWindow)
+    }
+    
+    /// Opens a view with the opened file
+    func viewInputFIle() {
+        guard let file = activeController?.fileAsString else {return}
+        InputfileView(fileInput: file).openNewWindow(type: .openedFile, controller: activeController)
+    }
+    
+    func getStepsEnergy() -> [Double]? {
+        guard let steps = activeController?.BR?.steps else {return nil}
+        let energies = steps.compactMap { step in
+            step.energy
+        }
+        return energies
     }
 }

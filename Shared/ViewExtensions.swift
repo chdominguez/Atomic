@@ -7,39 +7,25 @@
 
 import SwiftUI
 
+/// View modifier for UI buttons
 struct AtomicButton: ViewModifier {
-    
-    let fixed: Bool
     
     func body(content: Content) -> some View {
         #if os(macOS)
         content
         #else
-        if fixed {
-            content
-                .buttonStyle(.plain)
-                .frame(height: 30)
-                .frame(width: 80)
-                .padding(.horizontal)
-                .background {
-                    CustomColors.gradientColor
-                }
-                .cornerRadius(15)
-        } else {
             content
                 .buttonStyle(.plain)
                 .frame(height: 30)
                 .frame(minWidth: 60)
                 .padding(.horizontal)
-                .background {
-                    CustomColors.gradientColor
-                }
+                .background(Color.buttonGradient)
                 .cornerRadius(15)
-        }
         #endif
     }
 }
 
+// View modifier for custom buttons that are not part of SwiftUI class "Button". I.e. a Text with .onTapGesture
 struct AtomicNoButton: ViewModifier {
 
     var widthButton: CGFloat = 80
@@ -49,24 +35,31 @@ struct AtomicNoButton: ViewModifier {
             .frame(height: 30)
             .frame(minWidth: 60)
             .padding(.horizontal)
-            .background {
-                CustomColors.gradientColor
-            }
+            .background(Color.buttonGradient)
             .cornerRadius(15)
     }
 }
 
 
+// Custom view modifiers
 extension View {
+    
+    /// Custom modifier for UI buttons
     func atomicButton(fixed: Bool = false) -> some View {
-        if fixed {
-            return modifier(AtomicButton(fixed: true))
-        } else {
-            return modifier(AtomicButton(fixed: false))
-        }
+        modifier(AtomicButton())
     }
+    
+    /// Custom modifier for other views that acts as buttons but are not buttons
     func atomicNoButton() -> some View {
         modifier(AtomicNoButton())
     }
+    
+    /// .onDrop of modifier adapted for both platforms
+    func onDropOfAtomic(delegate: DropDelegate) -> some View {
+        #if os(macOS)
+        self.onDrop(of: [.fileURL], delegate: delegate)
+        #elseif os(iOS)
+        self.onDrop(of: AtomicFileOpener.shared.types, delegate: delegate)
+        #endif
+    }
 }
-

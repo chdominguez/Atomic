@@ -11,7 +11,7 @@ import SceneKit
 extension BaseReader {
     internal func readPDBSteps() throws {
         // Assign the PDB error for cleaner code
-        let pdbError = ReadingErrors.pdbError
+        let pdbError = AtomicErrors.pdbError
         
         // Variable to save current step atom positions
         var currentMolecule = Molecule()
@@ -85,7 +85,11 @@ extension BaseReader {
         }
         
         // Create the step corresponding to this protein
-        let step = Step(molecule: currentMolecule, isFinalStep: true, isProtein: true, backBone: backBone)
+        let step = Step()
+        step.molecule = currentMolecule
+        step.isFinalStep = true
+        step.isProtein = true
+        step.backBone = backBone
         self.steps.append(step)
     }
     

@@ -11,14 +11,16 @@ import SwiftUI
 struct PTable: View {
     
     @ObservedObject var ptableController = PeriodicTableViewController.shared
-    @ObservedObject var colorSettings = GlobalSettings.shared
+    @ObservedObject var colorSettings = GlobalSettings.shared.colorSettings
     
     var body: some View {
         VStack {
             VStack {
                 HStack {
                     Spacer()
-                    ColorPicker("Atom color", selection: $colorSettings.atomColors[ptableController.selectedAtom.atomicNumber - 1])
+                    ColorPicker("Atom color", selection: $colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]).onChange(of: colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]) { newValue in
+                        colorSettings.updateNodeAtomMaterial(ptableController.selectedAtom)
+                    }
                     Spacer()
                 }
                 VStack(alignment: .center) {
@@ -46,9 +48,7 @@ struct PTable: View {
                 }
             }
         }
-        .padding()
-        .navigationTitle("Periodic table")
-        
+        .padding()       
     }
 }
 

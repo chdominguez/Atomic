@@ -15,5 +15,9 @@ struct AtomicApp: App {
             MainWindow()
         }
     }
+    
+    func handleURL() {
+        
+    }
 }
 

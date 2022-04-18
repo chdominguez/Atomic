@@ -14,7 +14,6 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.Atomic.gjf</string>
-				<string>public.data</string>
 			</array>
 		</dict>
 		<dict>
@@ -54,7 +53,7 @@
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.atomic.xyz</string>
+				<string>com.Atomic.xyz</string>
 			</array>
 		</dict>
 	</array>

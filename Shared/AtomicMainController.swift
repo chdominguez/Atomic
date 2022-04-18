@@ -90,7 +90,7 @@ class AtomicMainController: ObservableObject {
         BR = nil
     }
     
-    private func processFile(url: URL) {
+    func processFile(url: URL) {
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             do {
                 let fileString = try AtomicFileOpener.getFileAsString(from: url)

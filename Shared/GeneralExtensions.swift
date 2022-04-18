@@ -45,16 +45,3 @@ extension Float {
         }
     }
 }
-
-extension SCNVector3: Equatable {
-    public static func == (lhs: SCNVector3, rhs: SCNVector3) -> Bool {
-        if lhs.x == rhs.x {
-            if lhs.y == rhs.y {
-                if  lhs.z == rhs.z {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-}

@@ -49,13 +49,24 @@ extension SCNVector3: AdditiveArithmetic {
 /// Useful functions for vectors
 
 extension SCNVector3 {
-
-    func dotProduct(_ v2: SCNVector3) -> Float {
-        self.x * v2.x + self.y * v2.y + self.z * v2.z
+    
+    /// Returns the normalized vector
+    func normalized() -> SCNVector3 {
+        let gnorm = CGFloat(norm)
+        return SCNVector3Make(x / gnorm, y / gnorm, z / gnorm)
     }
     
-    func normalized() -> SCNVector3 {
-        SCNVector3Make(self.x / norm, self.y / norm, self.z / norm)
+    /// Returns the dot product between itself and a second vector.
+    func dotProduct(_ v2: SCNVector3) -> Float {
+        Float(x * v2.x + y * v2.y + z * v2.z)
+    }
+    
+    /// Returns the cross product between itself and a second vector.
+    func crossProduct(_ v2: SCNVector3) -> SCNVector3 {
+        let nx = y*v2.z - z*v2.y
+        let ny = z*v2.x - x*v2.z
+        let nz = x*v2.y - y*v2.x
+        return SCNVector3Make(nx, ny, nz)
     }
       
 }

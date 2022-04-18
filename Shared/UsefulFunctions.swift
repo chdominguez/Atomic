@@ -24,7 +24,7 @@ func angle(pos1: SCNVector3, pos2: SCNVector3, pos3: SCNVector3) -> Double {
     
     let dotProduct = vector1.dotProduct(vector2)
     
-    return Double(acos(dotProduct)) * 57.2958 /// Conversion to degrees
+    return Double(acos(dotProduct)) * (180/Double.pi)  /// Conversion to degrees
 }
 
 

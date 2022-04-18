@@ -63,7 +63,7 @@ struct AtomicToolsView: View {
                         guard let distance = controller.measuredDistance else {return ""}
                         return String(distance)
                     }, set: { newValue in
-                        controller.measuredDistance = controller.editDistance(newValue)
+                        controller.measuredDistance = controller.editDistanceOrAngle(newValue)
                     }))
                         .textFieldStyle(.plain)
                         .atomicNoButton()

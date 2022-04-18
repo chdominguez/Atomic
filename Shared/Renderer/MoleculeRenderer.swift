@@ -282,6 +282,16 @@ class MoleculeRenderer: ObservableObject {
         case selectAtom
     }
     
+    func editDistanceOrAngle(_ newValue: String) -> Double? {
+        if selectedAtoms.count == 2 {
+            return editDistance(newValue)
+        }
+        if selectedAtoms.count == 3 {
+            return editAngle(newValue)
+        }
+        return nil
+    }
+    
     /// Measures the distance or the angle between two and three selected nodes, respectively and depending on the selected nodes quantity.
     private func measureNodes() {
         if selectedAtoms.count == 2 {
@@ -306,15 +316,15 @@ class MoleculeRenderer: ObservableObject {
     }
     
     /// If the user changes manually measuredDistance, the selected nodes are updated to reflect the change.
-    func editDistance(_ newValue: String) -> Double? {
+    private func editDistance(_ newValue: String) -> Double? {
         if selectedAtoms.isEmpty {return nil}
         let pos1 = selectedAtoms[0].selectedNode.position
         let pos2 = selectedAtoms[1].selectedNode.position
-        let vector = (pos1 - pos2).normalizedVector()
+        let vector = (pos1 - pos2).normalized()
         
         guard let i = Float(newValue) else {return nil}
         
-        if i < 0.01 {return nil}
+        if i < 0.01 {return nil} // Limit of proximity
         
         let j = CGFloat(i)
         
@@ -327,6 +337,19 @@ class MoleculeRenderer: ObservableObject {
         
         return Double(newDistance.norm)
         
+    }
+    
+    private func editAngle(_ newValue: String) -> Double? {
+        let pos1 = selectedAtoms[0].selectedNode.position
+        let pos2 = selectedAtoms[1].selectedNode.position
+        let pos3 = selectedAtoms[2].selectedNode.position
+        
+        let vector1 = (pos1 - pos2).normalized()
+        let vector2 = (pos3 - pos2).normalized()
+        
+        let cross = vector1.crossProduct(vector2)
+        
+        return Double(cross.norm)
     }
     
     //MARK: Scene renderer controller

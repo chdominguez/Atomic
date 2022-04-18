@@ -61,7 +61,7 @@ struct AtomicToolsView: View {
                 HStack {
                     TextField("", text: Binding(get: {
                         guard let distance = controller.measuredDistance else {return ""}
-                        return distance.stringWith(3)
+                        return String(distance)
                     }, set: { newValue in
                         controller.measuredDistance = controller.editDistance(newValue)
                     }))

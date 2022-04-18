@@ -35,6 +35,7 @@ func averageDistance(of positions: [SCNVector3]) -> SCNVector3 {
     
     var meanPos = SCNVector3Zero.self
     
+    #warning("TODO: Think of a universal solution for CGFloat/Float duality")
     // Why does SceneKit uses Floats or CGFloats depending on the OS. WHY?
     #if os(macOS)
     let npos = CGFloat(positions.count)

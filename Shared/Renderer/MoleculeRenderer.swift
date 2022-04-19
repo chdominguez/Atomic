@@ -264,16 +264,11 @@ class MoleculeRenderer: ObservableObject {
             atom.selectedNode.removeFromParentNode()
         }
         unSelectAll()
+        updateBonds()
     }
     
     
     //MARK: Tools
-    
-    /// Selected tool on this scene
-    @Published var selectedTool: Tools = .selectAtom
-    
-    /// Distance of selected nodes
-    @Published var measuredDistance: String? = nil
     
     /// Available tools
     enum Tools {
@@ -282,12 +277,34 @@ class MoleculeRenderer: ObservableObject {
         case selectAtom
     }
     
+    /// Selected tool on this scene
+    @Published var selectedTool: Tools = .selectAtom
+    
+    /// Distance of selected nodes
+    @Published var measuredDistangle: String = ""
+    @Published var showDistangle: Bool = false
+    
+    var maxRange: ClosedRange<Double> {
+        if selectedAtoms.count == 3 {
+            return 0.5...180
+        }
+        return 0.5...5
+    }
+    
+    var bindingDoubleDistangle: Binding<Double> {
+        Binding { [self] in
+            filterStoD(measuredDistangle, maxValue: maxRange.upperBound, minValue: maxRange.lowerBound)
+        } set: {self.measuredDistangle = String($0); self.editDistanceOrAngle()}
+
+    }
+    
     /// Measures the distance or the angle between two and three selected nodes, respectively and depending on the selected nodes quantity.
-    func measureNodes() {
+    private func measureNodes() {
         if selectedAtoms.count == 2 {
             let pos1 = selectedAtoms[0].selectedNode.position
             let pos2 = selectedAtoms[1].selectedNode.position
-            measuredDistance = distance(from: pos1, to: pos2).stringWith(3) + " Å"
+            measuredDistangle = distance(from: pos1, to: pos2).stringWith(3) + " Å"
+            showDistangle = true
             return
             
         }
@@ -297,13 +314,62 @@ class MoleculeRenderer: ObservableObject {
             let pos2 = selectedAtoms[1].selectedNode.position
             let pos3 = selectedAtoms[2].selectedNode.position
             
-            measuredDistance = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + " º"
+            measuredDistangle = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + "º"
+            showDistangle = true
             return
         }
         
         // Fallthrough
-        measuredDistance = nil
+        showDistangle = false
     }
+    
+    func editDistanceOrAngle() {
+        
+        if selectedAtoms.count == 2 {
+            let newDistance = filterStoD(measuredDistangle, maxValue: .infinity, minValue: 0.5)
+            editDistance(newDistance)
+        }
+        if selectedAtoms.count == 3 {
+            let newAngle = filterStoD(measuredDistangle, maxValue: 180, minValue: 0.5)
+            editAngle(newAngle)
+        }
+        updateBonds()
+        //measureNodes()
+    }
+    
+    /// If the user changes manually measured distance, the selected nodes are updated to reflect the change.
+    private func editDistance(_ newValue: Double) {
+        
+        let pos1 = selectedAtoms[0].selectedNode.position
+        let pos2 = selectedAtoms[1].selectedNode.position
+        let vector = (pos2 - pos1).normalized()
+        
+        let newPosition = pos1 + vector.scaled(by: newValue)
+        
+        selectedAtoms[1].selectedNode.position = newPosition
+        selectedAtoms[1].selectionOrb.position = newPosition
+    }
+    
+    /// If the user changes manually measured angle, the selected nodes are updated to reflect the change.
+    private func editAngle(_ newValue: Double) {
+        
+        let pos1 = selectedAtoms[0].selectedNode.position
+        let pos2 = selectedAtoms[1].selectedNode.position
+        let pos3 = selectedAtoms[2].selectedNode.position
+        
+        let vector1 = (pos1 - pos2)
+        let vector2 = (pos3 - pos2)
+        
+        let newAngle = (newValue - angle(pos1: pos1, pos2: pos2, pos3: pos3)).toRadians()
+        
+        let normal = vector1.crossProduct(vector2).normalized()
+        
+        let newPos = pos2 + vector2.rotated(by: newAngle, withRespectTo: normal)
+        
+        selectedAtoms[2].selectedNode.position = newPos
+        selectedAtoms[2].selectionOrb.position = newPos
+    }
+    
     
     //MARK: Scene renderer controller
     
@@ -347,6 +413,7 @@ class MoleculeRenderer: ObservableObject {
         molecule.atoms.removeAll { atom in
             hitNode.position == atom.position
         }
+        updateBonds()
     }
     
     

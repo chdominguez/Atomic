@@ -7,43 +7,6 @@
 
 import SceneKit
 
-
-extension SCNVector3: AdditiveArithmetic {
-    
-    /// The norm of the vector
-    var norm: Float {
-        let floatx = Float(x)
-        let floaty = Float(y)
-        let floatz = Float(z)
-        
-        return sqrt(floatx*floatx + floaty*floaty + floatz*floatz)
-    }
-    
-    func normalizedVector() -> SCNVector3 {
-        #if os(macOS)
-        return SCNVector3Make(x/CGFloat(norm), y/CGFloat(norm), z/CGFloat(norm))
-        #elseif os(iOS)
-        return SCNVector3Make(x/norm, y/norm, z/norm)
-        #endif
-    }
-    
-    public static func * (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 {
-        SCNVector3Make(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z)
-    }
-    
-    public static func - (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 {
-        SCNVector3Make(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z)
-    }
-    
-    public static func + (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 {
-        SCNVector3Make(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z)
-    }
-    
-    public static var zero: SCNVector3 {
-        return SCNVector3Make(0, 0, 0)
-    }
-}
-
 /// Returns the distance from two separated positions
 /// - Parameters:
 ///   - pos1: Position of atom 1
@@ -51,21 +14,17 @@ extension SCNVector3: AdditiveArithmetic {
 /// - Returns: The square root of the diference of the vectors
 func distance(from pos1: SCNVector3, to pos2: SCNVector3) -> Double {
     let distanceVector = pos1 - pos2
-    return Double(distanceVector.norm)
+    return Double(distanceVector.magnitudeSquared)
 }
 
 /// Returns the angle between three vectors in degrees
 func angle(pos1: SCNVector3, pos2: SCNVector3, pos3: SCNVector3) -> Double {
-    let vector1 = (pos1 - pos2).normalizedVector()
-    let vector2 = (pos3 - pos2).normalizedVector()
+    let vector1 = (pos1 - pos2).normalized()
+    let vector2 = (pos3 - pos2).normalized()
     
-    let dotProduct = vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z
+    let dotProduct = vector1.dotProduct(vector2)
     
-    let cosAngle = Float(dotProduct) / (vector1.norm*vector2.norm)
-    
-    print(acos(cosAngle)*57.2958)
-    
-    return Double(acos(dotProduct)) * 57.2958 /// Transformation to degrees
+    return acos(dotProduct).toDegrees() /// Conversion to degrees
 }
 
 
@@ -76,6 +35,7 @@ func averageDistance(of positions: [SCNVector3]) -> SCNVector3 {
     
     var meanPos = SCNVector3Zero.self
     
+    #warning("TODO: Think of a universal solution for CGFloat/Float duality") // Its done with UFloat, but changes are still to be applied
     // Why does SceneKit uses Floats or CGFloats depending on the OS. WHY?
     #if os(macOS)
     let npos = CGFloat(positions.count)
@@ -170,12 +130,36 @@ func viewingZPositionFloat(toSee positions: [SCNVector3]) -> Float {
 ///   - newValue: String to filter
 ///   - maxValue: Max value allowed
 ///   - minValue: Min value allowed
-/// - Returns: An integer of the filtered string
+/// - Returns: An integer of the filtered string or the minimum value in case the string is empty
 func filterStoI(_ newValue: String, maxValue: Int, minValue: Int = 1) -> Int {
     
-    if newValue.isEmpty { return 1 }
+    if newValue.isEmpty { return minValue }
     
     let filtered = Int(newValue.filter { "0123456789".contains($0) }) ?? 1
+    
+    if filtered < minValue {
+        return minValue
+    }
+    
+    if filtered > maxValue {
+        return maxValue
+    }
+
+    return filtered // Fallthrough
+}
+
+
+/// Filters a string value to a double value between a max and a min value.
+/// - Parameters:
+///   - newValue: String to filter
+///   - maxValue: Max value allowed
+///   - minValue: Min value allowed
+/// - Returns: The double of the filtered string or the min value if the string cannot be converted
+func filterStoD(_ newValue: String, maxValue: Double, minValue: Double = 0) -> Double {
+    
+    if newValue.isEmpty { return minValue }
+    
+    let filtered = Double(newValue.filter { "0123456789.".contains($0) }) ?? minValue
     
     if filtered < minValue {
         return minValue

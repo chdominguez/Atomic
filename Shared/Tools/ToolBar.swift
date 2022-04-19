@@ -59,14 +59,18 @@ struct AtomicToolsView: View {
             //MARK: Distance/angle
             if controller.showDistangle {
                 HStack {
-                    TextField("Value", text: $controller.measuredDistangle, onCommit: {
-                        controller.editDistanceOrAngle()
-                    })
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(.plain)
-                        .atomicNoButton()
-                        .frame(maxWidth: 80)
-                        .padding(.horizontal)
+                    ZStack {
+                        Slider(value: controller.bindingDoubleDistangle, in: 0.5...5)
+                            .offset(x: 0, y: -30)
+                        TextField("Value", text: $controller.measuredDistangle, onCommit: {
+                            controller.editDistanceOrAngle()
+                        })
+                            .multilineTextAlignment(.center)
+                            .textFieldStyle(.plain)
+                            .atomicNoButton()
+                    }
+                    .frame(maxWidth: 80)
+                    .padding(.horizontal)
                     Spacer()
                 }
             }

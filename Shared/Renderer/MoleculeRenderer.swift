@@ -283,6 +283,13 @@ class MoleculeRenderer: ObservableObject {
     @Published var measuredDistangle: String = ""
     @Published var showDistangle: Bool = false
     
+    var bindingDoubleDistangle: Binding<Double> {
+        Binding {
+            filterStoD(self.measuredDistangle, maxValue: 5, minValue: 0.5)
+        } set: {self.measuredDistangle = String($0); self.editDistanceOrAngle()}
+
+    }
+    
     func editDistanceOrAngle() {
         
         if selectedAtoms.count == 2 {

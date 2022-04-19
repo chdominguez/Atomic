@@ -269,12 +269,6 @@ class MoleculeRenderer: ObservableObject {
     
     //MARK: Tools
     
-    /// Selected tool on this scene
-    @Published var selectedTool: Tools = .selectAtom
-    
-    /// Distance of selected nodes
-    @Published var measuredDistance: Double? = nil
-    
     /// Available tools
     enum Tools {
         case addAtom
@@ -282,14 +276,25 @@ class MoleculeRenderer: ObservableObject {
         case selectAtom
     }
     
-    func editDistanceOrAngle(_ newValue: String) -> Double? {
+    /// Selected tool on this scene
+    @Published var selectedTool: Tools = .selectAtom
+    
+    /// Distance of selected nodes
+    @Published var measuredDistangle: String = ""
+    @Published var showDistangle: Bool = false
+    
+    func editDistanceOrAngle() {
+        
         if selectedAtoms.count == 2 {
-            return editDistance(newValue)
+            let newDistance = filterStoD(measuredDistangle, maxValue: .infinity, minValue: 0.5)
+            editDistance(newDistance)
+            measureNodes()
         }
         if selectedAtoms.count == 3 {
-            return editAngle(newValue)
+            let newAngle = filterStoD(measuredDistangle, maxValue: 180, minValue: 0)
+            editDistance(newAngle)
+            measureNodes()
         }
-        return nil
     }
     
     /// Measures the distance or the angle between two and three selected nodes, respectively and depending on the selected nodes quantity.
@@ -297,7 +302,8 @@ class MoleculeRenderer: ObservableObject {
         if selectedAtoms.count == 2 {
             let pos1 = selectedAtoms[0].selectedNode.position
             let pos2 = selectedAtoms[1].selectedNode.position
-            measuredDistance = distance(from: pos1, to: pos2)
+            measuredDistangle = distance(from: pos1, to: pos2).stringWith(3) + " A"
+            showDistangle = true
             return
             
         }
@@ -307,50 +313,54 @@ class MoleculeRenderer: ObservableObject {
             let pos2 = selectedAtoms[1].selectedNode.position
             let pos3 = selectedAtoms[2].selectedNode.position
             
-            measuredDistance = angle(pos1: pos1, pos2: pos2, pos3: pos3)
+            measuredDistangle = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + "º"
+            showDistangle = true
             return
         }
         
         // Fallthrough
-        measuredDistance = nil
+        showDistangle = false
     }
     
     /// If the user changes manually measuredDistance, the selected nodes are updated to reflect the change.
-    private func editDistance(_ newValue: String) -> Double? {
-        if selectedAtoms.isEmpty {return nil}
+    private func editDistance(_ newValue: Double) {
+        
+        print("*** Editing distance")
+        
         let pos1 = selectedAtoms[0].selectedNode.position
         let pos2 = selectedAtoms[1].selectedNode.position
-        let vector = (pos1 - pos2).normalized()
+        let vector = (pos2 - pos1).normalized()
         
-        guard let i = Float(newValue) else {return nil}
+        let newPosition = pos1 + vector.scaled(by: newValue)
         
-        if i < 0.01 {return nil} // Limit of proximity
-        
-        let j = CGFloat(i)
-        
-        let newPosition = SCNVector3Make(vector.x * j, vector.y * j, vector.z * j)
+        print(vector)
+        print(newPosition)
         
         selectedAtoms[1].selectedNode.position = newPosition
         selectedAtoms[1].selectionOrb.position = newPosition
         
-        let newDistance = newPosition - pos1
-        
-        return Double(newDistance.norm)
-        
+        updateBonds()
     }
     
-    private func editAngle(_ newValue: String) -> Double? {
+    private func editAngle(_ newValue: Double) {
+        
         let pos1 = selectedAtoms[0].selectedNode.position
         let pos2 = selectedAtoms[1].selectedNode.position
         let pos3 = selectedAtoms[2].selectedNode.position
         
-        let vector1 = (pos1 - pos2).normalized()
-        let vector2 = (pos3 - pos2).normalized()
+        let vector1 = (pos1 - pos2)
+        let vector2 = (pos3 - pos2)
         
-        let cross = vector1.crossProduct(vector2)
+        let normal = vector1.crossProduct(vector2).normalized()
         
-        return Double(cross.norm)
+        let newPosition = pos2 - vector2.scaled(by: cos(newValue))
+        
+        selectedAtoms[2].selectedNode.position = newPosition
+        selectedAtoms[2].selectionOrb.position = newPosition
+        
+        measureNodes()
     }
+    
     
     //MARK: Scene renderer controller
     

@@ -57,16 +57,15 @@ struct AtomicToolsView: View {
                 .animation(.easeIn, value: controller.selectedAtoms.isEmpty)
             
             //MARK: Distance/angle
-            if controller.measuredDistance != nil {
+            if controller.showDistangle {
                 HStack {
-                    TextField("", text: Binding(get: {
-                        guard let distance = controller.measuredDistance else {return ""}
-                        return String(distance)
-                    }, set: { newValue in
-                        controller.measuredDistance = controller.editDistanceOrAngle(newValue)
-                    }))
+                    TextField("Value", text: $controller.measuredDistangle, onCommit: {
+                        controller.editDistanceOrAngle()
+                    })
+                        .multilineTextAlignment(.center)
                         .textFieldStyle(.plain)
                         .atomicNoButton()
+                        .frame(maxWidth: 80)
                         .padding(.horizontal)
                     Spacer()
                 }

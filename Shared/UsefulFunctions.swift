@@ -14,7 +14,7 @@ import SceneKit
 /// - Returns: The square root of the diference of the vectors
 func distance(from pos1: SCNVector3, to pos2: SCNVector3) -> Double {
     let distanceVector = pos1 - pos2
-    return Double(distanceVector.norm)
+    return Double(distanceVector.magnitudeSquared)
 }
 
 /// Returns the angle between three vectors in degrees
@@ -130,12 +130,36 @@ func viewingZPositionFloat(toSee positions: [SCNVector3]) -> Float {
 ///   - newValue: String to filter
 ///   - maxValue: Max value allowed
 ///   - minValue: Min value allowed
-/// - Returns: An integer of the filtered string
+/// - Returns: An integer of the filtered string or the minimum value in case the string is empty
 func filterStoI(_ newValue: String, maxValue: Int, minValue: Int = 1) -> Int {
     
-    if newValue.isEmpty { return 1 }
+    if newValue.isEmpty { return minValue }
     
     let filtered = Int(newValue.filter { "0123456789".contains($0) }) ?? 1
+    
+    if filtered < minValue {
+        return minValue
+    }
+    
+    if filtered > maxValue {
+        return maxValue
+    }
+
+    return filtered // Fallthrough
+}
+
+
+/// Filters a string value to a double value between a max and a min value.
+/// - Parameters:
+///   - newValue: String to filter
+///   - maxValue: Max value allowed
+///   - minValue: Min value allowed
+/// - Returns: The double of the filtered string or the min value if the string cannot be converted
+func filterStoD(_ newValue: String, maxValue: Double, minValue: Double = 0) -> Double {
+    
+    if newValue.isEmpty { return minValue }
+    
+    let filtered = Double(newValue.filter { "0123456789.".contains($0) }) ?? minValue
     
     if filtered < minValue {
         return minValue

@@ -6,6 +6,14 @@
 //
 
 import SceneKit
+import SwiftUI
+
+///Universal Float (iOS) or CGFloat (macOS) depending on the platform
+#if os(macOS)
+typealias UFloat = CGFloat
+#elseif os(iOS)
+typealias UFloat = Float
+#endif
 
 extension SCNVector3: Equatable {
     public static func == (lhs: SCNVector3, rhs: SCNVector3) -> Bool {
@@ -22,15 +30,6 @@ extension SCNVector3: Equatable {
 
 /// Make SCNVector3s to be added and substracted
 extension SCNVector3: AdditiveArithmetic {
-    
-    /// The norm of the vector
-    var norm: Float {
-        let floatx = Float(x)
-        let floaty = Float(y)
-        let floatz = Float(z)
-        
-        return sqrt(floatx*floatx + floaty*floaty + floatz*floatz)
-    }
     
     public static func - (lhs: SCNVector3, rhs: SCNVector3) -> SCNVector3 {
         SCNVector3Make(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z)
@@ -52,8 +51,7 @@ extension SCNVector3 {
     
     /// Returns the normalized vector
     func normalized() -> SCNVector3 {
-        let gnorm = CGFloat(norm)
-        return SCNVector3Make(x / gnorm, y / gnorm, z / gnorm)
+        return SCNVector3Make(dx / magnitudeSquared, dy / magnitudeSquared, dz / magnitudeSquared)
     }
     
     /// Returns the dot product between itself and a second vector.
@@ -68,5 +66,37 @@ extension SCNVector3 {
         let nz = x*v2.y - y*v2.x
         return SCNVector3Make(nx, ny, nz)
     }
+    
+    /// Returns the scaled vector without modifying the original vector
+    func scaled(by rhs: Double) -> SCNVector3 {
+        SCNVector3Make(dx*rhs, dy*rhs, dz*rhs)
+    }
+    
+    // Double counterparts of the x,y and z variables
+    var dx: Double { get {Double(x)} set {x = UFloat(newValue)} }
+    var dy: Double { get {Double(y)} set {y = UFloat(newValue)} }
+    var dz: Double { get {Double(z)} set {z = UFloat(newValue)} }
       
+}
+
+extension SCNVector3: VectorArithmetic {
+    
+    /// Scales and modifies the vector
+    public mutating func scale(by rhs: Double) {
+        dx *= rhs
+        dy *= rhs
+        dz *= rhs
+    }
+    /// The magnitude of the vector
+    public var magnitudeSquared: Double {
+        return sqrt(dx*dx + dy*dy + dz*dz)
+    }
+}
+
+extension CGFloat {
+    /// Initializes a CGFloat with a string
+    public init?(_ string: String) {
+        guard let float = Float(string) else {return nil}
+        self = CGFloat(Float(float))
+    }
 }

@@ -60,7 +60,7 @@ struct AtomicToolsView: View {
             if controller.showDistangle {
                 HStack {
                     ZStack {
-                        Slider(value: controller.bindingDoubleDistangle, in: 0.5...5)
+                        Slider(value: controller.bindingDoubleDistangle, in: controller.maxRange)
                             .offset(x: 0, y: -30)
                         TextField("Value", text: $controller.measuredDistangle, onCommit: {
                             controller.editDistanceOrAngle()

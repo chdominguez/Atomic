@@ -24,7 +24,7 @@ func angle(pos1: SCNVector3, pos2: SCNVector3, pos3: SCNVector3) -> Double {
     
     let dotProduct = vector1.dotProduct(vector2)
     
-    return Double(acos(dotProduct)) * (180/Double.pi)  /// Conversion to degrees
+    return acos(dotProduct).toDegrees() /// Conversion to degrees
 }
 
 
@@ -35,7 +35,7 @@ func averageDistance(of positions: [SCNVector3]) -> SCNVector3 {
     
     var meanPos = SCNVector3Zero.self
     
-    #warning("TODO: Think of a universal solution for CGFloat/Float duality")
+    #warning("TODO: Think of a universal solution for CGFloat/Float duality") // Its done with UFloat, but changes are still to be applied
     // Why does SceneKit uses Floats or CGFloats depending on the OS. WHY?
     #if os(macOS)
     let npos = CGFloat(positions.count)

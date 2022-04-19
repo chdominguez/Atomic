@@ -49,14 +49,19 @@ extension SCNVector3: AdditiveArithmetic {
 
 extension SCNVector3 {
     
+    // Double counterparts of the x,y and z variables
+    var dx: Double { get {Double(x)} set {x = UFloat(newValue)} }
+    var dy: Double { get {Double(y)} set {y = UFloat(newValue)} }
+    var dz: Double { get {Double(z)} set {z = UFloat(newValue)} }
+    
     /// Returns the normalized vector
     func normalized() -> SCNVector3 {
         return SCNVector3Make(dx / magnitudeSquared, dy / magnitudeSquared, dz / magnitudeSquared)
     }
     
     /// Returns the dot product between itself and a second vector.
-    func dotProduct(_ v2: SCNVector3) -> Float {
-        Float(x * v2.x + y * v2.y + z * v2.z)
+    func dotProduct(_ v2: SCNVector3) -> Double {
+        dx * v2.dx + dy * v2.dy + dz * v2.dz
     }
     
     /// Returns the cross product between itself and a second vector.
@@ -72,10 +77,19 @@ extension SCNVector3 {
         SCNVector3Make(dx*rhs, dy*rhs, dz*rhs)
     }
     
-    // Double counterparts of the x,y and z variables
-    var dx: Double { get {Double(x)} set {x = UFloat(newValue)} }
-    var dy: Double { get {Double(y)} set {y = UFloat(newValue)} }
-    var dz: Double { get {Double(z)} set {z = UFloat(newValue)} }
+    func rotated(by angle: Double, withRespectTo n: SCNVector3) -> SCNVector3 {
+        
+        let firstTerm = self.scaled(by: cos(angle))
+        let secondTerm = (n.crossProduct(self)).scaled(by: sin(angle))
+        let thridTerm = n.scaled(by: (1 - cos(angle))*(n.dotProduct(self)))
+        
+        return firstTerm + secondTerm + thridTerm
+        
+    }
+    
+    func getSimd() -> SIMD3<Double> {
+        return SIMD3(self)
+    }
       
 }
 
@@ -98,5 +112,11 @@ extension CGFloat {
     public init?(_ string: String) {
         guard let float = Float(string) else {return nil}
         self = CGFloat(Float(float))
+    }
+}
+
+extension SCNQuaternion {
+    public init(axis: SCNVector3, angle: Double) {
+        self = SCNQuaternion(axis.x, axis.y, axis.z, angle)
     }
 }

@@ -14,7 +14,7 @@ extension BaseReader {
         let pdbError = AtomicErrors.pdbError
         
         // Variable to save current step atom positions
-        var currentMolecule = Molecule()
+        let currentMolecule = Molecule()
         
         // Some pdbs have variable column size, with data placed in different columns
         var ncolumns = 0 // Number of columns
@@ -27,7 +27,7 @@ extension BaseReader {
         var nResidue = 0
         
         // Backbone atoms
-        var backBone = Molecule()
+        let backBone = Molecule()
         
         for line in openedFile {
             
@@ -72,7 +72,7 @@ extension BaseReader {
                     let atom = Atom(position: position, type: element, number: natoms)
                     currentMolecule.atoms.append(atom)
                     
-                    let cRes = Int(splitted[dI-1])!
+                    guard let cRes = Int(splitted[dI-1]) else {throw pdbError}
                     
                     if cRes != nResidue {
                         nResidue = cRes

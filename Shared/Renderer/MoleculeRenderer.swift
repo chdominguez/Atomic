@@ -79,7 +79,7 @@ class MoleculeRenderer: ObservableObject {
     var atomNodes = SCNNode()
     var bondNodes = SCNNode()
     var backBoneNode = SCNLineNode()
-    //var cartoonNodes = SCNNode() TODO: implement cartoon
+    var cartoonNodes = SCNReferenceNode(url: Bundle.main.url(forResource: "helix", withExtension: "usdc")!)
     var selectionNodes = SCNNode()
     
     // SceneKit classes
@@ -201,11 +201,27 @@ class MoleculeRenderer: ObservableObject {
     
     private func backBonds(_ molecule: Molecule) {
         let pos = molecule.atoms.map { $0.position }
-        backBoneNode = SCNLineNode(with: pos, radius: 0.3, edges: 12, maxTurning: 12)
+        backBoneNode = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12)
         //TODO: Implement backbone visibility based on default settings
         backBoneNode.lineMaterials = nodeGeom.bond.materials
         backBoneNode.isHidden = true
+        
+        var prevPos = pos[0]
+        
+        for position in pos {
+            let newHelix = cartoonNodes!.copy() as! SCNReferenceNode
+            newHelix.load()
+            newHelix.position = position
+            newHelix.look(at: prevPos, up: scene.rootNode.worldUp, localFront: newHelix.worldUp)
+            prevPos = position
+            
+            //backBoneNode.addChildNode(newHelix)
+            
+        }
+        
+        
         scene.rootNode.addChildNode(backBoneNode)
+        
     }
     
     /// Adds a bond node to bondNodes checking the distance between thgiven atom and the following 8 atoms (in list order) in the molecule.

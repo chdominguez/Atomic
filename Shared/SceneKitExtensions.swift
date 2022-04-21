@@ -56,7 +56,7 @@ extension SCNVector3 {
     
     /// Returns the normalized vector
     func normalized() -> SCNVector3 {
-        return SCNVector3Make(dx / magnitudeSquared, dy / magnitudeSquared, dz / magnitudeSquared)
+        return SCNVector3Make(UFloat(dx / magnitudeSquared), UFloat(dy / magnitudeSquared), UFloat(dz / magnitudeSquared))
     }
     
     /// Returns the dot product between itself and a second vector.
@@ -74,7 +74,7 @@ extension SCNVector3 {
     
     /// Returns the scaled vector without modifying the original vector
     func scaled(by rhs: Double) -> SCNVector3 {
-        SCNVector3Make(dx*rhs, dy*rhs, dz*rhs)
+        SCNVector3Make(UFloat(dx*rhs), UFloat(dy*rhs), UFloat(dz*rhs))
     }
     
     func rotated(by angle: Double, withRespectTo n: SCNVector3) -> SCNVector3 {
@@ -117,6 +117,6 @@ extension CGFloat {
 
 extension SCNQuaternion {
     public init(axis: SCNVector3, angle: Double) {
-        self = SCNQuaternion(axis.x, axis.y, axis.z, angle)
+        self = SCNQuaternion(axis.x, axis.y, axis.z, UFloat(angle))
     }
 }

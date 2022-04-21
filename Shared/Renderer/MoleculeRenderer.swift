@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import SceneKit
+import SCNLine
 
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
 class MoleculeRenderer: ObservableObject {
@@ -77,7 +78,7 @@ class MoleculeRenderer: ObservableObject {
     
     var atomNodes = SCNNode()
     var bondNodes = SCNNode()
-    var backBone = SCNNode()
+    var backBoneNode = SCNLineNode()
     //var cartoonNodes = SCNNode() TODO: implement cartoon
     var selectionNodes = SCNNode()
     
@@ -157,7 +158,7 @@ class MoleculeRenderer: ObservableObject {
         
         atomNodes.name = "atoms"
         bondNodes.name = "bonds"
-        backBone.name = "backBone"
+        backBoneNode.name = "backBone"
         
         for atom in molecule.atoms {
             atomNodes.addChildNode(newAtom(atom))
@@ -199,14 +200,12 @@ class MoleculeRenderer: ObservableObject {
     }
     
     private func backBonds(_ molecule: Molecule) {
-        for i in 0..<molecule.atoms.endIndex - 1 {
-            let pos1 = molecule.atoms[i].position
-            let pos2 = molecule.atoms[i+1].position
-            backBone.addChildNode(createBondNode(from: pos1, to: pos2, radius: 0.3))
-        }
+        let pos = molecule.atoms.map { $0.position }
+        backBoneNode = SCNLineNode(with: pos, radius: 0.3, edges: 12, maxTurning: 12)
         //TODO: Implement backbone visibility based on default settings
-        backBone.isHidden = true
-        scene.rootNode.addChildNode(backBone)
+        backBoneNode.lineMaterials = nodeGeom.bond.materials
+        backBoneNode.isHidden = true
+        scene.rootNode.addChildNode(backBoneNode)
     }
     
     /// Adds a bond node to bondNodes checking the distance between thgiven atom and the following 8 atoms (in list order) in the molecule.

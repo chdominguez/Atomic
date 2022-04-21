@@ -36,6 +36,8 @@
 		C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */; };
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
+		C08A2A25281158A3004CE6FB /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C08A2A24281158A3004CE6FB /* SCNLine */; };
+		C08A2A2828115E94004CE6FB /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C08A2A2728115E94004CE6FB /* SCNLine */; };
 		C09441352761F76F00680075 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
 		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
@@ -97,6 +99,7 @@
 		C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralExtensions.swift; sourceTree = "<group>"; };
 		C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSWindowManager.swift; sourceTree = "<group>"; };
 		C066B780277E15140036F404 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
+		C08A2A2328115894004CE6FB /* SceneKit-SCNLine-macOS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "SceneKit-SCNLine-macOS"; path = "../SceneKit-SCNLine-macOS"; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
@@ -134,6 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C01D7FCA280C5F86003EBA5D /* LineChartView in Frameworks */,
+				C08A2A25281158A3004CE6FB /* SCNLine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */,
+				C08A2A2828115E94004CE6FB /* SCNLine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +171,14 @@
 				C0455E57277B985400561AAA /* GaussianKeywords.swift */,
 			);
 			path = Gaussian;
+			sourceTree = "<group>";
+		};
+		C08A2A2228115894004CE6FB /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				C08A2A2328115894004CE6FB /* SceneKit-SCNLine-macOS */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		C0DCCE95276A3C9B0085CD1D /* Atomic_macOS */ = {
@@ -242,6 +255,7 @@
 		F06AA46D26E77F5100387EBA = {
 			isa = PBXGroup;
 			children = (
+				C08A2A2228115894004CE6FB /* Packages */,
 				C0DCCEBF276A3CF20085CD1D /* Shared */,
 				F06AA47826E77F5100387EBA /* Atomic_iPadOS */,
 				C0DCCE95276A3C9B0085CD1D /* Atomic_macOS */,
@@ -360,6 +374,7 @@
 			name = Atomic_macos;
 			packageProductDependencies = (
 				C01D7FC9280C5F86003EBA5D /* LineChartView */,
+				C08A2A24281158A3004CE6FB /* SCNLine */,
 			);
 			productName = Atomic_macOS;
 			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
@@ -380,6 +395,7 @@
 			name = Atomic_ipad;
 			packageProductDependencies = (
 				C01D7FC7280C5F7C003EBA5D /* LineChartView */,
+				C08A2A2728115E94004CE6FB /* SCNLine */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
@@ -416,6 +432,7 @@
 			mainGroup = F06AA46D26E77F5100387EBA;
 			packageReferences = (
 				C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */,
+				C08A2A2628115E94004CE6FB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine-macOS" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
 			projectDirPath = "";
@@ -841,6 +858,14 @@
 				kind = branch;
 			};
 		};
+		C08A2A2628115E94004CE6FB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine-macOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chdominguez/SceneKit-SCNLine-macOS.git";
+			requirement = {
+				branch = "macOS-support";
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -853,6 +878,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */;
 			productName = LineChartView;
+		};
+		C08A2A24281158A3004CE6FB /* SCNLine */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SCNLine;
+		};
+		C08A2A2728115E94004CE6FB /* SCNLine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C08A2A2628115E94004CE6FB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine-macOS" */;
+			productName = SCNLine;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

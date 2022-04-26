@@ -8,6 +8,24 @@
         "branch" : "main",
         "revision" : "33996afdc124fe41916cdc69fcbc85c16da0a45c"
       }
+    },
+    {
+      "identity" : "scenekit-scnline",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maxxfrazer/SceneKit-SCNLine.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "00bd83f3affae23a0a9375d1b1e4b58f5c3471d0"
+      }
+    },
+    {
+      "identity" : "stride_swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/chdominguez/stride_swift.git",
+      "state" : {
+        "revision" : "abb5f88ac7a6c9d976a69a972bd26bcc58b4989e",
+        "version" : "0.2.0"
+      }
     }
   ],
   "version" : 2

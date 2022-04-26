@@ -6,6 +6,7 @@
 //
 
 import SceneKit
+import SwiftStride
 
 
 extension BaseReader {
@@ -29,14 +30,14 @@ extension BaseReader {
         // Backbone atoms
         let backBone = Molecule()
         
-        for line in openedFile {
+        for line in splitFile {
             
             //Increment current line by 1 to keep track if an error happens
             errorLine += 1
 
             let splitted = line.split(separator: " ")
             #warning("TODO: Hide / unhide solvent")
-            if String(splitted.first!) == "TER" {
+            if String(splitted.first ?? "") == "TER" {
                 break
             }
             
@@ -64,20 +65,24 @@ extension BaseReader {
                         }
                     }
                     
+                    let atomString = String(splitted[2])
                     
-                    guard let element = getAtom(fromString: String(splitted[2])), let x = Float(splitted[dI]), let y = Float(splitted[dI + 1]), let z = Float(splitted[dI + 2]) else {throw pdbError}
+                    guard let element = getAtom(fromString: atomString), let x = Float(splitted[dI]), let y = Float(splitted[dI + 1]), let z = Float(splitted[dI + 2]) else {throw pdbError}
                     
                     let position = SCNVector3(x, y, z)
                     
-                    let atom = Atom(position: position, type: element, number: natoms)
+                    var atom = Atom(position: position, type: element, number: natoms)
+            
+                    
+                    switch atomString {
+                    case "N", "C", "CA": // Save backbone nitrogens, alpha carbons and peptide bonded carbons
+                        atom.info = atomString
+                        backBone.atoms.append(atom)
+                    default: ()
+                    }
+                    
                     currentMolecule.atoms.append(atom)
                     
-                    guard let cRes = Int(splitted[dI-1]) else {throw pdbError}
-                    
-                    if cRes != nResidue {
-                        nResidue = cRes
-                        backBone.atoms.append(atom)
-                    }
                 }
             //MARK: Default
             default: continue
@@ -90,6 +95,12 @@ extension BaseReader {
         step.isFinalStep = true
         step.isProtein = true
         step.backBone = backBone
+        
+        // Run the Stride algorithm to obtain secondary structure
+        let aminos = Stride.predict(from: fileURL.path)
+        
+        step.res = aminos
+        
         self.steps.append(step)
     }
     

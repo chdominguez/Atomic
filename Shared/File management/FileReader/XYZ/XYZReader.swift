@@ -22,7 +22,7 @@ extension BaseReader {
         // Keep track of the number of atoms
         var numberOfAtoms = 0
         
-        for line in openedFile {
+        for line in splitFile {
             
             let filteredLine = line.replacingOccurrences(of: "\t", with: "")
             

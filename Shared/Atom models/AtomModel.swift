@@ -15,11 +15,18 @@ struct Atom: Identifiable {
     var position: SCNVector3
     var type: Element
     var number: Int
+    
+    var info: String = "" // Allows for further classification. For example: "CA", which denotes an alpha carbon in PDBs.
 }
 
 /// Molecule class. Contains an array of atoms as its single property
 class Molecule {
     var atoms: [Atom] = []
+}
+
+struct CartoonPositions {
+    var positions: [SCNVector3] = []
+    var structure: SecondaryStructure = .alphaHelix
 }
 
 /// Step class. Describes any molecular scene possible. Contains different optional variables depending on which

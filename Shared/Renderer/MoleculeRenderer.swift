@@ -206,7 +206,7 @@ class MoleculeRenderer: ObservableObject {
     }
     
     private func backBonds(_ molecule: Molecule) {
-        let pos = molecule.atoms.map { $0.position }
+        let pos = molecule.atoms.filter { $0.info == "C" }.map { $0.position }
         backBoneNode = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12)
         //TODO: Implement backbone visibility based on default settings
         backBoneNode.lineMaterials = nodeGeom.bond.materials
@@ -218,81 +218,52 @@ class MoleculeRenderer: ObservableObject {
     private func renderCartoon(_ residues: [Residue], step: Step) {
         
         var prevStruc: SecondaryStructure = residues.first!.structure
-        var newCartoonPositions: [[SCNVector3]] = []
+        var newCartoonPositions: [CartoonPositions] = []
         
-        var currentPositions: [SCNVector3] = []
+        var currentPositions = CartoonPositions()
         
         for (i, r) in residues.enumerated() {
-            if r.structure == .coil || r.structure == .turn {
-                currentPositions.append(step.backBone!.atoms[i].position)
-            }
+            let k = 3*i
             
             if prevStruc != r.structure {
+                currentPositions.positions.append(step.backBone!.atoms[k].position)
+                currentPositions.structure = prevStruc
                 newCartoonPositions.append(currentPositions)
-                currentPositions = []
+                currentPositions = CartoonPositions()
+            }
+            
+            for j in 0...2 {
+                currentPositions.positions.append(step.backBone!.atoms[k+j].position)
             }
             
             prevStruc = r.structure
         }
         
-        for pos in newCartoonPositions {
-            let newCoil = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12)
+        currentPositions.positions.append(step.backBone!.atoms.last!.position)
+        currentPositions.structure = prevStruc
+        newCartoonPositions.append(currentPositions)
+        currentPositions = CartoonPositions()
+        
+        for cart in newCartoonPositions {
+            let newCoil = SCNLineNode(with: cart.positions, radius: 0.2, edges: 12, maxTurning: 12)
+            let material = SCNMaterial()
+            newCoil.lineMaterials = [material]
+            switch cart.structure {
+            case .alphaHelix, .helix310, .phiHelix:
+                material.diffuse.contents = UColor.green
+            case .strand:
+                material.diffuse.contents = UColor.blue
+            case .bridge:
+                material.diffuse.contents = UColor.red
+            case .coil:
+                material.diffuse.contents = UColor.brown
+            case .turnI, .turnIp, .turnII, .turnIIp, .turnVIa, .turnVIb, .turnVIII, .turnIV, .turn:
+                material.diffuse.contents = UColor.yellow
+            case .GammaClassic, .GammaInv:
+                material.diffuse.contents = UColor.orange
+            }
             cartoonNodes.addChildNode(newCoil)
         }
-        
-//        for (i, r) in residues.enumerated() {
-//          if r.structure == prevStruc {
-//              if r.structure == .coil || r.structure == .turn {
-//                  newCartoonPositions.append(step.backBone!.atoms[i].position)
-//              }
-//              if r.structure == .alphaHelix {
-//                  let newHelix = SCNNode()
-//                  newHelix.position = (step.backBone?.atoms[i].position)!
-//                  newHelix.geometry = nodeGeom.atoms[.helium]!
-//                  cartoonNodes.addChildNode(newHelix)
-//                  continue
-//              }
-//              if r.structure == .strand {
-//                  let newHelix = SCNNode()
-//                  newHelix.position = (step.backBone?.atoms[i].position)!
-//                  newHelix.geometry = nodeGeom.atoms[.fluorine]!
-//                  cartoonNodes.addChildNode(newHelix)
-//                  continue
-//              }
-//          } else {
-//              let newCoil = SCNLineNode(with: newCartoonPositions, radius: 0.2, edges: 12, maxTurning: 12)
-//              cartoonNodes.addChildNode(newCoil)
-//              newCartoonPositions = []
-//
-//          }
-//            prevStruc = r.structure
-//        }
-        
-        scene.rootNode.addChildNode(cartoonNodes)
-        
-//        while i < maxI {
-//            let r = residues[i]
-//            currentStructure = r.structure
-//
-//            if r.structure == .coil {
-//                currentStructure = .coil
-//                while currentStructure == .coil {
-//
-//                }
-//                continue
-//            }
-//
-//            if r.structure == .alphaHelix {
-//                print("Alpha helix")
-//                let newHelix = helixNode!.copy() as! SCNReferenceNode
-//                newHelix.load()
-//                newHelix.position = (step.backBone?.atoms[i].position)!
-//                cartoonNodes.addChildNode(newHelix)
-//                continue
-//            }
-//
-//
-//        }
         
         scene.rootNode.addChildNode(cartoonNodes)
     }

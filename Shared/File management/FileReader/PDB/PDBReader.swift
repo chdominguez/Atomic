@@ -71,12 +71,18 @@ extension BaseReader {
                     
                     let position = SCNVector3(x, y, z)
                     
-                    let atom = Atom(position: position, type: element, number: natoms)
+                    var atom = Atom(position: position, type: element, number: natoms)
+            
+                    
+                    switch atomString {
+                    case "N", "C", "CA": // Save backbone nitrogens, alpha carbons and peptide bonded carbons
+                        atom.info = atomString
+                        backBone.atoms.append(atom)
+                    default: ()
+                    }
+                    
                     currentMolecule.atoms.append(atom)
                     
-                    if atomString == "C" { // Backbone carbon atoms are denoted as C in PDBs
-                        backBone.atoms.append(atom)
-                    }
                 }
             //MARK: Default
             default: continue

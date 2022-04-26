@@ -1,43 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Charts",
-        "repositoryURL": "https://github.com/danielgindi/Charts",
-        "state": {
-          "branch": "master",
-          "revision": "e91ba716190836b013ef8a9ca53e220ad5051e21",
-          "version": null
-        }
-      },
-      {
-        "package": "Dynamic",
-        "repositoryURL": "https://github.com/mhdhejazi/Dynamic",
-        "state": {
-          "branch": null,
-          "revision": "ab9a2570862d54aed2663691bb767f881226a12f",
-          "version": "1.2.0"
-        }
-      },
-      {
-        "package": "swift-algorithms",
-        "repositoryURL": "https://github.com/apple/swift-algorithms",
-        "state": {
-          "branch": null,
-          "revision": "2327673b0e9c7e90e6b1826376526ec3627210e4",
-          "version": "0.2.1"
-        }
-      },
-      {
-        "package": "swift-numerics",
-        "repositoryURL": "https://github.com/apple/swift-numerics",
-        "state": {
-          "branch": null,
-          "revision": "6583ac70c326c3ee080c1d42d9ca3361dca816cd",
-          "version": "0.1.0"
-        }
+  "pins" : [
+    {
+      "identity" : "linechartview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Jonathan-Gander/LineChartView",
+      "state" : {
+        "branch" : "main",
+        "revision" : "33996afdc124fe41916cdc69fcbc85c16da0a45c"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }

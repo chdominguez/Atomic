@@ -82,6 +82,7 @@ struct SceneUI: Representable {
         controller.backBoneNode.isHidden = !(settings.atomStyle == .backBone)
         controller.atomNodes.isHidden = !(settings.atomStyle == .ballAndStick)
         controller.bondNodes.isHidden = !(settings.atomStyle == .ballAndStick)
+        controller.cartoonNodes.isHidden = !(settings.atomStyle == .cartoon)
     }
     
 }

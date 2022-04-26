@@ -7,6 +7,7 @@
 import SwiftUI
 import SceneKit
 import SCNLine
+import SwiftStride
 
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
 class MoleculeRenderer: ObservableObject {
@@ -79,7 +80,8 @@ class MoleculeRenderer: ObservableObject {
     var atomNodes = SCNNode()
     var bondNodes = SCNNode()
     var backBoneNode = SCNLineNode()
-    var cartoonNodes = SCNReferenceNode(url: Bundle.main.url(forResource: "helix", withExtension: "usdc")!)
+    var helixNode = SCNReferenceNode(url: Bundle.main.url(forResource: "helix", withExtension: "usdc")!)
+    var cartoonNodes = SCNNode()
     var selectionNodes = SCNNode()
     
     // SceneKit classes
@@ -178,6 +180,10 @@ class MoleculeRenderer: ObservableObject {
         // Compute the backbone for proteins
         if let backBone = step.backBone { backBonds(backBone) }
         
+        // Compute cartoon nodes for proteins
+        
+        if let residues = step.res {renderCartoon(residues, step: step)}
+        
         // Add selection node as child of the main node
         
         scene.rootNode.addChildNode(selectionNodes)
@@ -206,22 +212,89 @@ class MoleculeRenderer: ObservableObject {
         backBoneNode.lineMaterials = nodeGeom.bond.materials
         backBoneNode.isHidden = true
         
-        var prevPos = pos[0]
+        scene.rootNode.addChildNode(backBoneNode)
+    }
+    
+    private func renderCartoon(_ residues: [Residue], step: Step) {
         
-        for position in pos {
-            let newHelix = cartoonNodes!.copy() as! SCNReferenceNode
-            newHelix.load()
-            newHelix.position = position
-            newHelix.look(at: prevPos, up: scene.rootNode.worldUp, localFront: newHelix.worldUp)
-            prevPos = position
+        var prevStruc: SecondaryStructure = residues.first!.structure
+        var newCartoonPositions: [[SCNVector3]] = []
+        
+        var currentPositions: [SCNVector3] = []
+        
+        for (i, r) in residues.enumerated() {
+            if r.structure == .coil || r.structure == .turn {
+                currentPositions.append(step.backBone!.atoms[i].position)
+            }
             
-            //backBoneNode.addChildNode(newHelix)
+            if prevStruc != r.structure {
+                newCartoonPositions.append(currentPositions)
+                currentPositions = []
+            }
             
+            prevStruc = r.structure
         }
         
+        for pos in newCartoonPositions {
+            let newCoil = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12)
+            cartoonNodes.addChildNode(newCoil)
+        }
         
-        scene.rootNode.addChildNode(backBoneNode)
+//        for (i, r) in residues.enumerated() {
+//          if r.structure == prevStruc {
+//              if r.structure == .coil || r.structure == .turn {
+//                  newCartoonPositions.append(step.backBone!.atoms[i].position)
+//              }
+//              if r.structure == .alphaHelix {
+//                  let newHelix = SCNNode()
+//                  newHelix.position = (step.backBone?.atoms[i].position)!
+//                  newHelix.geometry = nodeGeom.atoms[.helium]!
+//                  cartoonNodes.addChildNode(newHelix)
+//                  continue
+//              }
+//              if r.structure == .strand {
+//                  let newHelix = SCNNode()
+//                  newHelix.position = (step.backBone?.atoms[i].position)!
+//                  newHelix.geometry = nodeGeom.atoms[.fluorine]!
+//                  cartoonNodes.addChildNode(newHelix)
+//                  continue
+//              }
+//          } else {
+//              let newCoil = SCNLineNode(with: newCartoonPositions, radius: 0.2, edges: 12, maxTurning: 12)
+//              cartoonNodes.addChildNode(newCoil)
+//              newCartoonPositions = []
+//
+//          }
+//            prevStruc = r.structure
+//        }
         
+        scene.rootNode.addChildNode(cartoonNodes)
+        
+//        while i < maxI {
+//            let r = residues[i]
+//            currentStructure = r.structure
+//
+//            if r.structure == .coil {
+//                currentStructure = .coil
+//                while currentStructure == .coil {
+//
+//                }
+//                continue
+//            }
+//
+//            if r.structure == .alphaHelix {
+//                print("Alpha helix")
+//                let newHelix = helixNode!.copy() as! SCNReferenceNode
+//                newHelix.load()
+//                newHelix.position = (step.backBone?.atoms[i].position)!
+//                cartoonNodes.addChildNode(newHelix)
+//                continue
+//            }
+//
+//
+//        }
+        
+        scene.rootNode.addChildNode(cartoonNodes)
     }
     
     /// Adds a bond node to bondNodes checking the distance between thgiven atom and the following 8 atoms (in list order) in the molecule.

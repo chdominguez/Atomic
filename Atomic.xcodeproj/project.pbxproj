@@ -36,6 +36,7 @@
 		C05F5CA92785A48C00F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
 		C05F5CAA2785A7D800F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
 		C062C78F2817DBAA008765A5 /* SwiftStride in Frameworks */ = {isa = PBXBuildFile; productRef = C062C78E2817DBAA008765A5 /* SwiftStride */; };
+		C064A21028193D4400B210DD /* SwiftStride in Frameworks */ = {isa = PBXBuildFile; productRef = C064A20F28193D4400B210DD /* SwiftStride */; };
 		C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */; };
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
@@ -73,7 +74,6 @@
 		C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
 		C0E9E2B1281696770029F5F1 /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0E9E2B0281696770029F5F1 /* SCNLine */; };
 		C0E9E2B32816967F0029F5F1 /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0E9E2B22816967F0029F5F1 /* SCNLine */; };
-		C0FC761628183211002D8FC1 /* SwiftStride in Frameworks */ = {isa = PBXBuildFile; productRef = C0FC761528183211002D8FC1 /* SwiftStride */; };
 		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
 		F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA47926E77F5100387EBA /* AtomicApp.swift */; };
 		F06AA49A26E7801200387EBA /* PeriodicTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48A26E7801200387EBA /* PeriodicTable.swift */; };
@@ -151,7 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */,
-				C0FC761628183211002D8FC1 /* SwiftStride in Frameworks */,
+				C064A21028193D4400B210DD /* SwiftStride in Frameworks */,
 				C0E9E2B1281696770029F5F1 /* SCNLine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,7 +403,7 @@
 			packageProductDependencies = (
 				C01D7FC7280C5F7C003EBA5D /* LineChartView */,
 				C0E9E2B0281696770029F5F1 /* SCNLine */,
-				C0FC761528183211002D8FC1 /* SwiftStride */,
+				C064A20F28193D4400B210DD /* SwiftStride */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
@@ -441,7 +441,7 @@
 			packageReferences = (
 				C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */,
 				C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */,
-				C0FC761428183211002D8FC1 /* XCRemoteSwiftPackageReference "stride_swift" */,
+				C064A20E28193D4400B210DD /* XCRemoteSwiftPackageReference "stride_swift" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
 			projectDirPath = "";
@@ -678,8 +678,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -734,8 +734,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -758,6 +758,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Atomic_iPadOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Atomic;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -800,6 +801,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Atomic_iPadOS/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Atomic;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -869,20 +871,20 @@
 				kind = branch;
 			};
 		};
+		C064A20E28193D4400B210DD /* XCRemoteSwiftPackageReference "stride_swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chdominguez/stride_swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.1;
+			};
+		};
 		C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/maxxfrazer/SceneKit-SCNLine.git";
 			requirement = {
 				branch = main;
 				kind = branch;
-			};
-		};
-		C0FC761428183211002D8FC1 /* XCRemoteSwiftPackageReference "stride_swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/chdominguez/stride_swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -902,6 +904,11 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = SwiftStride;
 		};
+		C064A20F28193D4400B210DD /* SwiftStride */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C064A20E28193D4400B210DD /* XCRemoteSwiftPackageReference "stride_swift" */;
+			productName = SwiftStride;
+		};
 		C0E9E2B0281696770029F5F1 /* SCNLine */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
@@ -911,11 +918,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
 			productName = SCNLine;
-		};
-		C0FC761528183211002D8FC1 /* SwiftStride */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0FC761428183211002D8FC1 /* XCRemoteSwiftPackageReference "stride_swift" */;
-			productName = SwiftStride;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

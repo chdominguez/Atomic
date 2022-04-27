@@ -24,9 +24,6 @@ extension BaseReader {
         // Keep track of the number of atoms
         var natoms = 0
         
-        // Keep track of number of residues
-        var nResidue = 0
-        
         // Backbone atoms
         let backBone = Molecule()
         
@@ -37,8 +34,8 @@ extension BaseReader {
 
             let splitted = line.split(separator: " ")
             #warning("TODO: Hide / unhide solvent")
-            if String(splitted.first ?? "") == "TER" {
-                break
+            if splitted.contains("TER") || splitted.contains("WAT") {
+                continue
             }
             
             #warning("TODO: PDB helix, residues, solvent...")

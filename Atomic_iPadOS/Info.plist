@@ -57,46 +57,6 @@
 			</array>
 		</dict>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>Atomic</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>Atomic</string>
-			</array>
-		</dict>
-	</array>
-	<key>UTExportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array/>
-			<key>UTTypeDescription</key>
-			<string></string>
-			<key>UTTypeIconFiles</key>
-			<array/>
-			<key>UTTypeIdentifier</key>
-			<string></string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array/>
-			</dict>
-		</dict>
-		<dict>
-			<key>UTTypeDescription</key>
-			<string></string>
-			<key>UTTypeIconFiles</key>
-			<array/>
-			<key>UTTypeTagSpecification</key>
-			<dict/>
-		</dict>
-		<dict/>
-	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
 		<dict>

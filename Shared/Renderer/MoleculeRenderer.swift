@@ -177,12 +177,8 @@ class MoleculeRenderer: ObservableObject {
         
         scene.rootNode.addChildNode(bondNodes)
         
-        // Compute the backbone for proteins
-        if let backBone = step.backBone { backBonds(backBone) }
-        
-        // Compute cartoon nodes for proteins
-        
-        if let residues = step.res {renderCartoon(residues, step: step)}
+        // Compute the backbone and cartoon nodes for proteins
+        if let backBone = step.backBone, let residues = step.res { cartoonBackbone(backBone, aa: residues) }
         
         // Add selection node as child of the main node
         
@@ -205,41 +201,55 @@ class MoleculeRenderer: ObservableObject {
         return atomNode
     }
     
-    private func backBonds(_ molecule: Molecule) {
-        let pos = molecule.atoms.filter { $0.info == "C" }.map { $0.position }
-        backBoneNode = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12)
+    private func cartoonBackbone(_ molecule: Molecule, aa: [Residue]) {
+        
+        let pos = molecule.atoms.filter { $0.info == "C" }.map { $0.position } // Define positions for the C carbons in te aa
+        
+        backBoneNode = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12) // Generate a line node linking the C carbons
         //TODO: Implement backbone visibility based on default settings
         backBoneNode.lineMaterials = nodeGeom.bond.materials
         backBoneNode.isHidden = true
-        
         scene.rootNode.addChildNode(backBoneNode)
+        
+        // Render cartoon
+        
+        internalCartoon(aa, cpos: pos)
     }
     
-    private func renderCartoon(_ residues: [Residue], step: Step) {
+    private func internalCartoon(_ residues: [Residue], cpos: [SCNVector3]) {
         
-        var prevStruc: SecondaryStructure = residues.first!.structure
+        guard let firstRes = residues.first else {return}
+        
+        var prevStruc: SecondaryStructure = firstRes.structure
+        
         var newCartoonPositions: [CartoonPositions] = []
         
         var currentPositions = CartoonPositions()
         
+        if residues.count != cpos.count {
+            print("Not matching")
+            print("Residues: \(residues.count), cpos: \(cpos.count)")
+            #warning("TODO: Implement error handling")
+            return
+        }
+
         for (i, r) in residues.enumerated() {
-            let k = 3*i
-            
+
             if prevStruc != r.structure {
-                currentPositions.positions.append(step.backBone!.atoms[k].position)
+                currentPositions.positions.append(cpos[i])
                 currentPositions.structure = prevStruc
                 newCartoonPositions.append(currentPositions)
                 currentPositions = CartoonPositions()
             }
             
-            for j in 0...2 {
-                currentPositions.positions.append(step.backBone!.atoms[k+j].position)
-            }
+            currentPositions.positions.append(cpos[i])
             
             prevStruc = r.structure
         }
         
-        currentPositions.positions.append(step.backBone!.atoms.last!.position)
+        guard let lastPos = cpos.last else {return}
+        
+        currentPositions.positions.append(lastPos)
         currentPositions.structure = prevStruc
         newCartoonPositions.append(currentPositions)
         currentPositions = CartoonPositions()

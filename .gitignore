@@ -19,6 +19,7 @@ ReadMeResources/
 *.swp
 *.lock
 profile
+Atomic.xcodeproj/xcuserdata/
 
 
 ####

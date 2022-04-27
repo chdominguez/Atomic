@@ -72,13 +72,6 @@ class AtomicMainController: ObservableObject {
             showErrorFileAlert = true
             return
         }
-        guard url.startAccessingSecurityScopedResource() else {
-            DispatchQueue.main.sync {
-                showErrorFileAlert = true
-                loading = false
-            }
-            return
-        }
         processFile(url: url)
     }
     
@@ -93,6 +86,13 @@ class AtomicMainController: ObservableObject {
     func processFile(url: URL) {
         DispatchQueue.global(qos: .userInitiated).async { [self] in
             do {
+                guard url.startAccessingSecurityScopedResource() else {
+                    DispatchQueue.main.sync {
+                        showErrorFileAlert = true
+                        loading = false
+                    }
+                    return
+                }
                 let fileString = try AtomicFileOpener.getFileAsString(from: url)
                 let BR = try BaseReader(fileURL: url)
                 try BR.readSteps()

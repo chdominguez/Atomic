@@ -345,7 +345,7 @@ class MoleculeRenderer: ObservableObject {
         case removeAtom
         case selectAtom
     }
-    
+
     /// Selected tool on this scene
     @Published var selectedTool: Tools = .selectAtom
     
@@ -438,7 +438,6 @@ class MoleculeRenderer: ObservableObject {
         selectedAtoms[2].selectedNode.position = newPos
         selectedAtoms[2].selectionOrb.position = newPos
     }
-    
     
     //MARK: Scene renderer controller
     

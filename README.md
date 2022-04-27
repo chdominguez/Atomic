@@ -3,7 +3,7 @@
 Modern molecular visualizer for macOS and iPadOS
 
 :warning: | **Atomic is currently in early development.** 
-To try on iPad stay tuned for an upcoming TestFlight build. For macOS, go to the releases tab.
+To try on iPad, join the beta using the TestFlight link present in the Releases tab. For macOS, go to the releases tab and download the dmg.
 
 ## Why atomic?
 There are plenty of molecular visualizers out there for every platform, so, why another one? 

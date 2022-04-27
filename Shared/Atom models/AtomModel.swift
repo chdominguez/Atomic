@@ -15,7 +15,7 @@ struct Atom: Identifiable {
     var position: SCNVector3
     var type: Element
     var number: Int
-    
+  
     var info: String = "" // Allows for further classification. For example: "CA", which denotes an alpha carbon in PDBs.
 }
 
@@ -34,7 +34,6 @@ struct CartoonPositions {
 /// Gaussian - energy, isFinalStep, jobNumber, isInput
 /// XYZ - timestep
 class Step {
-    
     /// The step number of the job (for example in optimization calculations)
     var stepNumber: Int?
     

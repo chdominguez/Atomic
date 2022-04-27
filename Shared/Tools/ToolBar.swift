@@ -54,8 +54,7 @@ struct AtomicToolsView: View {
                     controller.selectedAtoms.isEmpty ? controller.selectedTool = .removeAtom : controller.eraseSelectedAtoms()
                 }
             }.frame(maxHeight: 50)
-                .animation(.easeIn, value: controller.selectedAtoms.isEmpty)
-            
+                .animation(.easeIn, value: controller.selectedAtoms.isEmpty)          
             //MARK: Distance/angle
             if controller.showDistangle {
                 HStack {

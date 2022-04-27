@@ -27,13 +27,13 @@ extension BaseReader {
         // Backbone atoms
         let backBone = Molecule()
         
-        for line in splitFile {
-            
+        for line in splitFile {            
             //Increment current line by 1 to keep track if an error happens
             errorLine += 1
 
             let splitted = line.split(separator: " ")
             #warning("TODO: Hide / unhide solvent")
+          
             if splitted.contains("TER") || splitted.contains("WAT") {
                 continue
             }

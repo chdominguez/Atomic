@@ -148,7 +148,6 @@ func filterStoI(_ newValue: String, maxValue: Int, minValue: Int = 1) -> Int {
     return filtered // Fallthrough
 }
 
-
 /// Filters a string value to a double value between a max and a min value.
 /// - Parameters:
 ///   - newValue: String to filter

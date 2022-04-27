@@ -16,6 +16,16 @@ extension Double {
     func stringWith(_ decimals: Int) -> String {
         return String(format: "%.\(decimals)f", self)
     }
+    
+    /// Transforms the angle defined by this value from degrees to radians.
+    func toRadians() -> Double {
+        return self * (.pi / 180)
+    }
+    
+    /// Transforms the angle defined by this value from radians to degrees.
+    func toDegrees() -> Double {
+        return self * (180 / .pi)
+    }
 }
 
 extension CGFloat {
@@ -43,18 +53,5 @@ extension Float {
         else {
             return " \(String(format: "%.\(decimals)f", self))"
         }
-    }
-}
-
-extension SCNVector3: Equatable {
-    public static func == (lhs: SCNVector3, rhs: SCNVector3) -> Bool {
-        if lhs.x == rhs.x {
-            if lhs.y == rhs.y {
-                if  lhs.z == rhs.z {
-                    return true
-                }
-            }
-        }
-        return false
     }
 }

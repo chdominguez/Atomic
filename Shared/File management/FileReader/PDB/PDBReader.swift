@@ -6,6 +6,7 @@
 //
 
 import SceneKit
+import SwiftStride
 
 
 extension BaseReader {
@@ -14,7 +15,7 @@ extension BaseReader {
         let pdbError = AtomicErrors.pdbError
         
         // Variable to save current step atom positions
-        var currentMolecule = Molecule()
+        let currentMolecule = Molecule()
         
         // Some pdbs have variable column size, with data placed in different columns
         var ncolumns = 0 // Number of columns
@@ -23,21 +24,18 @@ extension BaseReader {
         // Keep track of the number of atoms
         var natoms = 0
         
-        // Keep track of number of residues
-        var nResidue = 0
-        
         // Backbone atoms
-        var backBone = Molecule()
+        let backBone = Molecule()
         
-        for line in openedFile {
-            
+        for line in splitFile {            
             //Increment current line by 1 to keep track if an error happens
             errorLine += 1
 
             let splitted = line.split(separator: " ")
             #warning("TODO: Hide / unhide solvent")
-            if String(splitted.first!) == "TER" {
-                break
+          
+            if splitted.contains("TER") || splitted.contains("WAT") {
+                continue
             }
             
             #warning("TODO: PDB helix, residues, solvent...")
@@ -64,20 +62,24 @@ extension BaseReader {
                         }
                     }
                     
+                    let atomString = String(splitted[2])
                     
-                    guard let element = getAtom(fromString: String(splitted[2])), let x = Float(splitted[dI]), let y = Float(splitted[dI + 1]), let z = Float(splitted[dI + 2]) else {throw pdbError}
+                    guard let element = getAtom(fromString: atomString), let x = Float(splitted[dI]), let y = Float(splitted[dI + 1]), let z = Float(splitted[dI + 2]) else {throw pdbError}
                     
                     let position = SCNVector3(x, y, z)
                     
-                    let atom = Atom(position: position, type: element, number: natoms)
+                    var atom = Atom(position: position, type: element, number: natoms)
+            
+                    
+                    switch atomString {
+                    case "N", "C", "CA": // Save backbone nitrogens, alpha carbons and peptide bonded carbons
+                        atom.info = atomString
+                        backBone.atoms.append(atom)
+                    default: ()
+                    }
+                    
                     currentMolecule.atoms.append(atom)
                     
-                    let cRes = Int(splitted[dI-1])!
-                    
-                    if cRes != nResidue {
-                        nResidue = cRes
-                        backBone.atoms.append(atom)
-                    }
                 }
             //MARK: Default
             default: continue
@@ -90,6 +92,12 @@ extension BaseReader {
         step.isFinalStep = true
         step.isProtein = true
         step.backBone = backBone
+        
+        // Run the Stride algorithm to obtain secondary structure
+        let aminos = Stride.predict(from: fileURL.path)
+        
+        step.res = aminos
+        
         self.steps.append(step)
     }
     

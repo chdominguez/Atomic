@@ -18,7 +18,7 @@ class BaseReader {
     internal var errorLine = 0
     
     // Output file saved in an array for each line
-    internal let openedFile: [String]
+    internal let splitFile: [String]
     
     // The read steps from the opened file
     public var steps: [Step] = []
@@ -27,7 +27,7 @@ class BaseReader {
     /// - Parameter fileAsString: The contents of the file as a unique string
     init(fileURL: URL) throws {
         self.fileURL = fileURL
-        self.openedFile = (try String(contentsOf: fileURL)).components(separatedBy: "\n")
+        self.splitFile = (try String(contentsOf: fileURL)).components(separatedBy: "\n")
     }
     
     /// Returns the Element of the given String with an atomic symbol or the atomic number

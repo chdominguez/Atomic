@@ -19,7 +19,7 @@ ReadMeResources/
 *.swp
 *.lock
 profile
-
+Atomic.xcodeproj/xcuserdata/
 
 ####
 # Xcode temporary files that should never be committed

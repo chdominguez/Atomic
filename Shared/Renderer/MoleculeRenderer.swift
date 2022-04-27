@@ -6,6 +6,8 @@
 //
 import SwiftUI
 import SceneKit
+import SCNLine
+import SwiftStride
 
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
 class MoleculeRenderer: ObservableObject {
@@ -77,8 +79,9 @@ class MoleculeRenderer: ObservableObject {
     
     var atomNodes = SCNNode()
     var bondNodes = SCNNode()
-    var backBone = SCNNode()
-    //var cartoonNodes = SCNNode() TODO: implement cartoon
+    var backBoneNode = SCNLineNode()
+    var helixNode = SCNReferenceNode(url: Bundle.main.url(forResource: "helix", withExtension: "usdc")!)
+    var cartoonNodes = SCNNode()
     var selectionNodes = SCNNode()
     
     // SceneKit classes
@@ -157,7 +160,7 @@ class MoleculeRenderer: ObservableObject {
         
         atomNodes.name = "atoms"
         bondNodes.name = "bonds"
-        backBone.name = "backBone"
+        backBoneNode.name = "backBone"
         
         for atom in molecule.atoms {
             atomNodes.addChildNode(newAtom(atom))
@@ -174,8 +177,8 @@ class MoleculeRenderer: ObservableObject {
         
         scene.rootNode.addChildNode(bondNodes)
         
-        // Compute the backbone for proteins
-        if let backBone = step.backBone { backBonds(backBone) }
+        // Compute the backbone and cartoon nodes for proteins
+        if let backBone = step.backBone, let residues = step.res { cartoonBackbone(backBone, aa: residues) }
         
         // Add selection node as child of the main node
         
@@ -198,15 +201,81 @@ class MoleculeRenderer: ObservableObject {
         return atomNode
     }
     
-    private func backBonds(_ molecule: Molecule) {
-        for i in 0..<molecule.atoms.endIndex - 1 {
-            let pos1 = molecule.atoms[i].position
-            let pos2 = molecule.atoms[i+1].position
-            backBone.addChildNode(createBondNode(from: pos1, to: pos2, radius: 0.3))
-        }
+    private func cartoonBackbone(_ molecule: Molecule, aa: [Residue]) {
+        
+        let pos = molecule.atoms.filter { $0.info == "C" }.map { $0.position } // Define positions for the C carbons in te aa
+        
+        backBoneNode = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12) // Generate a line node linking the C carbons
         //TODO: Implement backbone visibility based on default settings
-        backBone.isHidden = true
-        scene.rootNode.addChildNode(backBone)
+        backBoneNode.lineMaterials = nodeGeom.bond.materials
+        backBoneNode.isHidden = true
+        scene.rootNode.addChildNode(backBoneNode)
+        
+        // Render cartoon
+        
+        internalCartoon(aa, cpos: pos)
+    }
+    
+    private func internalCartoon(_ residues: [Residue], cpos: [SCNVector3]) {
+        
+        guard let firstRes = residues.first else {return}
+        
+        var prevStruc: SecondaryStructure = firstRes.structure
+        
+        var newCartoonPositions: [CartoonPositions] = []
+        
+        var currentPositions = CartoonPositions()
+        
+        if residues.count != cpos.count {
+            print("Not matching")
+            print("Residues: \(residues.count), cpos: \(cpos.count)")
+            #warning("TODO: Implement error handling")
+            return
+        }
+
+        for (i, r) in residues.enumerated() {
+
+            if prevStruc != r.structure {
+                currentPositions.positions.append(cpos[i])
+                currentPositions.structure = prevStruc
+                newCartoonPositions.append(currentPositions)
+                currentPositions = CartoonPositions()
+            }
+            
+            currentPositions.positions.append(cpos[i])
+            
+            prevStruc = r.structure
+        }
+        
+        guard let lastPos = cpos.last else {return}
+        
+        currentPositions.positions.append(lastPos)
+        currentPositions.structure = prevStruc
+        newCartoonPositions.append(currentPositions)
+        currentPositions = CartoonPositions()
+        
+        for cart in newCartoonPositions {
+            let newCoil = SCNLineNode(with: cart.positions, radius: 0.2, edges: 12, maxTurning: 12)
+            let material = SCNMaterial()
+            newCoil.lineMaterials = [material]
+            switch cart.structure {
+            case .alphaHelix, .helix310, .phiHelix:
+                material.diffuse.contents = UColor.green
+            case .strand:
+                material.diffuse.contents = UColor.blue
+            case .bridge:
+                material.diffuse.contents = UColor.red
+            case .coil:
+                material.diffuse.contents = UColor.brown
+            case .turnI, .turnIp, .turnII, .turnIIp, .turnVIa, .turnVIb, .turnVIII, .turnIV, .turn:
+                material.diffuse.contents = UColor.yellow
+            case .GammaClassic, .GammaInv:
+                material.diffuse.contents = UColor.orange
+            }
+            cartoonNodes.addChildNode(newCoil)
+        }
+        
+        scene.rootNode.addChildNode(cartoonNodes)
     }
     
     /// Adds a bond node to bondNodes checking the distance between thgiven atom and the following 8 atoms (in list order) in the molecule.
@@ -264,16 +333,11 @@ class MoleculeRenderer: ObservableObject {
             atom.selectedNode.removeFromParentNode()
         }
         unSelectAll()
+        updateBonds()
     }
     
     
     //MARK: Tools
-    
-    /// Selected tool on this scene
-    @Published var selectedTool: Tools = .selectAtom
-    
-    /// Distance of selected nodes
-    @Published var measuredDistance: String? = nil
     
     /// Available tools
     enum Tools {
@@ -281,13 +345,35 @@ class MoleculeRenderer: ObservableObject {
         case removeAtom
         case selectAtom
     }
+
+    /// Selected tool on this scene
+    @Published var selectedTool: Tools = .selectAtom
+    
+    /// Distance of selected nodes
+    @Published var measuredDistangle: String = ""
+    @Published var showDistangle: Bool = false
+    
+    var maxRange: ClosedRange<Double> {
+        if selectedAtoms.count == 3 {
+            return 0.5...180
+        }
+        return 0.5...5
+    }
+    
+    var bindingDoubleDistangle: Binding<Double> {
+        Binding { [self] in
+            filterStoD(measuredDistangle, maxValue: maxRange.upperBound, minValue: maxRange.lowerBound)
+        } set: {self.measuredDistangle = String($0); self.editDistanceOrAngle()}
+
+    }
     
     /// Measures the distance or the angle between two and three selected nodes, respectively and depending on the selected nodes quantity.
-    func measureNodes() {
+    private func measureNodes() {
         if selectedAtoms.count == 2 {
             let pos1 = selectedAtoms[0].selectedNode.position
             let pos2 = selectedAtoms[1].selectedNode.position
-            measuredDistance = distance(from: pos1, to: pos2).stringWith(3) + " Å"
+            measuredDistangle = distance(from: pos1, to: pos2).stringWith(3) + " Å"
+            showDistangle = true
             return
             
         }
@@ -297,12 +383,60 @@ class MoleculeRenderer: ObservableObject {
             let pos2 = selectedAtoms[1].selectedNode.position
             let pos3 = selectedAtoms[2].selectedNode.position
             
-            measuredDistance = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + " º"
+            measuredDistangle = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + "º"
+            showDistangle = true
             return
         }
         
         // Fallthrough
-        measuredDistance = nil
+        showDistangle = false
+    }
+    
+    func editDistanceOrAngle() {
+        
+        if selectedAtoms.count == 2 {
+            let newDistance = filterStoD(measuredDistangle, maxValue: .infinity, minValue: 0.5)
+            editDistance(newDistance)
+        }
+        if selectedAtoms.count == 3 {
+            let newAngle = filterStoD(measuredDistangle, maxValue: 180, minValue: 0.5)
+            editAngle(newAngle)
+        }
+        updateBonds()
+        //measureNodes()
+    }
+    
+    /// If the user changes manually measured distance, the selected nodes are updated to reflect the change.
+    private func editDistance(_ newValue: Double) {
+        
+        let pos1 = selectedAtoms[0].selectedNode.position
+        let pos2 = selectedAtoms[1].selectedNode.position
+        let vector = (pos2 - pos1).normalized()
+        
+        let newPosition = pos1 + vector.scaled(by: newValue)
+        
+        selectedAtoms[1].selectedNode.position = newPosition
+        selectedAtoms[1].selectionOrb.position = newPosition
+    }
+    
+    /// If the user changes manually measured angle, the selected nodes are updated to reflect the change.
+    private func editAngle(_ newValue: Double) {
+        
+        let pos1 = selectedAtoms[0].selectedNode.position
+        let pos2 = selectedAtoms[1].selectedNode.position
+        let pos3 = selectedAtoms[2].selectedNode.position
+        
+        let vector1 = (pos1 - pos2)
+        let vector2 = (pos3 - pos2)
+        
+        let newAngle = (newValue - angle(pos1: pos1, pos2: pos2, pos3: pos3)).toRadians()
+        
+        let normal = vector1.crossProduct(vector2).normalized()
+        
+        let newPos = pos2 + vector2.rotated(by: newAngle, withRespectTo: normal)
+        
+        selectedAtoms[2].selectedNode.position = newPos
+        selectedAtoms[2].selectionOrb.position = newPos
     }
     
     //MARK: Scene renderer controller
@@ -347,6 +481,7 @@ class MoleculeRenderer: ObservableObject {
         molecule.atoms.removeAll { atom in
             hitNode.position == atom.position
         }
+        updateBonds()
     }
     
     

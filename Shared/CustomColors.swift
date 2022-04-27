@@ -20,7 +20,7 @@ typealias UColor = NSColor
 extension Color {
     static let buttonGradient = LinearGradient(colors: [Color("ButtonColor1"), Color("ButtonColor2")], startPoint: .topTrailing, endPoint: .bottomLeading)
     
-    /// SceneKit better handles either UIColor or NSColor, RColor transforms to either depending on the platform. uColor is the universal color for both platforms.
+    /// SceneKit better handles either UIColor or NSColor, UColor transforms to either depending on the platform. uColor is the universal color for both platforms.
     var uColor: UColor {
         return UColor(self)
     }

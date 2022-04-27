@@ -34,19 +34,24 @@ struct MainWindow: View {
         .alert(isPresented: $controller.showErrorFileAlert) { alert }
         // Custom view modifier for allowing dropping on macOS and iOS
         .onDropOfAtomic(delegate: controller)
+        // iOS: Handle opened files from the Files app or other sources
+        // macOS: Handle dragged files to the icon or with "open with... Atomic"
+        .onOpenURL { url in
+            controller.processFile(url: url)
+            }
         #if os(macOS)
         // Obtaining the NSWindow instance associated with this view
         .background(WindowAccessor(associatedController: controller))
         #elseif os(iOS)
         // Assigning the root view a sheet for displaying new views as a "little window inside the app".
         .sheet(isPresented: $controller.showSheet, content: {controller.sheetContent})
+        // Detect if the app has become active to set the active controller
         .onChange(of: scenePhase) { phase in
             if phase == .active {
                 InstanceManager.shared.currentController = controller
             }
         }
         #endif
-        
     }
     
 }

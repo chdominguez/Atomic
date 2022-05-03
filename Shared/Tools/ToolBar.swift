@@ -14,65 +14,96 @@ struct AtomicToolsView: View {
     
     var body: some View {
         ZStack {
+            
             //MARK: Main toolbar
             HStack {
-                HStack {
-                    Image(systemName: "atom")
-                    Text(ptableController.selectedAtom.rawValue)
-                }.atomicNoButton()
-                    .foregroundColor(controller.selectedTool == .addAtom ? .red : .primary)
-                    .onTapGesture {
-                        controller.selectedTool = .addAtom
-                        #if os(macOS)
-                        PTable().openNewWindow(type: .ptable)
-                        #elseif os(iOS)
-                        PTable().openNewWindow()
-                        #endif
-                    }
-                HStack {
-                    Image(systemName: "hand.tap")
-                    Text("Select")
-                }.atomicNoButton()
-                    .foregroundColor(controller.selectedTool == .selectAtom ? .red : .primary)
-                    .onTapGesture {
-                        controller.selectedTool = .selectAtom
-                    }
-                HStack {
-                    Image(systemName: "link")
-                    Text("Bond")
-                }.atomicNoButton()
-                    .onTapGesture {
-                        controller.bondSelectedAtoms()
-                    }
-                HStack {
-                    Image(systemName: "trash")
-                    Text(controller.selectedAtoms.isEmpty ? "Erase" : "Erase selected")
-                }
-                .atomicNoButton()
-                .foregroundColor(controller.selectedTool == .removeAtom ? .red : Color.primary)
-                .onTapGesture {
-                    controller.selectedAtoms.isEmpty ? controller.selectedTool = .removeAtom : controller.eraseSelectedAtoms()
-                }
+                atomButton
+                selectButton
+                bondSelected
+                erase
             }.frame(maxHeight: 50)
-                .animation(.easeIn, value: controller.selectedAtoms.isEmpty)          
+            
             //MARK: Distance/angle
             if controller.showDistangle {
-                HStack {
-                    ZStack {
-                        Slider(value: controller.bindingDoubleDistangle, in: controller.maxRange)
-                            .offset(x: 0, y: -30)
-                        TextField("Value", text: $controller.measuredDistangle, onCommit: {
-                            controller.editDistanceOrAngle()
-                        })
-                            .multilineTextAlignment(.center)
-                            .textFieldStyle(.plain)
-                            .atomicNoButton()
-                    }
-                    .frame(maxWidth: 80)
-                    .padding(.horizontal)
-                    Spacer()
-                }
+                distanceEditor
             }
+        }
+    }
+}
+
+
+extension AtomicToolsView {
+    private var atomButton: some View {
+        Button {
+            controller.selectedTool = .addAtom
+            #if os(macOS)
+            PTable().openNewWindow(type: .ptable)
+            #elseif os(iOS)
+            PTable().openNewWindow()
+            #endif
+        } label: {
+            HStack {
+                Image(systemName: "atom")
+                Text(ptableController.selectedAtom.rawValue)
+            }
+        }
+        .toolbarButton()
+        .foregroundColor(controller.selectedTool == .addAtom ? .red : .primary)
+    }
+    private var selectButton: some View {
+        Button {
+            controller.selectedTool = .selectAtom
+        } label: {
+            HStack {
+                Image(systemName: "hand.tap")
+                Text("Select")
+            }
+        }
+        .toolbarButton()
+        .foregroundColor(controller.selectedTool == .selectAtom ? .red : .primary)
+    }
+    
+    private var bondSelected: some View {
+        Button {
+            controller.bondSelectedAtoms()
+        } label: {
+            HStack {
+                Image(systemName: "link")
+                Text("Bond")
+            }
+        }
+        .toolbarButton()
+        .disabled(controller.selectedAtoms.count != 2)
+    }
+    
+    private var erase: some View {
+        Button {
+            controller.selectedAtoms.isEmpty ? controller.selectedTool = .removeAtom : controller.eraseSelectedAtoms()
+        } label: {
+            HStack {
+                Image(systemName: "trash")
+                Text("Erase")
+            }
+        }
+        .toolbarButton()
+        .foregroundColor(controller.selectedTool == .removeAtom ? .red : Color.primary)
+    }
+    
+    private var distanceEditor: some View {
+        HStack {
+            ZStack {
+                Slider(value: controller.bindingDoubleDistangle, in: controller.maxRange)
+                    .offset(x: 0, y: -30)
+                TextField("Value", text: $controller.measuredDistangle, onCommit: {
+                    controller.editDistanceOrAngle()
+                })
+                    .multilineTextAlignment(.center)
+                    .textFieldStyle(.plain)
+                    .toolbarButton()
+            }
+            .frame(maxWidth: 80)
+            .padding(.horizontal)
+            Spacer()
         }
     }
 }

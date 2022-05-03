@@ -62,13 +62,15 @@ extension Molecule3DView {
             Button {
                 controller.previousScene()
             } label: {
-                Image(systemName: "chevron.left").atomicButton()
-            }
+                Image(systemName: "chevron.left")
+            }.toolbarButton()
+            #warning("CHANGE TO unique modifier!!!")
             Button {
                 controller.nextScene()
             } label: {
-                Image(systemName: "chevron.right").atomicButton()
+                Image(systemName: "chevron.right")
             }
+            .toolbarButton()
             Spacer()
             if controller.showingStep.isFinalStep {
                 if let energy = controller.showingStep.energy {
@@ -94,8 +96,8 @@ extension Molecule3DView {
             Button {
                 controller.playAnimation()
             } label: {
-                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill").foregroundColor(controller.isPlaying ? .red : .green).atomicButton()
-            }
+                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill").foregroundColor(controller.isPlaying ? .red : .green)
+            }.toolbarButton()
         }
         .padding(.horizontal)
 #if os(macOS)

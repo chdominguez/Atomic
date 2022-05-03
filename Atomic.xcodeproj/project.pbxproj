@@ -19,7 +19,6 @@
 		C0209CE0280D584A00ED9AEF /* SceneKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0209CDE280D584A00ED9AEF /* SceneKitExtensions.swift */; };
 		C021717F27E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C021718027E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
-		C0265CA52766A30100C5219E /* WelcomeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0265CA42766A30100C5219E /* WelcomeMessage.swift */; };
 		C02C1BDC27E4B23F00BCDF01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
 		C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
 		C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
@@ -58,7 +57,6 @@
 		C0DCCECE276A3E8F0085CD1D /* PeriodicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */; };
 		C0DCCECF276A3E8F0085CD1D /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
 		C0DCCED0276A3E8F0085CD1D /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
-		C0DCCED2276A3E920085CD1D /* WelcomeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0265CA42766A30100C5219E /* WelcomeMessage.swift */; };
 		C0DCCED3276A3E920085CD1D /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552126F7C61500DD4F25 /* MainWindow.swift */; };
 		C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F6552626F7C89600DD4F25 /* SettingsView.swift */; };
 		C0DCCED5276A3E980085CD1D /* AtomicMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA49726E7801200387EBA /* AtomicMainController.swift */; };
@@ -94,7 +92,6 @@
 		C0205A6A280C632200BCD688 /* Commands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		C0209CDE280D584A00ED9AEF /* SceneKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitExtensions.swift; sourceTree = "<group>"; };
 		C021717E27E3E269007ACD2F /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
-		C0265CA42766A30100C5219E /* WelcomeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeMessage.swift; sourceTree = "<group>"; };
 		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
 		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
 		C0455E57277B985400561AAA /* GaussianKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianKeywords.swift; sourceTree = "<group>"; };
@@ -348,7 +345,6 @@
 			isa = PBXGroup;
 			children = (
 				F0F6552126F7C61500DD4F25 /* MainWindow.swift */,
-				C0265CA42766A30100C5219E /* WelcomeMessage.swift */,
 			);
 			path = "Main Windows";
 			sourceTree = "<group>";
@@ -489,7 +485,6 @@
 				C066B782277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */,
 				C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */,
-				C0DCCED2276A3E920085CD1D /* WelcomeMessage.swift in Sources */,
 				C0DCCECD276A3E710085CD1D /* SceneKitRepresentable.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
 				C0DCCEC5276A3D600085CD1D /* BaseReader.swift in Sources */,
@@ -534,7 +529,6 @@
 				C041E26027752250005790EE /* SceneKitRepresentable.swift in Sources */,
 				F06AA49E26E7801200387EBA /* BaseReader.swift in Sources */,
 				C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */,
-				C0265CA52766A30100C5219E /* WelcomeMessage.swift in Sources */,
 				C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0CE163928006C1200A35AA3 /* UsefulFunctions.swift in Sources */,
 				C0DFA43A27E8BDAC00F6BA9A /* PDBReader.swift in Sources */,

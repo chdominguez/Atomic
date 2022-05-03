@@ -48,7 +48,7 @@ struct PTable: View {
                 }
             }
         }
-        .padding()       
+        .padding(.vertical)
     }
 }
 

@@ -7,51 +7,81 @@
 
 import SwiftUI
 
-/// View modifier for UI buttons
-struct AtomicButton: ViewModifier {
+struct NeumorphicButton<S: Shape>: ButtonStyle {
     
-    func body(content: Content) -> some View {
-        #if os(macOS)
-        content
-        #else
-            content
-                .buttonStyle(.plain)
-                .frame(height: 30)
-                .frame(minWidth: 60)
-                .padding(.horizontal)
-                .background(Color.buttonGradient)
-                .cornerRadius(15)
-        #endif
+    let shape: S
+    let gradient1 = Color.neumorStart
+    let gradient2 = Color.neumorEnd
+    let vpadding: CGFloat
+    let hpadding: CGFloat
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.vertical, vpadding)
+            .padding(.horizontal, hpadding)
+            .contentShape(shape)
+            .background(
+                ZStack {
+                    if configuration.isPressed {
+                        shape
+                        .fill(gradient1)
+                    } else {
+                        shape
+                        .fill(gradient2)
+                        .shadow(color: .neumorShadow.opacity(0.3), radius: 10, x: 0, y: 10)
+                    }
+                }
+            )
+            .scaleEffect(configuration.isPressed ? 0.9 : 1)
+            .animation(.easeOut, value: configuration.isPressed)
     }
 }
 
-// View modifier for custom buttons that are not part of SwiftUI class "Button". I.e. a Text with .onTapGesture
-struct AtomicNoButton: ViewModifier {
-
-    var widthButton: CGFloat = 80
+// For aplying to .onTapGesture views
+struct NonButtonNeumorphic: ViewModifier {
     
+    @Binding var isPressed: Bool
+    let gradient1 = Color.blueGradient1
+    let gradient2 = Color.blueGradient2
+
     func body(content: Content) -> some View {
         content
-            .frame(height: 30)
-            .frame(minWidth: 60)
-            .padding(.horizontal)
-            .background(Color.buttonGradient)
-            .cornerRadius(15)
+            .background(
+                ZStack {
+                    if isPressed {
+                        content
+                        .background(gradient1)
+                    } else {
+                        content
+                        .background(gradient2)
+                        .shadow(color: .neumorShadow.opacity(0.3), radius: 10, x: 0, y: 10)
+                    }
+                }
+            )
+            .scaleEffect(isPressed ? 0.9 : 1)
+            .animation(.easeOut, value: isPressed)
+        
     }
+        
 }
 
 
 // Custom view modifiers
 extension View {
     
-    /// Custom modifier for UI buttons
-    func atomicButton(fixed: Bool = false) -> some View {
-        modifier(AtomicButton())
+    /// Custom modifier for buttons
+    func toolbarButton() -> some View {
+        buttonStyle(NeumorphicButton(shape: RoundedRectangle(cornerRadius: 25), vpadding: 6, hpadding: 20))
     }
     
-    /// Custom modifier for other views that acts as buttons but are not buttons
-    func atomicNoButton() -> some View {
-        modifier(AtomicNoButton())
+    /// Neumorphic UI
+    func neumorphicButton<S: Shape>(_ shape: S) -> some View {
+        buttonStyle(NeumorphicButton(shape: shape, vpadding: 30, hpadding: 30))
+    }
+    
+    /// Intended for views that are not Buttons but can act as so
+    func neumorphicPlain(isPressed: Binding<Bool>) -> some View {
+        modifier(NonButtonNeumorphic(isPressed: isPressed))
     }
     
     /// .onDrop of modifier adapted for both platforms

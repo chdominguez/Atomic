@@ -21,8 +21,8 @@ struct AtomicToolsView: View {
                 selectButton
                 bondSelected
                 erase
-            }.frame(maxHeight: 50)
-            
+            }
+            .frame(maxHeight: 50)            
             //MARK: Distance/angle
             if controller.showDistangle {
                 distanceEditor
@@ -45,10 +45,9 @@ extension AtomicToolsView {
             HStack {
                 Image(systemName: "atom")
                 Text(ptableController.selectedAtom.rawValue)
-            }
+            }.foregroundColor(controller.selectedTool == .addAtom ? .accentColor : .primary)
         }
         .toolbarButton()
-        .foregroundColor(controller.selectedTool == .addAtom ? .red : .primary)
     }
     private var selectButton: some View {
         Button {
@@ -57,10 +56,9 @@ extension AtomicToolsView {
             HStack {
                 Image(systemName: "hand.tap")
                 Text("Select")
-            }
+            }.foregroundColor(controller.selectedTool == .selectAtom ? .accentColor : .primary)
         }
         .toolbarButton()
-        .foregroundColor(controller.selectedTool == .selectAtom ? .red : .primary)
     }
     
     private var bondSelected: some View {
@@ -70,7 +68,7 @@ extension AtomicToolsView {
             HStack {
                 Image(systemName: "link")
                 Text("Bond")
-            }
+            }.foregroundColor((controller.selectedAtoms.count != 2) ? .gray : .primary)
         }
         .toolbarButton()
         .disabled(controller.selectedAtoms.count != 2)
@@ -83,10 +81,9 @@ extension AtomicToolsView {
             HStack {
                 Image(systemName: "trash")
                 Text("Erase")
-            }
+            }.foregroundColor(controller.selectedTool == .removeAtom ? .accentColor : .primary)
         }
         .toolbarButton()
-        .foregroundColor(controller.selectedTool == .removeAtom ? .red : Color.primary)
     }
     
     private var distanceEditor: some View {
@@ -99,7 +96,7 @@ extension AtomicToolsView {
                 })
                     .multilineTextAlignment(.center)
                     .textFieldStyle(.plain)
-                    .toolbarButton()
+                    //.toolbarButton()
             }
             .frame(maxWidth: 80)
             .padding(.horizontal)

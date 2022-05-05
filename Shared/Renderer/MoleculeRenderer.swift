@@ -353,6 +353,9 @@ class MoleculeRenderer: ObservableObject {
     @Published var measuredDistangle: String = ""
     @Published var showDistangle: Bool = false
     
+    /// Shows Angstroms or degrees depending on the number of selected atoms
+    var currentUnit: String = " Å"
+    
     var maxRange: ClosedRange<Double> {
         if selectedAtoms.count == 3 {
             return 0.5...180
@@ -363,27 +366,29 @@ class MoleculeRenderer: ObservableObject {
     var bindingDoubleDistangle: Binding<Double> {
         Binding { [self] in
             filterStoD(measuredDistangle, maxValue: maxRange.upperBound, minValue: maxRange.lowerBound)
-        } set: {self.measuredDistangle = String($0); self.editDistanceOrAngle()}
+        } set: {self.measuredDistangle = $0.stringWith(3) + self.currentUnit; self.editDistanceOrAngle()}
 
     }
     
     /// Measures the distance or the angle between two and three selected nodes, respectively and depending on the selected nodes quantity.
     private func measureNodes() {
         if selectedAtoms.count == 2 {
+            currentUnit = " Å"
             let pos1 = selectedAtoms[0].selectedNode.position
             let pos2 = selectedAtoms[1].selectedNode.position
-            measuredDistangle = distance(from: pos1, to: pos2).stringWith(3) + " Å"
+            measuredDistangle = distance(from: pos1, to: pos2).stringWith(3) + currentUnit
             showDistangle = true
             return
             
         }
         
         if selectedAtoms.count == 3 {
+            currentUnit = "º"
             let pos1 = selectedAtoms[0].selectedNode.position
             let pos2 = selectedAtoms[1].selectedNode.position
             let pos3 = selectedAtoms[2].selectedNode.position
             
-            measuredDistangle = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + "º"
+            measuredDistangle = angle(pos1: pos1, pos2: pos2, pos3: pos3).stringWith(3) + currentUnit
             showDistangle = true
             return
         }

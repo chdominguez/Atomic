@@ -23,7 +23,7 @@ struct Molecule3DView: View {
                             progressview.foregroundColor(.primary)
                         }
                         Spacer()
-                        AtomicToolsView(controller: controller)
+                        AtomicToolsView(controller: controller).padding(.vertical, 5)
                     }
                 }
                 stepsToolbar
@@ -63,14 +63,13 @@ extension Molecule3DView {
                 controller.previousScene()
             } label: {
                 Image(systemName: "chevron.left")
-            }.toolbarButton()
-            #warning("CHANGE TO unique modifier!!!")
+            }.stepBarButton()
             Button {
                 controller.nextScene()
             } label: {
                 Image(systemName: "chevron.right")
             }
-            .toolbarButton()
+            .stepBarButton()
             Spacer()
             if controller.showingStep.isFinalStep {
                 if let energy = controller.showingStep.energy {
@@ -96,8 +95,10 @@ extension Molecule3DView {
             Button {
                 controller.playAnimation()
             } label: {
-                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill").foregroundColor(controller.isPlaying ? .red : .green)
-            }.toolbarButton()
+                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill")
+                    .frame(width: 10, height: 10)
+                    .foregroundColor(controller.isPlaying ? .red : .green)
+            }.stepBarButton()
         }
         .padding(.horizontal)
 #if os(macOS)

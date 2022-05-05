@@ -40,6 +40,8 @@
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C09441352761F76F00680075 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
+		C09688C42822C9730072D804 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09688C32822C9730072D804 /* Neumorphic */; };
+		C09688C62822C97A0072D804 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09688C52822C97A0072D804 /* Neumorphic */; };
 		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
@@ -137,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C09688C62822C97A0072D804 /* Neumorphic in Frameworks */,
 				C0E9E2B32816967F0029F5F1 /* SCNLine in Frameworks */,
 				C062C78F2817DBAA008765A5 /* SwiftStride in Frameworks */,
 				C01D7FCA280C5F86003EBA5D /* LineChartView in Frameworks */,
@@ -147,6 +150,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C09688C42822C9730072D804 /* Neumorphic in Frameworks */,
 				C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */,
 				C064A21028193D4400B210DD /* SwiftStride in Frameworks */,
 				C0E9E2B1281696770029F5F1 /* SCNLine in Frameworks */,
@@ -378,6 +382,7 @@
 				C01D7FC9280C5F86003EBA5D /* LineChartView */,
 				C0E9E2B22816967F0029F5F1 /* SCNLine */,
 				C062C78E2817DBAA008765A5 /* SwiftStride */,
+				C09688C52822C97A0072D804 /* Neumorphic */,
 			);
 			productName = Atomic_macOS;
 			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
@@ -400,6 +405,7 @@
 				C01D7FC7280C5F7C003EBA5D /* LineChartView */,
 				C0E9E2B0281696770029F5F1 /* SCNLine */,
 				C064A20F28193D4400B210DD /* SwiftStride */,
+				C09688C32822C9730072D804 /* Neumorphic */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
@@ -438,6 +444,7 @@
 				C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */,
 				C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */,
 				C064A20E28193D4400B210DD /* XCRemoteSwiftPackageReference "stride_swift" */,
+				C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
 			projectDirPath = "";
@@ -873,6 +880,14 @@
 				minimumVersion = 0.2.1;
 			};
 		};
+		C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/costachung/neumorphic";
+			requirement = {
+				kind = exactVersion;
+				version = 2.0.5;
+			};
+		};
 		C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/maxxfrazer/SceneKit-SCNLine.git";
@@ -902,6 +917,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C064A20E28193D4400B210DD /* XCRemoteSwiftPackageReference "stride_swift" */;
 			productName = SwiftStride;
+		};
+		C09688C32822C9730072D804 /* Neumorphic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */;
+			productName = Neumorphic;
+		};
+		C09688C52822C97A0072D804 /* Neumorphic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */;
+			productName = Neumorphic;
 		};
 		C0E9E2B0281696770029F5F1 /* SCNLine */ = {
 			isa = XCSwiftPackageProductDependency;

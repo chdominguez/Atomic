@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "neumorphic",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/costachung/neumorphic",
+      "state" : {
+        "revision" : "3fa56e844a5e375ff3d38e3c770886bcc949f6f5",
+        "version" : "2.0.5"
+      }
+    },
+    {
       "identity" : "scenekit-scnline",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/maxxfrazer/SceneKit-SCNLine.git",

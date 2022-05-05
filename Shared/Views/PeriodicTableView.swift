@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Neumorphic
 
 
 struct PTable: View {
@@ -15,24 +16,26 @@ struct PTable: View {
     
     var body: some View {
         VStack {
-            VStack {
-                HStack {
-                    Spacer()
-                    ColorPicker("Atom color", selection: $colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]).onChange(of: colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]) { newValue in
-                        colorSettings.updateNodeAtomMaterial(ptableController.selectedAtom)
-                    }
-                    Spacer()
-                }
+            ZStack {
                 VStack(alignment: .center) {
                     HStack {
-                        Text("\(ptableController.selectedAtom.atomicNumber)").padding(.horizontal, 1)
+                        Text("\(ptableController.selectedAtom.atomicNumber)")
+                            .font(.headline)
+                            .padding(.horizontal, 1)
                     }
-                    Text(ptableController.selectedAtom.rawValue).font(.headline).bold()
+                    Text(ptableController.selectedAtom.rawValue).font(.title).bold()
                 }
-                .frame(width: 50, height: 70)
-                .background(Color(red: 237/255, green: 240/255, blue: 241/255))
-                .border(Color.black)
+                .frame(width: 80, height: 112)
+                .background(RoundedRectangle(cornerRadius: 5).fill(Color.Neumorphic.main).softOuterShadow())
+                HStack {
+                    Spacer()
+                    ColorPicker("", selection: $colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]).onChange(of: colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]) { newValue in
+                        colorSettings.updateNodeAtomMaterial(ptableController.selectedAtom)
+                    }.offset(x: -3, y: 40)
+                    Spacer()
+                }
             }
+            Divider().frame(width: 700)
             VStack(spacing: 2) {
                 period1
                 period2
@@ -56,39 +59,39 @@ struct ElementView: View {
     
     @ObservedObject var ptablecontroller = PeriodicTableViewController.shared
     
+    let rectangle = RoundedRectangle(cornerRadius: 5)
+    
     private var height: CGFloat {45}
     private var width: CGFloat {35}
-//    let height = UIScreen.main.bounds.height / 8
-//    private var width: CGFloat {height / 1.2}
-//    private var fontSize: CGFloat { width / 20 }
-//#endif
 
     let element: Element?
     
     var body: some View {
         if let element = element {
             ZStack {
-                Text(element.rawValue).bold()
-            }
-            .frame(width: width, height: height)
-            .background(Color(red: 237/255, green: 240/255, blue: 241/255))
-            .border(element == ptablecontroller.selectedAtom ? Color.red : Color.black, width: 2)
-            .preferredColorScheme(.light)
-            .onTapGesture {
-                ptablecontroller.selectedAtom = element
-            }
+                Button {ptablecontroller.selectedAtom = element} label: {Text("")}
+                .neumorphicAtomicButton(rectangle)
+                Text(element.rawValue).bold().foregroundColor(ptablecontroller.selectedAtom == element ? Color.accentColor : Color.primary).allowsHitTesting(false)
+            }.frame(width: width, height: height)
+                .padding(1)
+            
+            
+            //.border(element == ptablecontroller.selectedAtom ? Color.red : Color.black, width: 2)
+            //.background(rectangle.neumorphicPlain(isPressed: .constant(false)))
+            
         }
         else {
             ZStack {
                 EmptyView()
             }.frame(width: width, height: height)
+                .padding(1)
         }
     }
 }
 
 struct PTable_Previews: PreviewProvider {
     static var previews: some View {
-        ElementView(ptablecontroller: PeriodicTableViewController.shared, element: .hydrogen)
+        ElementView(ptablecontroller: PeriodicTableViewController(), element: .hydrogen)
     }
 }
 

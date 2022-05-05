@@ -86,8 +86,10 @@ extension MainWindow {
             }
             else {
                 VStack {
+                    Spacer()
                     WelcomeMessage()
-                    mainScreen
+                    Spacer()
+                    mainScreen.padding(.vertical, 20)
                     Spacer().frame(height: 100)
                 }
             }
@@ -131,7 +133,7 @@ extension MainWindow {
                     .offset(x: 0, y: 100)
             }
         }
-        .neumorphicButton(rectangle)
+        .neumorphicAtomicButton(rectangle, padding: 30)
         .onHover { newTapped = $0 }
     }
     
@@ -140,19 +142,38 @@ extension MainWindow {
             controller.openFileImporter.toggle()
         } label: {
             ZStack {
-                Image(systemName: controller.isDragginFile ? "square.and.arrow.down" : "doc")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(controller.isDragginFile ? .green : .primary)
-                    .scaleEffect(openTapped ? 1.2 : 1)
-                    .animation(.spring(), value: openTapped)
+                if controller.isDragginFile {
+                    Image(systemName: "square.and.arrow.down")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .foregroundColor(.green)
+                        .scaleEffect(openTapped ? 0.8 : 1)
+                        .animation(.spring(), value: openTapped)
+                } else {
+                    Image(systemName: "doc")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .foregroundColor(.primary)
+                        .scaleEffect(openTapped ? 0.8 : 1)
+                        .offset(x: openTapped ? 10 : 0, y: openTapped ? -10 : 0)
+                        .animation(.spring(), value: openTapped)
+                    Image(systemName: "doc")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .offset(x: openTapped ? -10 : 0, y: openTapped ? 10 : 0)
+                        .foregroundColor(.primary)
+                        .scaleEffect(openTapped ? 0.8 : 1)
+                        .animation(.spring(), value: openTapped)
+                }
                 Text(controller.isDragginFile ? "Drop file" : "Open file")
                     .bold()
                     .offset(x: 0, y: 100)
             }
         }
-        .neumorphicButton(rectangle)
+        .neumorphicAtomicButton(rectangle, padding: 30)
         .scaleEffect(controller.isDragginFile ? 0.9 : 1)
         .animation(.easeOut, value: controller.isDragginFile)
         .onHover { openTapped = $0 }
@@ -181,7 +202,7 @@ extension MainWindow {
                     .offset(x: 0, y: 100)
             }
         }
-        .neumorphicButton(rectangle)
+        .neumorphicAtomicButton(rectangle, padding: 30)
         .onHover { settingsTapped = $0 }
     }
 }

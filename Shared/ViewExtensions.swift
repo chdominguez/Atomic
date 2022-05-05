@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Neumorphic
 
 struct NeumorphicButton<S: Shape>: ButtonStyle {
     
     let shape: S
-    let gradient1 = Color.neumorStart
-    let gradient2 = Color.neumorEnd
+    let gradient1 = Color.Neumorphic.main
+    let gradient2 = Color.Neumorphic.secondary
     let vpadding: CGFloat
     let hpadding: CGFloat
     
@@ -41,8 +42,8 @@ struct NeumorphicButton<S: Shape>: ButtonStyle {
 struct NonButtonNeumorphic: ViewModifier {
     
     @Binding var isPressed: Bool
-    let gradient1 = Color.blueGradient1
-    let gradient2 = Color.blueGradient2
+    let gradient1 = Color.Neumorphic.main
+    let gradient2 = Color.Neumorphic.secondary
 
     func body(content: Content) -> some View {
         content
@@ -69,16 +70,6 @@ struct NonButtonNeumorphic: ViewModifier {
 // Custom view modifiers
 extension View {
     
-    /// Custom modifier for buttons
-    func toolbarButton() -> some View {
-        buttonStyle(NeumorphicButton(shape: RoundedRectangle(cornerRadius: 25), vpadding: 6, hpadding: 20))
-    }
-    
-    /// Neumorphic UI
-    func neumorphicButton<S: Shape>(_ shape: S) -> some View {
-        buttonStyle(NeumorphicButton(shape: shape, vpadding: 30, hpadding: 30))
-    }
-    
     /// Intended for views that are not Buttons but can act as so
     func neumorphicPlain(isPressed: Binding<Bool>) -> some View {
         modifier(NonButtonNeumorphic(isPressed: isPressed))
@@ -93,3 +84,77 @@ extension View {
         #endif
     }
 }
+
+public enum SoftButtonPressedEffect {
+    case none
+    case flat
+    case hard
+}
+
+extension Button {
+    
+    /// Custom modifier for buttons
+    func toolbarButton() -> some View {
+        neumorphicAtomicButton(RoundedRectangle(cornerRadius: 25), padding: 10, darkShadowColor: Color.clear, lightShadowColor: Color.clear)
+    }
+    
+    func stepBarButton() -> some View {
+        neumorphicAtomicButton(Circle(), padding: 10)
+    }
+    
+
+    public func neumorphicAtomicButton<S : Shape>(_ content: S, padding : CGFloat = 16, mainColor : Color = Color.Neumorphic.main, textColor : Color = Color.Neumorphic.secondary, darkShadowColor: Color = Color.Neumorphic.darkShadow, lightShadowColor: Color = Color.Neumorphic.lightShadow, pressedEffect : SoftButtonPressedEffect = .hard) -> some View {
+        self.buttonStyle(ASoftDynamicButtonStyle(content, mainColor: mainColor, textColor: textColor, darkShadowColor: darkShadowColor, lightShadowColor: lightShadowColor, pressedEffect : pressedEffect, padding:padding))
+    }
+
+    
+}
+
+public struct ASoftDynamicButtonStyle<S: Shape> : ButtonStyle {
+
+    var shape: S
+    var mainColor : Color
+    var textColor : Color
+    var darkShadowColor : Color
+    var lightShadowColor : Color
+    var pressedEffect : SoftButtonPressedEffect
+    var padding : CGFloat
+    
+    public init(_ shape: S, mainColor : Color, textColor : Color, darkShadowColor: Color, lightShadowColor: Color, pressedEffect : SoftButtonPressedEffect, padding : CGFloat = 16) {
+        self.shape = shape
+        self.mainColor = mainColor
+        self.textColor = textColor
+        self.darkShadowColor = darkShadowColor
+        self.lightShadowColor = lightShadowColor
+        self.pressedEffect = pressedEffect
+        self.padding = padding
+    }
+    
+    public func makeBody(configuration: Self.Configuration) -> some View {
+            configuration.label
+                .foregroundColor(textColor)
+                .padding(padding)
+                .scaleEffect(configuration.isPressed ? 0.97 : 1)
+                .background(
+                    ZStack{
+                        if pressedEffect == .flat {
+                            shape.stroke(darkShadowColor, lineWidth : configuration.isPressed ? 1 : 0)
+                            .opacity(configuration.isPressed ? 1 : 0)
+                            shape.fill(mainColor)
+                        }
+                        else if pressedEffect == .hard {
+                            shape.fill(mainColor)
+                                .softInnerShadow(shape, darkShadow: darkShadowColor, lightShadow: lightShadowColor, spread: 0.15, radius: 3)
+                                .opacity(configuration.isPressed ? 1 : 0)
+                        }
+                        
+                        shape.fill(mainColor)
+                            .softOuterShadow(darkShadow: darkShadowColor, lightShadow: lightShadowColor, offset: 6, radius: 3)
+                            .opacity(pressedEffect == .none ? 1 : (configuration.isPressed ? 0 : 1) )
+                    }
+                )
+                .animation(.easeInOut, value: configuration.isPressed)
+    }
+    
+}
+

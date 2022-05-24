@@ -154,7 +154,7 @@ func filterStoI(_ newValue: String, maxValue: Int, minValue: Int = 1) -> Int {
 ///   - maxValue: Max value allowed
 ///   - minValue: Min value allowed
 /// - Returns: The double of the filtered string or the min value if the string cannot be converted
-func filterStoD(_ newValue: String, maxValue: Double, minValue: Double = 0) -> Double {
+func filterStoD(_ newValue: String, maxValue: Double, minValue: Double = 0, decimals: Int = 3) -> Double {
     
     if newValue.isEmpty { return minValue }
     

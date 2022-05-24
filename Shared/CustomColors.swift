@@ -18,12 +18,18 @@ typealias UColor = NSColor
 
 // Custom colors
 extension Color {
-    static let buttonGradient = LinearGradient(colors: [Color("ButtonColor1"), Color("ButtonColor2")], startPoint: .topTrailing, endPoint: .bottomLeading)
     
     /// SceneKit better handles either UIColor or NSColor, UColor transforms to either depending on the platform. uColor is the universal color for both platforms.
     var uColor: UColor {
         return UColor(self)
     }
+    
+    static let blueGradient1 = LinearGradient(colors: [Color("BlueGradient1"), Color("BlueGradient2")], startPoint: .topTrailing, endPoint: .bottomLeading)
+    static let blueGradient2 = LinearGradient(colors: [Color("BlueGradient2"), Color("BlueGradient1")], startPoint: .topTrailing, endPoint: .bottomLeading)
+    
+    static let neumorStart = Color("Neumorphic-start")
+    static let neumorEnd = Color("Neumorphic-end")
+    static let neumorShadow = Color("NeumorShadow")
     
 }
 

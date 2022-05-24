@@ -23,7 +23,7 @@ struct Molecule3DView: View {
                             progressview.foregroundColor(.primary)
                         }
                         Spacer()
-                        AtomicToolsView(controller: controller)
+                        AtomicToolsView(controller: controller).padding(.vertical, 5)
                     }
                 }
                 stepsToolbar
@@ -62,13 +62,14 @@ extension Molecule3DView {
             Button {
                 controller.previousScene()
             } label: {
-                Image(systemName: "chevron.left").atomicButton()
-            }
+                Image(systemName: "chevron.left")
+            }.stepBarButton()
             Button {
                 controller.nextScene()
             } label: {
-                Image(systemName: "chevron.right").atomicButton()
+                Image(systemName: "chevron.right")
             }
+            .stepBarButton()
             Spacer()
             if controller.showingStep.isFinalStep {
                 if let energy = controller.showingStep.energy {
@@ -79,7 +80,12 @@ extension Molecule3DView {
                 }
             }
             else if let energy = controller.showingStep.energy {
-                   Text("Energy: \(energy)")
+                if #available(macOS 12.0, *) {
+                    Text("Energy: \(energy)").textSelection(.enabled)
+                } else {
+                    // Fallback on earlier versions
+                    Text("Energy: \(energy)")
+                }
             }
              else {
                 Text("Input geometry for job \(controller.showingStep.jobNumber)")
@@ -94,8 +100,10 @@ extension Molecule3DView {
             Button {
                 controller.playAnimation()
             } label: {
-                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill").foregroundColor(controller.isPlaying ? .red : .green).atomicButton()
-            }
+                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill")
+                    .frame(width: 10, height: 10)
+                    .foregroundColor(controller.isPlaying ? .red : .green)
+            }.stepBarButton()
         }
         .padding(.horizontal)
 #if os(macOS)

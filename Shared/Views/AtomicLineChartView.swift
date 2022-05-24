@@ -11,15 +11,18 @@ import LineChartView
 
 struct AtomicLineChartView: View {
     
-    let paramenters: LineChartParameters
+    let parameters: LineChartParameters
     
     init(data: [Double]) {
         let color = GlobalSettings.shared.colorSettings.chartColor
-        self.paramenters = LineChartParameters(data: data, dataPrecisionLength: 6, indicatorPointColor: .purple, indicatorPointSize: 20, lineColor: color, dotsWidth: 15)
+        self.parameters = LineChartParameters(data: data, dataPrecisionLength: 6, indicatorPointColor: .purple, indicatorPointSize: 20, lineColor: color, dotsWidth: 15)
     }
     
     var body: some View {
-        LineChartView(lineChartParameters: paramenters)
+        VStack(alignment: .leading) {
+            Text("Energy").font(.headline)
+            LineChartView(lineChartParameters: parameters).border(Color.primary).padding()
+        }
     }
 }
 

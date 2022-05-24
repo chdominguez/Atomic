@@ -292,38 +292,94 @@ class MoleculeRenderer: ObservableObject {
         for i in firstIndex...endIndex {
             let pos2 = atomNodes.childNodes[i].position
             let distance = distance(from: pos1, to: pos2)
-            if distance <= 1.54 && distance > 0.1 {
-                let newBond = createBondNode(from: pos1, to: pos2)
-                bondNodes.addChildNode(newBond)
+            if distance <= 1.47 && distance > 0.1 {
+                createBondNode(from: pos1, to: pos2)
             }
         }
     }
     
     /// Creates a bond node between the given positions with a default radius of 0.2
-    private func createBondNode(from positionA: SCNVector3, to positionB: SCNVector3, radius: Double = 0.2) -> SCNNode {
+    private func createBondNode(from positionA: SCNVector3, to positionB: SCNVector3, type: BondType = .single, radius: Double = 0.1) {
         
         let midPosition = SCNVector3Make((positionA.x + positionB.x) / 2,(positionA.y + positionB.y) / 2,(positionA.z + positionB.z) / 2)
         
         let bondGeometry = nodeGeom.bond!.copy() as! SCNCylinder
+        bondGeometry.radius = radius
         bondGeometry.height = distance(from: positionA, to: positionB)
         
         let bondNode = SCNNode(geometry: bondGeometry)
         bondNode.name = "bond"
         
-        bondNode.position = midPosition
-        bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
-        
-        return bondNode
+        switch type {
+        case .single:
+            bondNode.position = midPosition
+            bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
+            bondNodes.addChildNode(bondNode)
+        case .double:
+            bondNode.position = midPosition
+            bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
+            let secondBondNode = bondNode.copy() as? SCNNode
+            secondBondNode?.position.z += 0.15
+            bondNode.position.z -= 0.15
+            bondNodes.addChildNode(bondNode)
+            if let secondBondNode = secondBondNode {
+                bondNodes.addChildNode(secondBondNode)
+            }
+        case .triple:
+            bondNode.position = midPosition
+            bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
+            
+            let secondBondNode = bondNode.copy() as? SCNNode
+            let thirdBondNode = bondNode.copy() as? SCNNode
+            
+            secondBondNode?.position.z += 0.2
+            thirdBondNode?.position.z -= 0.2
+            
+            bondNodes.addChildNode(bondNode)
+            
+            if let secondBondNode = secondBondNode, let thirdBondNode = thirdBondNode {
+                bondNodes.addChildNode(secondBondNode)
+                bondNodes.addChildNode(thirdBondNode)
+            }
+        }
         
     }
     
+    enum BondType: String {
+        case single = "Single"
+        case double = "Double"
+        case triple = "Triple"
+        
+        var symbol: String {
+            switch self {
+            case .single:
+                return "line.diagonal"
+            case .double:
+                return "equal"
+            case .triple:
+                return "line.3.horizontal"
+            }
+        }
+        
+    }
+    
+    @Published var currentBondType: BondType = .single
+    
     /// Creates a custom bond between two selected atoms
     func bondSelectedAtoms() {
-        if selectedAtoms.count == 2 { // If more or less than 2 atoms selected, do nothing
-            let position1 = selectedAtoms[0].selectedNode.position
-            let position2 = selectedAtoms[1].selectedNode.position
-            let bonds = createBondNode(from: position1, to: position2)
-            bondNodes.addChildNode(bonds)
+        // If more or less than 2 atoms selected, do nothing
+        guard selectedAtoms.count == 2 else {return}
+        
+        let position1 = selectedAtoms[0].selectedNode.position
+        let position2 = selectedAtoms[1].selectedNode.position
+        
+        switch currentBondType {
+        case .single:
+            createBondNode(from: position1, to: position2, type: .single)
+        case .double:
+            createBondNode(from: position1, to: position2, type: .double, radius: 0.08)
+        case .triple:
+            createBondNode(from: position1, to: position2, type: .triple, radius: 0.05)
         }
     }
     

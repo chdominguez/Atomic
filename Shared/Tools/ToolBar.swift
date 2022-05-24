@@ -66,11 +66,25 @@ extension AtomicToolsView {
             controller.bondSelectedAtoms()
         } label: {
             HStack {
-                Image(systemName: "link")
+                Image(systemName: controller.currentBondType.symbol)
                 Text("Bond")
             }.foregroundColor((controller.selectedAtoms.count != 2) ? .gray : .primary)
         }
         .toolbarButton()
+        .contextMenu(menuItems: {
+            Button {controller.currentBondType = .single} label: {
+                Image(systemName: "line.diagonal")
+                Text("Single")
+            }
+            Button {controller.currentBondType = .double} label: {
+                Image(systemName: "equal")
+                Text("Dobule")
+            }
+            Button {controller.currentBondType = .triple} label: {
+                Image(systemName: "line.3.horizontal")
+                Text("Triple")
+            }
+        })
         .disabled(controller.selectedAtoms.count != 2)
     }
     

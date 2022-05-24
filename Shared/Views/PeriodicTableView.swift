@@ -16,25 +16,7 @@ struct PTable: View {
     
     var body: some View {
         VStack {
-            ZStack {
-                VStack(alignment: .center) {
-                    HStack {
-                        Text("\(ptableController.selectedAtom.atomicNumber)")
-                            .font(.headline)
-                            .padding(.horizontal, 1)
-                    }
-                    Text(ptableController.selectedAtom.rawValue).font(.title).bold()
-                }
-                .frame(width: 80, height: 112)
-                .background(RoundedRectangle(cornerRadius: 5).fill(Color.Neumorphic.main).softOuterShadow())
-                HStack {
-                    Spacer()
-                    ColorPicker("", selection: $colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]).onChange(of: colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]) { newValue in
-                        colorSettings.updateNodeAtomMaterial(ptableController.selectedAtom)
-                    }.offset(x: -3, y: 40)
-                    Spacer()
-                }
-            }
+            bigElement
             Divider().frame(width: 700)
             VStack(spacing: 2) {
                 period1
@@ -51,7 +33,30 @@ struct PTable: View {
                 }
             }
         }
-        .padding(.vertical)
+        .padding()
+    }
+    
+    private var bigElement: some View {
+        VStack {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("\(ptableController.selectedAtom.atomicNumber)")
+                        .font(.headline)
+                        .padding(.horizontal, 1)
+                    Text(ptableController.selectedAtom.rawValue).font(.title).bold()
+                    Text(ptableController.selectedAtom.name)
+                }.padding(.horizontal, 3)
+                Spacer()
+            }
+            Divider()
+            ColorPicker("", selection: $colorSettings.atomColors[ptableController.selectedAtom.atomicNumber])
+                .offset(x: -3, y: 0)
+                .onChange(of: colorSettings.atomColors[ptableController.selectedAtom.atomicNumber]) { newValue in
+                colorSettings.updateNodeAtomMaterial(ptableController.selectedAtom)
+            }
+        }
+        .frame(width: 100, height: 125)
+        .background(RoundedRectangle(cornerRadius: 5).fill(Color.Neumorphic.main).softOuterShadow())
     }
 }
 
@@ -69,11 +74,18 @@ struct ElementView: View {
     var body: some View {
         if let element = element {
             ZStack {
-                Button {ptablecontroller.selectedAtom = element} label: {Text("")}
-                .neumorphicAtomicButton(rectangle)
-                Text(element.rawValue).bold().foregroundColor(ptablecontroller.selectedAtom == element ? Color.accentColor : Color.primary).allowsHitTesting(false)
-            }.frame(width: width, height: height)
-                .padding(1)
+                Text(element.rawValue).bold().foregroundColor(ptablecontroller.selectedAtom == element ? Color.accentColor : Color.primary)
+            }
+            .frame(width: width, height: height)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(ptablecontroller.selectedAtom == element ? Color.accentColor : Color.primary)
+                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.Neumorphic.main))
+            )
+            .padding(1)
+            .onTapGesture {
+                ptablecontroller.selectedAtom = element
+            }
             
             
             //.border(element == ptablecontroller.selectedAtom ? Color.red : Color.black, width: 2)
@@ -91,7 +103,7 @@ struct ElementView: View {
 
 struct PTable_Previews: PreviewProvider {
     static var previews: some View {
-        ElementView(ptablecontroller: PeriodicTableViewController(), element: .hydrogen)
+        PTable()
     }
 }
 

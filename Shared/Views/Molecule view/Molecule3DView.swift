@@ -80,7 +80,12 @@ extension Molecule3DView {
                 }
             }
             else if let energy = controller.showingStep.energy {
-                   Text("Energy: \(energy)")
+                if #available(macOS 12.0, *) {
+                    Text("Energy: \(energy)").textSelection(.enabled)
+                } else {
+                    // Fallback on earlier versions
+                    Text("Energy: \(energy)")
+                }
             }
              else {
                 Text("Input geometry for job \(controller.showingStep.jobNumber)")

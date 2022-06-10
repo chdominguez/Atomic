@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Combine
+import AtomicProgressView
 
 /// View that hosts the SceneKit representable and shows the tools + the molecule
 struct Molecule3DView: View {
@@ -45,7 +45,7 @@ extension Molecule3DView {
     
     private var progressview: some View {
         VStack {
-            ProgressView()
+            CirclingHydrogen(scale: 2)
             Text("Rendering atoms...")
         }
     }

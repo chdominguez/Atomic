@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import UniformTypeIdentifiers
+import AtomicProgressView
 
 struct MainWindow: View {
     
@@ -98,9 +99,9 @@ extension MainWindow {
     
     private var mainScreen: some View {
         VStack(spacing: 50) {
-            ZStack {
                 if controller.loading {
-                    ProgressView("Reading file")
+                    CirclingHydrogen(scale: 2)
+                    Text("Reading file...")
                 }
                 else {
                     HStack(spacing: 100) {
@@ -113,7 +114,6 @@ extension MainWindow {
             }
             .frame(width: 120, height: 120)
             .padding()
-        }
     }
     
     private var newButton: some View {

@@ -8,6 +8,7 @@ import SwiftUI
 import SceneKit
 import SCNLine
 import SwiftStride
+import ProteinKit
 
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
 class MoleculeRenderer: ObservableObject {
@@ -201,19 +202,39 @@ class MoleculeRenderer: ObservableObject {
         return atomNode
     }
     
+//    private func cartoonBackbone(_ molecule: Molecule, aa: [Residue]) {
+//
+//        let pos = molecule.atoms.filter { $0.info == "C" }.map { $0.position } // Define positions for the C carbons in te aa
+//
+//        backBoneNode = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12) // Generate a line node linking the C carbons
+//        //TODO: Implement backbone visibility based on default settings
+//        backBoneNode.lineMaterials = nodeGeom.bond.materials
+//        backBoneNode.isHidden = true
+//        scene.rootNode.addChildNode(backBoneNode)
+//
+//        // Render cartoon
+//
+//        internalCartoon(aa, cpos: pos)
+//    }
+    
     private func cartoonBackbone(_ molecule: Molecule, aa: [Residue]) {
+        #warning("Testing importing .stl meshes into scenekit")
+        let url = Bundle.main.url(forResource: "4hhb", withExtension: "scn")!
         
-        let pos = molecule.atoms.filter { $0.info == "C" }.map { $0.position } // Define positions for the C carbons in te aa
+        let reference = try! SCNScene(url: url)
         
-        backBoneNode = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12) // Generate a line node linking the C carbons
-        //TODO: Implement backbone visibility based on default settings
-        backBoneNode.lineMaterials = nodeGeom.bond.materials
-        backBoneNode.isHidden = true
-        scene.rootNode.addChildNode(backBoneNode)
+        let node = reference.rootNode.childNodes.first!
         
-        // Render cartoon
+        node.geometry!.materials = nodeGeom.atoms[.nitrogen]!.materials
         
-        internalCartoon(aa, cpos: pos)
+        node.flattenedClone()
+        
+        node.scale = SCNVector3(x: 10, y: 10, z: 10)
+        
+        atomNodes.addChildNode(node)
+        
+        scene.rootNode.addChildNode(cartoonNodes)
+       
     }
     
     private func internalCartoon(_ residues: [Residue], cpos: [SCNVector3]) {

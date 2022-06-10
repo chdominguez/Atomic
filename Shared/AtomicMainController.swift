@@ -94,10 +94,13 @@ class AtomicMainController: ObservableObject {
                     return
                 }
                 let fileString = try AtomicFileOpener.getFileAsString(from: url)
-                let BR = try BaseReader(fileURL: url)
-                try BR.readSteps()
+                self.BR = try BaseReader(fileURL: url)
+                try BR?.readSteps()
+                
+                guard let BR = BR else {
+                    throw AtomicErrors.internalFailure
+                }
                 #warning("TODO: Clean up this becasue BaseReader makes this easy")
-                self.BR = BR
                 url.stopAccessingSecurityScopedResource()
                 DispatchQueue.main.sync {
                     self.fileAsString = fileString
@@ -120,7 +123,7 @@ class AtomicMainController: ObservableObject {
             }
             catch {
                 DispatchQueue.main.sync {
-                    self.errorDescription = error.localizedDescription + " at line:  \(ErrorManager.shared.lineError) \n \(ErrorManager.shared.errorDescription ?? "Error") "
+                    self.errorDescription = error.localizedDescription + " at line:  \(BR?.errorLine ?? 0) \n \(ErrorManager.shared.errorDescription ?? "Error") "
                     self.showErrorFileAlert = true
                     self.loading = false
                 }

@@ -64,7 +64,9 @@ extension BaseReader {
                     
                     let atomString = String(splitted[2])
                     
-                    guard let element = getAtom(fromString: atomString), let x = Float(splitted[dI]), let y = Float(splitted[dI + 1]), let z = Float(splitted[dI + 2]) else {throw pdbError}
+                    print(atomString)
+                    
+                    guard let element = getAtom(fromString: atomString, isPDB: true), let x = Float(splitted[dI]), let y = Float(splitted[dI + 1]), let z = Float(splitted[dI + 2]) else {throw pdbError}
                     
                     let position = SCNVector3(x, y, z)
                     

@@ -7,9 +7,10 @@
 
 import Foundation
 import UniformTypeIdentifiers
+import SwiftUI
 
 /// Main class that processed files to be read and transformed into [Step] for teh visualizer to work. Each file type has his own function. Support for new files can be added extending the class.
-class BaseReader {
+class BaseReader: ObservableObject {
     
     // The url of the opened file
     internal let fileURL: URL
@@ -33,11 +34,16 @@ class BaseReader {
     /// Returns the Element of the given String with an atomic symbol or the atomic number
     /// - Parameter string: String containing atomic symbol or number (i.e 'H' or '1' for Hydrogen)
     /// - Returns: Element matching atomic symbol or number
-    internal func getAtom(fromString string: String) -> Element? {
-        if let atomicNumber = Int(string) {
-            return Element.allCases[atomicNumber - 1]
-        } else {
+    internal func getAtom(fromString string: String, isPDB: Bool = false) -> Element? {
+        if isPDB {
             return Element.allCases.first(where: {$0.rawValue == string.prefix(1)})
+        }
+        else {
+            if let atomicNumber = Int(string) {
+                return Element.allCases[atomicNumber - 1]
+            } else {
+                return Element.allCases.first(where: {$0.rawValue == string})
+            }
         }
     }
     
@@ -53,7 +59,7 @@ class BaseReader {
             }
         }
         
-        // For eveyr allowed file extension, a reader function is assigned.
+        // For every allowed file extension, a reader function is assigned.
         switch FE {
         case .pdb:
             try readPDBSteps()

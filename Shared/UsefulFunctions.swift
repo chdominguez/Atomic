@@ -6,6 +6,7 @@
 //
 
 import SceneKit
+import SceneKitPlus
 
 /// Returns the distance from two separated positions
 /// - Parameters:

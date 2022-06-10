@@ -24,14 +24,16 @@ extension BaseReader {
         
         for line in splitFile {
             
-            let filteredLine = line.replacingOccurrences(of: "\t", with: "")
-            
             //Increment current line by 1 to keep track if an error happens
             errorLine += 1
             
+            if line.contains("VEC") {continue}
+            
+            let filteredLine = line.replacingOccurrences(of: "\t", with: "")
+            
             let splitted = filteredLine.split(separator: " ") // Split the line to verify what's on the input
             
-            // Exit the loop on empty line
+            // Continue the loop on empty line
             if splitted.isEmpty {continue}
             
             // If the line contains 1 element, then it's the atom count for that molecule

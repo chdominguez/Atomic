@@ -34,8 +34,6 @@
 		C05F5CA72784720B00F3B588 /* UIToolbars_iPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */; };
 		C05F5CA92785A48C00F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
 		C05F5CAA2785A7D800F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
-		C062C78F2817DBAA008765A5 /* SwiftStride in Frameworks */ = {isa = PBXBuildFile; productRef = C062C78E2817DBAA008765A5 /* SwiftStride */; };
-		C064A21028193D4400B210DD /* SwiftStride in Frameworks */ = {isa = PBXBuildFile; productRef = C064A20F28193D4400B210DD /* SwiftStride */; };
 		C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */; };
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
@@ -49,9 +47,8 @@
 		C0CE163928006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
 		C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
 		C0CE163B28007DAA00A35AA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
+		C0D9E11C28535BD5001CF720 /* ProteinKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0D9E11B28535BD5001CF720 /* ProteinKit */; };
 		C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */; };
-		C0DCCEC2276A3D5C0085CD1D /* PeriodicTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48A26E7801200387EBA /* PeriodicTable.swift */; };
-		C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48B26E7801200387EBA /* AtomModel.swift */; };
 		C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48E26E7801200387EBA /* FileManager.swift */; };
 		C0DCCEC5276A3D600085CD1D /* BaseReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48F26E7801200387EBA /* BaseReader.swift */; };
 		C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48C26E7801200387EBA /* ChartsViews.swift */; };
@@ -76,8 +73,6 @@
 		C0E9E2B32816967F0029F5F1 /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0E9E2B22816967F0029F5F1 /* SCNLine */; };
 		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
 		F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA47926E77F5100387EBA /* AtomicApp.swift */; };
-		F06AA49A26E7801200387EBA /* PeriodicTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48A26E7801200387EBA /* PeriodicTable.swift */; };
-		F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48B26E7801200387EBA /* AtomModel.swift */; };
 		F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48C26E7801200387EBA /* ChartsViews.swift */; };
 		F06AA49D26E7801200387EBA /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48E26E7801200387EBA /* FileManager.swift */; };
 		F06AA49E26E7801200387EBA /* BaseReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48F26E7801200387EBA /* BaseReader.swift */; };
@@ -108,6 +103,7 @@
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunctions.swift; sourceTree = "<group>"; };
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C0D9E11A28535BC5001CF720 /* ProteinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProteinKit; path = ../ProteinKit; sourceTree = "<group>"; };
 		C0DCCE94276A3C9B0085CD1D /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic_macOSApp.swift; sourceTree = "<group>"; };
 		C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Atomic_macOS.entitlements; sourceTree = "<group>"; };
@@ -122,8 +118,6 @@
 		F06AA47626E77F5100387EBA /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F06AA47926E77F5100387EBA /* AtomicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicApp.swift; sourceTree = "<group>"; };
 		F06AA47D26E77F5200387EBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F06AA48A26E7801200387EBA /* PeriodicTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodicTable.swift; sourceTree = "<group>"; };
-		F06AA48B26E7801200387EBA /* AtomModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomModel.swift; sourceTree = "<group>"; };
 		F06AA48C26E7801200387EBA /* ChartsViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartsViews.swift; sourceTree = "<group>"; };
 		F06AA48E26E7801200387EBA /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F06AA48F26E7801200387EBA /* BaseReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseReader.swift; sourceTree = "<group>"; };
@@ -139,9 +133,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0D9E11C28535BD5001CF720 /* ProteinKit in Frameworks */,
 				C09688C62822C97A0072D804 /* Neumorphic in Frameworks */,
 				C0E9E2B32816967F0029F5F1 /* SCNLine in Frameworks */,
-				C062C78F2817DBAA008765A5 /* SwiftStride in Frameworks */,
 				C01D7FCA280C5F86003EBA5D /* LineChartView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,7 +146,6 @@
 			files = (
 				C09688C42822C9730072D804 /* Neumorphic in Frameworks */,
 				C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */,
-				C064A21028193D4400B210DD /* SwiftStride in Frameworks */,
 				C0E9E2B1281696770029F5F1 /* SCNLine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,6 +179,14 @@
 				C00CE16628172A760096859B /* helix.usdc */,
 			);
 			path = "Cartoon 3D models";
+			sourceTree = "<group>";
+		};
+		C0D9E11728535B8E001CF720 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				C0D9E11A28535BC5001CF720 /* ProteinKit */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		C0DCCE95276A3C9B0085CD1D /* Atomic_macOS */ = {
@@ -263,6 +264,7 @@
 		F06AA46D26E77F5100387EBA = {
 			isa = PBXGroup;
 			children = (
+				C0D9E11728535B8E001CF720 /* Packages */,
 				C0DCCEBF276A3CF20085CD1D /* Shared */,
 				F06AA47826E77F5100387EBA /* Atomic_iPadOS */,
 				C0DCCE95276A3C9B0085CD1D /* Atomic_macOS */,
@@ -295,8 +297,6 @@
 		F06AA48926E7801200387EBA /* Atom models */ = {
 			isa = PBXGroup;
 			children = (
-				F06AA48A26E7801200387EBA /* PeriodicTable.swift */,
-				F06AA48B26E7801200387EBA /* AtomModel.swift */,
 			);
 			path = "Atom models";
 			sourceTree = "<group>";
@@ -381,8 +381,8 @@
 			packageProductDependencies = (
 				C01D7FC9280C5F86003EBA5D /* LineChartView */,
 				C0E9E2B22816967F0029F5F1 /* SCNLine */,
-				C062C78E2817DBAA008765A5 /* SwiftStride */,
 				C09688C52822C97A0072D804 /* Neumorphic */,
+				C0D9E11B28535BD5001CF720 /* ProteinKit */,
 			);
 			productName = Atomic_macOS;
 			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
@@ -404,7 +404,6 @@
 			packageProductDependencies = (
 				C01D7FC7280C5F7C003EBA5D /* LineChartView */,
 				C0E9E2B0281696770029F5F1 /* SCNLine */,
-				C064A20F28193D4400B210DD /* SwiftStride */,
 				C09688C32822C9730072D804 /* Neumorphic */,
 			);
 			productName = Atomic;
@@ -419,7 +418,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1310;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					C0DCCE93276A3C9B0085CD1D = {
 						CreatedOnToolsVersion = 13.1;
@@ -443,7 +442,6 @@
 			packageReferences = (
 				C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */,
 				C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */,
-				C064A20E28193D4400B210DD /* XCRemoteSwiftPackageReference "stride_swift" */,
 				C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
@@ -488,14 +486,12 @@
 				C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
 				C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
 				C0DFA43727E8A28500F6BA9A /* XYZReader.swift in Sources */,
-				C0DCCEC2276A3D5C0085CD1D /* PeriodicTable.swift in Sources */,
 				C066B782277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */,
 				C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */,
 				C0DCCECD276A3E710085CD1D /* SceneKitRepresentable.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
 				C0DCCEC5276A3D600085CD1D /* BaseReader.swift in Sources */,
-				C0DCCEC3276A3D5C0085CD1D /* AtomModel.swift in Sources */,
 				C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */,
 				C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */,
@@ -526,7 +522,6 @@
 				C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
 				F06AA4A526E7801200387EBA /* AtomicMainController.swift in Sources */,
 				C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
-				F06AA49B26E7801200387EBA /* AtomModel.swift in Sources */,
 				C0DFA43427E89C2A00F6BA9A /* XYZReader.swift in Sources */,
 				C066B781277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E55277B668A00561AAA /* GaussianFileReader.swift in Sources */,
@@ -541,7 +536,6 @@
 				C0DFA43A27E8BDAC00F6BA9A /* PDBReader.swift in Sources */,
 				F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */,
 				F0F6552726F7C89600DD4F25 /* SettingsView.swift in Sources */,
-				F06AA49A26E7801200387EBA /* PeriodicTable.swift in Sources */,
 				F06AA49D26E7801200387EBA /* FileManager.swift in Sources */,
 				C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */,
 				F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */,
@@ -740,6 +734,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -872,14 +867,6 @@
 				kind = branch;
 			};
 		};
-		C064A20E28193D4400B210DD /* XCRemoteSwiftPackageReference "stride_swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/chdominguez/stride_swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.1;
-			};
-		};
 		C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/costachung/neumorphic";
@@ -909,15 +896,6 @@
 			package = C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */;
 			productName = LineChartView;
 		};
-		C062C78E2817DBAA008765A5 /* SwiftStride */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SwiftStride;
-		};
-		C064A20F28193D4400B210DD /* SwiftStride */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C064A20E28193D4400B210DD /* XCRemoteSwiftPackageReference "stride_swift" */;
-			productName = SwiftStride;
-		};
 		C09688C32822C9730072D804 /* Neumorphic */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */;
@@ -927,6 +905,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */;
 			productName = Neumorphic;
+		};
+		C0D9E11B28535BD5001CF720 /* ProteinKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProteinKit;
 		};
 		C0E9E2B0281696770029F5F1 /* SCNLine */ = {
 			isa = XCSwiftPackageProductDependency;

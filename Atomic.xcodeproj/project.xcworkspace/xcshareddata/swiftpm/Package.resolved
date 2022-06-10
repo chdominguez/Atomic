@@ -26,15 +26,6 @@
         "branch" : "main",
         "revision" : "00bd83f3affae23a0a9375d1b1e4b58f5c3471d0"
       }
-    },
-    {
-      "identity" : "stride_swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/chdominguez/stride_swift.git",
-      "state" : {
-        "revision" : "95d318cb0c98ed6e296cee686ebd103c63e177d4",
-        "version" : "0.2.1"
-      }
     }
   ],
   "version" : 2

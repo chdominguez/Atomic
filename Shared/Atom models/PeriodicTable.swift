@@ -379,27 +379,27 @@ enum Element: String, CaseIterable {
         case .hydrogen:
             return .white
         case .helium:
-            return .blue
+            return Color(red: 69/255, green: 165/255, blue: 245/255)
         case .lithium:
-            return .yellow
+            return .purple
         case .beryllium:
-            return .green
+            return Color(red: 2/255, green: 128/255, blue: 14/255)
         case .boron:
-            return .black // TEMPORARY
+            return Color(red: 255/255, green: 152/255, blue: 8/255)
         case .carbon:
-            return .gray
+            return .black
         case .nitrogen:
-            return .blue
+            return Color(red: 0/255, green: 0/255, blue: 255/255)
         case .oxygen:
             return .red
         case .fluorine:
-            return .purple
+            return .green
         case .neon:
-            return .black
+            return Color(red: 69/255, green: 165/255, blue: 245/255)
         case .sodium:
-            return .orange
+            return .purple
         case .magnesium:
-            return .white
+            return Color(red: 2/255, green: 128/255, blue: 14/255)
         case .aluminium:
             return .gray
         case .silicon:
@@ -409,62 +409,141 @@ enum Element: String, CaseIterable {
         case .sulphur:
             return .yellow
         case .chlorine:
-            return .purple
+            return .green
         case .argon:
-            return .black // TEMPORARY
+            return Color(red: 69/255, green: 165/255, blue: 245/255)
         case .bromine:
-            return .yellow
+            return Color(red: 150/255, green: 23/255, blue: 0/255)
         case .iodine:
+            return Color(red: 109/255, green: 0/255, blue: 143/255)
+        /// Noble gases
+        case .argon:
+            return Color(red: 69/255, green: 165/255, blue: 245/255)
+        case .krypton:
+            return Color(red: 69/255, green: 165/255, blue: 245/255)    
+        case .xenon:
+            return Color(red: 69/255, green: 165/255, blue: 245/255)
+        case .radon:
+            return Color(red: 69/255, green: 165/255, blue: 245/255)
+        case .oganesson:
+            return Color(red: 69/255, green: 165/255, blue: 245/255)
+        /// Alkali metals
+        case .potassium:
             return .purple
+        case .rubidium:
+            return .purple
+        case .caesium:
+            return .purple
+        case .francium:
+            return .purple
+        /// Alkaline earths
+        case .calcium:
+            return Color(red: 2/255, green: 128/255, blue: 14/255)
+        case .strontium:
+            return Color(red: 2/255, green: 128/255, blue: 14/255)
+        case .barium:
+            return Color(red: 2/255, green: 128/255, blue: 14/255)
+        case .radium:
+            return Color(red: 2/255, green: 128/255, blue: 14/255)
+        /// Specific Ones
+        case .titanium:
+            return .gray
+        case .iron:
+            return Color(red: 158/255, green: 94/255, blue: 5/255)
         case .dummy:
             return .blue
         default:
-            return .gray
+            return .pink
         }
     }
 
+/// COVALENT RADIUS
     var radius: CGFloat {
         switch self {
         case .hydrogen:
-            return 0.2
+            return 0.32
         case .helium:
-            return 0.5
+            return 0.37
         case .lithium:
-            return 0.5
+            return 1.30
         case .beryllium:
-            return 0.5
+            return 0.99
         case .boron:
-            return 0.5
+            return 0.84
         case .carbon:
-            return 0.5
+            return 0.75
         case .nitrogen:
-            return 0.5
+            return 0.71
         case .oxygen:
-            return 0.5
+            return 0.64
         case .fluorine:
-            return 0.5
+            return 0.60
         case .neon:
-            return 0.5
+            return 0.62
         case .sodium:
-            return 0.5
+            return 1.60
         case .magnesium:
-            return 0.5
+            return 1.40
         case .aluminium:
-            return 0.5
+            return 1.24
         case .silicon:
-            return 0.5
+            return 1.14
         case .phosphorus:
-            return 0.5
+            return 1.09
         case .sulphur:
-            return 0.5
+            return 1.04
         case .chlorine:
-            return 0.5
+            return 1.00
         case .argon:
-            return 0.5
+            return 1.01
         default:
-            return 0.5
+            return 1.5
         }
     }
+
+/// ATOMIC RADIUS
+///    var radius: CGFloat {
+///     switch self {
+///     case .hydrogen:
+///         return 1.10
+///     case .helium:
+///         return 1.40
+///     case .lithium:
+///         return 1.82
+///     case .beryllium:
+///         return 1.53
+///     case .boron:
+///         return 1.92
+///     case .carbon:
+///         return 1.70
+///     case .nitrogen:
+///         return 1.55
+///     case .oxygen:
+///         return 1.52
+///     case .fluorine:
+///         return 1.47
+///     case .neon:
+///         return 1.54
+///     case .sodium:
+///         return 2.27
+///     case .magnesium:
+///         return 1.73
+///     case .aluminium:
+///         return 1.84
+///     case .silicon:
+///         return 2.10
+///     case .phosphorus:
+///         return 1.80
+///     case .sulphur:
+///         return 1.80
+///     case .chlorine:
+///         return 1.75
+///     case .argon:
+///         return 1.88
+///     default:
+///         return 2.0
+///     }
+/// }
 
     var atomicNumber: Int {
         switch self {

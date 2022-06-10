@@ -417,8 +417,6 @@ enum Element: String, CaseIterable {
         case .iodine:
             return Color(red: 109/255, green: 0/255, blue: 143/255)
         /// Noble gases
-        case .argon:
-            return Color(red: 69/255, green: 165/255, blue: 245/255)
         case .krypton:
             return Color(red: 69/255, green: 165/255, blue: 245/255)    
         case .xenon:

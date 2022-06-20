@@ -5,7 +5,7 @@
 //  Created by Christian Dominguez on 20/8/21.
 //
 
-import Foundation
+import ProteinKit
 import UniformTypeIdentifiers
 import SwiftUI
 
@@ -62,7 +62,10 @@ class BaseReader: ObservableObject {
         // For every allowed file extension, a reader function is assigned.
         switch FE {
         case .pdb:
-            try readPDBSteps()
+            let p = PDBReader()
+            #warning("Came back to here PDBReader")
+            try! p.readPDB(from: fileURL)
+            self.steps = p.steps
         case .xyz:
             try readXYZSteps()
         case .gjf, .com:

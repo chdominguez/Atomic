@@ -7,7 +7,6 @@
 import SwiftUI
 import SceneKit
 import SCNLine
-import SwiftStride
 import ProteinKit
 
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
@@ -179,7 +178,9 @@ class MoleculeRenderer: ObservableObject {
         scene.rootNode.addChildNode(bondNodes)
         
         // Compute the backbone and cartoon nodes for proteins
-        if let backBone = step.backBone, let residues = step.res { cartoonBackbone(backBone, aa: residues) }
+        if let backBone = step.backBone { cartoonBackbone(backBone, aa: step.res)
+            loadCartoon(step.res)
+        }
         
         // Add selection node as child of the main node
         
@@ -218,86 +219,98 @@ class MoleculeRenderer: ObservableObject {
 //    }
     
     private func cartoonBackbone(_ molecule: Molecule, aa: [Residue]) {
-        #warning("Testing importing .stl meshes into scenekit")
-        let url = Bundle.main.url(forResource: "4hhb", withExtension: "scn")!
-        
-        let reference = try! SCNScene(url: url)
-        
-        let node = reference.rootNode.childNodes.first!
-        
-        node.geometry!.materials = nodeGeom.atoms[.nitrogen]!.materials
-        
-        node.flattenedClone()
-        
-        node.scale = SCNVector3(x: 10, y: 10, z: 10)
-        
-        atomNodes.addChildNode(node)
-        
-        scene.rootNode.addChildNode(cartoonNodes)
+//        #warning("Testing importing .stl meshes into scenekit")
+//        let url = Bundle.main.url(forResource: "4hhb", withExtension: "scn")!
+//
+//        let reference = try! SCNScene(url: url)
+//
+//        let node = reference.rootNode.childNodes.first!
+//
+//        node.geometry!.materials = nodeGeom.atoms[.nitrogen]!.materials
+//
+//        node.flattenedClone()
+//
+//        node.scale = SCNVector3(x: 10, y: 10, z: 10)
+//
+//        atomNodes.addChildNode(node)
+//
+//        scene.rootNode.addChildNode(backBoneNode)
        
     }
     
-    private func internalCartoon(_ residues: [Residue], cpos: [SCNVector3]) {
+    private func loadCartoon(_ residues: [Residue]) {
+        let pNode = ProteinNode(residues: residues)
         
-        guard let firstRes = residues.first else {return}
-        
-        var prevStruc: SecondaryStructure = firstRes.structure
-        
-        var newCartoonPositions: [CartoonPositions] = []
-        
-        var currentPositions = CartoonPositions()
-        
-        if residues.count != cpos.count {
-            print("Not matching")
-            print("Residues: \(residues.count), cpos: \(cpos.count)")
-            #warning("TODO: Implement error handling")
-            return
+        do {
+            let n = try pNode.getProteinNode()
+            scene.rootNode.addChildNode(n)
+            print("Child count: \(n.childNodes.count)")
+        } catch {
+            fatalError("Bad PDB in ProteinKit")
         }
-
-        for (i, r) in residues.enumerated() {
-
-            if prevStruc != r.structure {
-                currentPositions.positions.append(cpos[i])
-                currentPositions.structure = prevStruc
-                newCartoonPositions.append(currentPositions)
-                currentPositions = CartoonPositions()
-            }
-            
-            currentPositions.positions.append(cpos[i])
-            
-            prevStruc = r.structure
-        }
-        
-        guard let lastPos = cpos.last else {return}
-        
-        currentPositions.positions.append(lastPos)
-        currentPositions.structure = prevStruc
-        newCartoonPositions.append(currentPositions)
-        currentPositions = CartoonPositions()
-        
-        for cart in newCartoonPositions {
-            let newCoil = SCNLineNode(with: cart.positions, radius: 0.2, edges: 12, maxTurning: 12)
-            let material = SCNMaterial()
-            newCoil.lineMaterials = [material]
-            switch cart.structure {
-            case .alphaHelix, .helix310, .phiHelix:
-                material.diffuse.contents = UColor.green
-            case .strand:
-                material.diffuse.contents = UColor.blue
-            case .bridge:
-                material.diffuse.contents = UColor.red
-            case .coil:
-                material.diffuse.contents = UColor.brown
-            case .turnI, .turnIp, .turnII, .turnIIp, .turnVIa, .turnVIb, .turnVIII, .turnIV, .turn:
-                material.diffuse.contents = UColor.yellow
-            case .GammaClassic, .GammaInv:
-                material.diffuse.contents = UColor.orange
-            }
-            cartoonNodes.addChildNode(newCoil)
-        }
-        
-        scene.rootNode.addChildNode(cartoonNodes)
     }
+    
+//    private func internalCartoon(_ residues: [Residue], cpos: [SCNVector3]) {
+//
+//        guard let firstRes = residues.first else {return}
+//
+//        var prevStruc: SecondaryStructure = firstRes.structure
+//
+//        var newCartoonPositions: [CartoonPositions] = []
+//
+//        var currentPositions = CartoonPositions()
+//
+//        if residues.count != cpos.count {
+//            print("Not matching")
+//            print("Residues: \(residues.count), cpos: \(cpos.count)")
+//            #warning("TODO: Implement error handling")
+//            return
+//        }
+//
+//        for (i, r) in residues.enumerated() {
+//
+//            if prevStruc != r.structure {
+//                currentPositions.positions.append(cpos[i])
+//                currentPositions.structure = prevStruc
+//                newCartoonPositions.append(currentPositions)
+//                currentPositions = CartoonPositions()
+//            }
+//
+//            currentPositions.positions.append(cpos[i])
+//
+//            prevStruc = r.structure
+//        }
+//
+//        guard let lastPos = cpos.last else {return}
+//
+//        currentPositions.positions.append(lastPos)
+//        currentPositions.structure = prevStruc
+//        newCartoonPositions.append(currentPositions)
+//        currentPositions = CartoonPositions()
+//
+//        for cart in newCartoonPositions {
+//            let newCoil = SCNLineNode(with: cart.positions, radius: 0.2, edges: 12, maxTurning: 12)
+//            let material = SCNMaterial()
+//            newCoil.lineMaterials = [material]
+//            switch cart.structure {
+//            case .alphaHelix, .helix310, .phiHelix:
+//                material.diffuse.contents = UColor.green
+//            case .strand:
+//                material.diffuse.contents = UColor.blue
+//            case .bridge:
+//                material.diffuse.contents = UColor.red
+//            case .coil:
+//                material.diffuse.contents = UColor.brown
+//            case .turnI, .turnIp, .turnII, .turnIIp, .turnVIa, .turnVIb, .turnVIII, .turnIV, .turn:
+//                material.diffuse.contents = UColor.yellow
+//            case .GammaClassic, .GammaInv:
+//                material.diffuse.contents = UColor.orange
+//            }
+//            cartoonNodes.addChildNode(newCoil)
+//        }
+//
+//        scene.rootNode.addChildNode(cartoonNodes)
+//    }
     
     /// Adds a bond node to bondNodes checking the distance between thgiven atom and the following 8 atoms (in list order) in the molecule.
     /// - Parameters:

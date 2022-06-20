@@ -5,7 +5,7 @@
 //  Created by Christian Dominguez on 28/12/21.
 //
 
-import SceneKit
+import ProteinKit
 
 extension BaseReader {
     

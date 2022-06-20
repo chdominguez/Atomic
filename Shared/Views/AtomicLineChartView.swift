@@ -15,7 +15,14 @@ struct AtomicLineChartView: View {
     
     init(data: [Double]) {
         let color = GlobalSettings.shared.colorSettings.chartColor
-        self.parameters = LineChartParameters(data: data, dataPrecisionLength: 6, indicatorPointColor: .purple, indicatorPointSize: 20, lineColor: color, dotsWidth: 15)
+        
+        var lcd: [LineChartData] = []
+        
+        for d in data {
+            lcd.append(LineChartData(d))
+        }
+        
+        self.parameters = LineChartParameters(data: lcd, dataPrecisionLength: 6, indicatorPointColor: .purple, indicatorPointSize: 20, lineColor: color, dotsWidth: 15)
     }
     
     var body: some View {

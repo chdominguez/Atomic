@@ -4,7 +4,7 @@
 //
 //  Created by Christian Dominguez on 11/4/22.
 //
-import SceneKit
+import ProteinKit
 import SwiftUI
 
 

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import AtomicProgressView
 
 /// View that hosts the SceneKit representable and shows the tools + the molecule
 struct Molecule3DView: View {

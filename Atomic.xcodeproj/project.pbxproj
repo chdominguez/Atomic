@@ -15,8 +15,6 @@
 		C01D7FCA280C5F86003EBA5D /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C01D7FC9280C5F86003EBA5D /* LineChartView */; };
 		C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */; };
 		C0205A6B280C632200BCD688 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0205A6A280C632200BCD688 /* Commands.swift */; };
-		C0209CDF280D584A00ED9AEF /* SceneKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0209CDE280D584A00ED9AEF /* SceneKitExtensions.swift */; };
-		C0209CE0280D584A00ED9AEF /* SceneKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0209CDE280D584A00ED9AEF /* SceneKitExtensions.swift */; };
 		C021717F27E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C021718027E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C02C1BDC27E4B23F00BCDF01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
@@ -38,8 +36,6 @@
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C09441352761F76F00680075 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
-		C09688C42822C9730072D804 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09688C32822C9730072D804 /* Neumorphic */; };
-		C09688C62822C97A0072D804 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09688C52822C97A0072D804 /* Neumorphic */; };
 		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
@@ -69,8 +65,11 @@
 		C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1371D277F3930009ACCB6 /* FreqsView.swift */; };
 		C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
 		C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
-		C0E9E2B1281696770029F5F1 /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0E9E2B0281696770029F5F1 /* SCNLine */; };
-		C0E9E2B32816967F0029F5F1 /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0E9E2B22816967F0029F5F1 /* SCNLine */; };
+		C0F9F2F128539E8700ABADE3 /* SceneKitPlus in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2F028539E8700ABADE3 /* SceneKitPlus */; };
+		C0F9F2F82857DBB200ABADE3 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2F72857DBB200ABADE3 /* Neumorphic */; };
+		C0F9F2FE2857DC3300ABADE3 /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2FD2857DC3300ABADE3 /* SCNLine */; };
+		C0F9F3002857DE9200ABADE3 /* AtomicProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F9F2FF2857DE9200ABADE3 /* AtomicProgressView.swift */; };
+		C0F9F3012857DE9200ABADE3 /* AtomicProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F9F2FF2857DE9200ABADE3 /* AtomicProgressView.swift */; };
 		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
 		F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA47926E77F5100387EBA /* AtomicApp.swift */; };
 		F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48C26E7801200387EBA /* ChartsViews.swift */; };
@@ -87,7 +86,6 @@
 		C01D7FA5280C4734003EBA5D /* AtomicLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicLineChartView.swift; sourceTree = "<group>"; };
 		C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceManager.swift; sourceTree = "<group>"; };
 		C0205A6A280C632200BCD688 /* Commands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
-		C0209CDE280D584A00ED9AEF /* SceneKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitExtensions.swift; sourceTree = "<group>"; };
 		C021717E27E3E269007ACD2F /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
 		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
 		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
@@ -114,6 +112,8 @@
 		C0E1371A277F33D3009ACCB6 /* InputfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputfileView.swift; sourceTree = "<group>"; };
 		C0E1371D277F3930009ACCB6 /* FreqsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreqsView.swift; sourceTree = "<group>"; };
 		C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianGJFWriter.swift; sourceTree = "<group>"; };
+		C0F9F2F22853A31700ABADE3 /* SceneKitPlus */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SceneKitPlus; path = ../SceneKitPlus; sourceTree = "<group>"; };
+		C0F9F2FF2857DE9200ABADE3 /* AtomicProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomicProgressView.swift; sourceTree = "<group>"; };
 		F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableView.swift; sourceTree = "<group>"; };
 		F06AA47626E77F5100387EBA /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F06AA47926E77F5100387EBA /* AtomicApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicApp.swift; sourceTree = "<group>"; };
@@ -133,9 +133,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0F9F2F82857DBB200ABADE3 /* Neumorphic in Frameworks */,
+				C0F9F2F128539E8700ABADE3 /* SceneKitPlus in Frameworks */,
+				C0F9F2FE2857DC3300ABADE3 /* SCNLine in Frameworks */,
 				C0D9E11C28535BD5001CF720 /* ProteinKit in Frameworks */,
-				C09688C62822C97A0072D804 /* Neumorphic in Frameworks */,
-				C0E9E2B32816967F0029F5F1 /* SCNLine in Frameworks */,
 				C01D7FCA280C5F86003EBA5D /* LineChartView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,9 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C09688C42822C9730072D804 /* Neumorphic in Frameworks */,
 				C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */,
-				C0E9E2B1281696770029F5F1 /* SCNLine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				C0D9E11A28535BC5001CF720 /* ProteinKit */,
+				C0F9F2F22853A31700ABADE3 /* SceneKitPlus */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -208,7 +208,6 @@
 				F06AA47D26E77F5200387EBA /* Assets.xcassets */,
 				C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */,
 				C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */,
-				C0209CDE280D584A00ED9AEF /* SceneKitExtensions.swift */,
 				C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */,
 				C09441342761F76F00680075 /* ViewExtensions.swift */,
 				F06AA49726E7801200387EBA /* AtomicMainController.swift */,
@@ -315,6 +314,7 @@
 		F06AA49526E7801200387EBA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C0F9F2FF2857DE9200ABADE3 /* AtomicProgressView.swift */,
 				C01D7FA5280C4734003EBA5D /* AtomicLineChartView.swift */,
 				C0E1371A277F33D3009ACCB6 /* InputfileView.swift */,
 				C0E1371D277F3930009ACCB6 /* FreqsView.swift */,
@@ -380,9 +380,10 @@
 			name = Atomic_macos;
 			packageProductDependencies = (
 				C01D7FC9280C5F86003EBA5D /* LineChartView */,
-				C0E9E2B22816967F0029F5F1 /* SCNLine */,
-				C09688C52822C97A0072D804 /* Neumorphic */,
 				C0D9E11B28535BD5001CF720 /* ProteinKit */,
+				C0F9F2F028539E8700ABADE3 /* SceneKitPlus */,
+				C0F9F2F72857DBB200ABADE3 /* Neumorphic */,
+				C0F9F2FD2857DC3300ABADE3 /* SCNLine */,
 			);
 			productName = Atomic_macOS;
 			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
@@ -403,8 +404,6 @@
 			name = Atomic_ipad;
 			packageProductDependencies = (
 				C01D7FC7280C5F7C003EBA5D /* LineChartView */,
-				C0E9E2B0281696770029F5F1 /* SCNLine */,
-				C09688C32822C9730072D804 /* Neumorphic */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
@@ -418,7 +417,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1310;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					C0DCCE93276A3C9B0085CD1D = {
 						CreatedOnToolsVersion = 13.1;
@@ -441,8 +440,9 @@
 			mainGroup = F06AA46D26E77F5100387EBA;
 			packageReferences = (
 				C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */,
-				C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */,
-				C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */,
+				C0F9F2EF28539E8700ABADE3 /* XCRemoteSwiftPackageReference "SceneKitPlus" */,
+				C0F9F2F62857DBB200ABADE3 /* XCRemoteSwiftPackageReference "neumorphic" */,
+				C0F9F2FC2857DC3300ABADE3 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
 			projectDirPath = "";
@@ -488,6 +488,7 @@
 				C0DFA43727E8A28500F6BA9A /* XYZReader.swift in Sources */,
 				C066B782277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */,
+				C0F9F3012857DE9200ABADE3 /* AtomicProgressView.swift in Sources */,
 				C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */,
 				C0DCCECD276A3E710085CD1D /* SceneKitRepresentable.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
@@ -504,7 +505,6 @@
 				C0DCCED5276A3E980085CD1D /* AtomicMainController.swift in Sources */,
 				C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */,
 				C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */,
-				C0209CE0280D584A00ED9AEF /* SceneKitExtensions.swift in Sources */,
 				C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */,
 				C0205A6B280C632200BCD688 /* Commands.swift in Sources */,
 				C01D7FA7280C4734003EBA5D /* AtomicLineChartView.swift in Sources */,
@@ -526,6 +526,7 @@
 				C066B781277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E55277B668A00561AAA /* GaussianFileReader.swift in Sources */,
 				C0E1371E277F3930009ACCB6 /* FreqsView.swift in Sources */,
+				C0F9F3002857DE9200ABADE3 /* AtomicProgressView.swift in Sources */,
 				C09441352761F76F00680075 /* ViewExtensions.swift in Sources */,
 				F0F6552226F7C61500DD4F25 /* MainWindow.swift in Sources */,
 				C041E26027752250005790EE /* SceneKitRepresentable.swift in Sources */,
@@ -542,7 +543,6 @@
 				C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				C05F5CA72784720B00F3B588 /* UIToolbars_iPad.swift in Sources */,
 				F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */,
-				C0209CDF280D584A00ED9AEF /* SceneKitExtensions.swift in Sources */,
 				F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */,
 				C0E1371B277F33D3009ACCB6 /* InputfileView.swift in Sources */,
 				C01D7FA6280C4734003EBA5D /* AtomicLineChartView.swift in Sources */,
@@ -867,15 +867,23 @@
 				kind = branch;
 			};
 		};
-		C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */ = {
+		C0F9F2EF28539E8700ABADE3 /* XCRemoteSwiftPackageReference "SceneKitPlus" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/chdominguez/SceneKitPlus.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		C0F9F2F62857DBB200ABADE3 /* XCRemoteSwiftPackageReference "neumorphic" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/costachung/neumorphic";
 			requirement = {
-				kind = exactVersion;
-				version = 2.0.5;
+				branch = master;
+				kind = branch;
 			};
 		};
-		C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */ = {
+		C0F9F2FC2857DC3300ABADE3 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/maxxfrazer/SceneKit-SCNLine.git";
 			requirement = {
@@ -896,28 +904,23 @@
 			package = C01D7FC6280C5F7C003EBA5D /* XCRemoteSwiftPackageReference "LineChartView" */;
 			productName = LineChartView;
 		};
-		C09688C32822C9730072D804 /* Neumorphic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */;
-			productName = Neumorphic;
-		};
-		C09688C52822C97A0072D804 /* Neumorphic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C09688C22822C9730072D804 /* XCRemoteSwiftPackageReference "neumorphic" */;
-			productName = Neumorphic;
-		};
 		C0D9E11B28535BD5001CF720 /* ProteinKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProteinKit;
 		};
-		C0E9E2B0281696770029F5F1 /* SCNLine */ = {
+		C0F9F2F028539E8700ABADE3 /* SceneKitPlus */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
-			productName = SCNLine;
+			package = C0F9F2EF28539E8700ABADE3 /* XCRemoteSwiftPackageReference "SceneKitPlus" */;
+			productName = SceneKitPlus;
 		};
-		C0E9E2B22816967F0029F5F1 /* SCNLine */ = {
+		C0F9F2F72857DBB200ABADE3 /* Neumorphic */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C0E9E2AF281696770029F5F1 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
+			package = C0F9F2F62857DBB200ABADE3 /* XCRemoteSwiftPackageReference "neumorphic" */;
+			productName = Neumorphic;
+		};
+		C0F9F2FD2857DC3300ABADE3 /* SCNLine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0F9F2FC2857DC3300ABADE3 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
 			productName = SCNLine;
 		};
 /* End XCSwiftPackageProductDependency section */

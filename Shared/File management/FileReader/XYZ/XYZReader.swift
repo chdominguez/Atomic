@@ -3,7 +3,7 @@
 //  Created by Christian Dominguez on 21/3/22.
 //
 
-import SceneKit // For SCN3Vectors used for atoms positions
+import ProteinKit // For SCN3Vectors used for atoms positions
 
 extension BaseReader {
     internal func readXYZSteps() throws {

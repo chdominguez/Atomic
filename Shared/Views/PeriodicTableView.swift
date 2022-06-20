@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Neumorphic
+import ProteinKit
 
 
 struct PTable: View {

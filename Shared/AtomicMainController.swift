@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SceneKit
+import ProteinKit
 import UniformTypeIdentifiers
 
 class AtomicMainController: ObservableObject {

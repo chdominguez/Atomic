@@ -1,6 +1,7 @@
 // Commands for macOS menu bar
 
 import SwiftUI
+import ProteinKit
 
 //MARK: Commands view
 /// macOS menus on top of the screen

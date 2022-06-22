@@ -9,9 +9,9 @@ import SceneKit
 import ProteinKit
 
 
-extension BaseReader {
-    
-}
+//extension BaseReader {
+//    
+//}
 
 //extension BaseReader {
 //    internal func readPDBSteps() throws {

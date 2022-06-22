@@ -3,22 +3,4 @@
    uuid = "B7F89133-4E10-4C3C-99A4-FCF023CC5165"
    type = "1"
    version = "2.0">
-   <Breakpoints>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1573D050-395F-4691-8AAE-832F362DF44A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../../Library/Developer/Xcode/DerivedData/Atomic-afhxannwjbxcpecxnnpuuxpykndk/SourcePackages/checkouts/MeshGenerator/Sources/MeshGenerator/Plane.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "init?(normal:w:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-   </Breakpoints>
 </Bucket>

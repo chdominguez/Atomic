@@ -64,7 +64,7 @@ class BaseReader: ObservableObject {
         case .pdb:
             let p = PDBReader()
             #warning("Came back to here PDBReader")
-            try! p.readPDB(from: fileURL)
+            try p.readPDB(from: fileURL)
             self.steps = p.steps
         case .xyz:
             try readXYZSteps()

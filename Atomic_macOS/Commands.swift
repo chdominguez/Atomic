@@ -60,7 +60,6 @@ struct AtomicCommands: Commands {
             Button("Energy") {
                 guard let energy = commands.getStepsEnergy() else {return}
                 AtomicLineChartView(data: energy).openNewWindow(type: .energyGraph, controller: commands.activeController)
-                print("opened widnow")
             }
             Button("Frequencies") {
             }

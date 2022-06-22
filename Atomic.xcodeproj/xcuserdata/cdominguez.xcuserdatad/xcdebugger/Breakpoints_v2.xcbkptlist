@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FBE03D84-7893-48E8-ADEA-F092DF1D53BF"
-            shouldBeEnabled = "No"
+            uuid = "1573D050-395F-4691-8AAE-832F362DF44A"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../ProteinKit/Sources/ProteinKit/Mesh Generator/MeshGenerator.swift"
+            filePath = "../../Library/Developer/Xcode/DerivedData/Atomic-afhxannwjbxcpecxnnpuuxpykndk/SourcePackages/checkouts/MeshGenerator/Sources/MeshGenerator/Plane.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "newPeptidePlane(r1:r2:r3:)"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "init?(normal:w:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

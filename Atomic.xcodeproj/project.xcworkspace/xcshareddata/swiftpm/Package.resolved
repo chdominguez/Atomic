@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "meshgenerator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/heckj/MeshGenerator",
+      "state" : {
+        "branch" : "main",
+        "revision" : "5ac0bb4871fedb83e0f916a1e83ed2917e4c1b4a"
+      }
+    },
+    {
       "identity" : "neumorphic",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/costachung/neumorphic",

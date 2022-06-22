@@ -243,8 +243,8 @@ class MoleculeRenderer: ObservableObject {
         
         do {
             let n = try pNode.getProteinNode()
-            scene.rootNode.addChildNode(n)
-            print("Child count: \(n.childNodes.count)")
+            cartoonNodes.addChildNode(n)
+            scene.rootNode.addChildNode(cartoonNodes)
         } catch {
             fatalError("Bad PDB in ProteinKit")
         }

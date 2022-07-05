@@ -22,6 +22,8 @@ extension BaseReader {
         // Keep track of the number of atoms
         var numberOfAtoms = 0
         
+        var skipLine = false
+        
         for line in splitFile {
             
             //Increment current line by 1 to keep track if an error happens
@@ -34,14 +36,15 @@ extension BaseReader {
             let splitted = filteredLine.split(separator: " ") // Split the line to verify what's on the input
             
             // Continue the loop on empty line
-            if splitted.isEmpty {continue}
-            
+            if splitted.isEmpty {skipLine = false; continue}
+                    
             // If the line contains 1 element, then it's the atom count for that molecule
-            guard splitted.count != 1 else {
+            guard splitted.count > 1 else {
                 
                 // Check whether its the first molecule and assign a new Molecule to currentMolecule.
                 if currentMolecule == nil {
                     currentMolecule = Molecule()
+                    skipLine = true // Next line should not contain atom info
                     continue
                 }
                 
@@ -53,16 +56,22 @@ extension BaseReader {
                 steps.append(step)
                 currentMolecule = Molecule() // Append the new step and reinit the variable with a new molecule
                 stepNumber += 1 // Increment the number of steps for the next one
+                skipLine = true // Next line should not contain atom info
                 continue // Skip loop to next line
             }
             
-            // Obtain timestep for Molecular dynamics simulations
-            guard !filteredLine.contains("Timestep") else {
-                guard let time = Int(splitted.last!) else {throw xyzError}
-                timeStep = time
-                continue // Skip loop as in timestep lines that is the only useful information
+            if skipLine {
+                // Obtain timestep for Molecular dynamics simulations
+                guard !filteredLine.contains("Timestep") else {
+                    guard let time = Int(splitted.last!) else {throw xyzError}
+                    timeStep = time
+                    continue // Skip loop as in timestep lines that is the only useful information
+                }
+                skipLine = false
+                continue
             }
             
+
             // Saving atom coordinates
             guard let currentElement = getAtom(fromString: String(splitted[0])),
                   let x = Float(splitted[1]),
@@ -79,6 +88,7 @@ extension BaseReader {
             guard let _ = currentMolecule else {throw xyzError} // Something went wrong if the molecule at this point is not assigned. Possible an error on the XYZ file.
             currentMolecule!.atoms.append(atom)
         }
+        print(steps.first?.molecule?.atoms)
         
         // Save final step and end the function
         guard let _ = currentMolecule else {throw xyzError}

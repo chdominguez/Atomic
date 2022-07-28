@@ -83,9 +83,10 @@ struct SceneUI: Representable {
     private func updateView(_ uiView: SCNView, context: Context) {
         uiView.backgroundColor = settings.colorSettings.backgroundColor.uColor
         controller.backBoneNode.isHidden = !(settings.atomStyle == .backBone)
-        controller.atomNodes.isHidden = !(settings.atomStyle == .ballAndStick)
-        controller.bondNodes.isHidden = !(settings.atomStyle == .ballAndStick)
+        //controller.atomNodes.isHidden = !(settings.atomStyle == .ballAndStick)
+        //controller.bondNodes.isHidden = !(settings.atomStyle == .ballAndStick)
         controller.cartoonNodes.isHidden = !(settings.atomStyle == .cartoon)
+        controller.toggleVdWStick()
     }
     
 }

@@ -78,6 +78,7 @@ class MoleculeRenderer: ObservableObject {
     private let nodeGeom = NodeGeometries()
     
     var atomNodes = SCNNode()
+    var vdwNodes = SCNNode()
     var bondNodes = SCNNode()
     var backBoneNode = SCNLineNode()
     var helixNode = SCNReferenceNode(url: Bundle.main.url(forResource: "helix", withExtension: "usdc")!)
@@ -148,6 +149,32 @@ class MoleculeRenderer: ObservableObject {
         }
         for i in atomNodes.childNodes.indices {
             checkBondingBasedOnDistance(nodeIndex: i)
+        }
+    }
+    
+    //MARK: Van der Waals radius
+    func toggleVdWStick() {
+        
+        if settings.atomStyle == .ballAndStick {
+            scaleVdW(scale: 0.7)
+        }
+        else {
+            scaleVdW(scale: 1)
+        }
+        
+        
+    }
+    
+    private func scaleVdW(scale: Double) {
+        if selectedAtoms.isEmpty {
+            atomNodes.enumerateChildNodes { node, _ in
+                node.scale = SCNVector3(scale, scale, scale)
+            }
+            return
+        }
+        
+        for atom in selectedAtoms {
+            atom.selectedNode.scale = SCNVector3(scale, scale, scale)
         }
     }
     
@@ -239,7 +266,7 @@ class MoleculeRenderer: ObservableObject {
     }
     
     private func loadCartoon(_ residues: [Residue]) {
-        let pNode = ProteinNode(residues: residues)
+        let pNode = ProteinKit(residues: residues)
         
         do {
             let n = try pNode.getProteinNode()

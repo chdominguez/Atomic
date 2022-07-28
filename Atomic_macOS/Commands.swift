@@ -39,8 +39,24 @@ struct AtomicCommands: Commands {
             }
         }
         CommandMenu("Molecule") {
-            Picker("Atom style", selection: $commands.settings.atomStyle) {
-                ForEach(AtomStyle.allCases, id: \.self) { Text($0.rawValue) }
+            Menu("Atom style") {
+                ForEach(AtomStyle.allCases, id: \.self) { style in
+                    Button {
+                        commands.activeController?.renderer?.changeSelectedOrView(to: style)
+                    } label: {
+                        Text(style.rawValue)
+                    }
+
+                }
+            }
+//            Picker("Atom style", selection: $commands.settings.atomStyle) {
+//                 }
+//            }
+            Button("Hide selected") {
+                commands.activeController?.renderer?.hideSelected()
+            }
+            Button("Show all") {
+                commands.activeController?.renderer?.showAll()
             }
             Button("Periodic table") {
                 PTable().openNewWindow(type: .ptable)

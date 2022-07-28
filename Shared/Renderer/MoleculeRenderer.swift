@@ -152,17 +152,32 @@ class MoleculeRenderer: ObservableObject {
         }
     }
     
-    //MARK: Van der Waals radius
-    func toggleVdWStick() {
-        
-        if settings.atomStyle == .ballAndStick {
+    //MARK: Hide selected
+    func hideSelected() {
+        for atom in selectedAtoms {
+            atom.selectedNode.isHidden = true
+            atom.selectionOrb.isHidden = true
+        }
+    }
+    
+    func showAll() {
+        atomNodes.enumerateChildNodes { node, _ in
+            node.isHidden = false
+        }
+    }
+    
+    //MARK: Change style
+    func changeSelectedOrView(to: AtomStyle) {
+        switch to {
+        case .ballAndStick:
             scaleVdW(scale: 0.7)
-        }
-        else {
+        case .vanderwaals:
             scaleVdW(scale: 1)
+        case .backBone:
+            backBoneNode.isHidden = false
+        case .cartoon:
+            cartoonNodes.isHidden = false
         }
-        
-        
     }
     
     private func scaleVdW(scale: Double) {
@@ -172,7 +187,6 @@ class MoleculeRenderer: ObservableObject {
             }
             return
         }
-        
         for atom in selectedAtoms {
             atom.selectedNode.scale = SCNVector3(scale, scale, scale)
         }

@@ -2,6 +2,7 @@
 
 import SwiftUI
 import ProteinKit
+import SceneKit
 
 //MARK: Commands view
 /// macOS menus on top of the screen
@@ -49,9 +50,6 @@ struct AtomicCommands: Commands {
 
                 }
             }
-//            Picker("Atom style", selection: $commands.settings.atomStyle) {
-//                 }
-//            }
             Button("Hide selected") {
                 commands.activeController?.renderer?.hideSelected()
             }
@@ -83,6 +81,27 @@ struct AtomicCommands: Commands {
             Button("Summary") {
 
             }
+        }
+        CommandMenu("Camera") {
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(8, 0, 0)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("X")
+            }
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(0, 8, 0)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("Y")
+            }
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(0, 0, 8)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("Z")
+            }
+
         }
         CommandMenu("Input/Output") {
             Button("View file") {

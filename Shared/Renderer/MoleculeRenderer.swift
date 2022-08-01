@@ -88,7 +88,8 @@ class MoleculeRenderer: ObservableObject {
     // SceneKit classes
     let sceneView = SCNView()
     let scene = SCNScene()
-    let cameraNode = SCNNode()
+    var cameraNode = SCNNode()
+    var lightNode = SCNNode()
     
     /// An array of tuples. The nodes selected with its selection orb node.
     @Published var selectedAtoms: [(selectedNode: SCNNode, selectionOrb: SCNNode)] = [] {
@@ -595,7 +596,6 @@ class MoleculeRenderer: ObservableObject {
             eraseNode(molecule: molecule, at: location)
         }
     }
-    
     private func newAtomOnTouch(molecule: Molecule, at location: CGPoint) {
         let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
         let unprojected = sceneView.unprojectPoint(position)
@@ -673,7 +673,7 @@ class MoleculeRenderer: ObservableObject {
             node.removeFromParentNode()
         }
     }
-    
+        
 }
 
 class SCNAtomNode: SCNNode {

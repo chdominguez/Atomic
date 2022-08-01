@@ -35,6 +35,15 @@
         "branch" : "main",
         "revision" : "00bd83f3affae23a0a9375d1b1e4b58f5c3471d0"
       }
+    },
+    {
+      "identity" : "scenekitplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/chdominguez/SceneKitPlus.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4a1f923d35f4486a02aecc6556605a3f92e62f1c"
+      }
     }
   ],
   "version" : 2

@@ -40,43 +40,38 @@ struct SceneUI: Representable {
         
         // Gesture recognizer for placing atoms, bonds...
         let gesture = Gesture(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
+        //let key = CGEvent
         controller.sceneView.addGestureRecognizer(gesture)
         
         // Scene view controls
-        controller.sceneView.allowsCameraControl = true
-        controller.sceneView.defaultCameraController.interactionMode = .orbitCenteredArcball
-        controller.sceneView.autoenablesDefaultLighting = true
+        //controller.sceneView.allowsCameraControl = true
+        //controller.sceneView.defaultCameraController.interactionMode = .orbitCenteredArcball
+        //controller.sceneView.autoenablesDefaultLighting = true
         //controller.sceneView.showsStatistics = true
 
         // Attach the scene to the sceneview
         controller.sceneView.scene = controller.scene
         
         // Setup the camera node
-        let camera = SCNCamera()
-        camera.zNear = 0.5
-        camera.zFar = 200
+        controller.cameraNode = setupCamera()
         
-        let cameraNode = SCNNode()
-        cameraNode.camera = camera
-        cameraNode.position = SCNVector3Make(0, 0, 5)
+        // Setup light node
+        controller.lightNode = setupLight()
         
-        controller.sceneView.pointOfView = cameraNode
+        controller.cameraNode.addChildNode(controller.lightNode)
+        
+        controller.scene.rootNode.addChildNode(controller.cameraNode)
+        
+        controller.sceneView.pointOfView = controller.cameraNode
         guard let molecule = controller.steps.first?.molecule else {return controller.sceneView}
         
         let positions = molecule.atoms.map {$0.position}
-        cameraNode.position = averageDistance(of: positions)
-        controller.sceneView.defaultCameraController.target = cameraNode.position
+        controller.cameraNode.position = averageDistance(of: positions)
+        controller.sceneView.defaultCameraController.target = controller.cameraNode.position
         
         // Add more space to entirely see the molecule. 10 is an okay value
-        #if os(macOS)
-        cameraNode.position.z = viewingZPositionCGFloat(toSee: positions) + 10
-        #elseif os(iOS)
-        cameraNode.position.z = viewingZPositionFloat(toSee: positions) + 10
-        #endif
+        controller.cameraNode.position.z = viewingZPosition(toSee: positions) + 10
         
-        //cameraNode.position = SCNVector3Make(0, 0, 10)
-        
-        //controller.sceneView.backgroundColor = settings.colorSettings.backgroundColor.UniversalColor
         return controller.sceneView
     }
     
@@ -84,4 +79,26 @@ struct SceneUI: Representable {
         uiView.backgroundColor = settings.colorSettings.backgroundColor.uColor
     }
     
+    private func setupCamera() -> SCNNode {
+        let cam = SCNCamera()
+        cam.name = "Camera"
+        cam.zFar = 500
+        cam.zNear = 0.01
+        let camNode = SCNNode()
+        camNode.camera = cam
+        camNode.position = SCNVector3Make(0, 0, 5)
+        return camNode
+    }
+    
+    private func setupLight() -> SCNNode {
+        let light = SCNLight()
+        light.color = Color.white.uColor
+        light.intensity = 150
+        
+        let lnode = SCNNode()
+        lnode.light = light
+        lnode.position = SCNVector3Make(0, 0, 0)
+        return lnode
+    }
+        
 }

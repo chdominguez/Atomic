@@ -33,3 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         true
     }
 }
+
+class WindowDelefgate: NSObject, NSWindowDelegate {
+    
+}

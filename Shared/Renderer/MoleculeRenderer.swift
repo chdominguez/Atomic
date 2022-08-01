@@ -76,6 +76,7 @@ class MoleculeRenderer: ObservableObject {
     //MARK: Scene
     let colors = ProteinColors()
     var atomNodes = SCNNode()
+    var vdwNodes = SCNNode()
     var bondNodes = SCNNode()
     var backBoneNode = SCNLineNode()
     var cartoonNodes = SCNNode()
@@ -148,6 +149,46 @@ class MoleculeRenderer: ObservableObject {
         }
         for i in atomNodes.childNodes.indices {
             checkBondingBasedOnDistance(nodeIndex: i)
+        }
+    }
+    
+    //MARK: Hide selected
+    func hideSelected() {
+        for atom in selectedAtoms {
+            atom.selectedNode.isHidden = true
+            atom.selectionOrb.isHidden = true
+        }
+    }
+    
+    func showAll() {
+        atomNodes.enumerateChildNodes { node, _ in
+            node.isHidden = false
+        }
+    }
+    
+    //MARK: Change style
+    func changeSelectedOrView(to: AtomStyle) {
+        switch to {
+        case .ballAndStick:
+            scaleVdW(scale: 0.7)
+        case .vanderwaals:
+            scaleVdW(scale: 1)
+        case .backBone:
+            backBoneNode.isHidden = false
+        case .cartoon:
+            cartoonNodes.isHidden = false
+        }
+    }
+    
+    private func scaleVdW(scale: Double) {
+        if selectedAtoms.isEmpty {
+            atomNodes.enumerateChildNodes { node, _ in
+                node.scale = SCNVector3(scale, scale, scale)
+            }
+            return
+        }
+        for atom in selectedAtoms {
+            atom.selectedNode.scale = SCNVector3(scale, scale, scale)
         }
     }
     

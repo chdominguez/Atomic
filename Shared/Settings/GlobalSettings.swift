@@ -155,8 +155,6 @@ class ColorSettings: ObservableObject {
     @Published var chartColor: Color = .blue
     
 }
-
-#warning("TODO: 3D structures for folded proteins: Helix, Beta-sheet, turns...")
 //MARK: Node geometries
 
 /// Geometries for SceneKit nodes. These geometries implement the materials defined in the ColorSettings class

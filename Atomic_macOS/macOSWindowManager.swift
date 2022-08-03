@@ -89,7 +89,7 @@ struct WindowAccessor: NSViewRepresentable {
 
 //MARK: AtomicWindow
 /// Custom class for tracking the active controller on cliking multiple windows
-class AtomicWindow: NSWindow {
+class AtomicWindow: Hashable {
     
     let window: NSWindow!
     let windowType: WindowType
@@ -102,7 +102,7 @@ class AtomicWindow: NSWindow {
         self.window.title = type.rawValue
     }
     
-    override func keyDown(with event: NSEvent) {
+    func keyDown(with event: NSEvent) {
         print("Key down!")
     }
     
@@ -110,9 +110,9 @@ class AtomicWindow: NSWindow {
         lhs.window.windowNumber == rhs.window.windowNumber
     }
     
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(window.windowNumber)
-//    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(window.windowNumber)
+    }
     
     //MARK: Window types
     /// Window types. This enum allows for keeping track of already opened windows for each controller. Making it easir to bring them back instead of creating a new one. RawValue is the window title.
@@ -208,7 +208,6 @@ extension View {
         window.isReleasedWhenClosed = false
         window.makeKeyAndOrderFront(nil)
         window.contentView = NSHostingView(rootView: self)
-        
         return window
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SceneKit
 
 /// View that hosts the SceneKit representable and shows the tools + the molecule
 struct Molecule3DView: View {
@@ -18,6 +19,23 @@ struct Molecule3DView: View {
                 ZStack {
                     SceneUI(controller: controller).ignoresSafeArea()
                     VStack {
+                        HStack {
+                            Spacer()
+                            VStack {
+                                Button {
+                                    controller.zoomCamera(true)
+                                } label: {
+                                    Image(systemName: "plus.circle")
+                                }.toolbarButton()
+                                Button {
+                                    controller.zoomCamera(false)
+                                } label: {
+                                    Image(systemName: "minus.circle")
+                                }.toolbarButton()
+                            }
+                            .background(RoundedRectangle(cornerRadius: 25)                        .fill(Color.Neumorphic.darkShadow))
+                            .padding()
+                        }
                         if !controller.didLoadAtoms {
                             progressview.foregroundColor(.primary)
                         }

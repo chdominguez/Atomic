@@ -7,10 +7,12 @@ import SceneKit
 // Cross-platform APIs compatibilities
 #if os(iOS)
 typealias Representable = UIViewRepresentable
-typealias Gesture = UITapGestureRecognizer
+typealias TapGesture = UITapGestureRecognizer
+typealias PanGesture = UIPanGestureRecognizer
 #elseif os(macOS)
 typealias Representable = NSViewRepresentable
-typealias Gesture = NSClickGestureRecognizer
+typealias TapGesture = NSClickGestureRecognizer
+typealias PanGesture = NSPanGestureRecognizer
 #endif
 
 struct SceneUI: Representable {
@@ -18,10 +20,7 @@ struct SceneUI: Representable {
     @ObservedObject var controller: MoleculeRenderer
     @ObservedObject var settings = GlobalSettings.shared
     @Environment(\.colorScheme) var colorScheme
-    
-    #warning("BUG: Strange behaviour on zooming on Apple Silicon")
-    #warning("BUG: macOS zooming different from iOS zooming. Implement custom camera movement")
-    
+        
     // View representables functions are different for each platform. Even tough the codes are exactly the same. Why Apple?
     #if os(macOS)
     func makeNSView(context: Context) -> SCNView { makeView(context: context) }
@@ -39,9 +38,16 @@ struct SceneUI: Representable {
     private func makeView(context: Context) -> SCNView {
         
         // Gesture recognizer for placing atoms, bonds...
-        let gesture = Gesture(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
+        let tapGesture = TapGesture(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
+        let leftClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
+        leftClickPanGesture.buttonMask = 1
+        let rightClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
+        rightClickPanGesture.buttonMask = 2
         //let key = CGEvent
-        controller.sceneView.addGestureRecognizer(gesture)
+        controller.sceneView.addGestureRecognizer(tapGesture)
+        controller.sceneView.addGestureRecognizer(rightClickPanGesture)
+        controller.sceneView.addGestureRecognizer(leftClickPanGesture)
+
         
         // Scene view controls
         //controller.sceneView.allowsCameraControl = true
@@ -54,13 +60,15 @@ struct SceneUI: Representable {
         
         // Setup the camera node
         controller.cameraNode = setupCamera()
+        controller.cameraOrbit.addChildNode(controller.cameraNode)
+        controller.sceneView.pointOfView = controller.cameraOrbit
         
         // Setup light node
         controller.lightNode = setupLight()
         
         controller.cameraNode.addChildNode(controller.lightNode)
         
-        controller.scene.rootNode.addChildNode(controller.cameraNode)
+        controller.scene.rootNode.addChildNode(controller.cameraOrbit)
         
         controller.sceneView.pointOfView = controller.cameraNode
         guard let molecule = controller.steps.first?.molecule else {return controller.sceneView}
@@ -81,7 +89,7 @@ struct SceneUI: Representable {
     
     private func setupCamera() -> SCNNode {
         let cam = SCNCamera()
-        cam.name = "Camera"
+        cam.name = "camera"
         cam.zFar = 500
         cam.zNear = 0.01
         let camNode = SCNNode()
@@ -93,7 +101,8 @@ struct SceneUI: Representable {
     private func setupLight() -> SCNNode {
         let light = SCNLight()
         light.color = Color.white.uColor
-        light.intensity = 150
+        light.intensity = 800
+        light.type = .directional
         
         let lnode = SCNNode()
         lnode.light = light

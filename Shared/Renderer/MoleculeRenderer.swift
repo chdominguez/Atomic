@@ -78,17 +78,17 @@ class MoleculeRenderer: ObservableObject {
     private let nodeGeom = NodeGeometries()
     
     var atomNodes = SCNNode()
-    var vdwNodes = SCNNode()
     var bondNodes = SCNNode()
     var backBoneNode = SCNLineNode()
-    var helixNode = SCNReferenceNode(url: Bundle.main.url(forResource: "helix", withExtension: "usdc")!)
     var cartoonNodes = SCNNode()
     var selectionNodes = SCNNode()
     
     // SceneKit classes
     let sceneView = SCNView()
     let scene = SCNScene()
+    let atomicNode = SCNNode()
     var cameraNode = SCNNode()
+    let cameraOrbit = SCNNode()
     var lightNode = SCNNode()
     
     /// An array of tuples. The nodes selected with its selection orb node.
@@ -198,6 +198,8 @@ class MoleculeRenderer: ObservableObject {
     /// Populates the SCNodes with atoms and bonds from the step molecule
     private func setupScene(_ step: Step) {
         
+        scene.rootNode.addChildNode(atomicNode)
+        
         guard let molecule = step.molecule else {return}
         
         atomNodes.name = "atoms"
@@ -210,23 +212,23 @@ class MoleculeRenderer: ObservableObject {
         }
         
         // Add the newly created atomNodes to the root scene
-        scene.rootNode.addChildNode(atomNodes)
+        atomicNode.addChildNode(atomNodes)
         
         // Cylinders cause a significant drop in performance.If more than 1000 bonds are present. They become a flattened cone. The downside of this is that they are converted to a big node hence individual bonds cannot be broken
         if bondNodes.childNodes.count > 1000 {
             self.bondNodes = bondNodes.flattenedClone()
         }
         
-        scene.rootNode.addChildNode(bondNodes)
+        atomicNode.addChildNode(bondNodes)
         
         // Compute the backbone and cartoon nodes for proteins
-        if let backBone = step.backBone { cartoonBackbone(backBone, aa: step.res)
+        if let _ = step.backBone {
             loadCartoon(step.res)
         }
         
         // Add selection node as child of the main node
         
-        scene.rootNode.addChildNode(selectionNodes)
+        atomicNode.addChildNode(selectionNodes)
         
     }
     
@@ -286,7 +288,7 @@ class MoleculeRenderer: ObservableObject {
         do {
             let n = try pNode.getProteinNode()
             cartoonNodes.addChildNode(n)
-            scene.rootNode.addChildNode(cartoonNodes)
+            atomicNode.addChildNode(cartoonNodes)
         } catch {
             fatalError("Bad PDB in ProteinKit")
         }
@@ -580,9 +582,9 @@ class MoleculeRenderer: ObservableObject {
     
     private var selectedFromPtable: Element {PeriodicTableViewController.shared.selectedAtom}
     
-    private var world0: SCNVector3 { sceneView.projectPoint(SCNVector3Zero) }
+    private var world0: SCNVector3 { sceneView.pointOfView!.worldFront }
     
-    @objc func handleTaps(gesture: Gesture) {
+    @objc func handleTaps(gesture: TapGesture) {
         
         let location = gesture.location(in: sceneView)
         guard let molecule = showingStep.molecule else {return}
@@ -597,8 +599,10 @@ class MoleculeRenderer: ObservableObject {
         }
     }
     private func newAtomOnTouch(molecule: Molecule, at location: CGPoint) {
-        let position = SCNVector3(location.x, location.y, CGFloat(world0.z))
+        let position = SCNVector3(location.x, location.y, -1)
+        print(position)
         let unprojected = sceneView.unprojectPoint(position)
+        print(unprojected)
         let atom = Atom(position: unprojected, type: selectedFromPtable, number: molecule.atoms.count + 1)
         molecule.atoms.append(atom)
         atomNodes.addChildNode(newAtom(atom))
@@ -625,6 +629,8 @@ class MoleculeRenderer: ObservableObject {
         
         guard let hitNode = sceneView.hitTest(location).first?.node else {unSelectAll();measureNodes(); return}
         guard let name = hitNode.name else {return}
+        
+        //cameraOrbit.position = hitNode.position
         
         if name.contains("atom") {internalSelectionAtomNode(hitNode)}
         if hitNode.name == "bond" {internalSelectionBond(hitNode)}
@@ -673,7 +679,104 @@ class MoleculeRenderer: ObservableObject {
             node.removeFromParentNode()
         }
     }
+    
+    //MARK: Camera controls
+    
+    func zoomCamera(_ inOrOut: Bool) {
+        let proportion = cameraNode.position.z
+        if inOrOut {
+            cameraNode.runAction(SCNAction.move(to:cameraNode.position - SCNVector3(0,0,0.25*proportion), duration: 0.1))
+        }
+        else {
+            cameraNode.runAction(SCNAction.move(to: cameraNode.position + SCNVector3(0,0,0.25*proportion), duration: 0.1))
+        }
+    }
+    
+    func test() {
+        let camera = SCNCamera()
+        camera.usesOrthographicProjection = true
+        camera.orthographicScale = 9
+        camera.zNear = 0
+        camera.zFar = 100
+        let cameraNode = SCNNode()
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 50)
+        cameraNode.camera = camera
+        let cameraOrbit = SCNNode()
+        cameraOrbit.addChildNode(cameraNode)
+        //cubeScene.rootNode.addChildNode(cameraOrbit)// rotate it (I've left out some animation code here to show just the rotation)cameraOrbit.eulerAngles.x -= CGFloat(M_PI_4)cameraOrbit.eulerAngles.y -= CGFloat(M_PI_4*3)
+    }
+    
+    private var initialCPos = SCNVector3.zero
+    
+    private var initialDragPos = NSPoint.zero
+    
+    private var previousPanTranslation: NSPoint? = nil
+    
+    // Save code for rotate molecules etc...
+    private func rotate(sender recognizer: NSPanGestureRecognizer)
+    {
+        switch recognizer.state
+        {
+        case .began:
+            self.previousPanTranslation = .zero
+        case .changed:
+            guard let previous = self.previousPanTranslation else
+            {
+                assertionFailure("Attempt to unwrap previous pan translation failed.")
+                return
+            }
+            // Calculate how much translation occurred between this step and the previous step
+            let translation = recognizer.translation(in: sceneView)
+            let translationDelta = CGPoint(x: translation.x - previous.x, y: translation.y - previous.y)
+            // Use the pan translation along the x axis to adjust the camera's rotation about the y axis.
+            let yScalar = Float(translationDelta.x / self.sceneView.bounds.size.width)
+            let yRadians = yScalar * 2//* self.dynamicType.MaxPanGestureRotation
+            // Use the pan translation along the y axis to adjust the camera's rotation about the x axis.
+            let xScalar = Float(translationDelta.y / self.sceneView.bounds.size.height)
+            let xRadians = xScalar * 2//* self.dynamicType.MaxPanGestureRotation
+            // Use the radian values to construct quaternions
+            let x = GLKQuaternionMakeWithAngleAndAxis(xRadians, 1, 0, 0)
+            let y = GLKQuaternionMakeWithAngleAndAxis(yRadians, 0, 1, 0)
+            let z = GLKQuaternionMakeWithAngleAndAxis(0, 0, 0, 1)
+            let combination = GLKQuaternionMultiply(z, GLKQuaternionMultiply(y, x))
+            // Multiply the quaternions to obtain an updated orientation
+            let scnOrientation = self.atomicNode.orientation
+            let glkOrientation = GLKQuaternionMake(Float(scnOrientation.x), Float(scnOrientation.y), Float(scnOrientation.z), Float(scnOrientation.w))
+            let q = GLKQuaternionMultiply(combination, glkOrientation)
+            // And finally set the current orientation to the updated orientation
+            self.atomicNode.orientation = SCNQuaternion(x: CGFloat(q.x), y: CGFloat(q.y), z: CGFloat(q.z), w: CGFloat(q.w))
+            self.previousPanTranslation = translation
+        case .ended, .cancelled, .failed:
+            self.previousPanTranslation = nil
+        default:
+            break
+        }
+    }
+
+    var previousLoc = CGPoint.init(x: 0, y: 0)
+    private func moveCamera(sender: PanGesture) {
+        var delta = sender.translation(in: self.sceneView)
+        let loc = sender.location(in: self.sceneView)
         
+        if sender.state == .changed {
+            delta = CGPoint.init(x: 2 * (loc.x - previousLoc.x), y: 2 * (loc.y - previousLoc.y))
+            atomicNode.position = SCNVector3(atomicNode.position.x + UFloat(delta.x * 0.02), atomicNode.position.y + UFloat(delta.y * (0.02)), 0)
+            previousLoc = loc
+        }
+        previousLoc = loc
+    }
+    
+    
+    @objc func handlePan(sender: NSPanGestureRecognizer) {
+        if sender.buttonMask == 1 {
+            moveCamera(sender: sender)
+            return
+        }
+        if sender.buttonMask == 2 {
+            rotate(sender: sender)
+            return
+        }
+    }
 }
 
 class SCNAtomNode: SCNNode {

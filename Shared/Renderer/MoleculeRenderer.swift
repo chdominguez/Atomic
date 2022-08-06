@@ -9,8 +9,14 @@ import SceneKit
 import SCNLine
 import ProteinKit
 
+class SRenderer: SCNView {
+    override func keyDown(with event: NSEvent) {
+        print("Keydown")
+    }
+}
+
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
-class MoleculeRenderer: ObservableObject {
+class MoleculeRenderer: SCNView, ObservableObject {
     
     //MARK: Init
     
@@ -26,6 +32,11 @@ class MoleculeRenderer: ObservableObject {
     
     init(_ steps: [Step]) {
         self.steps = steps
+        super.init(frame: .zero, options: nil)
+    }
+        
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: Step control
@@ -33,7 +44,7 @@ class MoleculeRenderer: ObservableObject {
     /// For moving the steps in sequential order
     private var timer = Timer()
     
-    @Published var isPlaying = false
+    @Published var isStepPlaying = false
     @Published var playBack = 25
     @Published var stepToShow = 1 {
         didSet {
@@ -43,13 +54,13 @@ class MoleculeRenderer: ObservableObject {
     
     /// Pauses or plays the movmenet of the atoms. Uses a Timer in order to move the atoms.
     func playAnimation() {
-        if isPlaying {timer.invalidate()} // Stop the timer
+        if isStepPlaying {timer.invalidate()} // Stop the timer
         else { // Start the timer
             timer = Timer.scheduledTimer(withTimeInterval: 1/Double(playBack), repeats: true) { _ in
                 self.nextScene()
             }
         }
-        isPlaying.toggle() // Togle the isPlaying property to update the playing button shown in the view.
+        isStepPlaying.toggle() // Togle the isPlaying property to update the playing button shown in the view.
     }
     
     /// Changes the step to show to the next one
@@ -84,8 +95,8 @@ class MoleculeRenderer: ObservableObject {
     var selectionNodes = SCNNode()
     
     // SceneKit classes
-    let sceneView = SCNView()
-    let scene = SCNScene()
+    //let sceneView = SCNView()
+    //let scene = SCNScene()
     let atomicNode = SCNNode()
     var cameraNode = SCNNode()
     let cameraOrbit = SCNNode()
@@ -135,7 +146,7 @@ class MoleculeRenderer: ObservableObject {
             updateBonds()
         } else {
             if currentStep.stepNumber == 1 {
-                scene.rootNode.addChildNode(bondNodes)
+                scene!.rootNode.addChildNode(bondNodes)
             } else {
                 bondNodes.removeFromParentNode()
             }
@@ -171,12 +182,18 @@ class MoleculeRenderer: ObservableObject {
     func changeSelectedOrView(to: AtomStyle) {
         switch to {
         case .ballAndStick:
+            bondNodes.isHidden = false
+            atomNodes.isHidden = false
             scaleVdW(scale: 0.7)
+            cartoonNodes.isHidden = true
         case .vanderwaals:
             scaleVdW(scale: 1)
+            cartoonNodes.isHidden = true
         case .backBone:
             backBoneNode.isHidden = false
         case .cartoon:
+            bondNodes.isHidden = true
+            atomNodes.isHidden = true
             cartoonNodes.isHidden = false
         }
     }
@@ -198,13 +215,19 @@ class MoleculeRenderer: ObservableObject {
     /// Populates the SCNodes with atoms and bonds from the step molecule
     private func setupScene(_ step: Step) {
         
-        scene.rootNode.addChildNode(atomicNode)
+        scene = SCNScene()
+        scene!.rootNode.name = "RootNode"
+        atomicNode.name = "Atomic node"
+        
+        scene!.rootNode.addChildNode(atomicNode)
         
         guard let molecule = step.molecule else {return}
         
         atomNodes.name = "atoms"
         bondNodes.name = "bonds"
         backBoneNode.name = "backBone"
+        cartoonNodes.name = "cartoon"
+        selectionNodes.name = "Selection node"
         
         for atom in molecule.atoms {
             atomNodes.addChildNode(newAtom(atom))
@@ -232,12 +255,11 @@ class MoleculeRenderer: ObservableObject {
         
     }
     
-    private func newAtom(_ atom: Atom) -> SCNAtomNode {
+    private func newAtom(_ atom: Atom) -> SCNNode {
         
-        let atomNode = SCNAtomNode()
+        let atomNode = SCNNode()
         
         atomNode.position = atom.position
-        atomNode.atomType = atom.type
         atomNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
         atomNode.geometry = nodeGeom.atoms[atom.type]
         
@@ -391,11 +413,11 @@ class MoleculeRenderer: ObservableObject {
         switch type {
         case .single:
             bondNode.position = midPosition
-            bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
+            bondNode.look(at: positionB, up: scene!.rootNode.worldUp, localFront: bondNode.worldUp)
             bondNodes.addChildNode(bondNode)
         case .double:
             bondNode.position = midPosition
-            bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
+            bondNode.look(at: positionB, up: scene!.rootNode.worldUp, localFront: bondNode.worldUp)
             let secondBondNode = bondNode.copy() as? SCNNode
             secondBondNode?.position.z += 0.15
             bondNode.position.z -= 0.15
@@ -405,7 +427,7 @@ class MoleculeRenderer: ObservableObject {
             }
         case .triple:
             bondNode.position = midPosition
-            bondNode.look(at: positionB, up: scene.rootNode.worldUp, localFront: bondNode.worldUp)
+            bondNode.look(at: positionB, up: scene!.rootNode.worldUp, localFront: bondNode.worldUp)
             
             let secondBondNode = bondNode.copy() as? SCNNode
             let thirdBondNode = bondNode.copy() as? SCNNode
@@ -582,11 +604,11 @@ class MoleculeRenderer: ObservableObject {
     
     private var selectedFromPtable: Element {PeriodicTableViewController.shared.selectedAtom}
     
-    private var world0: SCNVector3 { sceneView.pointOfView!.worldFront }
+    private var world0: SCNVector3 { pointOfView!.worldFront }
     
     @objc func handleTaps(gesture: TapGesture) {
         
-        let location = gesture.location(in: sceneView)
+        let location = gesture.location(in: self)
         guard let molecule = showingStep.molecule else {return}
         
         switch selectedTool {
@@ -601,7 +623,7 @@ class MoleculeRenderer: ObservableObject {
     private func newAtomOnTouch(molecule: Molecule, at location: CGPoint) {
         let position = SCNVector3(location.x, location.y, -1)
         print(position)
-        let unprojected = sceneView.unprojectPoint(position)
+        let unprojected = unprojectPoint(position)
         print(unprojected)
         let atom = Atom(position: unprojected, type: selectedFromPtable, number: molecule.atoms.count + 1)
         molecule.atoms.append(atom)
@@ -609,7 +631,7 @@ class MoleculeRenderer: ObservableObject {
     }
     
     private func eraseNode(molecule: Molecule, at location: CGPoint) {
-        guard let hitNode = sceneView.hitTest(location).first?.node else {return}
+        guard let hitNode = hitTest(location).first?.node else {return}
         guard let name = hitNode.name else {return}
         if name.contains("atom") {internalAtomDelete(hitNode: hitNode, molecule: molecule); return}
         if name.contains("selection") {unSelect(hitNode)}
@@ -627,7 +649,7 @@ class MoleculeRenderer: ObservableObject {
     
     private func newSelection(at location: CGPoint) {
         
-        guard let hitNode = sceneView.hitTest(location).first?.node else {unSelectAll();measureNodes(); return}
+        guard let hitNode = hitTest(location).first?.node else {unSelectAll();measureNodes(); return}
         guard let name = hitNode.name else {return}
         
         //cameraOrbit.position = hitNode.position
@@ -647,9 +669,15 @@ class MoleculeRenderer: ObservableObject {
         atomOrbSelection.name = "selection"
         atomOrbSelection.opacity = 0.35
         
+        #warning("TODO: Rotate around selected node")
+        // So the node roation happens around the selected node
+        //atomicNode.pivot = SCNMatrix4MakeTranslation(hitNode.position.x, hitNode.position.y, hitNode.position.z)
+        //atomicNode.pivot = cameraOrbit.pivot
+        //atomicNode.position = hitNode.position
+        
         selectionNodes.addChildNode(atomOrbSelection)
         selectedAtoms.append((hitNode, atomOrbSelection))
-        sceneView.defaultCameraController.target = hitNode.position
+        //defaultCameraController.target = hitNode.position
     }
     
     private func internalSelectionBond(_ hitNode: SCNNode) {
@@ -663,7 +691,6 @@ class MoleculeRenderer: ObservableObject {
         selectionNodes.addChildNode(bondOrbSelection)
         selectedAtoms.append((hitNode, bondOrbSelection))
         //Temporal adjusting camera's target to the selected bond. Future implementation: rotate the scene around the center of the view, as if an invisible atomwas present in front of the camera.
-        sceneView.defaultCameraController.target = hitNode.position
     }
     
     /// Unselect the hitted selection
@@ -692,24 +719,6 @@ class MoleculeRenderer: ObservableObject {
         }
     }
     
-    func test() {
-        let camera = SCNCamera()
-        camera.usesOrthographicProjection = true
-        camera.orthographicScale = 9
-        camera.zNear = 0
-        camera.zFar = 100
-        let cameraNode = SCNNode()
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 50)
-        cameraNode.camera = camera
-        let cameraOrbit = SCNNode()
-        cameraOrbit.addChildNode(cameraNode)
-        //cubeScene.rootNode.addChildNode(cameraOrbit)// rotate it (I've left out some animation code here to show just the rotation)cameraOrbit.eulerAngles.x -= CGFloat(M_PI_4)cameraOrbit.eulerAngles.y -= CGFloat(M_PI_4*3)
-    }
-    
-    private var initialCPos = SCNVector3.zero
-    
-    private var initialDragPos = NSPoint.zero
-    
     private var previousPanTranslation: NSPoint? = nil
     
     // Save code for rotate molecules etc...
@@ -726,16 +735,16 @@ class MoleculeRenderer: ObservableObject {
                 return
             }
             // Calculate how much translation occurred between this step and the previous step
-            let translation = recognizer.translation(in: sceneView)
+            let translation = recognizer.translation(in: self)
             let translationDelta = CGPoint(x: translation.x - previous.x, y: translation.y - previous.y)
             // Use the pan translation along the x axis to adjust the camera's rotation about the y axis.
-            let yScalar = Float(translationDelta.x / self.sceneView.bounds.size.width)
+            let yScalar = Float(translationDelta.x / self.bounds.size.width)
             let yRadians = yScalar * 2//* self.dynamicType.MaxPanGestureRotation
             // Use the pan translation along the y axis to adjust the camera's rotation about the x axis.
-            let xScalar = Float(translationDelta.y / self.sceneView.bounds.size.height)
+            let xScalar = Float(translationDelta.y / self.bounds.size.height)
             let xRadians = xScalar * 2//* self.dynamicType.MaxPanGestureRotation
             // Use the radian values to construct quaternions
-            let x = GLKQuaternionMakeWithAngleAndAxis(xRadians, 1, 0, 0)
+            let x = GLKQuaternionMakeWithAngleAndAxis(-xRadians, 1, 0, 0)
             let y = GLKQuaternionMakeWithAngleAndAxis(yRadians, 0, 1, 0)
             let z = GLKQuaternionMakeWithAngleAndAxis(0, 0, 0, 1)
             let combination = GLKQuaternionMultiply(z, GLKQuaternionMultiply(y, x))
@@ -755,8 +764,8 @@ class MoleculeRenderer: ObservableObject {
 
     var previousLoc = CGPoint.init(x: 0, y: 0)
     private func moveCamera(sender: PanGesture) {
-        var delta = sender.translation(in: self.sceneView)
-        let loc = sender.location(in: self.sceneView)
+        var delta = sender.translation(in: self)
+        let loc = sender.location(in: self)
         
         if sender.state == .changed {
             delta = CGPoint.init(x: 2 * (loc.x - previousLoc.x), y: 2 * (loc.y - previousLoc.y))
@@ -767,7 +776,7 @@ class MoleculeRenderer: ObservableObject {
     }
     
     
-    @objc func handlePan(sender: NSPanGestureRecognizer) {
+    @objc func handlePan(sender: PanGesture) {
         if sender.buttonMask == 1 {
             moveCamera(sender: sender)
             return
@@ -777,8 +786,53 @@ class MoleculeRenderer: ObservableObject {
             return
         }
     }
+    
+    func resetPivot() {
+        let positions = steps.first?.molecule?.atoms.map {$0.position}
+        guard let positions = positions else {return}
+        let nodePos = averageDistance(of: positions)
+        let cameraPos = viewingZPosition(toSee: positions) + 10
+
+        atomicNode.pivot = SCNMatrix4MakeTranslation(nodePos.x, nodePos.y, nodePos.z)
+        let moveAction = SCNAction.move(to: .zero, duration: 0.2)
+        let moveCamera = SCNAction.move(to: SCNVector3(x: 0, y: 0, z: cameraPos), duration: 0.2)
+        atomicNode.runAction(moveAction)
+        cameraOrbit.runAction(moveAction)
+        cameraNode.runAction(moveCamera)
+    }
+    
+    func makeSelectedPivot() {
+        guard let node = selectedAtoms.first?.selectedNode else {return}
+        let newPos = node.position
+        atomicNode.pivot = SCNMatrix4MakeTranslation(newPos.x, newPos.y, newPos.z)
+        let moveAction = SCNAction.move(to: .zero, duration: 0.2)
+        let moveCameraZoomTo0 = SCNAction.move(to: SCNVector3(x: 0, y: 0, z: 10), duration: 0.2)
+        atomicNode.runAction(moveAction)
+        cameraOrbit.runAction(moveAction)
+        cameraNode.runAction(moveCameraZoomTo0)
+    }
+    
+    private var optionPressed: Bool = false
+    
+#if os(macOS)
+    override func flagsChanged(with event: NSEvent) {
+        if event.keyCode == 58 {
+            optionPressed.toggle()
+        }
+    }
+    
+    override func scrollWheel(with event: NSEvent) {
+        if optionPressed {
+            cameraNode.localTranslate(by: SCNVector3(x: 0, y: 0, z: event.scrollingDeltaY/50))
+        }
+        else {
+            cameraOrbit.localTranslate(by: SCNVector3(x: 0, y: -event.scrollingDeltaY/50, z: 0))
+            cameraOrbit.localTranslate(by: SCNVector3(x: event.scrollingDeltaX/50, y: 0, z: 0))
+        }
+    }
+#endif
 }
 
-class SCNAtomNode: SCNNode {
-    var atomType: Element!
+class AtomicCameraController: SCNCameraController {
+    
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppKit
+import SceneKit
 
 /// This class manages instances of MoleculeViewModel across different windows under macOS
 class MacOSWindowManager: NSObject, ObservableObject {
@@ -121,6 +122,7 @@ class AtomicWindow: Hashable {
         case vibrations = "Vibrations"
         case mainWindow = "Atomic"
         case openedFile = "Edit file"
+        case debug = "Debug"
         
         case settings = "Settings"
         case ptable = "Periodic table"
@@ -211,4 +213,3 @@ extension View {
         return window
     }
 }
-

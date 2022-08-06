@@ -37,7 +37,7 @@ struct MainWindow: View {
                           allowedContentTypes: AtomicFileOpener.shared.types)
         { fileURL in controller.handlePickedFile(fileURL) }
         // Assign alert for error in the files
-            .alert(isPresented: $controller.showErrorFileAlert) { alert }
+            .alert(isPresented: $controller.showErrorAlert) { alert }
         // Custom view modifier for allowing dropping on macOS and iOS
             .onDropOfAtomic(delegate: controller)
         // iOS: Handle opened files from the Files app or other sources
@@ -62,7 +62,7 @@ struct MainWindow: View {
     
     // The alert presented when there is any error
     private var alert: Alert {
-        Alert(title: Text("File error"),
+        Alert(title: Text("Error"),
               message: Text(controller.errorDescription),
               dismissButton: .default(Text("Ok")))
     }

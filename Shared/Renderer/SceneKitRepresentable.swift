@@ -23,11 +23,11 @@ struct SceneUI: Representable {
         
     // View representables functions are different for each platform. Even tough the codes are exactly the same. Why Apple?
     #if os(macOS)
-    func makeNSView(context: Context) -> SCNView { makeView(context: context) }
-    func updateNSView(_ uiView: SCNView, context: Context) { updateView(uiView, context: context) }
+    func makeNSView(context: Context) -> MoleculeRenderer { makeView(context: context) }
+    func updateNSView(_ uiView: MoleculeRenderer, context: Context) { updateView(uiView, context: context) }
     #else
-    func makeUIView(context: Context) -> SCNView { makeView(context: context) }
-    func updateUIView(_ uiView: SCNView, context: Context) { updateView(uiView, context: context) }
+    func makeUIView(context: Context) -> MoleculeRenderer { makeView(context: context) }
+    func updateUIView(_ uiView: MoleculeRenderer, context: Context) { updateView(uiView, context: context) }
     #endif
     
     // AtomRenderer class as the coordinator for the SceneKit representable. To handle taps, gestures...
@@ -35,7 +35,7 @@ struct SceneUI: Representable {
         return controller
     }
     
-    private func makeView(context: Context) -> SCNView {
+    private func makeView(context: Context) -> MoleculeRenderer {
         
         // Gesture recognizer for placing atoms, bonds...
         let tapGesture = TapGesture(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
@@ -44,9 +44,9 @@ struct SceneUI: Representable {
         let rightClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
         rightClickPanGesture.buttonMask = 2
         //let key = CGEvent
-        controller.sceneView.addGestureRecognizer(tapGesture)
-        controller.sceneView.addGestureRecognizer(rightClickPanGesture)
-        controller.sceneView.addGestureRecognizer(leftClickPanGesture)
+        controller.addGestureRecognizer(tapGesture)
+        controller.addGestureRecognizer(rightClickPanGesture)
+        controller.addGestureRecognizer(leftClickPanGesture)
 
         
         // Scene view controls
@@ -56,34 +56,35 @@ struct SceneUI: Representable {
         //controller.sceneView.showsStatistics = true
 
         // Attach the scene to the sceneview
-        controller.sceneView.scene = controller.scene
         
         // Setup the camera node
         controller.cameraNode = setupCamera()
+        controller.cameraOrbit.name = "Camera orbit"
         controller.cameraOrbit.addChildNode(controller.cameraNode)
-        controller.sceneView.pointOfView = controller.cameraOrbit
+        //controller.sceneView.pointOfView = controller.cameraOrbit
         
         // Setup light node
         controller.lightNode = setupLight()
         
         controller.cameraNode.addChildNode(controller.lightNode)
         
-        controller.scene.rootNode.addChildNode(controller.cameraOrbit)
+        controller.scene!.rootNode.addChildNode(controller.cameraOrbit)
         
-        controller.sceneView.pointOfView = controller.cameraNode
-        guard let molecule = controller.steps.first?.molecule else {return controller.sceneView}
+        //controller.pointOfView = controller.cameraNode
+        guard let molecule = controller.steps.first?.molecule else {return controller}
         
         let positions = molecule.atoms.map {$0.position}
-        controller.cameraNode.position = averageDistance(of: positions)
-        controller.sceneView.defaultCameraController.target = controller.cameraNode.position
-        
+        let averagePos = averageDistance(of: positions)
+        //controller.cameraNode.position =
+        //controller.defaultCameraController.target = controller.cameraNode.position
+        controller.atomicNode.pivot = SCNMatrix4MakeTranslation(averagePos.x, averagePos.y, averagePos.z)
         // Add more space to entirely see the molecule. 10 is an okay value
         controller.cameraNode.position.z = viewingZPosition(toSee: positions) + 10
         
-        return controller.sceneView
+        return controller
     }
     
-    private func updateView(_ uiView: SCNView, context: Context) {
+    private func updateView(_ uiView: MoleculeRenderer, context: Context) {
         uiView.backgroundColor = settings.colorSettings.backgroundColor.uColor
     }
     
@@ -95,6 +96,7 @@ struct SceneUI: Representable {
         let camNode = SCNNode()
         camNode.camera = cam
         camNode.position = SCNVector3Make(0, 0, 5)
+        camNode.name = "Camera node"
         return camNode
     }
     
@@ -107,6 +109,7 @@ struct SceneUI: Representable {
         let lnode = SCNNode()
         lnode.light = light
         lnode.position = SCNVector3Make(0, 0, 0)
+        lnode.name = "Light node"
         return lnode
     }
         

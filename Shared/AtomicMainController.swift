@@ -31,7 +31,7 @@ class AtomicMainController: ObservableObject {
     // If ture, the loading screen shows
     @Published var loading: Bool = false
     
-    @Published var showErrorFileAlert: Bool  = false
+    @Published var showErrorAlert: Bool  = false
     @Published var fileReady: Bool  = false
     @Published var openFileImporter: Bool  = false
     
@@ -69,7 +69,7 @@ class AtomicMainController: ObservableObject {
         fileReady = false
         loading = true
         guard let url = AtomicFileOpener.getFileURLForPicked(picked) else {
-            showErrorFileAlert = true
+            showErrorAlert = true
             return
         }
         processFile(url: url)
@@ -88,7 +88,7 @@ class AtomicMainController: ObservableObject {
             do {
                 guard url.startAccessingSecurityScopedResource() else {
                     DispatchQueue.main.sync {
-                        showErrorFileAlert = true
+                        showErrorAlert = true
                         loading = false
                     }
                     return
@@ -106,13 +106,13 @@ class AtomicMainController: ObservableObject {
                     self.fileAsString = fileString
                     if BR.steps.isEmpty {
                         errorDescription = "Could not load any molecule"
-                        showErrorFileAlert = true
+                        showErrorAlert = true
                         loading = false
                     }
                     else {
                         if !BR.steps.last!.isFinalStep {
                             errorDescription = "Job did not terminate"
-                            showErrorFileAlert = true
+                            showErrorAlert = true
                         }
                         initializeController(steps: BR.steps)
                         fileURL = url
@@ -124,7 +124,7 @@ class AtomicMainController: ObservableObject {
             catch {
                 DispatchQueue.main.sync {
                     self.errorDescription = error.localizedDescription + " at line:  \(BR?.errorLine ?? 0) \n \(ErrorManager.shared.errorDescription ?? "Error") "
-                    self.showErrorFileAlert = true
+                    self.showErrorAlert = true
                     self.loading = false
                 }
             }

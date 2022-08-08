@@ -17,6 +17,8 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     private let settings = GlobalSettings.shared
     
+    let geometries = AtomGeometries(colors: ProteinColors())
+    
     /// The steps to display
     let steps: [Step]
     
@@ -223,7 +225,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
         bondNodes.name = "bonds"
         backBoneNode.name = "backBone"
         cartoonNodes.name = "cartoon"
-        selectionNodes.name = "Selection node"
+        selectionNodes.name = "selections"
         
         let kit = ProteinKit(residues: step.res, colorSettings: settings.colorSettings, moleculeName: moleculeName)
         
@@ -234,11 +236,6 @@ class MoleculeRenderer: SCNView, ObservableObject {
             kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
         }
         
-//        for atom in molecule.atoms {
-//
-//            atomNodes.addChildNode()
-//            checkBondingBasedOnDistance(nodeIndex: atomNodes.childNodes.endIndex - 1) // Check bonding between the adjacent atoms
-//        }
         
         // Add the newly created atomNodes to the root scene
         atomicNode.addChildNode(atomNodes)
@@ -267,53 +264,13 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         atomNode.position = atom.position
         atomNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        atomNode.geometry = nodeGeom.atoms[atom.type]
+        atomNode.geometry = geometries.atoms[atom.type]
         
         atomNode.constraints = [SCNBillboardConstraint()]
         atomNode.name = "atom_\(atom.type.rawValue)"
         
         return atomNode
     }
-    
-//    private func cartoonBackbone(_ molecule: Molecule, aa: [Residue]) {
-//
-//        let pos = molecule.atoms.filter { $0.info == "C" }.map { $0.position } // Define positions for the C carbons in te aa
-//
-//        backBoneNode = SCNLineNode(with: pos, radius: 0.2, edges: 12, maxTurning: 12) // Generate a line node linking the C carbons
-//        //TODO: Implement backbone visibility based on default settings
-//        backBoneNode.lineMaterials = nodeGeom.bond.materials
-//        backBoneNode.isHidden = true
-//        scene.rootNode.addChildNode(backBoneNode)
-    }
-    
-//    private func cartoonBackbone(_ molecule: Molecule, aa: [Residue]) {
-//        #warning("Testing importing .stl meshes into scenekit")
-//        let url = Bundle.main.url(forResource: "4hhb", withExtension: "scn")!
-//
-//        let reference = try! SCNScene(url: url)
-//
-//        internalCartoon(aa, cpos: pos)
-//    }
-    
-    private func cartoonBackbone(_ molecule: Molecule, aa: [Residue]) {
-//        #warning("Testing importing .stl meshes into scenekit")
-//        let url = Bundle.main.url(forResource: "4hhb", withExtension: "scn")!
-//
-//        let reference = try! SCNScene(url: url)
-//
-//        let node = reference.rootNode.childNodes.first!
-//
-//        node.geometry!.materials = nodeGeom.atoms[.nitrogen]!.materials
-//
-//        node.flattenedClone()
-//
-//        node.scale = SCNVector3(x: 10, y: 10, z: 10)
-//
-//        atomNodes.addChildNode(node)
-//
-//        scene.rootNode.addChildNode(backBoneNode)
-       
-//    }
     
     private func loadCartoon(_ residues: [Residue]) {
         let pNode = ProteinKit(residues: residues)
@@ -326,68 +283,6 @@ class MoleculeRenderer: SCNView, ObservableObject {
             fatalError("Bad PDB in ProteinKit")
         }
     }
-    
-//    private func internalCartoon(_ residues: [Residue], cpos: [SCNVector3]) {
-//
-//        guard let firstRes = residues.first else {return}
-//
-//        var prevStruc: SecondaryStructure = firstRes.structure
-//
-//        var newCartoonPositions: [CartoonPositions] = []
-//
-//        var currentPositions = CartoonPositions()
-//
-//        if residues.count != cpos.count {
-//            print("Not matching")
-//            print("Residues: \(residues.count), cpos: \(cpos.count)")
-//            #warning("TODO: Implement error handling")
-//            return
-//        }
-//
-//        for (i, r) in residues.enumerated() {
-//
-//            if prevStruc != r.structure {
-//                currentPositions.positions.append(cpos[i])
-//                currentPositions.structure = prevStruc
-//                newCartoonPositions.append(currentPositions)
-//                currentPositions = CartoonPositions()
-//            }
-//
-//            currentPositions.positions.append(cpos[i])
-//
-//            prevStruc = r.structure
-//        }
-//
-//        guard let lastPos = cpos.last else {return}
-//
-//        currentPositions.positions.append(lastPos)
-//        currentPositions.structure = prevStruc
-//        newCartoonPositions.append(currentPositions)
-//        currentPositions = CartoonPositions()
-//
-//        for cart in newCartoonPositions {
-//            let newCoil = SCNLineNode(with: cart.positions, radius: 0.2, edges: 12, maxTurning: 12)
-//            let material = SCNMaterial()
-//            newCoil.lineMaterials = [material]
-//            switch cart.structure {
-//            case .alphaHelix, .helix310, .phiHelix:
-//                material.diffuse.contents = UColor.green
-//            case .strand:
-//                material.diffuse.contents = UColor.blue
-//            case .bridge:
-//                material.diffuse.contents = UColor.red
-//            case .coil:
-//                material.diffuse.contents = UColor.brown
-//            case .turnI, .turnIp, .turnII, .turnIIp, .turnVIa, .turnVIb, .turnVIII, .turnIV, .turn:
-//                material.diffuse.contents = UColor.yellow
-//            case .GammaClassic, .GammaInv:
-//                material.diffuse.contents = UColor.orange
-//            }
-//            cartoonNodes.addChildNode(newCoil)
-//        }
-//
-//        scene.rootNode.addChildNode(cartoonNodes)
-//    }
     
     /// Adds a bond node to bondNodes checking the distance between thgiven atom and the following 8 atoms (in list order) in the molecule.
     /// - Parameters:
@@ -696,9 +591,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
         guard let hitNode = hitTest(location).first?.node else {unSelectAll();measureNodes(); return}
         guard let name = hitNode.name else {return}
         
-        //cameraOrbit.position = hitNode.position
-        
-        if name.contains("atom") {internalSelectionAtomNode(hitNode)}
+        if name.contains("A_") {internalSelectionNode(hitNode)}
         if hitNode.name == "bond" {internalSelectionBond(hitNode)}
         if hitNode.name == "selection" {unSelect(hitNode)}
         
@@ -707,23 +600,15 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     private func internalSelectionNode(_ hitNode: SCNNode) {
         
-        print(hitNode.position)
-        print(hitNode.worldPosition)
+        let selectionOrb = hitNode.clone()
+        let copyGeo = selectionOrb.geometry!.copy() as! SCNGeometry
+        copyGeo.materials = [settings.colorSettings.selectionMaterial]
+        selectionOrb.geometry = copyGeo
+        selectionOrb.opacity = 0.35
+        selectionOrb.runAction(.scale(by: 1.2, duration: 0.08))
         
-        let sphere0 = SCNSphere(radius: 1)
-        sphere0.materials = [colors.atomMaterials[.phosphorus]!]
-        
-        let sphere1 = SCNSphere(radius: 1)
-        sphere1.materials = [colors.atomMaterials[.oxygen]!]
-        
-        let sphere2 = SCNSphere(radius: 1)
-        sphere1.materials = [colors.atomMaterials[.nitrogen]!]
-        
-        let sphere3 = SCNSphere(radius: 1)
-        sphere1.materials = [colors.atomMaterials[.fluorine]!]
-        
-        selectionNodes.addChildNode(atomOrbSelection)
-        selectedAtoms.append((hitNode, atomOrbSelection))
+        selectionNodes.addChildNode(selectionOrb)
+        selectedAtoms.append((hitNode, selectionOrb))
     }
     
     private func internalSelectionBond(_ hitNode: SCNNode) {
@@ -749,7 +634,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
     private func unSelectAll() {
         selectedAtoms.removeAll()
         selectionNodes.enumerateChildNodes { node, _ in
-            node.removeFromParentNode()
+            node.runAction(SCNAction.sequence([.scale(by: 0.5, duration: 0.2), .removeFromParentNode()]))
         }
     }
     
@@ -949,6 +834,9 @@ class MoleculeRenderer: SCNView, ObservableObject {
     override func scrollWheel(with event: NSEvent) {
         if event.phase == .changed {
             if optionPressed {
+                if cameraNode.position.z < 5 && event.scrollingDeltaY < 0 {
+                    return
+                }
                 cameraNode.localTranslate(by: SCNVector3(x: 0, y: 0, z: event.scrollingDeltaY * 0.1))
             }
             else if controlPressed {

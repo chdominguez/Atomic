@@ -1,6 +1,7 @@
 // Commands for macOS menu bar
 
 import SwiftUI
+import ProteinKit
 
 //MARK: Commands view
 /// macOS menus on top of the screen
@@ -38,8 +39,24 @@ struct AtomicCommands: Commands {
             }
         }
         CommandMenu("Molecule") {
-            Picker("Atom style", selection: $commands.settings.atomStyle) {
-                ForEach(AtomStyle.allCases, id: \.self) { Text($0.rawValue) }
+            Menu("Atom style") {
+                ForEach(AtomStyle.allCases, id: \.self) { style in
+                    Button {
+                        commands.activeController?.renderer?.changeSelectedOrView(to: style)
+                    } label: {
+                        Text(style.rawValue)
+                    }
+
+                }
+            }
+//            Picker("Atom style", selection: $commands.settings.atomStyle) {
+//                 }
+//            }
+            Button("Hide selected") {
+                commands.activeController?.renderer?.hideSelected()
+            }
+            Button("Show all") {
+                commands.activeController?.renderer?.showAll()
             }
             Button("Periodic table") {
                 PTable().openNewWindow(type: .ptable)
@@ -59,7 +76,6 @@ struct AtomicCommands: Commands {
             Button("Energy") {
                 guard let energy = commands.getStepsEnergy() else {return}
                 AtomicLineChartView(data: energy).openNewWindow(type: .energyGraph, controller: commands.activeController)
-                print("opened widnow")
             }
             Button("Frequencies") {
             }

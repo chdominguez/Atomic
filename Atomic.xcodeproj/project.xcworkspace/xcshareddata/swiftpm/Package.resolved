@@ -6,7 +6,16 @@
       "location" : "https://github.com/Jonathan-Gander/LineChartView",
       "state" : {
         "branch" : "main",
-        "revision" : "33996afdc124fe41916cdc69fcbc85c16da0a45c"
+        "revision" : "91416f04a04ad3117e4fe58c35a24bb66e57ebb4"
+      }
+    },
+    {
+      "identity" : "meshgenerator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/heckj/MeshGenerator",
+      "state" : {
+        "branch" : "main",
+        "revision" : "5ac0bb4871fedb83e0f916a1e83ed2917e4c1b4a"
       }
     },
     {
@@ -14,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/costachung/neumorphic",
       "state" : {
-        "revision" : "3fa56e844a5e375ff3d38e3c770886bcc949f6f5",
-        "version" : "2.0.5"
+        "branch" : "master",
+        "revision" : "ece63559ba075e2546600450c37cde82cc463537"
       }
     },
     {

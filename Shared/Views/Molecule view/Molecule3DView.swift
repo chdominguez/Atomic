@@ -6,17 +6,35 @@
 //
 
 import SwiftUI
-import AtomicProgressView
+import ProteinKit
 
 /// View that hosts the SceneKit representable and shows the tools + the molecule
 struct Molecule3DView: View {
     
     @ObservedObject var controller: MoleculeRenderer
+    var firstMoleculeName = "Molecule"
     
     var body: some View {
         if controller.didLoadAtoms {
             VStack(spacing: 0) {
                 ZStack {
+                    if controller.showSidebar {
+                        HStack {
+                            Spacer()
+                            ScrollView {
+                                ForEach(controller.atomNodes.childNodes, id: \.self) { node in
+                                    Text(node.name ?? "Molecule")
+                                        .onTapGesture {
+                                            //controller.select(node: node)
+                                        }
+                                }.padding()
+                            }.background(
+                                RoundedRectangle(cornerRadius: 15).fill(Color(red: 200/255, green: 200/255, blue: 200/255))
+                            )
+                        }
+                        .padding()
+                        .zIndex(3)
+                    }
                     SceneUI(controller: controller).ignoresSafeArea()
                     VStack {
                         if !controller.didLoadAtoms {
@@ -26,6 +44,7 @@ struct Molecule3DView: View {
                         AtomicToolsView(controller: controller).padding(.vertical, 5)
                     }
                 }
+                
                 stepsToolbar
                 #if os(macOS)
                 .padding(.top, 5)
@@ -34,7 +53,7 @@ struct Molecule3DView: View {
         }
         else {
             progressview.onAppear {
-                controller.loadScenes()
+                controller.loadScenes(moleculeName: firstMoleculeName)
             }
         }
         

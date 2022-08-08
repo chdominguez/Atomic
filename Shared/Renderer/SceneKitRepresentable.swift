@@ -73,16 +73,15 @@ struct SceneUI: Representable {
         #elseif os(iOS)
         cameraNode.position.z = viewingZPositionFloat(toSee: positions) + 10
         #endif
+        
+        //cameraNode.position = SCNVector3Make(0, 0, 10)
+        
         //controller.sceneView.backgroundColor = settings.colorSettings.backgroundColor.UniversalColor
         return controller.sceneView
     }
     
     private func updateView(_ uiView: SCNView, context: Context) {
         uiView.backgroundColor = settings.colorSettings.backgroundColor.uColor
-        controller.backBoneNode.isHidden = !(settings.atomStyle == .backBone)
-        controller.atomNodes.isHidden = !(settings.atomStyle == .ballAndStick)
-        controller.bondNodes.isHidden = !(settings.atomStyle == .ballAndStick)
-        controller.cartoonNodes.isHidden = !(settings.atomStyle == .cartoon)
     }
     
 }

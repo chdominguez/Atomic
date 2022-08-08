@@ -117,7 +117,9 @@ class MoleculeRenderer: SCNView, ObservableObject {
             firstStep.molecule = Molecule()
         }
         DispatchQueue.global(qos: .userInitiated).async { [self] in
-            do {try setupScene(firstStep, moleculeName: moleculeName)}
+            do {
+                setupBasicSCN()
+                try setupScene(firstStep, moleculeName: moleculeName)}
             catch {
                 fatalError()
             }
@@ -210,10 +212,64 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     //MARK: Setup scene
     
+    // Setup SceneKit, Camera and Light
+    
+    private func setupBasicSCN() {
+        
+        self.scene = SCNScene()
+        
+        // Setup the camera node
+        cameraNode = setupCamera()
+        cameraOrbit.name = "Camera orbit"
+        cameraOrbit.addChildNode(cameraNode)
+        //controller.sceneView.pointOfView = controller.cameraOrbit
+        
+        // Setup light node
+        lightNode = setupLight()
+        
+        cameraNode.addChildNode(lightNode)
+        
+        scene!.rootNode.addChildNode(cameraOrbit)
+        
+        //controller.pointOfView = controller.cameraNode
+        guard let molecule = steps.first?.molecule else {return}
+        
+        let positions = molecule.atoms.map {$0.position}
+        let averagePos = averageDistance(of: positions)
+        //controller.cameraNode.position =
+        //controller.defaultCameraController.target = controller.cameraNode.position
+        atomicNode.pivot = SCNMatrix4MakeTranslation(averagePos.x, averagePos.y, averagePos.z)
+        // Add more space to entirely see the molecule. 10 is an okay value
+        cameraNode.position.z = viewingZPosition(toSee: positions) + 10
+    }
+    
+    private func setupCamera() -> SCNNode {
+        let cam = SCNCamera()
+        cam.name = "camera"
+        cam.zFar = 500
+        cam.zNear = 0.01
+        let camNode = SCNNode()
+        camNode.camera = cam
+        camNode.position = SCNVector3Make(0, 0, 5)
+        camNode.name = "Camera node"
+        return camNode
+    }
+    
+    private func setupLight() -> SCNNode {
+        let light = SCNLight()
+        light.color = Color.white.uColor
+        light.intensity = 800
+        light.type = .directional
+        
+        let lnode = SCNNode()
+        lnode.light = light
+        lnode.position = SCNVector3Make(0, 0, 0)
+        lnode.name = "Light node"
+        return lnode
+    }
+    
     /// Populates the SCNodes with atoms and bonds from the step molecule
     private func setupScene(_ step: Step, moleculeName: String) throws {
-        
-        scene = SCNScene()
         scene!.rootNode.name = "RootNode"
         atomicNode.name = "Atomic node"
         
@@ -231,7 +287,9 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         if step.isProtein {
             let node = try kit.getProteinNode()
-            atomNodes.addChildNode(node)
+            cartoonNodes.addChildNode(node)
+            kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
+            atomNodes.isHidden = true
         } else {
             kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
         }
@@ -591,22 +649,24 @@ class MoleculeRenderer: SCNView, ObservableObject {
         guard let hitNode = hitTest(location).first?.node else {unSelectAll();measureNodes(); return}
         guard let name = hitNode.name else {return}
         
-        if name.contains("A_") {internalSelectionNode(hitNode)}
-        if hitNode.name == "bond" {internalSelectionBond(hitNode)}
-        if hitNode.name == "selection" {unSelect(hitNode)}
+        print(name)
+        
+        if name.starts(with: "A") || name.starts(with: "C") {internalSelectionNode(hitNode)}
+        if name.starts(with: "B") {internalSelectionBond(hitNode)}
+        if name.starts(with: "S") {unSelect(hitNode)}
         
         measureNodes()
     }
     
     private func internalSelectionNode(_ hitNode: SCNNode) {
-        
+        #warning("Still figuring out how to correctly scale")
         let selectionOrb = hitNode.clone()
         let copyGeo = selectionOrb.geometry!.copy() as! SCNGeometry
         copyGeo.materials = [settings.colorSettings.selectionMaterial]
         selectionOrb.geometry = copyGeo
         selectionOrb.opacity = 0.35
         selectionOrb.runAction(.scale(by: 1.2, duration: 0.08))
-        
+        selectionOrb.name = "S"
         selectionNodes.addChildNode(selectionOrb)
         selectedAtoms.append((hitNode, selectionOrb))
     }
@@ -616,7 +676,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
         bondOrbSelection.geometry = bondOrbSelection.geometry?.copy() as! SCNCylinder
         bondOrbSelection.scale = SCNVector3Make(1.2, 1, 1.2)
         bondOrbSelection.geometry?.materials = [settings.colorSettings.selectionMaterial]
-        bondOrbSelection.name = "selection"
+        bondOrbSelection.name = "S"
         bondOrbSelection.opacity = 0.35
         
         selectionNodes.addChildNode(bondOrbSelection)
@@ -626,7 +686,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     /// Unselect the hitted selection
     private func unSelect(_ hitNode: SCNNode) {
-        hitNode.removeFromParentNode()
+        hitNode.runAction(SCNAction.sequence([.scale(by: 0.5, duration: 0.2), .removeFromParentNode()]))
         selectedAtoms.removeAll { $0.selectionOrb == hitNode }
     }
     

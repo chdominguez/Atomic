@@ -36,7 +36,13 @@ func averageDistance(of positions: [SCNVector3]) -> SCNVector3 {
     
     var meanPos = SCNVector3Zero.self
     
-    let npos = UFloat(positions.count)
+    #warning("TODO: Think of a universal solution for CGFloat/Float duality") // Its done with UFloat, but changes are still to be applied
+    // Why does SceneKit uses Floats or CGFloats depending on the OS. WHY?
+    #if os(macOS)
+    let npos = CGFloat(positions.count)
+    #elseif os(iOS)
+    let npos = Float(positions.count)
+    #endif
     
     for position in positions {
         meanPos.x += position.x / npos
@@ -86,7 +92,7 @@ func viewingZPositionCGFloat(toSee positions: [SCNVector3]) -> CGFloat {
 /// Returns the biggest distance (Float number) either from the x axis or the y axis between positions.
 /// - Parameter positions: The positions of the atoms to compare
 /// - Returns: The value that corresponds to the biggest distance in either axis
-func viewingZPosition(toSee positions: [SCNVector3]) -> UFloat {
+func viewingZPositionFloat(toSee positions: [SCNVector3]) -> Float {
     
     if positions.count < 2 {
         return 0
@@ -116,7 +122,7 @@ func viewingZPosition(toSee positions: [SCNVector3]) -> UFloat {
     let distanceX = maxx - minx
     let distanceY = maxy - miny
     
-    return distanceX >= distanceY ? UFloat(distanceX) : UFloat(distanceY)
+    return distanceX >= distanceY ? Float(distanceX) : Float(distanceY)
     
 }
 

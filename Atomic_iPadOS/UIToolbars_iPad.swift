@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import ProteinKit
 
 // Due to the lack of a toolbar similar to what macOS offers, the same actions and buttons are shown above the main view.
 extension MainWindow {
@@ -15,7 +14,6 @@ extension MainWindow {
             fileMenu
             viewMenu
             toolsMenu
-            cameraMenu
             settingsMenu
             Spacer()
         }
@@ -137,50 +135,6 @@ extension MainWindow {
                 }
             }        .toolbarButton()
         }
-    }
-    
-    private var cameraMenu: some View {
-        Menu {
-        //MARK: Camera
-        Button("Make selection pivot") {
-            if controller.renderer?.selectedAtoms.count != 1 {
-                controller.errorDescription = "Select one atom"
-                controller.showErrorAlert = true
-                return
-            }
-            controller.renderer?.makeSelectedPivot()
-        }
-        Button("Reset pivot") {
-            controller.renderer?.resetPivot()
-        }
-        Divider()
-        Button {
-            controller.renderer?.cameraNode.position = SCNVector3(8, 0, 0)
-            controller.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
-        } label: {
-            Text("X")
-        }
-        Button {
-            controller.renderer?.cameraNode.position = SCNVector3(0, 8, 0)
-            controller.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
-        } label: {
-            Text("Y")
-        }
-        Button {
-            controller.renderer?.cameraNode.position = SCNVector3(0, 0, 8)
-            controller.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
-        } label: {
-            Text("Z")
-        }
-        } label: {
-            Button {} label: {
-                HStack {
-                    Image(systemName: "video")
-                    Text("Camera")
-                }
-            }        .toolbarButton()
-        }
-        
     }
     
     private var settingsMenu: some View {

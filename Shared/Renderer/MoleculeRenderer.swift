@@ -619,9 +619,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
     }
     private func newAtomOnTouch(molecule: Molecule, at location: CGPoint) {
         let position = SCNVector3(location.x, location.y, -1)
-        print(position)
         let unprojected = unprojectPoint(position)
-        print(unprojected)
         let atom = Atom(position: unprojected, type: selectedFromPtable, number: molecule.atoms.count + 1)
         molecule.atoms.append(atom)
         let kit = ProteinKit()
@@ -867,10 +865,10 @@ class MoleculeRenderer: SCNView, ObservableObject {
 #if os(macOS)
     
     private var prevRotation: UFloat = .zero
-    private func rotateZAxismacOS(event: NSEvent) {
+    private func rotateZAxismacOS(scroll: UFloat) {
         
-        let scroll = event.scrollingDeltaY * 0.01
-        let newRotation = prevRotation + UFloat(-scroll)
+        let scaledScroll = scroll * 0.01
+        let newRotation = prevRotation + UFloat(-scaledScroll)
         atomicNode.eulerAngles.z = newRotation
         prevRotation = atomicNode.eulerAngles.z
         let circles = prevRotation / UFloat((2*Double.pi))
@@ -893,19 +891,21 @@ class MoleculeRenderer: SCNView, ObservableObject {
     }
     
     override func scrollWheel(with event: NSEvent) {
-        if event.phase == .changed {
+        let isClunkyMouse = !event.hasPreciseScrollingDeltas
+        let scalingForClunky: UFloat = isClunkyMouse ? 2.5 : 1
+        if event.phase == .changed || isClunkyMouse {
             if optionPressed {
                 if cameraNode.position.z < 5 && event.scrollingDeltaY < 0 {
                     return
                 }
-                cameraNode.localTranslate(by: SCNVector3(x: 0, y: 0, z: event.scrollingDeltaY * 0.1))
+                cameraNode.localTranslate(by: SCNVector3(x: 0, y: 0, z: event.scrollingDeltaY * 0.1 * scalingForClunky))
             }
             else if controlPressed {
-                rotateZAxismacOS(event: event)
+                rotateZAxismacOS(scroll: event.scrollingDeltaY * scalingForClunky)
             }
             else {
-                cameraOrbit.localTranslate(by: SCNVector3(x: 0, y: -event.scrollingDeltaY/50, z: 0))
-                cameraOrbit.localTranslate(by: SCNVector3(x: event.scrollingDeltaX/50, y: 0, z: 0))
+                cameraOrbit.localTranslate(by: SCNVector3(x: 0, y: -event.scrollingDeltaY * scalingForClunky/50, z: 0))
+                cameraOrbit.localTranslate(by: SCNVector3(x: event.scrollingDeltaX * scalingForClunky/50, y: 0, z: 0))
             }
         }
     }

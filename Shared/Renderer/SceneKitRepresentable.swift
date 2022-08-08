@@ -7,12 +7,10 @@ import SceneKit
 // Cross-platform APIs compatibilities
 #if os(iOS)
 typealias Representable = UIViewRepresentable
-typealias TapGesture = UITapGestureRecognizer
-typealias PanGesture = UIPanGestureRecognizer
+typealias Gesture = UITapGestureRecognizer
 #elseif os(macOS)
 typealias Representable = NSViewRepresentable
-typealias TapGesture = NSClickGestureRecognizer
-typealias PanGesture = NSPanGestureRecognizer
+typealias Gesture = NSClickGestureRecognizer
 #endif
 
 struct SceneUI: Representable {
@@ -20,14 +18,17 @@ struct SceneUI: Representable {
     @ObservedObject var controller: MoleculeRenderer
     @ObservedObject var settings = GlobalSettings.shared
     @Environment(\.colorScheme) var colorScheme
-        
+    
+    #warning("BUG: Strange behaviour on zooming on Apple Silicon")
+    #warning("BUG: macOS zooming different from iOS zooming. Implement custom camera movement")
+    
     // View representables functions are different for each platform. Even tough the codes are exactly the same. Why Apple?
     #if os(macOS)
-    func makeNSView(context: Context) -> MoleculeRenderer { makeView(context: context) }
-    func updateNSView(_ uiView: MoleculeRenderer, context: Context) { updateView(uiView, context: context) }
+    func makeNSView(context: Context) -> SCNView { makeView(context: context) }
+    func updateNSView(_ uiView: SCNView, context: Context) { updateView(uiView, context: context) }
     #else
-    func makeUIView(context: Context) -> MoleculeRenderer { makeView(context: context) }
-    func updateUIView(_ uiView: MoleculeRenderer, context: Context) { updateView(uiView, context: context) }
+    func makeUIView(context: Context) -> SCNView { makeView(context: context) }
+    func updateUIView(_ uiView: SCNView, context: Context) { updateView(uiView, context: context) }
     #endif
     
     // AtomRenderer class as the coordinator for the SceneKit representable. To handle taps, gestures...
@@ -35,90 +36,52 @@ struct SceneUI: Representable {
         return controller
     }
     
-    private func makeView(context: Context) -> MoleculeRenderer {
+    private func makeView(context: Context) -> SCNView {
         
-        // Gesture recognizer for placing atoms, bonds... Same for iPadOS and macOS
-        let tapGesture = TapGesture(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
-        controller.addGestureRecognizer(tapGesture)
+        // Gesture recognizer for placing atoms, bonds...
+        let gesture = Gesture(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
+        controller.sceneView.addGestureRecognizer(gesture)
         
-        
-        setupGestures(context: context, renderer: controller)
+        // Scene view controls
+        controller.sceneView.allowsCameraControl = true
+        controller.sceneView.defaultCameraController.interactionMode = .orbitCenteredArcball
+        controller.sceneView.autoenablesDefaultLighting = true
+        //controller.sceneView.showsStatistics = true
+
+        // Attach the scene to the sceneview
+        controller.sceneView.scene = controller.scene
         
         // Setup the camera node
-        controller.cameraNode = setupCamera()
-        controller.cameraOrbit.name = "Camera orbit"
-        controller.cameraOrbit.addChildNode(controller.cameraNode)
-        //controller.sceneView.pointOfView = controller.cameraOrbit
+        let camera = SCNCamera()
+        camera.zNear = 0.5
+        camera.zFar = 200
         
-        #warning("move this to Renderer, leave here only gesture setup")
-        // Setup light node
-        controller.lightNode = setupLight()
+        let cameraNode = SCNNode()
+        cameraNode.camera = camera
+        cameraNode.position = SCNVector3Make(0, 0, 5)
         
-        controller.cameraNode.addChildNode(controller.lightNode)
-        
-        controller.scene!.rootNode.addChildNode(controller.cameraOrbit)
-        
-        //controller.pointOfView = controller.cameraNode
-        guard let molecule = controller.steps.first?.molecule else {return controller}
+        controller.sceneView.pointOfView = cameraNode
+        guard let molecule = controller.steps.first?.molecule else {return controller.sceneView}
         
         let positions = molecule.atoms.map {$0.position}
-        let averagePos = averageDistance(of: positions)
-        //controller.cameraNode.position =
-        //controller.defaultCameraController.target = controller.cameraNode.position
-        controller.atomicNode.pivot = SCNMatrix4MakeTranslation(averagePos.x, averagePos.y, averagePos.z)
-        // Add more space to entirely see the molecule. 10 is an okay value
-        controller.cameraNode.position.z = viewingZPosition(toSee: positions) + 10
+        cameraNode.position = averageDistance(of: positions)
+        controller.sceneView.defaultCameraController.target = cameraNode.position
         
-        return controller
+        // Add more space to entirely see the molecule. 10 is an okay value
+        #if os(macOS)
+        cameraNode.position.z = viewingZPositionCGFloat(toSee: positions) + 10
+        #elseif os(iOS)
+        cameraNode.position.z = viewingZPositionFloat(toSee: positions) + 10
+        #endif
+        
+        //cameraNode.position = SCNVector3Make(0, 0, 10)
+        
+        //controller.sceneView.backgroundColor = settings.colorSettings.backgroundColor.UniversalColor
+        return controller.sceneView
     }
     
-    private func updateView(_ uiView: MoleculeRenderer, context: Context) {
+    private func updateView(_ uiView: SCNView, context: Context) {
         uiView.backgroundColor = settings.colorSettings.backgroundColor.uColor
     }
     
-    private func setupCamera() -> SCNNode {
-        let cam = SCNCamera()
-        cam.name = "camera"
-        cam.zFar = 500
-        cam.zNear = 0.01
-        let camNode = SCNNode()
-        camNode.camera = cam
-        camNode.position = SCNVector3Make(0, 0, 5)
-        camNode.name = "Camera node"
-        return camNode
-    }
-    
-    private func setupLight() -> SCNNode {
-        let light = SCNLight()
-        light.color = Color.white.uColor
-        light.intensity = 800
-        light.type = .directional
-        
-        let lnode = SCNNode()
-        lnode.light = light
-        lnode.position = SCNVector3Make(0, 0, 0)
-        lnode.name = "Light node"
-        return lnode
-    }
-    
-    #if os(macOS)
-    private func setupGestures(context: Context, renderer: MoleculeRenderer) {
-        let leftClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
-        leftClickPanGesture.buttonMask = 1
-        let rightClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
-        rightClickPanGesture.buttonMask = 2
-        controller.addGestureRecognizer(rightClickPanGesture)
-        controller.addGestureRecognizer(leftClickPanGesture)
-    }
-    #elseif os(iOS)
-    private func setupGestures(context: Context, renderer: MoleculeRenderer) {
-        let panG = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
-        controller.addGestureRecognizer(panG)
-        let pinchG = UIPinchGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePinch(sender:)))
-        controller.addGestureRecognizer(pinchG)
-        //Temporary disabled
-        let rotateG = UIRotationGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleZAxisRotation(sender:)))
-        controller.addGestureRecognizer(rotateG)
-    }
-    #endif
 }

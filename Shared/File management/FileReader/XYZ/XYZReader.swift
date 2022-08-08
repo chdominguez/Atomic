@@ -87,7 +87,8 @@ extension BaseReader {
             
             guard let _ = currentMolecule else {throw xyzError} // Something went wrong if the molecule at this point is not assigned. Possible an error on the XYZ file.
             currentMolecule!.atoms.append(atom)
-        }        
+        }
+        
         // Save final step and end the function
         guard let _ = currentMolecule else {throw xyzError}
         let step = Step()

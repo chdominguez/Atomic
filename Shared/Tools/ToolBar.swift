@@ -21,6 +21,7 @@ struct AtomicToolsView: View {
                 selectButton
                 bondSelected
                 erase
+                sidebar
             }
             .frame(maxHeight: 50)            
             //MARK: Distance/angle
@@ -96,6 +97,18 @@ extension AtomicToolsView {
                 Image(systemName: "trash")
                 Text("Erase")
             }.foregroundColor(controller.selectedTool == .removeAtom ? .accentColor : .primary)
+        }
+        .toolbarButton()
+    }
+    
+    private var sidebar: some View {
+        Button {
+            controller.showSidebar.toggle()
+        } label: {
+            HStack {
+                Image(systemName: "sidebar.squares.right")
+                Text("Molecules")
+            }.foregroundColor(controller.showSidebar ? .accentColor : .primary)
         }
         .toolbarButton()
     }

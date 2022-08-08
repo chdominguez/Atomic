@@ -76,7 +76,7 @@ extension MainWindow {
     private var content: some View {
         ZStack {
             if controller.fileReady {
-                Molecule3DView(controller: controller.renderer!)
+                Molecule3DView(controller: controller.renderer!, firstMoleculeName: controller.fileURL?.lastPathComponent ?? "Molecule")
                 #if os(iOS)
                 VStack {
                     iOSToolBarReplacement

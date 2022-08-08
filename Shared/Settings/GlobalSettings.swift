@@ -12,12 +12,11 @@ class GlobalSettings: ObservableObject {
     
     static let shared = GlobalSettings()
     
-    @Published var colorSettings = ColorSettings()
+    @Published var colorSettings = ProteinColors()
     
     @Published var atomStyle: AtomStyle = .ballAndStick
     
 }
-
 
 //MARK: Color settings
 /// Colors of atoms, bonds, and other properties of the SceneKit scene. This class is meant to reside in GlobalSettings as a property.

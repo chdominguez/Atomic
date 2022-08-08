@@ -649,8 +649,6 @@ class MoleculeRenderer: SCNView, ObservableObject {
         guard let hitNode = hitTest(location).first?.node else {unSelectAll();measureNodes(); return}
         guard let name = hitNode.name else {return}
         
-        print(name)
-        
         if name.starts(with: "A") || name.starts(with: "C") {internalSelectionNode(hitNode)}
         if name.starts(with: "B") {internalSelectionBond(hitNode)}
         if name.starts(with: "S") {unSelect(hitNode)}
@@ -659,10 +657,13 @@ class MoleculeRenderer: SCNView, ObservableObject {
     }
     
     private func internalSelectionNode(_ hitNode: SCNNode) {
-        #warning("Still figuring out how to correctly scale")
+        let center = hitNode.boundingSphere.center
+        
         let selectionOrb = hitNode.clone()
         let copyGeo = selectionOrb.geometry!.copy() as! SCNGeometry
         copyGeo.materials = [settings.colorSettings.selectionMaterial]
+        selectionOrb.pivot = SCNMatrix4MakeTranslation(center.x, center.y, center.z)
+        selectionOrb.position = center
         selectionOrb.geometry = copyGeo
         selectionOrb.opacity = 0.35
         selectionOrb.runAction(.scale(by: 1.2, duration: 0.08))
@@ -851,7 +852,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     func makeSelectedPivot() {
         guard let node = selectedAtoms.first?.selectedNode else {return}
-        let newPos = node.position
+        let newPos = node.boundingSphere.center
         atomicNode.pivot = SCNMatrix4MakeTranslation(newPos.x, newPos.y, newPos.z)
         let moveAction = SCNAction.move(to: .zero, duration: 0.2)
         let moveCameraZoomTo0 = SCNAction.move(to: SCNVector3(x: 0, y: 0, z: 10), duration: 0.2)

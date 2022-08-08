@@ -2,6 +2,7 @@
 
 import SwiftUI
 import ProteinKit
+import SceneKit
 
 //MARK: Commands view
 /// macOS menus on top of the screen
@@ -49,9 +50,6 @@ struct AtomicCommands: Commands {
 
                 }
             }
-//            Picker("Atom style", selection: $commands.settings.atomStyle) {
-//                 }
-//            }
             Button("Hide selected") {
                 commands.activeController?.renderer?.hideSelected()
             }
@@ -84,9 +82,47 @@ struct AtomicCommands: Commands {
 
             }
         }
+        CommandMenu("Camera") {
+            Button("Make selection pivot") {
+                if commands.activeController?.renderer?.selectedAtoms.count != 1 {
+                    commands.activeController?.errorDescription = "Select one atom"
+                    commands.activeController?.showErrorAlert = true
+                    return
+                }
+                commands.activeController?.renderer?.makeSelectedPivot()
+            }
+            Button("Reset pivot") {
+                commands.activeController?.renderer?.resetPivot()
+            }
+            Divider()
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(8, 0, 0)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("X")
+            }
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(0, 8, 0)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("Y")
+            }
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(0, 0, 8)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("Z")
+            }
+
+        }
         CommandMenu("Input/Output") {
             Button("View file") {
                 commands.viewInputFIle()
+            }
+        }
+        CommandMenu("Debug") {
+            Button("Show debug window") {
+                DebugWindowView(renderer: commands.activeController!.renderer!).openNewWindow(type: .debug, controller: commands.activeController!)
             }
         }
     }

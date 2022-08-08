@@ -32,4 +32,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         true
     }
+    
+    override func addObserver(_ observer: NSObject, forKeyPath keyPath: String, options: NSKeyValueObservingOptions = [], context: UnsafeMutableRawPointer?) {
+        print("Thing")
+    }
+}
+
+class WindowDelefgate: NSObject, NSWindowDelegate {
+    
 }

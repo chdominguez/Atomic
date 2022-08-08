@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppKit
+import SceneKit
 
 /// This class manages instances of MoleculeViewModel across different windows under macOS
 class MacOSWindowManager: NSObject, ObservableObject {
@@ -91,7 +92,7 @@ struct WindowAccessor: NSViewRepresentable {
 /// Custom class for tracking the active controller on cliking multiple windows
 class AtomicWindow: Hashable {
     
-    let window: NSWindow
+    let window: NSWindow!
     let windowType: WindowType
     let associatedController: AtomicMainController
     
@@ -100,6 +101,10 @@ class AtomicWindow: Hashable {
         self.associatedController = controller
         self.windowType = type
         self.window.title = type.rawValue
+    }
+    
+    func keyDown(with event: NSEvent) {
+        print("Key down!")
     }
     
     static func == (lhs: AtomicWindow, rhs: AtomicWindow) -> Bool {
@@ -117,6 +122,7 @@ class AtomicWindow: Hashable {
         case vibrations = "Vibrations"
         case mainWindow = "Atomic"
         case openedFile = "Edit file"
+        case debug = "Debug"
         
         case settings = "Settings"
         case ptable = "Periodic table"
@@ -204,8 +210,6 @@ extension View {
         window.isReleasedWhenClosed = false
         window.makeKeyAndOrderFront(nil)
         window.contentView = NSHostingView(rootView: self)
-        
         return window
     }
 }
-

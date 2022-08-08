@@ -25,6 +25,7 @@
 		C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E54277B668A00561AAA /* GaussianFileReader.swift */; };
 		C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E57277B985400561AAA /* GaussianKeywords.swift */; };
 		C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E57277B985400561AAA /* GaussianKeywords.swift */; };
+		C04B8380289BD73700B8E9B8 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04B837F289BD73700B8E9B8 /* Debug.swift */; };
 		C05472AC280428CF00F51E6E /* TextViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */; };
 		C05472AD280428CF00F51E6E /* TextViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */; };
 		C05472B22804C3EE00F51E6E /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05472B12804C3EE00F51E6E /* GlobalSettings.swift */; };
@@ -65,6 +66,10 @@
 		C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1371D277F3930009ACCB6 /* FreqsView.swift */; };
 		C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
 		C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
+		C0EB522128A00AE000E2E36D /* ProteinKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0EB522028A00AE000E2E36D /* ProteinKit */; };
+		C0EB522328A00AE900E2E36D /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0EB522228A00AE900E2E36D /* SCNLine */; };
+		C0EB522528A00AEC00E2E36D /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C0EB522428A00AEC00E2E36D /* Neumorphic */; };
+		C0EB522728A00AFB00E2E36D /* SceneKitPlus in Frameworks */ = {isa = PBXBuildFile; productRef = C0EB522628A00AFB00E2E36D /* SceneKitPlus */; };
 		C0F9F2F128539E8700ABADE3 /* SceneKitPlus in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2F028539E8700ABADE3 /* SceneKitPlus */; };
 		C0F9F2F82857DBB200ABADE3 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2F72857DBB200ABADE3 /* Neumorphic */; };
 		C0F9F2FE2857DC3300ABADE3 /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2FD2857DC3300ABADE3 /* SCNLine */; };
@@ -90,6 +95,7 @@
 		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
 		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
 		C0455E57277B985400561AAA /* GaussianKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianKeywords.swift; sourceTree = "<group>"; };
+		C04B837F289BD73700B8E9B8 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewRepresentable.swift; sourceTree = "<group>"; };
 		C05472B12804C3EE00F51E6E /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		C05F5CA62784720B00F3B588 /* UIToolbars_iPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIToolbars_iPad.swift; sourceTree = "<group>"; };
@@ -145,7 +151,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0EB522728A00AFB00E2E36D /* SceneKitPlus in Frameworks */,
+				C0EB522528A00AEC00E2E36D /* Neumorphic in Frameworks */,
+				C0EB522328A00AE900E2E36D /* SCNLine in Frameworks */,
 				C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */,
+				C0EB522128A00AE000E2E36D /* ProteinKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */,
+				C04B837F289BD73700B8E9B8 /* Debug.swift */,
 				C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */,
 				C0205A6A280C632200BCD688 /* Commands.swift */,
 				C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */,
@@ -404,6 +415,10 @@
 			name = Atomic_ipad;
 			packageProductDependencies = (
 				C01D7FC7280C5F7C003EBA5D /* LineChartView */,
+				C0EB522028A00AE000E2E36D /* ProteinKit */,
+				C0EB522228A00AE900E2E36D /* SCNLine */,
+				C0EB522428A00AEC00E2E36D /* Neumorphic */,
+				C0EB522628A00AFB00E2E36D /* SceneKitPlus */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
@@ -493,6 +508,7 @@
 				C0DCCECD276A3E710085CD1D /* SceneKitRepresentable.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
 				C0DCCEC5276A3D600085CD1D /* BaseReader.swift in Sources */,
+				C04B8380289BD73700B8E9B8 /* Debug.swift in Sources */,
 				C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */,
 				C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */,
@@ -907,6 +923,25 @@
 		C0D9E11B28535BD5001CF720 /* ProteinKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProteinKit;
+		};
+		C0EB522028A00AE000E2E36D /* ProteinKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProteinKit;
+		};
+		C0EB522228A00AE900E2E36D /* SCNLine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0F9F2FC2857DC3300ABADE3 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
+			productName = SCNLine;
+		};
+		C0EB522428A00AEC00E2E36D /* Neumorphic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0F9F2F62857DBB200ABADE3 /* XCRemoteSwiftPackageReference "neumorphic" */;
+			productName = Neumorphic;
+		};
+		C0EB522628A00AFB00E2E36D /* SceneKitPlus */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0F9F2EF28539E8700ABADE3 /* XCRemoteSwiftPackageReference "SceneKitPlus" */;
+			productName = SceneKitPlus;
 		};
 		C0F9F2F028539E8700ABADE3 /* SceneKitPlus */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -37,6 +37,23 @@ struct Molecule3DView: View {
                     }
                     SceneUI(controller: controller).ignoresSafeArea()
                     VStack {
+                        HStack {
+                            Spacer()
+                            VStack {
+                                Button {
+                                    controller.zoomCamera(true)
+                                } label: {
+                                    Image(systemName: "plus.circle")
+                                }.toolbarButton()
+                                Button {
+                                    controller.zoomCamera(false)
+                                } label: {
+                                    Image(systemName: "minus.circle")
+                                }.toolbarButton()
+                            }
+                            .background(RoundedRectangle(cornerRadius: 25)                        .fill(Color.Neumorphic.darkShadow))
+                            .padding()
+                        }
                         if !controller.didLoadAtoms {
                             progressview.foregroundColor(.primary)
                         }
@@ -99,7 +116,7 @@ extension Molecule3DView {
                 }
             }
             else if let energy = controller.showingStep.energy {
-                if #available(macOS 12.0, *) {
+                if #available(macOS 12.0, *), #available(iOS 15.0, *) {
                     Text("Energy: \(energy)").textSelection(.enabled)
                 } else {
                     // Fallback on earlier versions

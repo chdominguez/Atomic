@@ -97,7 +97,7 @@ extension Molecule3DView {
                 }
             }
             else if let energy = controller.showingStep.energy {
-                if #available(macOS 12.0, *) {
+                if #available(macOS 12.0, *), #available(iOS 15.0, *) {
                     Text("Energy: \(energy)").textSelection(.enabled)
                 } else {
                     // Fallback on earlier versions

@@ -66,6 +66,10 @@
 		C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1371D277F3930009ACCB6 /* FreqsView.swift */; };
 		C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
 		C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
+		C0EB522128A00AE000E2E36D /* ProteinKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0EB522028A00AE000E2E36D /* ProteinKit */; };
+		C0EB522328A00AE900E2E36D /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0EB522228A00AE900E2E36D /* SCNLine */; };
+		C0EB522528A00AEC00E2E36D /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C0EB522428A00AEC00E2E36D /* Neumorphic */; };
+		C0EB522728A00AFB00E2E36D /* SceneKitPlus in Frameworks */ = {isa = PBXBuildFile; productRef = C0EB522628A00AFB00E2E36D /* SceneKitPlus */; };
 		C0F9F2F128539E8700ABADE3 /* SceneKitPlus in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2F028539E8700ABADE3 /* SceneKitPlus */; };
 		C0F9F2F82857DBB200ABADE3 /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2F72857DBB200ABADE3 /* Neumorphic */; };
 		C0F9F2FE2857DC3300ABADE3 /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C0F9F2FD2857DC3300ABADE3 /* SCNLine */; };
@@ -147,7 +151,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0EB522728A00AFB00E2E36D /* SceneKitPlus in Frameworks */,
+				C0EB522528A00AEC00E2E36D /* Neumorphic in Frameworks */,
+				C0EB522328A00AE900E2E36D /* SCNLine in Frameworks */,
 				C01D7FC8280C5F7C003EBA5D /* LineChartView in Frameworks */,
+				C0EB522128A00AE000E2E36D /* ProteinKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +415,10 @@
 			name = Atomic_ipad;
 			packageProductDependencies = (
 				C01D7FC7280C5F7C003EBA5D /* LineChartView */,
+				C0EB522028A00AE000E2E36D /* ProteinKit */,
+				C0EB522228A00AE900E2E36D /* SCNLine */,
+				C0EB522428A00AEC00E2E36D /* Neumorphic */,
+				C0EB522628A00AFB00E2E36D /* SceneKitPlus */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
@@ -911,6 +923,25 @@
 		C0D9E11B28535BD5001CF720 /* ProteinKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProteinKit;
+		};
+		C0EB522028A00AE000E2E36D /* ProteinKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProteinKit;
+		};
+		C0EB522228A00AE900E2E36D /* SCNLine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0F9F2FC2857DC3300ABADE3 /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
+			productName = SCNLine;
+		};
+		C0EB522428A00AEC00E2E36D /* Neumorphic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0F9F2F62857DBB200ABADE3 /* XCRemoteSwiftPackageReference "neumorphic" */;
+			productName = Neumorphic;
+		};
+		C0EB522628A00AFB00E2E36D /* SceneKitPlus */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0F9F2EF28539E8700ABADE3 /* XCRemoteSwiftPackageReference "SceneKitPlus" */;
+			productName = SceneKitPlus;
 		};
 		C0F9F2F028539E8700ABADE3 /* SceneKitPlus */ = {
 			isa = XCSwiftPackageProductDependency;

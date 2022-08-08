@@ -9,12 +9,6 @@ import SceneKit
 import SCNLine
 import ProteinKit
 
-class SRenderer: SCNView {
-    override func keyDown(with event: NSEvent) {
-        print("Keydown")
-    }
-}
-
 /// Controls the SceneKit SCNView. Renders the 3D atoms, bonds, handles tap gestures...
 class MoleculeRenderer: SCNView, ObservableObject {
     
@@ -669,15 +663,8 @@ class MoleculeRenderer: SCNView, ObservableObject {
         atomOrbSelection.name = "selection"
         atomOrbSelection.opacity = 0.35
         
-        #warning("TODO: Rotate around selected node")
-        // So the node roation happens around the selected node
-        //atomicNode.pivot = SCNMatrix4MakeTranslation(hitNode.position.x, hitNode.position.y, hitNode.position.z)
-        //atomicNode.pivot = cameraOrbit.pivot
-        //atomicNode.position = hitNode.position
-        
         selectionNodes.addChildNode(atomOrbSelection)
         selectedAtoms.append((hitNode, atomOrbSelection))
-        //defaultCameraController.target = hitNode.position
     }
     
     private func internalSelectionBond(_ hitNode: SCNNode) {
@@ -719,10 +706,16 @@ class MoleculeRenderer: SCNView, ObservableObject {
         }
     }
     
-    private var previousPanTranslation: NSPoint? = nil
+    #if os(macOS)
+    typealias Point = NSPoint
+    #elseif os(iOS)
+    typealias Point = CGPoint
+    #endif
+    
+    private var previousPanTranslation: Point? = nil
     
     // Save code for rotate molecules etc...
-    private func rotate(sender recognizer: NSPanGestureRecognizer)
+    private func rotate(sender recognizer: PanGesture)
     {
         switch recognizer.state
         {
@@ -731,7 +724,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
         case .changed:
             guard let previous = self.previousPanTranslation else
             {
-                assertionFailure("Attempt to unwrap previous pan translation failed.")
+                //previousPanTranslation = .zero
                 return
             }
             // Calculate how much translation occurred between this step and the previous step
@@ -742,9 +735,12 @@ class MoleculeRenderer: SCNView, ObservableObject {
             let yRadians = yScalar * 2//* self.dynamicType.MaxPanGestureRotation
             // Use the pan translation along the y axis to adjust the camera's rotation about the x axis.
             let xScalar = Float(translationDelta.y / self.bounds.size.height)
-            let xRadians = xScalar * 2//* self.dynamicType.MaxPanGestureRotation
+            var xRadians = xScalar * 2//* self.dynamicType.MaxPanGestureRotation
+            #if os(macOS)
+            xRadians = -xRadians
+            #endif
             // Use the radian values to construct quaternions
-            let x = GLKQuaternionMakeWithAngleAndAxis(-xRadians, 1, 0, 0)
+            let x = GLKQuaternionMakeWithAngleAndAxis(xRadians, 1, 0, 0)
             let y = GLKQuaternionMakeWithAngleAndAxis(yRadians, 0, 1, 0)
             let z = GLKQuaternionMakeWithAngleAndAxis(0, 0, 0, 1)
             let combination = GLKQuaternionMultiply(z, GLKQuaternionMultiply(y, x))
@@ -753,11 +749,10 @@ class MoleculeRenderer: SCNView, ObservableObject {
             let glkOrientation = GLKQuaternionMake(Float(scnOrientation.x), Float(scnOrientation.y), Float(scnOrientation.z), Float(scnOrientation.w))
             let q = GLKQuaternionMultiply(combination, glkOrientation)
             // And finally set the current orientation to the updated orientation
-            self.atomicNode.orientation = SCNQuaternion(x: CGFloat(q.x), y: CGFloat(q.y), z: CGFloat(q.z), w: CGFloat(q.w))
+            self.atomicNode.orientation = SCNQuaternion(x: UFloat(q.x), y: UFloat(q.y), z: UFloat(q.z), w: UFloat(q.w))
             self.previousPanTranslation = translation
-        case .ended, .cancelled, .failed:
-            self.previousPanTranslation = nil
         default:
+            self.previousPanTranslation = nil
             break
         }
     }
@@ -769,6 +764,9 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         if sender.state == .changed {
             delta = CGPoint.init(x: 2 * (loc.x - previousLoc.x), y: 2 * (loc.y - previousLoc.y))
+            #if os(iOS)
+            delta.y = -delta.y
+            #endif
             atomicNode.position = SCNVector3(atomicNode.position.x + UFloat(delta.x * 0.02), atomicNode.position.y + UFloat(delta.y * (0.02)), 0)
             previousLoc = loc
         }
@@ -777,12 +775,58 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     
     @objc func handlePan(sender: PanGesture) {
-        if sender.buttonMask == 1 {
-            moveCamera(sender: sender)
+        #if os(macOS)
+        macOSCameraControls(sender: sender)
+        #elseif os(iOS)
+        iosCameraControls(sender: sender)
+        #endif
+    }
+    
+    #if os(iOS)
+    @objc func handlePinch(sender: UIPinchGestureRecognizer) {
+        if sender.state == .changed {
+            var move = sender.scale
+            if move < 1 { move = -1/move }
+            if cameraNode.position.z <= 5 && 1/sender.scale < 1 { return }
+            cameraNode.position.z += UFloat(-move*0.2)
+        }
+    }
+    
+    //Rotates the camera around the Z axis
+    var prevRotation: UFloat = .zero
+    @objc func handleZAxisRotation(sender: UIRotationGestureRecognizer) {
+        if sender.state == .changed {
+            let newRotation = prevRotation + UFloat(-sender.rotation)
+            atomicNode.eulerAngles.z = newRotation
+        }
+        if sender.state == .ended {
+            prevRotation = atomicNode.eulerAngles.z
+            let circles = prevRotation / UFloat((2*Double.pi))
+            // If the rotation has achieved more than 1 circle, substract the circle to always be in range of 0~2pi
+            if abs(circles) > 1 {
+                prevRotation -= UFloat(2*Double.pi) * circles.rounded(.down)
+            }
+        }
+    }
+    
+    private func iosCameraControls(sender: PanGesture) {
+        if sender.numberOfTouches <= 1 {
+            rotate(sender: sender)
             return
         }
-        if sender.buttonMask == 2 {
+        if sender.numberOfTouches == 2 {
+            moveCamera(sender: sender)
+        }
+    }
+    #endif
+    
+    private func macOSCameraControls(sender: PanGesture) {
+        if sender.integer == 1 {
             rotate(sender: sender)
+            return
+        }
+        if sender.integer == 2 {
+            moveCamera(sender: sender)
             return
         }
     }
@@ -813,26 +857,57 @@ class MoleculeRenderer: SCNView, ObservableObject {
     }
     
     private var optionPressed: Bool = false
+    private var controlPressed: Bool = false
     
 #if os(macOS)
+    
+    private var prevRotation: UFloat = .zero
+    private func rotateZAxismacOS(event: NSEvent) {
+        
+        let scroll = event.scrollingDeltaY * 0.01
+        let newRotation = prevRotation + UFloat(-scroll)
+        atomicNode.eulerAngles.z = newRotation
+        prevRotation = atomicNode.eulerAngles.z
+        let circles = prevRotation / UFloat((2*Double.pi))
+        // If the rotation has achieved more than 1 circle, substract the circle to always be in range of 0~2pi
+        if abs(circles) > 1 {
+            prevRotation -= UFloat(2*Double.pi) * circles.rounded(.down)
+        }
+    }
+
+    
     override func flagsChanged(with event: NSEvent) {
         if event.keyCode == 58 {
             optionPressed.toggle()
+            return
+        }
+        if event.keyCode == 59 {
+            controlPressed.toggle()
+            return
         }
     }
     
     override func scrollWheel(with event: NSEvent) {
-        if optionPressed {
-            cameraNode.localTranslate(by: SCNVector3(x: 0, y: 0, z: event.scrollingDeltaY/50))
-        }
-        else {
-            cameraOrbit.localTranslate(by: SCNVector3(x: 0, y: -event.scrollingDeltaY/50, z: 0))
-            cameraOrbit.localTranslate(by: SCNVector3(x: event.scrollingDeltaX/50, y: 0, z: 0))
+        if event.phase == .changed {
+            if optionPressed {
+                cameraNode.localTranslate(by: SCNVector3(x: 0, y: 0, z: event.scrollingDeltaY * 0.1))
+            }
+            else if controlPressed {
+                rotateZAxismacOS(event: event)
+            }
+            else {
+                cameraOrbit.localTranslate(by: SCNVector3(x: 0, y: -event.scrollingDeltaY/50, z: 0))
+                cameraOrbit.localTranslate(by: SCNVector3(x: event.scrollingDeltaX/50, y: 0, z: 0))
+            }
         }
     }
 #endif
 }
 
-class AtomicCameraController: SCNCameraController {
-    
+extension PanGesture {
+    #if os(macOS)
+    var integer: Int {self.buttonMask}
+    #elseif os(iOS)
+    var integer: Int {self.numberOfTouches}
+    #endif
 }

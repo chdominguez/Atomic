@@ -37,25 +37,12 @@ struct SceneUI: Representable {
     
     private func makeView(context: Context) -> MoleculeRenderer {
         
-        // Gesture recognizer for placing atoms, bonds...
+        // Gesture recognizer for placing atoms, bonds... Same for iPadOS and macOS
         let tapGesture = TapGesture(target: context.coordinator, action: #selector(Coordinator.handleTaps(gesture:)))
-        let leftClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
-        leftClickPanGesture.buttonMask = 1
-        let rightClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
-        rightClickPanGesture.buttonMask = 2
-        //let key = CGEvent
         controller.addGestureRecognizer(tapGesture)
-        controller.addGestureRecognizer(rightClickPanGesture)
-        controller.addGestureRecognizer(leftClickPanGesture)
-
         
-        // Scene view controls
-        //controller.sceneView.allowsCameraControl = true
-        //controller.sceneView.defaultCameraController.interactionMode = .orbitCenteredArcball
-        //controller.sceneView.autoenablesDefaultLighting = true
-        //controller.sceneView.showsStatistics = true
-
-        // Attach the scene to the sceneview
+        
+        setupGestures(context: context, renderer: controller)
         
         // Setup the camera node
         controller.cameraNode = setupCamera()
@@ -63,6 +50,7 @@ struct SceneUI: Representable {
         controller.cameraOrbit.addChildNode(controller.cameraNode)
         //controller.sceneView.pointOfView = controller.cameraOrbit
         
+        #warning("move this to Renderer, leave here only gesture setup")
         // Setup light node
         controller.lightNode = setupLight()
         
@@ -112,5 +100,25 @@ struct SceneUI: Representable {
         lnode.name = "Light node"
         return lnode
     }
-        
+    
+    #if os(macOS)
+    private func setupGestures(context: Context, renderer: MoleculeRenderer) {
+        let leftClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
+        leftClickPanGesture.buttonMask = 1
+        let rightClickPanGesture = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
+        rightClickPanGesture.buttonMask = 2
+        controller.addGestureRecognizer(rightClickPanGesture)
+        controller.addGestureRecognizer(leftClickPanGesture)
+    }
+    #elseif os(iOS)
+    private func setupGestures(context: Context, renderer: MoleculeRenderer) {
+        let panG = PanGesture(target: context.coordinator, action: #selector(Coordinator.handlePan(sender:)))
+        controller.addGestureRecognizer(panG)
+        let pinchG = UIPinchGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePinch(sender:)))
+        controller.addGestureRecognizer(pinchG)
+        //Temporary disabled
+        let rotateG = UIRotationGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleZAxisRotation(sender:)))
+        controller.addGestureRecognizer(rotateG)
+    }
+    #endif
 }

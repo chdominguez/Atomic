@@ -85,15 +85,30 @@ extension MainWindow {
 #endif
             }
             else {
-                VStack {
-                    Spacer()
-                    WelcomeMessage(hasRecents: $settings.hasRecent, mainController: controller)
-                    Spacer()
-                    mainScreen.padding(.vertical, 20)
-                    Spacer().frame(height: 100)
+                HStack {
+                    VStack {
+                        Spacer()
+                        WelcomeMessage()
+                        Spacer()
+                        mainScreen.padding(.vertical, 20)
+                        Spacer().frame(height: 100)
+                    }
+                    #if os(macOS)
+                    if settings.hasRecent {
+                        recentsView
+                    }
+                    #endif
                 }
             }
         }
+    }
+    
+    private var recentsView: some View {
+        ZStack {
+            RecentsView(mainController: controller)
+            Spacer().frame(width: 400, height: 250)
+        }
+        .background(RoundedRectangle(cornerRadius: 25).fill(Color.clear).shadow(radius: 5))
     }
     
     private var mainScreen: some View {
@@ -208,29 +223,19 @@ extension MainWindow {
 
 //MARK: Welcome message
 struct WelcomeMessage: View {
-    @Binding var hasRecents: Bool
-    let mainController: AtomicMainController
     var body: some View {
         HStack {
-            Group {
-                VStack(alignment: .leading) {
-                    Text("Atomic")
-                        .font(.system(size: 100))
-                    Text("Molecular editor")
-                        .font(.title)
-                }
-            }.padding()
-            #if os(macOS)
-            if hasRecents {
-                Group {
-                    ZStack {
-                        RecentsView(mainController: mainController)
-                        Spacer().frame(width: 400, height: 250)
-                    }
-                    .background(RoundedRectangle(cornerRadius: 25).fill(Color.clear).shadow(radius: 5))
-                }
+            VStack {
+                Image("icon")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 150, height: 150)
+                    .offset(x: 0, y: 35)
+                Text("Atomic")
+                    .font(.system(size: 100))
+                Text("Molecular editor")
+                    .font(.title)
             }
-        #endif
         }.padding()
     }
 }

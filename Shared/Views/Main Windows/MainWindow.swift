@@ -85,32 +85,28 @@ extension MainWindow {
 #endif
             }
             else {
-                HStack {
                     VStack {
                         Spacer()
-                        WelcomeMessage()
+                        HStack {
+                            WelcomeMessage()
+                            #if os(macOS)
+                            Spacer().frame(width: 50)
+                            if settings.hasRecent {
+                                recentsView
+                            }
+                            #endif
+                        }
                         Spacer()
                         mainScreen.padding(.vertical, 20)
                         Spacer().frame(height: 100)
                     }
-                    #if os(macOS)
-                    if settings.hasRecent {
-                        recentsView
-                    }
-                    #endif
-                }
             }
         }
     }
     
     private var recentsView: some View {
-        ZStack {
-            RecentsView(mainController: controller)
-            Spacer().frame(width: 400, height: 250)
-        }
-        .background(RoundedRectangle(cornerRadius: 25).fill(Color.clear).shadow(radius: 5))
+        RecentsView(mainController: controller)
     }
-    
     private var mainScreen: some View {
         VStack(spacing: 50) {
             if controller.loading {
@@ -251,7 +247,7 @@ struct RecentsView: View {
                 Text("Recent files:").font(.title)
                 ScrollView {
                     ForEach(settings.recents, id: \.self) { url in
-                            VStack {
+                        VStack(alignment: .trailing) {
                                 HStack {
                                     Image("atomic-file")
                                         .resizable()
@@ -261,11 +257,13 @@ struct RecentsView: View {
                                     Text("\(url.lastPathComponent)")
                                     Spacer()
                                 }.background(RoundedRectangle(cornerRadius: 10).fill(Color.neumorEnd))
-                            }.onTapGesture {
+                                    .frame(width: 300)
+                            }
+                        .onTapGesture {
                                 mainController.processFile(url: url)
                             }
                     }
-                }
+                }.frame(height: 220)
             }
             .onAppear {
                 RecentsStore.load { result in

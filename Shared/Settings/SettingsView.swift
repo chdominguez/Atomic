@@ -77,6 +77,19 @@ struct ViewSettings: View {
                         Text("Metalness")
                         Slider(value: $settings.colorSettings.metalness, in: 0...1)
                     }
+                    HStack {
+                        Picker("Light type", selection: $settings.lightType) {
+                            Text("Ambient").tag(SCNLight.LightType.ambient)
+                            Text("Directional").tag(SCNLight.LightType.directional)
+                            Text("Area").tag(SCNLight.LightType.area)
+                            Text("Omni").tag(SCNLight.LightType.omni)
+                            Text("Spot").tag(SCNLight.LightType.spot)
+                        }
+                    }
+                    HStack {
+                        Text("Light intensity")
+                        Slider(value: $settings.lightIntensity, in: 300...1000)
+                    }
                     PTable().scaleEffect(0.9)
                 }
             } header: {

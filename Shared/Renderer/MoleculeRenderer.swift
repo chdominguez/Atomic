@@ -62,6 +62,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
     let atomicRootNode = SCNNode()
     var cameraNode = SCNNode()
     var lightNode = SCNNode()
+    var light = SCNLight()
     
     /// An array of tuples. The nodes selected with its selection orb node.
     @Published var selectedAtoms: [(selectedNode: SCNNode, selectionOrb: SCNNode)] = [] {
@@ -112,6 +113,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         // Setup the camera node
         self.cameraNode = setupCameraNode()
+        settings.lightNode = self.light
         scene.rootNode.addChildNode(cameraNode)
         self.pointOfView = self.cameraNode
         
@@ -125,7 +127,9 @@ class MoleculeRenderer: SCNView, ObservableObject {
         guard let molecule = steps.first?.molecule else {return}
         
         let positions = molecule.atoms.map {$0.position}
-        //let averagePos = averageDistance(of: positions)
+        let averagePos = averageDistance(of: positions)
+        
+        compoundAtomNodes.position = -averagePos
         
         //atomicRootNode.pivot = SCNMatrix4MakeTranslation(averagePos.x, averagePos.y, averagePos.z)
         // Add more space to entirely see the molecule. 10 is an okay value

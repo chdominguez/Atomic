@@ -19,14 +19,15 @@ extension MoleculeRenderer {
         camNode.camera = cam
         camNode.position = SCNVector3(0, 0, 5)
         camNode.name = "Camera node"
-        camNode.light = setupLight()
+        self.light = setupLight()
+        camNode.light = self.light
         return camNode
     }
     
     internal func setupLight() -> SCNLight {
         let light = SCNLight()
         light.color = UColor.white
-        light.intensity = 800
+        light.intensity = settings.lightIntensity
         light.type = .directional
         
 //        let lnode = SCNNode()
@@ -172,11 +173,13 @@ extension MoleculeRenderer {
     func resetPivot() {
         let positions = steps.first?.molecule?.atoms.map {$0.position}
         guard let positions = positions else {return}
+        let averagePos = averageDistance(of: positions)
         let cameraPos = viewingZPosition(toSee: positions) + 10
 
-        let moveAction = SCNAction.move(to: .zero, duration: 0.2)
-        atomicRootNode.runAction(moveAction)
-        compoundAtomNodes.runAction(moveAction)
+        let moveRootAction = SCNAction.move(to: .zero, duration: 0.2)
+        atomicRootNode.runAction(moveRootAction)
+        let moveCompoundAction = SCNAction.move(to: -averagePos, duration: 0.2)
+        compoundAtomNodes.runAction(moveCompoundAction)
         let moveCam = SCNAction.move(to: SCNVector3(x: 0, y: 0, z: cameraPos), duration: 0.2)
         cameraNode.runAction(moveCam)
     }
@@ -186,8 +189,13 @@ extension MoleculeRenderer {
         var newPos = node.position
         if node.name!.starts(with: "C_") {newPos = node.boundingSphere.center}
         
+        
+        var newCampos = cameraNode.position
+        newCampos.z = viewingZPosition(toSee: [newPos]) + 10
+        
         self.atomicRootNode.runAction(SCNAction.move(to: .zero, duration: 0.2))
         self.compoundAtomNodes.runAction(SCNAction.move(to: -newPos, duration: 0.2))
+        self.cameraNode.runAction(SCNAction.move(to: newCampos, duration: 0.2))
         
         //self.atomicRootNode.pivot = SCNMatrix4MakeTranslation(newPos.x, newPos.y, newPos.z)
     }

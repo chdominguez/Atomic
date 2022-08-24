@@ -29,7 +29,7 @@ class AtomicMainController: ObservableObject {
                 return
             }
             guard !settings.recents.contains(fileURL) else {return}
-            if settings.recents.count > 2 {settings.recents.remove(at: 0)}
+            if settings.recents.count > 3 {settings.recents.remove(at: 0)}
             settings.recents.append(fileURL)
             RecentsStore.save(urls: settings.recents) { result in
                 if case .failure(let error) = result {

@@ -24,6 +24,20 @@ class GlobalSettings: ObservableObject {
     
     @Published var hasRecent: Bool = false
     
+    @Published var lightIntensity: Double = 800 {
+        didSet {
+            self.lightNode?.intensity = lightIntensity
+        }
+    }
+    
+    @Published var lightType: SCNLight.LightType = .directional {
+        didSet {
+            lightNode?.type = lightType
+        }
+    }
+    
+    var lightNode: SCNLight? = nil
+    
 }
 
 //MARK: Color settings

@@ -69,7 +69,7 @@ extension AtomicToolsView {
             HStack {
                 Image(systemName: controller.currentBondType.symbol)
                 Text("Bond")
-            }.foregroundColor((controller.selectedAtoms.count != 2) ? .gray : .primary)
+            }.foregroundColor((controller.selectedAtoms.count != 2 || !controller.cartoonNodes.isHidden) ? .gray : .primary)
         }
         .toolbarButton()
         .contextMenu(menuItems: {
@@ -86,7 +86,7 @@ extension AtomicToolsView {
                 Text("Triple")
             }
         })
-        .disabled(controller.selectedAtoms.count != 2)
+        .disabled(controller.selectedAtoms.count != 2 || !controller.cartoonNodes.isHidden)
     }
     
     private var erase: some View {

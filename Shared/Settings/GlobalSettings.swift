@@ -16,6 +16,14 @@ class GlobalSettings: ObservableObject {
     
     @Published var atomStyle: AtomStyle = .ballAndStick
     
+    @Published var recents: [URL] = [] {
+        didSet {
+            hasRecent = !recents.isEmpty
+        }
+    }
+    
+    @Published var hasRecent: Bool = false
+    
 }
 
 //MARK: Color settings

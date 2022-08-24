@@ -13,6 +13,8 @@ class AtomicMainController: ObservableObject {
     
     //MARK: Init
     
+    private var settings = GlobalSettings.shared
+    
     /// Initializes the renderer that manages the 3D view with the given steps
     private func initializeController(steps: [Step]) {
         self.renderer = MoleculeRenderer(steps)
@@ -21,7 +23,21 @@ class AtomicMainController: ObservableObject {
     /// ID for keeping track of opened controllers
     var id = UUID()
     var renderer: MoleculeRenderer? = nil
-    var fileURL: URL? = nil
+    var fileURL: URL? = nil {
+        didSet {
+            guard let fileURL = fileURL else {
+                return
+            }
+            guard !settings.recents.contains(fileURL) else {return}
+            if settings.recents.count > 2 {settings.recents.remove(at: 0)}
+            settings.recents.append(fileURL)
+            RecentsStore.save(urls: settings.recents) { result in
+                if case .failure(let error) = result {
+                    fatalError(error.localizedDescription)
+                }
+            }
+        }
+    }
     
     // Drag and drop related variables
     @Published var isDragginFile: Bool  = false
@@ -88,6 +104,7 @@ class AtomicMainController: ObservableObject {
             do {
                 guard url.startAccessingSecurityScopedResource() else {
                     DispatchQueue.main.sync {
+                        errorDescription = "Cannot access file"
                         showErrorAlert = true
                         loading = false
                     }

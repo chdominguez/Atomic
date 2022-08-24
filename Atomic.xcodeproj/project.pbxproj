@@ -20,7 +20,6 @@
 		C02C1BDC27E4B23F00BCDF01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
 		C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
 		C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
-		C041E26027752250005790EE /* SceneKitRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCECC276A3E710085CD1D /* SceneKitRepresentable.swift */; };
 		C0455E55277B668A00561AAA /* GaussianFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E54277B668A00561AAA /* GaussianFileReader.swift */; };
 		C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E54277B668A00561AAA /* GaussianFileReader.swift */; };
 		C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0455E57277B985400561AAA /* GaussianKeywords.swift */; };
@@ -36,9 +35,21 @@
 		C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */; };
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
+		C07BE7BB28A2745600EFBE98 /* CameraLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7BA28A2745600EFBE98 /* CameraLights.swift */; };
+		C07BE7BC28A2745600EFBE98 /* CameraLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7BA28A2745600EFBE98 /* CameraLights.swift */; };
+		C07BE7BE28A281D800EFBE98 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7BD28A281D800EFBE98 /* Selection.swift */; };
+		C07BE7BF28A281D800EFBE98 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7BD28A281D800EFBE98 /* Selection.swift */; };
+		C07BE7C128A2823F00EFBE98 /* TouchGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7C028A2823F00EFBE98 /* TouchGestures.swift */; };
+		C07BE7C228A2823F00EFBE98 /* TouchGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7C028A2823F00EFBE98 /* TouchGestures.swift */; };
+		C07BE7C428A2831400EFBE98 /* RenderAtoms.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7C328A2831400EFBE98 /* RenderAtoms.swift */; };
+		C07BE7C528A2831400EFBE98 /* RenderAtoms.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7C328A2831400EFBE98 /* RenderAtoms.swift */; };
+		C07BE7C728A283A700EFBE98 /* AtomStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7C628A283A700EFBE98 /* AtomStyles.swift */; };
+		C07BE7C828A283A700EFBE98 /* AtomStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7C628A283A700EFBE98 /* AtomStyles.swift */; };
 		C09441352761F76F00680075 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
 		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
+		C0B7EEE828B4FCFF00449DA6 /* DataRecentsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */; };
+		C0B7EEE928B4FCFF00449DA6 /* DataRecentsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0CE163928006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
@@ -49,7 +60,6 @@
 		C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48E26E7801200387EBA /* FileManager.swift */; };
 		C0DCCEC5276A3D600085CD1D /* BaseReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48F26E7801200387EBA /* BaseReader.swift */; };
 		C0DCCEC6276A3D670085CD1D /* ChartsViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06AA48C26E7801200387EBA /* ChartsViews.swift */; };
-		C0DCCECD276A3E710085CD1D /* SceneKitRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DCCECC276A3E710085CD1D /* SceneKitRepresentable.swift */; };
 		C0DCCECE276A3E8F0085CD1D /* PeriodicTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */; };
 		C0DCCECF276A3E8F0085CD1D /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
 		C0DCCED0276A3E8F0085CD1D /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
@@ -102,8 +112,14 @@
 		C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralExtensions.swift; sourceTree = "<group>"; };
 		C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSWindowManager.swift; sourceTree = "<group>"; };
 		C066B780277E15140036F404 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
+		C07BE7BA28A2745600EFBE98 /* CameraLights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraLights.swift; sourceTree = "<group>"; };
+		C07BE7BD28A281D800EFBE98 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
+		C07BE7C028A2823F00EFBE98 /* TouchGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchGestures.swift; sourceTree = "<group>"; };
+		C07BE7C328A2831400EFBE98 /* RenderAtoms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderAtoms.swift; sourceTree = "<group>"; };
+		C07BE7C628A283A700EFBE98 /* AtomStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomStyles.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
+		C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRecentsStorage.swift; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunctions.swift; sourceTree = "<group>"; };
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -111,7 +127,6 @@
 		C0DCCE94276A3C9B0085CD1D /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic_macOSApp.swift; sourceTree = "<group>"; };
 		C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Atomic_macOS.entitlements; sourceTree = "<group>"; };
-		C0DCCECC276A3E710085CD1D /* SceneKitRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitRepresentable.swift; sourceTree = "<group>"; };
 		C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Atomic-macOS-Info.plist"; sourceTree = SOURCE_ROOT; };
 		C0DFA43327E89C2A00F6BA9A /* XYZReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYZReader.swift; sourceTree = "<group>"; };
 		C0DFA43927E8BDAC00F6BA9A /* PDBReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDBReader.swift; sourceTree = "<group>"; };
@@ -217,6 +232,8 @@
 			children = (
 				C08A2A2928119A48004CE6FB /* Cartoon 3D models */,
 				F06AA47D26E77F5200387EBA /* Assets.xcassets */,
+				F06AA48C26E7801200387EBA /* ChartsViews.swift */,
+				C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */,
 				C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */,
 				C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */,
 				C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */,
@@ -340,10 +357,12 @@
 		F06AA4A926E7806100387EBA /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
-				F06AA48C26E7801200387EBA /* ChartsViews.swift */,
-				C05472AB280428CF00F51E6E /* TextViewRepresentable.swift */,
-				C0DCCECC276A3E710085CD1D /* SceneKitRepresentable.swift */,
 				C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */,
+				C07BE7C628A283A700EFBE98 /* AtomStyles.swift */,
+				C07BE7C328A2831400EFBE98 /* RenderAtoms.swift */,
+				C07BE7BD28A281D800EFBE98 /* Selection.swift */,
+				C07BE7C028A2823F00EFBE98 /* TouchGestures.swift */,
+				C07BE7BA28A2745600EFBE98 /* CameraLights.swift */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -369,6 +388,7 @@
 			children = (
 				F0F6552626F7C89600DD4F25 /* SettingsView.swift */,
 				C05472B12804C3EE00F51E6E /* GlobalSettings.swift */,
+				C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -499,19 +519,23 @@
 				C0DCCED0276A3E8F0085CD1D /* PeriodicTableView.swift in Sources */,
 				C05F5CAA2785A7D800F3B588 /* GeneralExtensions.swift in Sources */,
 				C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
+				C07BE7C828A283A700EFBE98 /* AtomStyles.swift in Sources */,
+				C07BE7BF28A281D800EFBE98 /* Selection.swift in Sources */,
 				C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
 				C0DFA43727E8A28500F6BA9A /* XYZReader.swift in Sources */,
 				C066B782277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */,
 				C0F9F3012857DE9200ABADE3 /* AtomicProgressView.swift in Sources */,
 				C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */,
-				C0DCCECD276A3E710085CD1D /* SceneKitRepresentable.swift in Sources */,
+				C07BE7BC28A2745600EFBE98 /* CameraLights.swift in Sources */,
+				C07BE7C228A2823F00EFBE98 /* TouchGestures.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
 				C0DCCEC5276A3D600085CD1D /* BaseReader.swift in Sources */,
 				C04B8380289BD73700B8E9B8 /* Debug.swift in Sources */,
 				C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0DCCEC4276A3D600085CD1D /* FileManager.swift in Sources */,
 				C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */,
+				C07BE7C528A2831400EFBE98 /* RenderAtoms.swift in Sources */,
 				C0DFA43B27E8BFD800F6BA9A /* PDBReader.swift in Sources */,
 				C0DCCED3276A3E920085CD1D /* MainWindow.swift in Sources */,
 				C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */,
@@ -527,6 +551,7 @@
 				C0E1371C277F33D3009ACCB6 /* InputfileView.swift in Sources */,
 				C021718027E3E269007ACD2F /* ToolBar.swift in Sources */,
 				C05472B32804C3EE00F51E6E /* GlobalSettings.swift in Sources */,
+				C0B7EEE928B4FCFF00449DA6 /* DataRecentsStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +560,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C05472AC280428CF00F51E6E /* TextViewRepresentable.swift in Sources */,
+				C07BE7BB28A2745600EFBE98 /* CameraLights.swift in Sources */,
 				C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
 				F06AA4A526E7801200387EBA /* AtomicMainController.swift in Sources */,
 				C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
@@ -544,22 +570,26 @@
 				C0E1371E277F3930009ACCB6 /* FreqsView.swift in Sources */,
 				C0F9F3002857DE9200ABADE3 /* AtomicProgressView.swift in Sources */,
 				C09441352761F76F00680075 /* ViewExtensions.swift in Sources */,
+				C07BE7C428A2831400EFBE98 /* RenderAtoms.swift in Sources */,
 				F0F6552226F7C61500DD4F25 /* MainWindow.swift in Sources */,
-				C041E26027752250005790EE /* SceneKitRepresentable.swift in Sources */,
+				C0B7EEE828B4FCFF00449DA6 /* DataRecentsStorage.swift in Sources */,
 				F06AA49E26E7801200387EBA /* BaseReader.swift in Sources */,
 				C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */,
 				C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0CE163928006C1200A35AA3 /* UsefulFunctions.swift in Sources */,
 				C0DFA43A27E8BDAC00F6BA9A /* PDBReader.swift in Sources */,
 				F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */,
+				C07BE7C728A283A700EFBE98 /* AtomStyles.swift in Sources */,
 				F0F6552726F7C89600DD4F25 /* SettingsView.swift in Sources */,
 				F06AA49D26E7801200387EBA /* FileManager.swift in Sources */,
 				C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */,
 				F06AA47A26E77F5100387EBA /* AtomicApp.swift in Sources */,
 				C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */,
 				C05F5CA72784720B00F3B588 /* UIToolbars_iPad.swift in Sources */,
+				C07BE7C128A2823F00EFBE98 /* TouchGestures.swift in Sources */,
 				F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */,
 				F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */,
+				C07BE7BE28A281D800EFBE98 /* Selection.swift in Sources */,
 				C0E1371B277F33D3009ACCB6 /* InputfileView.swift in Sources */,
 				C01D7FA6280C4734003EBA5D /* AtomicLineChartView.swift in Sources */,
 				C05F5CA92785A48C00F3B588 /* GeneralExtensions.swift in Sources */,

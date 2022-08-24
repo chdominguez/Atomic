@@ -45,10 +45,10 @@ struct MainWindow: View {
             .onOpenURL { url in
                 controller.processFile(url: url)
             }
-        #if os(macOS)
+#if os(macOS)
         // Obtaining the NSWindow instance associated with this view
             .background(WindowAccessor(associatedController: controller))
-        #elseif os(iOS)
+#elseif os(iOS)
         // Assigning the root view a sheet for displaying new views as a "little window inside the app".
             .sheet(isPresented: $controller.showSheet, content: {controller.sheetContent})
         // Detect if the app has become active to set the active controller
@@ -57,7 +57,7 @@ struct MainWindow: View {
                     InstanceManager.shared.currentController = controller
                 }
             }
-        #endif
+#endif
     }
     
     // The alert presented when there is any error
@@ -77,17 +77,17 @@ extension MainWindow {
         ZStack {
             if controller.fileReady {
                 Molecule3DView(controller: controller.renderer!, firstMoleculeName: controller.fileURL?.lastPathComponent ?? "Molecule")
-                #if os(iOS)
+#if os(iOS)
                 VStack {
                     iOSToolBarReplacement
                     Spacer()
                 }
-                #endif
+#endif
             }
             else {
                 VStack {
                     Spacer()
-                    WelcomeMessage()
+                    WelcomeMessage(hasRecents: $settings.hasRecent, mainController: controller)
                     Spacer()
                     mainScreen.padding(.vertical, 20)
                     Spacer().frame(height: 100)
@@ -98,21 +98,21 @@ extension MainWindow {
     
     private var mainScreen: some View {
         VStack(spacing: 50) {
-                if controller.loading {
-                    CirclingHydrogen(scale: 2)
-                    Text("Reading file...")
-                }
-                else {
-                    HStack(spacing: 100) {
-                        newButton
-                        openButton
-                        settingsButton
-                    }
-                }
-                
+            if controller.loading {
+                CirclingHydrogen(scale: 2)
+                Text("Reading file...")
             }
-            .frame(width: 120, height: 120)
-            .padding()
+            else {
+                HStack(spacing: 100) {
+                    newButton
+                    openButton
+                    settingsButton
+                }
+            }
+            
+        }
+        .frame(width: 120, height: 120)
+        .padding()
     }
     
     private var newButton: some View {
@@ -181,11 +181,11 @@ extension MainWindow {
     private var settingsButton: some View {
         Button {
             settingsTapped.toggle()
-            #if os(macOS)
+#if os(macOS)
             SettingsView().openNewWindow(type: .settings)
-            #elseif os(iOS)
+#elseif os(iOS)
             SettingsView().openNewWindow(controller: controller)
-            #endif
+#endif
         } label: {
             ZStack {
                 Image(systemName: "gear")
@@ -208,12 +208,79 @@ extension MainWindow {
 
 //MARK: Welcome message
 struct WelcomeMessage: View {
+    @Binding var hasRecents: Bool
+    let mainController: AtomicMainController
     var body: some View {
-        VStack {
-            Text("Atomic")
-                .font(.system(size: 100))
-            Text("Molecular editor")
-                .font(.title)
+        HStack {
+            Group {
+                VStack(alignment: .leading) {
+                    Text("Atomic")
+                        .font(.system(size: 100))
+                    Text("Molecular editor")
+                        .font(.title)
+                }
+            }.padding()
+            #if os(macOS)
+            if hasRecents {
+                Group {
+                    ZStack {
+                        RecentsView(mainController: mainController)
+                        Spacer().frame(width: 400, height: 250)
+                    }
+                    .background(RoundedRectangle(cornerRadius: 25).fill(Color.clear).shadow(radius: 5))
+                }
+            }
+        #endif
+        }.padding()
+    }
+}
+
+struct RecentsView: View {
+    @ObservedObject var mainController: AtomicMainController
+    @ObservedObject var settings = GlobalSettings.shared
+    var body: some View {
+        if settings.recents.isEmpty {
+            Text("No recent files")
+        } else {
+            VStack(alignment: .leading) {
+                Text("Recent files:").font(.title)
+                ScrollView {
+                    ForEach(settings.recents, id: \.self) { url in
+                            VStack {
+                                HStack {
+                                    Image("atomic-file")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 50)
+                                        .padding(.vertical, 5)
+                                    Text("\(url.lastPathComponent)")
+                                    Spacer()
+                                }.background(RoundedRectangle(cornerRadius: 10).fill(Color.neumorEnd))
+                            }.onTapGesture {
+                                mainController.processFile(url: url)
+                            }
+                    }
+                }
+            }
+            .onAppear {
+                RecentsStore.load { result in
+                    switch result {
+                    case .failure(let error):
+                        fatalError(error.localizedDescription)
+                    case .success(let url):
+                        settings.recents = url
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+struct preview: PreviewProvider {
+    static var previews: some View {
+        Group {
+            MainWindow()
         }
     }
 }

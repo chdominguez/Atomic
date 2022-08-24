@@ -172,14 +172,12 @@ extension MoleculeRenderer {
     func resetPivot() {
         let positions = steps.first?.molecule?.atoms.map {$0.position}
         guard let positions = positions else {return}
-        let nodePos = averageDistance(of: positions)
         let cameraPos = viewingZPosition(toSee: positions) + 10
 
-        atomicRootNode.pivot = SCNMatrix4MakeTranslation(nodePos.x, nodePos.y, nodePos.z)
         let moveAction = SCNAction.move(to: .zero, duration: 0.2)
-        let moveCam = SCNAction.move(to: SCNVector3(x: 0, y: 0, z: cameraPos), duration: 0.2)
         atomicRootNode.runAction(moveAction)
-        //cameraOrbit.runAction(moveAction)
+        compoundAtomNodes.runAction(moveAction)
+        let moveCam = SCNAction.move(to: SCNVector3(x: 0, y: 0, z: cameraPos), duration: 0.2)
         cameraNode.runAction(moveCam)
     }
     
@@ -188,9 +186,10 @@ extension MoleculeRenderer {
         var newPos = node.position
         if node.name!.starts(with: "C_") {newPos = node.boundingSphere.center}
         
+        self.atomicRootNode.runAction(SCNAction.move(to: .zero, duration: 0.2))
+        self.compoundAtomNodes.runAction(SCNAction.move(to: -newPos, duration: 0.2))
         
-        
-        self.atomicRootNode.pivot = SCNMatrix4MakeTranslation(newPos.x, newPos.y, newPos.z)
+        //self.atomicRootNode.pivot = SCNMatrix4MakeTranslation(newPos.x, newPos.y, newPos.z)
     }
     
 
@@ -234,8 +233,10 @@ extension MoleculeRenderer {
                 rotateZAxismacOS(scroll: event.scrollingDeltaY * scalingForClunky)
             }
             else {
-                orbitNode.localTranslate(by: SCNVector3(x: 0, y: -event.scrollingDeltaY * scalingForClunky/50, z: 0))
-                orbitNode.localTranslate(by: SCNVector3(x: event.scrollingDeltaX * scalingForClunky/50, y: 0, z: 0))
+                var pos = atomicRootNode.position
+                pos += SCNVector3(x: 0, y: -event.scrollingDeltaY * scalingForClunky/50, z: 0)
+                pos += SCNVector3(x: event.scrollingDeltaX * scalingForClunky/50, y: 0, z: 0)
+                atomicRootNode.position = pos
             }
         }
     }

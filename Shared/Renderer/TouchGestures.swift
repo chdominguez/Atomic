@@ -28,9 +28,11 @@ extension MoleculeRenderer {
         }
     }
     
-    
     internal func newAtomOnTouch(molecule: Molecule, at location: CGPoint) {
-        let position = unprojectPoint(SCNVector3(location.x, location.y, 0.8))
+        let unprojected0 = unprojectPoint(SCNVector3(location.x, location.y, 0.99))
+
+                                        
+        let position = atomNodes.convertPosition(unprojected0, from: scene!.rootNode)
         let atom = Atom(position: position, type: selectedFromPtable, number: molecule.atoms.count + 1)
         molecule.atoms.append(atom)
         let kit = ProteinKit()

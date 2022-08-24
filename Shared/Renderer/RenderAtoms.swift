@@ -28,7 +28,7 @@ extension MoleculeRenderer {
         do {
             let n = try pNode.getProteinNode()
             cartoonNodes.addChildNode(n)
-            atomicRootNode.addChildNode(cartoonNodes)
+            compoundAtomNodes.addChildNode(cartoonNodes)
         } catch {
             fatalError("Bad PDB in ProteinKit")
         }

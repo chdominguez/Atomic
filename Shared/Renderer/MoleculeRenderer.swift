@@ -57,10 +57,10 @@ class MoleculeRenderer: SCNView, ObservableObject {
     var backBoneNode = SCNLineNode()
     var cartoonNodes = SCNNode()
     var selectionNodes = SCNNode()
+    var compoundAtomNodes = SCNNode()
     
     let atomicRootNode = SCNNode()
     var cameraNode = SCNNode()
-    var orbitNode = SCNNode()
     var lightNode = SCNNode()
     
     /// An array of tuples. The nodes selected with its selection orb node.
@@ -112,8 +112,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         // Setup the camera node
         self.cameraNode = setupCameraNode()
-        orbitNode.addChildNode(cameraNode)
-        scene.rootNode.addChildNode(self.orbitNode)
+        scene.rootNode.addChildNode(cameraNode)
         self.pointOfView = self.cameraNode
         
         self.scene = scene
@@ -126,15 +125,17 @@ class MoleculeRenderer: SCNView, ObservableObject {
         guard let molecule = steps.first?.molecule else {return}
         
         let positions = molecule.atoms.map {$0.position}
-        let averagePos = averageDistance(of: positions)
+        //let averagePos = averageDistance(of: positions)
         
-        atomicRootNode.pivot = SCNMatrix4MakeTranslation(averagePos.x, averagePos.y, averagePos.z)
+        //atomicRootNode.pivot = SCNMatrix4MakeTranslation(averagePos.x, averagePos.y, averagePos.z)
         // Add more space to entirely see the molecule. 10 is an okay value
         cameraNode.position.z = viewingZPosition(toSee: positions) + 10
         
-        atomicRootNode.name = "Atomic node"
+        atomicRootNode.name = "Atomic root node"
         
         scene!.rootNode.addChildNode(atomicRootNode)
+        
+        atomicRootNode.addChildNode(compoundAtomNodes)
         
         guard let molecule = step.molecule else {return}
         
@@ -157,14 +158,14 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         
         // Add the newly created atomNodes to the root scene
-        atomicRootNode.addChildNode(atomNodes)
+        compoundAtomNodes.addChildNode(atomNodes)
         
         // Cylinders cause a significant drop in performance.If more than 1000 bonds are present. They become a flattened cone. The downside of this is that they are converted to a big node hence individual bonds cannot be broken
         if bondNodes.childNodes.count > 1000 {
             self.bondNodes = bondNodes.flattenedClone()
         }
         
-        atomicRootNode.addChildNode(bondNodes)
+        compoundAtomNodes.addChildNode(bondNodes)
         
         // Compute the backbone and cartoon nodes for proteins
         if let _ = step.backBone {
@@ -173,7 +174,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         // Add selection node as child of the main node
         
-        atomicRootNode.addChildNode(selectionNodes)
+        compoundAtomNodes.addChildNode(selectionNodes)
         
     }
     

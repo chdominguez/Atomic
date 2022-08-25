@@ -7,51 +7,71 @@
 
 import SwiftUI
 
-class RecentsStore: ObservableObject {    
-    private static func fileURL() throws -> URL {
-        try FileManager.default.url(for: .documentDirectory,
-                                       in: .userDomainMask,
-                                       appropriateFor: nil,
-                                       create: false)
-            .appendingPathComponent("recents.data")
-    }
+class RecentsStore: ObservableObject {
     
-    static func load(completion: @escaping (Result<[URL], Error>)->Void) {
-        DispatchQueue.global(qos: .background).async {
-            do {
-                let fileURL = try fileURL()
-                guard let file = try? FileHandle(forReadingFrom: fileURL) else {
-                    DispatchQueue.main.async {
-                        completion(.success([]))
-                    }
-                    return
-                }
-                let recents = try JSONDecoder().decode([URL].self, from: file.availableData)
-                DispatchQueue.main.async {
-                    completion(.success(recents))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-            }
+    @Published var urls: [URL] = []
+    
+    public init() {
+        if createDirectory() {
+            loadBookmarks()
         }
     }
     
-    static func save(urls: [URL], completion: @escaping (Result<Int, Error>)->Void) {
-        DispatchQueue.global(qos: .background).async {
-            do {
-                let data = try JSONEncoder().encode(urls)
-                let outfile = try fileURL()
-                try data.write(to: outfile)
-                DispatchQueue.main.async {
-                    completion(.success(urls.count))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-            }
+    private func createDirectory() -> Bool {
+        do {
+            try FileManager.default.createDirectory(at: saveDataPath(), withIntermediateDirectories: true)
+            return true
         }
+        catch {
+            print(error.localizedDescription)
+            return false
+        }
+    }
+    
+    private func saveDataPath() -> URL {
+        return FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!.appendingPathComponent("com.cdominguez.Atomic")
+    }
+    
+    public func addBookmark(for url: URL) {
+        do {
+            guard url.startAccessingSecurityScopedResource() else {return}
+            defer { url.stopAccessingSecurityScopedResource() }
+            
+            if urls.contains(url) {return}
+            
+            let bData = try url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: nil)
+            
+            let id = UUID().uuidString
+            
+            try bData.write(to: saveDataPath().appendingPathComponent(id))
+            
+            withAnimation {
+                urls.append(url)
+            }
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func loadBookmarks() {
+        // Get URLS from bookmarks
+        let files = try? FileManager.default.contentsOfDirectory(at: saveDataPath(), includingPropertiesForKeys: nil)
+        
+        self.urls = files?.compactMap { file in
+            do {
+                let bData = try Data(contentsOf: file)
+                var isStale = false
+                let url = try URL(resolvingBookmarkData: bData, bookmarkDataIsStale: &isStale)
+                
+                guard !isStale else {
+                    return nil
+                }
+                return url
+            } catch {
+                print(error.localizedDescription)
+                return nil
+            }
+        } ?? []
     }
 }

@@ -89,12 +89,12 @@ extension MainWindow {
                         Spacer()
                         HStack {
                             WelcomeMessage()
-                            #if os(macOS)
+                            //#if os(macOS)
                             Spacer().frame(width: 50)
-                            if settings.hasRecent {
+                            if !settings.savedRecents.urls.isEmpty {
                                 recentsView
                             }
-                            #endif
+                            //#endif
                         }
                         Spacer()
                         mainScreen.padding(.vertical, 20)
@@ -240,13 +240,13 @@ struct RecentsView: View {
     @ObservedObject var mainController: AtomicMainController
     @ObservedObject var settings = GlobalSettings.shared
     var body: some View {
-        if settings.recents.isEmpty {
+        if settings.savedRecents.urls.isEmpty {
             Text("No recent files")
         } else {
             VStack(alignment: .leading) {
                 Text("Recent files:").font(.title)
                 ScrollView {
-                    ForEach(settings.recents, id: \.self) { url in
+                    ForEach(settings.savedRecents.urls, id: \.self) { url in
                         VStack(alignment: .trailing) {
                                 HStack {
                                     Image("atomic-file")
@@ -264,16 +264,6 @@ struct RecentsView: View {
                             }
                     }
                 }.frame(height: 220)
-            }
-            .onAppear {
-                RecentsStore.load { result in
-                    switch result {
-                    case .failure(let error):
-                        fatalError(error.localizedDescription)
-                    case .success(let url):
-                        settings.recents = url
-                    }
-                }
             }
         }
     }

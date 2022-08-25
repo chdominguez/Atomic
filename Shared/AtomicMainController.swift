@@ -28,14 +28,7 @@ class AtomicMainController: ObservableObject {
             guard let fileURL = fileURL else {
                 return
             }
-            guard !settings.recents.contains(fileURL) else {return}
-            if settings.recents.count > 3 {settings.recents.remove(at: 0)}
-            settings.recents.append(fileURL)
-            RecentsStore.save(urls: settings.recents) { result in
-                if case .failure(let error) = result {
-                    fatalError(error.localizedDescription)
-                }
-            }
+            settings.savedRecents.addBookmark(for: fileURL)
         }
     }
     

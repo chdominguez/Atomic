@@ -12,17 +12,11 @@ class GlobalSettings: ObservableObject {
     
     static let shared = GlobalSettings()
     
+    let savedRecents = RecentsStore()
+    
     @Published var colorSettings = ProteinColors()
     
     @Published var atomStyle: AtomStyle = .ballAndStick
-    
-    @Published var recents: [URL] = [] {
-        didSet {
-            hasRecent = !recents.isEmpty
-        }
-    }
-    
-    @Published var hasRecent: Bool = false
     
     @Published var lightIntensity: Double = 800 {
         didSet {

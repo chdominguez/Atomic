@@ -91,7 +91,7 @@ extension MainWindow {
                             WelcomeMessage()
                             //#if os(macOS)
                             Spacer().frame(width: 50)
-                            if !settings.savedRecents.urls.isEmpty {
+                            if !settings.savedRecents.bookmarks.isEmpty {
                                 recentsView
                             }
                             //#endif
@@ -240,13 +240,13 @@ struct RecentsView: View {
     @ObservedObject var mainController: AtomicMainController
     @ObservedObject var settings = GlobalSettings.shared
     var body: some View {
-        if settings.savedRecents.urls.isEmpty {
+        if settings.savedRecents.bookmarks.isEmpty {
             Text("No recent files")
         } else {
             VStack(alignment: .leading) {
                 Text("Recent files:").font(.title)
                 ScrollView {
-                    ForEach(settings.savedRecents.urls, id: \.self) { url in
+                    ForEach(settings.savedRecents.bookmarks, id: \.uuid) { bookmark in
                         VStack(alignment: .trailing) {
                                 HStack {
                                     Image("atomic-file")
@@ -254,13 +254,13 @@ struct RecentsView: View {
                                         .scaledToFit()
                                         .frame(height: 50)
                                         .padding(.vertical, 5)
-                                    Text("\(url.lastPathComponent)")
+                                    Text("\(bookmark.url.lastPathComponent)")
                                     Spacer()
                                 }.background(RoundedRectangle(cornerRadius: 10).fill(Color.neumorEnd))
                                     .frame(width: 300)
                             }
                         .onTapGesture {
-                                mainController.processFile(url: url)
+                            mainController.processFile(url: bookmark.url)
                             }
                     }
                 }.frame(height: 220)

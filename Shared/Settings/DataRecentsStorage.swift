@@ -9,7 +9,7 @@ import SwiftUI
 
 class RecentsStore: ObservableObject {
     
-    @Published var urls: [URL] = []
+    @Published var bookmarks: [(uuid: String, url: URL)] = []
     
     public init() {
         if createDirectory() {
@@ -37,7 +37,14 @@ class RecentsStore: ObservableObject {
             guard url.startAccessingSecurityScopedResource() else {return}
             defer { url.stopAccessingSecurityScopedResource() }
             
-            if urls.contains(url) {return}
+            if bookmarks.contains(where: {$0.url == url}) {
+                let thisOneIndex = bookmarks.firstIndex {$0.url == url}
+                guard let thisOneIndex = thisOneIndex else {return}
+                let bookmark = bookmarks[thisOneIndex]
+                bookmarks.remove(at: thisOneIndex)
+                bookmarks.insert(bookmark, at: 0)
+                return
+            }
             
             let bData = try url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: nil)
             
@@ -46,7 +53,11 @@ class RecentsStore: ObservableObject {
             try bData.write(to: saveDataPath().appendingPathComponent(id))
             
             withAnimation {
-                urls.append(url)
+                bookmarks.insert((id, url), at: 0)
+            }
+            
+            if bookmarks.count > 4 {
+                removeOldestBookmark()
             }
             
         } catch {
@@ -58,7 +69,7 @@ class RecentsStore: ObservableObject {
         // Get URLS from bookmarks
         let files = try? FileManager.default.contentsOfDirectory(at: saveDataPath(), includingPropertiesForKeys: nil)
         
-        self.urls = files?.compactMap { file in
+        self.bookmarks = files?.compactMap { file in
             do {
                 let bData = try Data(contentsOf: file)
                 var isStale = false
@@ -67,11 +78,18 @@ class RecentsStore: ObservableObject {
                 guard !isStale else {
                     return nil
                 }
-                return url
+                return (file.lastPathComponent, url)
             } catch {
                 print(error.localizedDescription)
                 return nil
             }
         } ?? []
+    }
+    
+    public func removeOldestBookmark() {
+        let uuid = bookmarks[0].uuid
+        bookmarks.removeFirst()
+        let url = saveDataPath().appendingPathComponent(uuid)
+        try? FileManager.default.removeItem(at: url)
     }
 }

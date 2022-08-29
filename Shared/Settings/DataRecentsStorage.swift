@@ -37,6 +37,10 @@ class RecentsStore: ObservableObject {
             guard url.startAccessingSecurityScopedResource() else {return}
             defer { url.stopAccessingSecurityScopedResource() }
             
+            if bookmarks.count > 4 {
+                removeOldestBookmark()
+            }
+            
             if bookmarks.contains(where: {$0.url == url}) {
                 let thisOneIndex = bookmarks.firstIndex {$0.url == url}
                 guard let thisOneIndex = thisOneIndex else {return}
@@ -54,10 +58,6 @@ class RecentsStore: ObservableObject {
             
             withAnimation {
                 bookmarks.insert((id, url), at: 0)
-            }
-            
-            if bookmarks.count > 4 {
-                removeOldestBookmark()
             }
             
         } catch {
@@ -87,9 +87,11 @@ class RecentsStore: ObservableObject {
     }
     
     public func removeOldestBookmark() {
-        let uuid = bookmarks[0].uuid
-        bookmarks.removeFirst()
+        guard let uuid = bookmarks.last?.uuid else {return}
+        bookmarks.removeLast()
         let url = saveDataPath().appendingPathComponent(uuid)
         try? FileManager.default.removeItem(at: url)
+        if bookmarks.count > 4 {removeOldestBookmark()}
     }
+
 }

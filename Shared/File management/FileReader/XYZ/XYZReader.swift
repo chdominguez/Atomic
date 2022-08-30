@@ -24,7 +24,9 @@ extension BaseReader {
         
         var skipLine = false
         
-        for line in splitFile {
+        for line in splitFile! {
+            
+            increaseProgress()
             
             //Increment current line by 1 to keep track if an error happens
             errorLine += 1

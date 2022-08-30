@@ -51,8 +51,7 @@ class AtomicMainController: ObservableObject {
     @Published var fileAsString: String? = nil
     
     // Base reader class for reading files and handling Steps
-    var BR: BaseReader? = nil
-    
+    @Published var BR: BaseReader? = nil
     /// Error shown when the opened file cannot be loaded
     var errorDescription = ""
     
@@ -104,7 +103,9 @@ class AtomicMainController: ObservableObject {
                     return
                 }
                 let fileString = try AtomicFileOpener.getFileAsString(from: url)
-                self.BR = try BaseReader(fileURL: url)
+                try DispatchQueue.main.sync {
+                    self.BR = try BaseReader(fileURL: url)
+                }
                 try BR?.readSteps()
                 
                 guard let BR = BR else {

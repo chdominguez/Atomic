@@ -19,22 +19,38 @@ extension MoleculeRenderer {
         camNode.camera = cam
         camNode.position = SCNVector3(0, 0, 5)
         camNode.name = "Camera node"
-        self.light = setupLight()
-        camNode.light = self.light
         return camNode
     }
     
-    internal func setupLight() -> SCNLight {
+    internal func setupLight() -> SCNNode {
         let light = SCNLight()
         light.color = UColor.white
         light.intensity = settings.lightIntensity
         light.type = .directional
         
-//        let lnode = SCNNode()
-//        lnode.light = light
-//        lnode.position = SCNVector3Make(0, 0, 0)
-//        lnode.name = "Light node"
-        return light
+        let lightSphere = SCNSphere(radius: 1)
+        lightSphere.materials = [settings.colorSettings.atomMaterials[.gold]!]
+        
+        let lnode = SCNNode()
+        lnode.geometry = lightSphere
+        lnode.light = light
+        lnode.position = SCNVector3Make(0, 0, 0)
+        lnode.name = "Light node"
+        return lnode
+    }
+    
+    func toggleFixedLightNode() {
+        self.lightNode.removeFromParentNode()
+        if self.isLightFixed {
+            lightNode.position = .zero
+            cameraNode.addChildNode(lightNode)
+        } else {
+            let lightPos = atomNodes.convertPosition(cameraNode.position, from: cameraNode)
+            self.lightNode.position = lightPos
+            compoundAtomNodes.addChildNode(self.lightNode)
+        }
+        self.lightNode.look(at: currentPivotPosition)
+        self.isLightFixed.toggle()
     }
     
     func zoomCamera(_ inOrOut: Bool) {
@@ -175,7 +191,9 @@ extension MoleculeRenderer {
         guard let positions = positions else {return}
         let averagePos = averageDistance(of: positions)
         let cameraPos = viewingZPosition(toSee: positions) + 10
-
+        
+        currentPivotPosition = averagePos
+        
         let moveRootAction = SCNAction.move(to: .zero, duration: 0.2)
         atomicRootNode.runAction(moveRootAction)
         let moveCompoundAction = SCNAction.move(to: -averagePos, duration: 0.2)
@@ -189,6 +207,7 @@ extension MoleculeRenderer {
         var newPos = node.position
         if node.name!.starts(with: "C_") {newPos = node.boundingSphere.center}
         
+        currentPivotPosition = newPos
         
         var newCampos = cameraNode.position
         newCampos.z = viewingZPosition(toSee: [newPos]) + 10

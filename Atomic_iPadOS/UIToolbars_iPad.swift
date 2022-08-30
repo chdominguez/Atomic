@@ -172,6 +172,14 @@ extension MainWindow {
         } label: {
             Text("Z")
         }
+        Divider()
+            Button {
+                controller.renderer?.toggleFixedLightNode()
+            } label: {
+                Text("Fix/unfix light")
+            }
+
+            
         } label: {
             Button {} label: {
                 HStack {

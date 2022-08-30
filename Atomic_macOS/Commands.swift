@@ -113,6 +113,13 @@ struct AtomicCommands: Commands {
             } label: {
                 Text("Z")
             }
+            Divider()
+            Button {
+                commands.activeController?.renderer?.toggleFixedLightNode()
+            } label: {
+                Text("Toggle fixed light")
+            }
+
 
         }
         CommandMenu("Input/Output") {

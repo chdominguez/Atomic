@@ -50,52 +50,58 @@ struct GeneralSettings: View {
 struct ViewSettings: View {
     @ObservedObject var settings = GlobalSettings.shared
     var body: some View {
-        List {
-            Section {
-                ColorPicker("Line color: ", selection: $settings.colorSettings.chartColor)
-            } header: {
-                Text("Charts").bold()
-            }
-            Section {
-                VStack(alignment: .leading) {
-                    ColorPicker("Background color: ", selection: $settings.colorSettings.backgroundColor)
-                    Spacer()
-                    ColorPicker("Bond color: ", selection: $settings.colorSettings.bondColor)
-                    Spacer()
-                    ColorPicker("Selection color: ", selection: $settings.colorSettings.selectionColor)
+         ScrollView {
+             LazyVStack {
+                Section {
+                    ColorPicker("Line color: ", selection: $settings.colorSettings.chartColor)
+                } header: {
+                    Text("Charts").bold()
                 }
-            } header: {
-                Text("Scene").bold()
-            }
-            Section {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("Roughness")
-                        Slider(value: $settings.colorSettings.roughness, in: 0...1)
+                Section {
+                    VStack(alignment: .leading) {
+                        ColorPicker("Background color: ", selection: $settings.colorSettings.backgroundColor)
+                        Spacer()
+                        ColorPicker("Bond color: ", selection: $settings.colorSettings.bondColor)
+                        Spacer()
+                        ColorPicker("Selection color: ", selection: $settings.colorSettings.selectionColor)
                     }
-                    HStack {
-                        Text("Metalness")
-                        Slider(value: $settings.colorSettings.metalness, in: 0...1)
-                    }
-                    HStack {
-                        Picker("Light type", selection: $settings.lightType) {
-                            Text("Ambient").tag(SCNLight.LightType.ambient)
-                            Text("Directional").tag(SCNLight.LightType.directional)
-                            Text("Area").tag(SCNLight.LightType.area)
-                            Text("Omni").tag(SCNLight.LightType.omni)
-                            Text("Spot").tag(SCNLight.LightType.spot)
+                } header: {
+                    Text("Scene").bold()
+                }
+                Section {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Roughness")
+                            Slider(value: $settings.colorSettings.roughness, in: 0...1)
                         }
+                        HStack {
+                            Text("Metalness")
+                            Slider(value: $settings.colorSettings.metalness, in: 0...1)
+                        }
+                        HStack {
+                            Picker("Light type", selection: $settings.lightType) {
+                                Text("Ambient").tag(SCNLight.LightType.ambient)
+                                Text("Directional").tag(SCNLight.LightType.directional)
+                                Text("Area").tag(SCNLight.LightType.area)
+                                Text("Omni").tag(SCNLight.LightType.omni)
+                                Text("Spot").tag(SCNLight.LightType.spot)
+                            }.onChange(of: settings.lightType) { newValue in
+                                settings.modifyLightType(newValue)
+                            }
+                        }
+                        HStack {
+                            Text("Light intensity")
+                            Slider(value: $settings.lightIntensity, in: 0...2000).onChange(of: settings.lightIntensity) { newValue in
+                                settings.modifyLightIntensity(newValue)
+                            }
+                        }
+
                     }
-                    HStack {
-                        Text("Light intensity")
-                        Slider(value: $settings.lightIntensity, in: 300...1000)
-                    }
-                    PTable().scaleEffect(0.9)
+                } header: {
+                    Text("Atoms").bold()
                 }
-            } header: {
-                Text("Atoms").bold()
-            }
-        }.navigationTitle("View")
+            }.navigationTitle("View")
+        }
     }
 }
 

@@ -18,20 +18,23 @@ class GlobalSettings: ObservableObject {
     
     @Published var atomStyle: AtomStyle = .ballAndStick
     
-    @Published var lightIntensity: Double = 800 {
-        didSet {
-            self.lightNode?.intensity = lightIntensity
+    @Published var lightIntensity: Double = 800
+    
+    @Published var lightType: SCNLight.LightType = .directional
+    
+    var lightNode: SCNNode? = nil
+    
+    func modifyLightIntensity(_ newValue: Double) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.lightNode?.light?.intensity = newValue
         }
     }
     
-    @Published var lightType: SCNLight.LightType = .directional {
-        didSet {
-            lightNode?.type = lightType
+    func modifyLightType(_ newType: SCNLight.LightType) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.lightNode?.light?.type = newType
         }
     }
-    
-    var lightNode: SCNLight? = nil
-    
 }
 
 //MARK: Color settings

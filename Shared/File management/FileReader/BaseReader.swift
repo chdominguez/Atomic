@@ -19,16 +19,21 @@ class BaseReader: ObservableObject {
     internal var errorLine = 0
     
     // Output file saved in an array for each line
-    internal let splitFile: [String]
+    @Published var splitFile: [String.SubSequence]? = nil
     
     // The read steps from the opened file
     public var steps: [Step] = []
+    
+    // Progress while reading file
+    @Published var progress: Double = 0
+    var progressEvery: Int {
+        return (splitFile!.count / 10) == 0 ? 1 : splitFile!.count / 10
+    }
     
     /// Initialize the base reader class with the opened file as an string using the file url
     /// - Parameter fileAsString: The contents of the file as a unique string
     init(fileURL: URL) throws {
         self.fileURL = fileURL
-        self.splitFile = (try String(contentsOf: fileURL)).components(separatedBy: "\n")
     }
     
     /// Returns the Element of the given String with an atomic symbol or the atomic number
@@ -59,11 +64,19 @@ class BaseReader: ObservableObject {
             }
         }
         
+        if FE != .pdb {
+            DispatchQueue.global(qos: .userInitiated).sync {
+                let splitted = try! String(contentsOf: self.fileURL).split(separator: "\n")
+                DispatchQueue.main.sync {
+                    self.splitFile = splitted
+                }
+            }
+        }
+        
         // For every allowed file extension, a reader function is assigned.
         switch FE {
         case .pdb:
             let p = PDBReader()
-            #warning("Came back to here PDBReader")
             try p.readPDB(from: fileURL)
             self.steps = p.steps
         case .xyz:
@@ -76,6 +89,14 @@ class BaseReader: ObservableObject {
             throw AtomicErrors.notImplemented
         }
         
+    }
+    
+    func increaseProgress() {
+        if errorLine % self.progressEvery == 0 {
+            DispatchQueue.main.sync {
+                progress += 0.1
+            }
+        }
     }
     
 }

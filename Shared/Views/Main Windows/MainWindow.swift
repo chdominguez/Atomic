@@ -107,11 +107,27 @@ extension MainWindow {
     private var recentsView: some View {
         RecentsView(mainController: controller)
     }
+    
+    private struct pView: View {
+        @ObservedObject var baseReader: BaseReader
+        var body: some View {
+            if baseReader.splitFile == nil {
+                ProgressView("Splitting file")
+            } else {
+                CirclingHydrogen(scale: 2)
+                ProgressView(value: baseReader.progress) {
+                    Text("Reading file...")
+                }.frame(width: 350)
+            }
+        }
+    }
+    
     private var mainScreen: some View {
         VStack(spacing: 50) {
             if controller.loading {
-                CirclingHydrogen(scale: 2)
-                Text("Reading file...")
+                if controller.BR != nil {
+                    pView(baseReader: controller.BR!)
+                }
             }
             else {
                 HStack(spacing: 100) {

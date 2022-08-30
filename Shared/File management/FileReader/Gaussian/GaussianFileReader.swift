@@ -60,7 +60,8 @@ extension BaseReader {
         var didReadInput:    Bool = false
         var chkGeom:         Bool = false
         
-        for line in self.splitFile {
+        for line in self.splitFile! {
+            increaseProgress()
             self.errorLine += 1
             if didReadInput {
                 //MARK: Read log file
@@ -91,7 +92,7 @@ extension BaseReader {
                     continue
                 }
                 if orientCoords {
-                    let atom = try gaussInputOrientationToAtom(line)
+                    let atom = try gaussInputOrientationToAtom(String(line))
                     currentMolecule.atoms.append(atom)
                     continue
                 }
@@ -260,8 +261,9 @@ extension BaseReader {
     
     internal func readGJFSteps() throws {
         let molecule = Molecule()
-        for line in splitFile {
-            guard let atom = try gjfToAtom(line: line, number: molecule.atoms.count + 1) else {continue}
+        for line in splitFile! {
+            increaseProgress()
+            guard let atom = try gjfToAtom(line: String(line), number: molecule.atoms.count + 1) else {continue}
             molecule.atoms.append(atom)
         }
         let step = Step()

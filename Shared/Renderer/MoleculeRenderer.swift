@@ -63,6 +63,9 @@ class MoleculeRenderer: SCNView, ObservableObject {
     var cameraNode = SCNNode()
     var lightNode = SCNNode()
     var light = SCNLight()
+    @Published var isLightFixed: Bool = false
+    
+    internal var currentPivotPosition: SCNVector3 = .zero
     
     /// An array of tuples. The nodes selected with its selection orb node.
     @Published var selectedAtoms: [(selectedNode: SCNNode, selectionOrb: SCNNode)] = [] {
@@ -113,7 +116,9 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         // Setup the camera node
         self.cameraNode = setupCameraNode()
-        settings.lightNode = self.light
+        self.lightNode = setupLight()
+        settings.lightNode = self.lightNode
+        cameraNode.addChildNode(lightNode)
         scene.rootNode.addChildNode(cameraNode)
         self.pointOfView = self.cameraNode
         

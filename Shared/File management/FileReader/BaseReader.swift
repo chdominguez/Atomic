@@ -15,19 +15,23 @@ class BaseReader: ObservableObject {
     // The url of the opened file
     internal let fileURL: URL
     
+    // FileReader
+    internal var fileReader: StreamingFileReader? = nil
+    
     // Keep trak the reading line in case of failure
     internal var errorLine = 0
-    
-    // Output file saved in an array for each line
-    @Published var splitFile: [String.SubSequence]? = nil
     
     // The read steps from the opened file
     public var steps: [Step] = []
     
     // Progress while reading file
+    @Published var totalLines: Int? = nil
     @Published var progress: Double = 0
     var progressEvery: Int {
-        return (splitFile!.count / 10) == 0 ? 1 : splitFile!.count / 10
+        guard let totalLines = totalLines else {
+            return 0
+        }
+        return (totalLines / 10) == 0 ? 1 : totalLines / 10
     }
     
     /// Initialize the base reader class with the opened file as an string using the file url
@@ -65,12 +69,8 @@ class BaseReader: ObservableObject {
         }
         
         if FE != .pdb {
-            DispatchQueue.global(qos: .userInitiated).sync {
-                let splitted = try! String(contentsOf: self.fileURL).split(separator: "\n")
-                DispatchQueue.main.sync {
-                    self.splitFile = splitted
-                }
-            }
+            fileReader = StreamingFileReader(url: fileURL)
+            countLines()
         }
         
         // For every allowed file extension, a reader function is assigned.
@@ -81,6 +81,7 @@ class BaseReader: ObservableObject {
             self.steps = p.steps
         case .xyz:
             try readXYZSteps()
+            //testMemoery()
         case .gjf, .com:
             try readGJFSteps()
         case .log, .qfi:
@@ -153,6 +154,67 @@ enum AtomicErrors: Error, LocalizedError {
             return "Unknown error. Contact developer."
         case .notImplemented:
             return "File type not implemented yet!"
+        }
+    }
+}
+
+class StreamingFileReader {
+    var fileHandle: FileHandle?
+    var buffer: Data
+    let bufferSize: Int = 1024
+    
+    // Using new line as the delimiter
+    let delimiter = "\n".data(using: .utf8)!
+    
+    init(path: String) {
+        fileHandle = FileHandle(forReadingAtPath: path)
+        buffer = Data(capacity: bufferSize)
+    }
+    
+    init(url: URL) {
+        fileHandle = try? FileHandle(forReadingFrom: url)
+        buffer = Data(capacity: bufferSize)
+    }
+    
+    func readLine() -> String? {
+        var rangeOfDelimiter = buffer.range(of: delimiter)
+        
+        while rangeOfDelimiter == nil {
+            guard let chunk = fileHandle?.readData(ofLength: bufferSize) else { return nil }
+            
+            if chunk.count == 0 {
+                if buffer.count > 0 {
+                    defer { buffer.count = 0 }
+                    
+                    return String(data: buffer, encoding: .utf8)
+                }
+                
+                return nil
+            } else {
+                buffer.append(chunk)
+                rangeOfDelimiter = buffer.range(of: delimiter)
+            }
+        }
+        
+        let rangeOfLine = 0 ..< rangeOfDelimiter!.upperBound
+        let line = String(data: buffer.subdata(in: rangeOfLine), encoding: .utf8)
+        
+        buffer.removeSubrange(rangeOfLine)
+        
+        return line?.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
+
+extension BaseReader {
+    func countLines() {
+        var lines = 0
+        while let _ = fileReader?.readLine() {
+            lines += 1
+        }
+        // Reset file reader
+        fileReader = StreamingFileReader(url: fileURL)
+        DispatchQueue.main.sync {
+            self.totalLines = lines
         }
     }
 }

@@ -60,8 +60,8 @@ extension BaseReader {
         var didReadInput:    Bool = false
         var chkGeom:         Bool = false
         
-        for line in self.splitFile! {
-            increaseProgress()
+        while let line = fileReader?.readLine() {
+            //increaseProgress()
             self.errorLine += 1
             if didReadInput {
                 //MARK: Read log file
@@ -261,8 +261,8 @@ extension BaseReader {
     
     internal func readGJFSteps() throws {
         let molecule = Molecule()
-        for line in splitFile! {
-            increaseProgress()
+        while let line = fileReader?.readLine() {
+            //increaseProgress()
             guard let atom = try gjfToAtom(line: String(line), number: molecule.atoms.count + 1) else {continue}
             molecule.atoms.append(atom)
         }

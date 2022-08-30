@@ -75,7 +75,7 @@ extension MainWindow {
     // MainWindow's content
     private var content: some View {
         ZStack {
-            if controller.fileReady {
+            if !(controller.BR?.steps.isEmpty ?? true) {
                 Molecule3DView(controller: controller.renderer!, firstMoleculeName: controller.fileURL?.lastPathComponent ?? "Molecule")
 #if os(iOS)
                 VStack {
@@ -111,10 +111,11 @@ extension MainWindow {
     private struct pView: View {
         @ObservedObject var baseReader: BaseReader
         var body: some View {
-            if baseReader.splitFile == nil {
+            if baseReader.totalLines == nil {
                 ProgressView("Splitting file")
             } else {
                 CirclingHydrogen(scale: 2)
+                Text("Reading file...")
                 ProgressView(value: baseReader.progress) {
                     Text("Reading file...")
                 }.frame(width: 350)

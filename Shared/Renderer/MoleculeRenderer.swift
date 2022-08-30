@@ -157,10 +157,8 @@ class MoleculeRenderer: SCNView, ObservableObject {
         let kit = ProteinKit(residues: step.res, colorSettings: settings.colorSettings, moleculeName: moleculeName)
         
         if step.isProtein {
-            let node = try kit.getProteinNode()
-            cartoonNodes.addChildNode(node)
-            kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
-            atomNodes.isHidden = true
+            loadCartoon(step.res)
+//            atomNodes.isHidden = true
         } else {
             kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
         }
@@ -175,11 +173,6 @@ class MoleculeRenderer: SCNView, ObservableObject {
         }
         
         compoundAtomNodes.addChildNode(bondNodes)
-        
-        // Compute the backbone and cartoon nodes for proteins
-        if let _ = step.backBone {
-            loadCartoon(step.res)
-        }
         
         // Add selection node as child of the main node
         

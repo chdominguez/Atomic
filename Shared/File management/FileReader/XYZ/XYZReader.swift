@@ -24,7 +24,7 @@ extension BaseReader {
         
         var skipLine = false
         
-        for line in splitFile! {
+        while let line = fileReader?.readLine() {
             
             increaseProgress()
             

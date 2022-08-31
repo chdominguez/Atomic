@@ -1,4 +1,4 @@
-name: 🐞 Bug report
+name: 🔴 Bug report
 description: File a bug/issue
 title: "[BUG] <title>"
 labels: [bug]
@@ -12,19 +12,19 @@ body:
       required: true
 - type: textarea
   attributes:
-    label: Current Behavior
+    label: Current behaviour
     description: A concise description of what you're experiencing.
   validations:
     required: false
 - type: textarea
   attributes:
-    label: Expected Behavior
+    label: Expected behaviour
     description: A concise description of what you expected to happen.
   validations:
     required: false
 - type: textarea
   attributes:
-    label: Steps To Reproduce
+    label: Steps to reproduce
     description: Steps to reproduce the behavior.
     placeholder: |
       1. Open this file...

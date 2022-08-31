@@ -10,21 +10,30 @@
       }
     },
     {
+      "identity" : "meshgenerator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/heckj/MeshGenerator",
+      "state" : {
+        "branch" : "main",
+        "revision" : "5ac0bb4871fedb83e0f916a1e83ed2917e4c1b4a"
+      }
+    },
+    {
+      "identity" : "neumorphic",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/costachung/neumorphic",
+      "state" : {
+        "branch" : "master",
+        "revision" : "ece63559ba075e2546600450c37cde82cc463537"
+      }
+    },
+    {
       "identity" : "scenekit-scnline",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/maxxfrazer/SceneKit-SCNLine.git",
       "state" : {
         "branch" : "main",
         "revision" : "00bd83f3affae23a0a9375d1b1e4b58f5c3471d0"
-      }
-    },
-    {
-      "identity" : "stride_swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/chdominguez/stride_swift.git",
-      "state" : {
-        "revision" : "95d318cb0c98ed6e296cee686ebd103c63e177d4",
-        "version" : "0.2.1"
       }
     }
   ],

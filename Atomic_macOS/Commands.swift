@@ -8,6 +8,8 @@ import SceneKit
 /// macOS menus on top of the screen
 struct AtomicCommands: Commands {
     
+    @State var color: Color = .white
+    
     @ObservedObject var commands = AtomicComandsController()
 
     #warning("TODO: Disable buttons when required")
@@ -39,7 +41,7 @@ struct AtomicCommands: Commands {
                 commands.newWindow()
             }
         }
-        CommandMenu("Molecule") {
+        CommandMenu("Appearance") {
             Menu("Atom style") {
                 ForEach(AtomStyle.allCases, id: \.self) { style in
                     Button {
@@ -50,12 +52,18 @@ struct AtomicCommands: Commands {
 
                 }
             }
+            Button("Color") {
+                guard let controller = commands.activeController else {return}
+                AppearanceView(controller: controller).openNewWindow(type: .appearance, controller: controller)
+            }
             Button("Hide selected") {
                 commands.activeController?.renderer?.hideSelected()
             }
             Button("Show all") {
                 commands.activeController?.renderer?.showAll()
             }
+        }
+        CommandMenu("Molecule") {
             Button("Periodic table") {
                 PTable().openNewWindow(type: .ptable)
             }

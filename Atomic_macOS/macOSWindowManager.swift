@@ -122,6 +122,9 @@ class AtomicWindow: Hashable {
         case vibrations = "Vibrations"
         case mainWindow = "Atomic"
         case openedFile = "Edit file"
+        case appearance = "Appearance"
+        
+        
         case debug = "Debug"
         
         case settings = "Settings"

@@ -75,7 +75,7 @@ extension MainWindow {
     // MainWindow's content
     private var content: some View {
         ZStack {
-            if !(controller.BR?.steps.isEmpty ?? true) {
+            if controller.fileReady {
                 Molecule3DView(controller: controller.renderer!, firstMoleculeName: controller.fileURL?.lastPathComponent ?? "Molecule")
 #if os(iOS)
                 VStack {

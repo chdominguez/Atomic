@@ -6,6 +6,7 @@
 //
 
 import ProteinKit
+import SwiftUI
 
 extension MoleculeRenderer {
     internal func newSelection(at location: CGPoint) {
@@ -148,4 +149,70 @@ extension MoleculeRenderer {
         atomNodes.addChildNode(atom2)
         //sceneView.defaultCameraController.target = node.position
     }
+    
+    func newColorForSelection(newColor: Color, changeOfSameType: Bool, affectMolecules: Bool) {
+        if changeOfSameType {
+            for sel in selectedAtoms {
+                guard sel.selectedNode.name!.contains("_") else {break}
+                let moleculeName = sel.selectedNode.name?.split(separator: "_")[3]
+                let selectedStyle = sel.selectedNode.name?.split(separator: "_")[0]
+                let selectedType = sel.selectedNode.name?.split(separator: "_")[1]
+                
+                if affectMolecules {
+                    if selectedStyle == "A" {
+                        atomNodes.enumerateChildNodes { atom, _ in
+                            guard atom.name!.contains("_") else {return}
+                            if atom.name?.split(separator: "_")[1] == selectedType {
+                                atom.geometry?.materials.first?.diffuse.contents = newColor.uColor
+                            }
+                        }
+                    }
+                    if selectedStyle == "C" {
+                        cartoonNodes.enumerateChildNodes { atom, _ in
+                            guard atom.name!.contains("_") else {return}
+                            if atom.name?.split(separator: "_")[1] == selectedType {
+                                atom.geometry?.materials.first?.diffuse.contents = newColor.uColor
+                            }
+                        }
+                    }
+                } else {
+                    if selectedStyle == "A" {
+                        atomNodes.enumerateChildNodes { atom, _ in
+                            guard atom.name!.contains("_") else {return}
+                            let currentAtom = atom.name?.split(separator: "_")[1]
+                            let currentMolecule = atom.name?.split(separator: "_")[3]
+                            if currentAtom == selectedType && currentMolecule == moleculeName {
+                                atom.geometry?.materials.first?.diffuse.contents = newColor.uColor
+                            }
+                        }
+                    }
+                    if selectedStyle == "C" {
+                        cartoonNodes.enumerateChildNodes { atom, _ in
+                            guard atom.name!.contains("_") else {return}
+                            let currentAtom = atom.name?.split(separator: "_")[1]
+                            let currentMolecule = atom.name?.split(separator: "_")[3]
+                            if currentAtom == selectedType && currentMolecule == moleculeName {
+                                atom.geometry?.materials.first?.diffuse.contents = newColor.uColor
+                            }
+                        }
+                    }
+                }
+                
+            }
+        } else {
+            for sel in selectedAtoms {
+                guard sel.selectedNode.name!.contains("_") else {return}
+                let clonedGeometry = (sel.selectedNode.geometry?.copy())! as! SCNGeometry
+                let clonedMaterial = (clonedGeometry.materials.first?.copy())! as! SCNMaterial
+                clonedMaterial.diffuse.contents = newColor.uColor
+                clonedGeometry.materials = [clonedMaterial]
+                sel.selectedNode.geometry = clonedGeometry
+            }
+        }
+    }
+    
+    func generateSquareSelection(to: CGPoint) {
+        
+    }
+    
 }

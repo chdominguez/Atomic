@@ -52,6 +52,8 @@
 		C0B7EEE928B4FCFF00449DA6 /* DataRecentsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
 		C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
+		C0C6904928BF710A0017CF4A /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6904828BF710A0017CF4A /* Appearance.swift */; };
+		C0C6904A28BF710A0017CF4A /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6904828BF710A0017CF4A /* Appearance.swift */; };
 		C0CE163928006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
 		C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */; };
 		C0CE163B28007DAA00A35AA3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
@@ -121,6 +123,7 @@
 		C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
 		C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRecentsStorage.swift; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
+		C0C6904828BF710A0017CF4A /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		C0CE163828006C1200A35AA3 /* UsefulFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsefulFunctions.swift; sourceTree = "<group>"; };
 		C0D04A89274D66E30049E8ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C0D9E11A28535BC5001CF720 /* ProteinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProteinKit; path = ../ProteinKit; sourceTree = "<group>"; };
@@ -350,6 +353,7 @@
 				F0EC49DA270B42650082EC6C /* PeriodicTableViewController.swift */,
 				F0F6552026F7C60200DD4F25 /* Main Windows */,
 				F011454826E782510063CA01 /* Molecule view */,
+				C0C6904828BF710A0017CF4A /* Appearance.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -530,6 +534,7 @@
 				C07BE7BC28A2745600EFBE98 /* CameraLights.swift in Sources */,
 				C07BE7C228A2823F00EFBE98 /* TouchGestures.swift in Sources */,
 				C0DCCED4276A3E950085CD1D /* SettingsView.swift in Sources */,
+				C0C6904A28BF710A0017CF4A /* Appearance.swift in Sources */,
 				C0DCCEC5276A3D600085CD1D /* BaseReader.swift in Sources */,
 				C04B8380289BD73700B8E9B8 /* Debug.swift in Sources */,
 				C0455E59277B985400561AAA /* GaussianKeywords.swift in Sources */,
@@ -588,6 +593,7 @@
 				C05F5CA72784720B00F3B588 /* UIToolbars_iPad.swift in Sources */,
 				C07BE7C128A2823F00EFBE98 /* TouchGestures.swift in Sources */,
 				F06AA49C26E7801200387EBA /* ChartsViews.swift in Sources */,
+				C0C6904928BF710A0017CF4A /* Appearance.swift in Sources */,
 				F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */,
 				C07BE7BE28A281D800EFBE98 /* Selection.swift in Sources */,
 				C0E1371B277F33D3009ACCB6 /* InputfileView.swift in Sources */,

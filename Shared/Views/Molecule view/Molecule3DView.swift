@@ -12,7 +12,6 @@ import ProteinKit
 struct Molecule3DView: View {
     
     @ObservedObject var controller: MoleculeRenderer
-    var firstMoleculeName = "Molecule"
     
     var body: some View {
         if controller.didLoadAtoms {
@@ -70,7 +69,7 @@ struct Molecule3DView: View {
         }
         else {
             progressview.onAppear {
-                controller.loadScenes(moleculeName: firstMoleculeName)
+                controller.loadScenes(moleculeName: controller.moleculeName)
             }
         }
         

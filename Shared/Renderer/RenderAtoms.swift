@@ -23,7 +23,7 @@ extension MoleculeRenderer {
     }
     
     internal func loadCartoon(_ residues: [Residue]) {
-        let pNode = ProteinKit(residues: residues)
+        let pNode = ProteinKit(residues: residues, moleculeName: moleculeName)
         
         do {
             let n = try pNode.getProteinNode()

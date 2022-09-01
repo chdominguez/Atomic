@@ -22,13 +22,16 @@ class MoleculeRenderer: SCNView, ObservableObject {
     /// The steps to display
     let steps: [Step]
     
+    let moleculeName: String
+    
     /// The current step showed
     var showingStep: Step {
         steps[stepToShow - 1]
     }
     
-    init(_ steps: [Step]) {
+    init(_ steps: [Step], moleculeName: String?) {
         self.steps = steps
+        self.moleculeName = moleculeName ?? "Molecule"
         super.init(frame: .zero, options: nil)
     }
         
@@ -153,6 +156,8 @@ class MoleculeRenderer: SCNView, ObservableObject {
         backBoneNode.name = "backBone"
         cartoonNodes.name = "cartoon"
         selectionNodes.name = "selections"
+        
+        print(moleculeName)
         
         let kit = ProteinKit(residues: step.res, colorSettings: settings.colorSettings, moleculeName: moleculeName)
         

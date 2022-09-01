@@ -17,7 +17,7 @@ class AtomicMainController: ObservableObject {
     
     /// Initializes the renderer that manages the 3D view with the given steps
     private func initializeController(steps: [Step]) {
-        self.renderer = MoleculeRenderer(steps)
+        self.renderer = MoleculeRenderer(steps, moleculeName: fileURL?.lastPathComponent)
     }
     
     /// ID for keeping track of opened controllers
@@ -64,7 +64,7 @@ class AtomicMainController: ObservableObject {
     func newFile() {
         resetFile()
         let emptyStep = Step()
-        renderer = MoleculeRenderer([emptyStep])
+        renderer = MoleculeRenderer([emptyStep], moleculeName: "New molecule")
         fileReady = true
     }
     
@@ -125,8 +125,8 @@ class AtomicMainController: ObservableObject {
                             errorDescription = "Job did not terminate"
                             showErrorAlert = true
                         }
-                        initializeController(steps: BR.steps)
                         fileURL = url
+                        initializeController(steps: BR.steps)
                         fileReady = true
                         loading = false
                     }

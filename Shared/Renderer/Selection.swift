@@ -150,7 +150,7 @@ extension MoleculeRenderer {
         //sceneView.defaultCameraController.target = node.position
     }
     
-    func newColorForSelection(newColor: Color, changeOfSameType: Bool, affectMolecules: Bool) {
+    func newColorForSelection(newColor: Color, changeOfSameType: Bool, affectMolecules: Bool, types: AppearanceView.SelectionTypes) {
         if changeOfSameType {
             for sel in selectedAtoms {
                 guard sel.selectedNode.name!.contains("_") else {break}
@@ -176,23 +176,50 @@ extension MoleculeRenderer {
                         }
                     }
                 } else {
-                    if selectedStyle == "A" {
-                        atomNodes.enumerateChildNodes { atom, _ in
-                            guard atom.name!.contains("_") else {return}
-                            let currentAtom = atom.name?.split(separator: "_")[1]
-                            let currentMolecule = atom.name?.split(separator: "_")[3]
-                            if currentAtom == selectedType && currentMolecule == moleculeName {
-                                atom.geometry?.materials.first?.diffuse.contents = newColor.uColor
+                    if types == .structure {
+                        guard let selectedStructure = sel.selectedNode.name?.split(separator: "_").last else {return}
+                        var nodeName = "Helices"
+                        
+                        switch selectedStructure {
+                        case "1":
+                            nodeName = "Other"
+                        case "2":
+                            nodeName = "Helices"
+                        case "3":
+                            nodeName = "Sheets"
+                        default: return
+                            
+                        }
+                        cartoonNodes.enumerateChildNodes { node, _ in
+                            if node.name == nodeName {
+                                let clonedMaterial = sel.selectedNode.geometry?.materials.first?.copy() as! SCNMaterial
+                                clonedMaterial.diffuse.contents = newColor.uColor
+                                node.enumerateChildNodes { aa, _ in
+                                    //print(aa.name)
+                                    aa.geometry?.materials = [clonedMaterial]
+                                }
+                                return
                             }
                         }
-                    }
-                    if selectedStyle == "C" {
-                        cartoonNodes.enumerateChildNodes { atom, _ in
-                            guard atom.name!.contains("_") else {return}
-                            let currentAtom = atom.name?.split(separator: "_")[1]
-                            let currentMolecule = atom.name?.split(separator: "_")[3]
-                            if currentAtom == selectedType && currentMolecule == moleculeName {
-                                atom.geometry?.materials.first?.diffuse.contents = newColor.uColor
+                    } else {
+                        if selectedStyle == "A" {
+                            atomNodes.enumerateChildNodes { atom, _ in
+                                guard atom.name!.contains("_") else {return}
+                                let currentAtom = atom.name?.split(separator: "_")[1]
+                                let currentMolecule = atom.name?.split(separator: "_")[3]
+                                if currentAtom == selectedType && currentMolecule == moleculeName {
+                                    atom.geometry?.materials.first?.diffuse.contents = newColor.uColor
+                                }
+                            }
+                        }
+                        if selectedStyle == "C" {
+                            cartoonNodes.enumerateChildNodes { atom, _ in
+                                guard atom.name!.contains("_") else {return}
+                                let currentAtom = atom.name?.split(separator: "_")[1]
+                                let currentMolecule = atom.name?.split(separator: "_")[3]
+                                if currentAtom == selectedType && currentMolecule == moleculeName {
+                                    atom.geometry?.materials.first?.diffuse.contents = newColor.uColor
+                                }
                             }
                         }
                     }

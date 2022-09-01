@@ -98,6 +98,12 @@ extension MainWindow {
                     Text($0.rawValue)
                 }
             }
+            Button {
+                AppearanceView(controller: controller).openNewWindow(controller: controller)
+            } label: {
+                Text("Appearance")
+            }
+
         } label: {
             Button {} label: {
                 HStack {

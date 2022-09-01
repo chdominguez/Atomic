@@ -31,6 +31,10 @@
 		C05F5CA92785A48C00F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
 		C05F5CAA2785A7D800F3B588 /* GeneralExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05F5CA82785A48C00F3B588 /* GeneralExtensions.swift */; };
 		C064B3D1278AAE5D0086E7BD /* macOSWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */; };
+		C064B8BC28C110F8008180DB /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C064B8BB28C110F8008180DB /* LineChartView */; };
+		C064B8BE28C110FE008180DB /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C064B8BD28C110FE008180DB /* LineChartView */; };
+		C064B8C128C11118008180DB /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C064B8C028C11118008180DB /* SCNLine */; };
+		C064B8C328C1111E008180DB /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C064B8C228C1111E008180DB /* SCNLine */; };
 		C066B781277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C066B782277E15140036F404 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C066B780277E15140036F404 /* ErrorManager.swift */; };
 		C07BE7BB28A2745600EFBE98 /* CameraLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7BA28A2745600EFBE98 /* CameraLights.swift */; };
@@ -48,10 +52,6 @@
 		C09DBD9D28C10E56001AD3FF /* ProteinKit in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBD9C28C10E56001AD3FF /* ProteinKit */; };
 		C09DBDA028C10E70001AD3FF /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBD9F28C10E70001AD3FF /* Neumorphic */; };
 		C09DBDA228C10E76001AD3FF /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBDA128C10E76001AD3FF /* Neumorphic */; };
-		C09DBDA528C10E92001AD3FF /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBDA428C10E92001AD3FF /* LineChartView */; };
-		C09DBDA728C10E97001AD3FF /* LineChartView in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBDA628C10E97001AD3FF /* LineChartView */; };
-		C09DBDAA28C10EC5001AD3FF /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBDA928C10EC5001AD3FF /* SCNLine */; };
-		C09DBDAC28C10ECB001AD3FF /* SCNLine in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBDAB28C10ECB001AD3FF /* SCNLine */; };
 		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0B7EEE828B4FCFF00449DA6 /* DataRecentsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */; };
@@ -152,9 +152,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09DBDA228C10E76001AD3FF /* Neumorphic in Frameworks */,
-				C09DBDA728C10E97001AD3FF /* LineChartView in Frameworks */,
+				C064B8BE28C110FE008180DB /* LineChartView in Frameworks */,
 				C09DBD9B28C10E52001AD3FF /* ProteinKit in Frameworks */,
-				C09DBDAC28C10ECB001AD3FF /* SCNLine in Frameworks */,
+				C064B8C328C1111E008180DB /* SCNLine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,9 +163,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09DBDA028C10E70001AD3FF /* Neumorphic in Frameworks */,
-				C09DBDA528C10E92001AD3FF /* LineChartView in Frameworks */,
+				C064B8BC28C110F8008180DB /* LineChartView in Frameworks */,
 				C09DBD9D28C10E56001AD3FF /* ProteinKit in Frameworks */,
-				C09DBDAA28C10EC5001AD3FF /* SCNLine in Frameworks */,
+				C064B8C128C11118008180DB /* SCNLine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,8 +398,8 @@
 			packageProductDependencies = (
 				C09DBD9A28C10E52001AD3FF /* ProteinKit */,
 				C09DBDA128C10E76001AD3FF /* Neumorphic */,
-				C09DBDA628C10E97001AD3FF /* LineChartView */,
-				C09DBDAB28C10ECB001AD3FF /* SCNLine */,
+				C064B8BD28C110FE008180DB /* LineChartView */,
+				C064B8C228C1111E008180DB /* SCNLine */,
 			);
 			productName = Atomic_macOS;
 			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
@@ -421,8 +421,8 @@
 			packageProductDependencies = (
 				C09DBD9C28C10E56001AD3FF /* ProteinKit */,
 				C09DBD9F28C10E70001AD3FF /* Neumorphic */,
-				C09DBDA428C10E92001AD3FF /* LineChartView */,
-				C09DBDA928C10EC5001AD3FF /* SCNLine */,
+				C064B8BB28C110F8008180DB /* LineChartView */,
+				C064B8C028C11118008180DB /* SCNLine */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
@@ -459,8 +459,8 @@
 			mainGroup = F06AA46D26E77F5100387EBA;
 			packageReferences = (
 				C09DBD9E28C10E70001AD3FF /* XCRemoteSwiftPackageReference "neumorphic" */,
-				C09DBDA328C10E92001AD3FF /* XCRemoteSwiftPackageReference "LineChartView" */,
-				C09DBDA828C10EC5001AD3FF /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */,
+				C064B8BA28C110F8008180DB /* XCRemoteSwiftPackageReference "LineChartView" */,
+				C064B8BF28C11118008180DB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
 			projectDirPath = "";
@@ -887,6 +887,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C064B8BA28C110F8008180DB /* XCRemoteSwiftPackageReference "LineChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Jonathan-Gander/LineChartView";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		C064B8BF28C11118008180DB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maxxfrazer/SceneKit-SCNLine.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		C09DBD9E28C10E70001AD3FF /* XCRemoteSwiftPackageReference "neumorphic" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/costachung/neumorphic";
@@ -895,25 +911,29 @@
 				kind = branch;
 			};
 		};
-		C09DBDA328C10E92001AD3FF /* XCRemoteSwiftPackageReference "LineChartView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Jonathan-Gander/LineChartView";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-		C09DBDA828C10EC5001AD3FF /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/maxxfrazer/SceneKit-SCNLine.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C064B8BB28C110F8008180DB /* LineChartView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C064B8BA28C110F8008180DB /* XCRemoteSwiftPackageReference "LineChartView" */;
+			productName = LineChartView;
+		};
+		C064B8BD28C110FE008180DB /* LineChartView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C064B8BA28C110F8008180DB /* XCRemoteSwiftPackageReference "LineChartView" */;
+			productName = LineChartView;
+		};
+		C064B8C028C11118008180DB /* SCNLine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C064B8BF28C11118008180DB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
+			productName = SCNLine;
+		};
+		C064B8C228C1111E008180DB /* SCNLine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C064B8BF28C11118008180DB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
+			productName = SCNLine;
+		};
 		C09DBD9A28C10E52001AD3FF /* ProteinKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProteinKit;
@@ -931,26 +951,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C09DBD9E28C10E70001AD3FF /* XCRemoteSwiftPackageReference "neumorphic" */;
 			productName = Neumorphic;
-		};
-		C09DBDA428C10E92001AD3FF /* LineChartView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C09DBDA328C10E92001AD3FF /* XCRemoteSwiftPackageReference "LineChartView" */;
-			productName = LineChartView;
-		};
-		C09DBDA628C10E97001AD3FF /* LineChartView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C09DBDA328C10E92001AD3FF /* XCRemoteSwiftPackageReference "LineChartView" */;
-			productName = LineChartView;
-		};
-		C09DBDA928C10EC5001AD3FF /* SCNLine */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C09DBDA828C10EC5001AD3FF /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
-			productName = SCNLine;
-		};
-		C09DBDAB28C10ECB001AD3FF /* SCNLine */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C09DBDA828C10EC5001AD3FF /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
-			productName = SCNLine;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

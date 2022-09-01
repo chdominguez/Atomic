@@ -17,6 +17,11 @@ extension Double {
         return String(format: "%.\(decimals)f", self)
     }
     
+    /// Truncates a double to show only the given decimals
+    func truncate(to places : Int)-> Double {
+        return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))
+    }
+    
     /// Transforms the angle defined by this value from degrees to radians.
     func toRadians() -> Double {
         return self * (.pi / 180)

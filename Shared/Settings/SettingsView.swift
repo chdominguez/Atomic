@@ -25,6 +25,7 @@ struct SettingsView: View {
                 }
                 NavigationLink {
                     AboutAtomic()
+                        .navigationTitle("About Atomic")
                 } label: {
                     Label("About Atomic", systemImage: "atom")
                 }
@@ -37,7 +38,7 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView().previewDevice(PreviewDevice(rawValue: "Mac")).frame(width: 800, height: 600, alignment: .center)
+        AboutAtomic()
     }
 }
 
@@ -49,65 +50,82 @@ struct GeneralSettings: View {
 struct ViewSettings: View {
     @ObservedObject var settings = GlobalSettings.shared
     var body: some View {
-        ScrollView {
-            Section {
-                ColorPicker("Line color: ", selection: $settings.colorSettings.chartColor).padding()
-            } header: {
-                HStack {
-                    Text("Charts").bold().padding()
-                    Spacer()
+         ScrollView {
+             LazyVStack {
+                Section {
+                    ColorPicker("Line color: ", selection: $settings.colorSettings.chartColor)
+                } header: {
+                    Text("Charts").bold()
                 }
-            }
-            
-            
-            Divider()
-            
-            Section {
-                VStack(alignment: .leading) {
-                    ColorPicker("Background color: ", selection: $settings.colorSettings.backgroundColor)
-                    Spacer()
-                    ColorPicker("Bond color: ", selection: $settings.colorSettings.bondColor)
-                    Spacer()
-                    ColorPicker("Selection color: ", selection: $settings.colorSettings.selectionColor)
-                }.padding()
-            } header: {
-                HStack {
-                    Text("Scene").bold().padding()
-                    Spacer()
+                Section {
+                    VStack(alignment: .leading) {
+                        ColorPicker("Background color: ", selection: $settings.colorSettings.backgroundColor)
+                        Spacer()
+                        ColorPicker("Bond color: ", selection: $settings.colorSettings.bondColor)
+                        Spacer()
+                        ColorPicker("Selection color: ", selection: $settings.colorSettings.selectionColor)
+                    }
+                } header: {
+                    Text("Scene").bold()
                 }
-            }
-            
-            Divider()
-            
-            Section {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("Roughness")
-                        Slider(value: $settings.colorSettings.roughness, in: 0...1)
-                    }.padding()
-                    HStack {
-                        Text("Metalness")
-                        Slider(value: $settings.colorSettings.metalness, in: 0...1)
-                    }.padding()
-                    
-                    PTable()
+                Section {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Roughness")
+                            Slider(value: $settings.colorSettings.roughness, in: 0...1)
+                        }
+                        HStack {
+                            Text("Metalness")
+                            Slider(value: $settings.colorSettings.metalness, in: 0...1)
+                        }
+                        HStack {
+                            Picker("Light type", selection: $settings.lightType) {
+                                Text("Ambient").tag(SCNLight.LightType.ambient)
+                                Text("Directional").tag(SCNLight.LightType.directional)
+                                Text("Area").tag(SCNLight.LightType.area)
+                                Text("Omni").tag(SCNLight.LightType.omni)
+                                Text("Spot").tag(SCNLight.LightType.spot)
+                            }.onChange(of: settings.lightType) { newValue in
+                                settings.modifyLightType(newValue)
+                            }
+                        }
+                        HStack {
+                            Text("Light intensity")
+                            Slider(value: $settings.lightIntensity, in: 0...2000).onChange(of: settings.lightIntensity) { newValue in
+                                settings.modifyLightIntensity(newValue)
+                            }
+                        }
+
+                    }
+                } header: {
+                    Text("Atoms").bold()
                 }
-            } header: {
-                HStack {
-                    Text("Atoms").bold().padding()
-                    Spacer()
-                }
-            }
-        }.navigationTitle("View")
+            }.navigationTitle("View")
+        }
     }
 }
+
 struct AboutAtomic: View {
     var body: some View {
         VStack {
-            Text("Atomic \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)")
-            Image("icon")
-                .resizable()
-                .frame(width: 150, height: 150, alignment: .center)
+            List {
+                Section {
+                    Text("Atomic is a free, open-source molecular visualizer and anybody with knwoledge of macOS, iOS, Swift or SwiftUI is welcomed to participate into the project.")
+                    Link("GitHub", destination: URL(string: "https://github.com/chdominguez/Atomic")!)
+                } header: {
+                    Text("Contribute")
+                }
+                Section {
+                    Text("MIT License. Copyright (c) 2022 Atomic")
+                } header: {
+                    Text("License")
+                }
+                Section {
+                    Text("Atomic \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)")
+                } header: {
+                    Text("Version")
+                }
+            }
         }
     }
 }

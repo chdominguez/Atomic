@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Combine
+import ProteinKit
 
 /// View that hosts the SceneKit representable and shows the tools + the molecule
 struct Molecule3DView: View {
@@ -17,15 +17,50 @@ struct Molecule3DView: View {
         if controller.didLoadAtoms {
             VStack(spacing: 0) {
                 ZStack {
+                    if controller.showSidebar {
+                        HStack {
+                            Spacer()
+                            ScrollView {
+                                ForEach(controller.atomNodes.childNodes, id: \.self) { node in
+                                    Text(node.name ?? "Molecule")
+                                        .onTapGesture {
+                                            //controller.select(node: node)
+                                        }
+                                }.padding()
+                            }.background(
+                                RoundedRectangle(cornerRadius: 15).fill(Color(red: 200/255, green: 200/255, blue: 200/255))
+                            )
+                        }
+                        .padding()
+                        .zIndex(3)
+                    }
                     SceneUI(controller: controller).ignoresSafeArea()
                     VStack {
+                        HStack {
+                            Spacer()
+                            VStack {
+                                Button {
+                                    controller.zoomCamera(true)
+                                } label: {
+                                    Image(systemName: "plus.circle")
+                                }.toolbarButton()
+                                Button {
+                                    controller.zoomCamera(false)
+                                } label: {
+                                    Image(systemName: "minus.circle")
+                                }.toolbarButton()
+                            }
+                            .background(RoundedRectangle(cornerRadius: 25)                        .fill(Color.Neumorphic.darkShadow))
+                            .padding()
+                        }
                         if !controller.didLoadAtoms {
                             progressview.foregroundColor(.primary)
                         }
                         Spacer()
-                        AtomicToolsView(controller: controller)
+                        AtomicToolsView(controller: controller).padding(.vertical, 5)
                     }
                 }
+                
                 stepsToolbar
                 #if os(macOS)
                 .padding(.top, 5)
@@ -34,7 +69,7 @@ struct Molecule3DView: View {
         }
         else {
             progressview.onAppear {
-                controller.loadScenes()
+                controller.loadScenes(moleculeName: controller.moleculeName)
             }
         }
         
@@ -45,7 +80,7 @@ extension Molecule3DView {
     
     private var progressview: some View {
         VStack {
-            ProgressView()
+            CirclingHydrogen(scale: 2)
             Text("Rendering atoms...")
         }
     }
@@ -62,13 +97,14 @@ extension Molecule3DView {
             Button {
                 controller.previousScene()
             } label: {
-                Image(systemName: "chevron.left").atomicButton()
-            }
+                Image(systemName: "chevron.left")
+            }.stepBarButton()
             Button {
                 controller.nextScene()
             } label: {
-                Image(systemName: "chevron.right").atomicButton()
+                Image(systemName: "chevron.right")
             }
+            .stepBarButton()
             Spacer()
             if controller.showingStep.isFinalStep {
                 if let energy = controller.showingStep.energy {
@@ -79,7 +115,12 @@ extension Molecule3DView {
                 }
             }
             else if let energy = controller.showingStep.energy {
-                   Text("Energy: \(energy)")
+                if #available(macOS 12.0, *), #available(iOS 15.0, *) {
+                    Text("Energy: \(energy)").textSelection(.enabled)
+                } else {
+                    // Fallback on earlier versions
+                    Text("Energy: \(energy)")
+                }
             }
              else {
                 Text("Input geometry for job \(controller.showingStep.jobNumber)")
@@ -94,8 +135,10 @@ extension Molecule3DView {
             Button {
                 controller.playAnimation()
             } label: {
-                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill").foregroundColor(controller.isPlaying ? .red : .green).atomicButton()
-            }
+                Image(systemName: controller.isStepPlaying ? "stop.fill" : "play.fill")
+                    .frame(width: 10, height: 10)
+                    .foregroundColor(controller.isStepPlaying ? .red : .green)
+            }.stepBarButton()
         }
         .padding(.horizontal)
 #if os(macOS)

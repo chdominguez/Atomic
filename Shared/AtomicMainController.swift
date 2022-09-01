@@ -6,22 +6,31 @@
 //
 
 import SwiftUI
-import SceneKit
+import ProteinKit
 import UniformTypeIdentifiers
 
 class AtomicMainController: ObservableObject {
     
     //MARK: Init
     
+    private var settings = GlobalSettings.shared
+    
     /// Initializes the renderer that manages the 3D view with the given steps
     private func initializeController(steps: [Step]) {
-        self.renderer = MoleculeRenderer(steps)
+        self.renderer = MoleculeRenderer(steps, moleculeName: fileURL?.lastPathComponent)
     }
     
     /// ID for keeping track of opened controllers
     var id = UUID()
     var renderer: MoleculeRenderer? = nil
-    var fileURL: URL? = nil
+    var fileURL: URL? = nil {
+        didSet {
+            guard let fileURL = fileURL else {
+                return
+            }
+            settings.savedRecents.addBookmark(for: fileURL)
+        }
+    }
     
     // Drag and drop related variables
     @Published var isDragginFile: Bool  = false
@@ -31,7 +40,7 @@ class AtomicMainController: ObservableObject {
     // If ture, the loading screen shows
     @Published var loading: Bool = false
     
-    @Published var showErrorFileAlert: Bool  = false
+    @Published var showErrorAlert: Bool  = false
     @Published var fileReady: Bool  = false
     @Published var openFileImporter: Bool  = false
     
@@ -42,8 +51,7 @@ class AtomicMainController: ObservableObject {
     @Published var fileAsString: String? = nil
     
     // Base reader class for reading files and handling Steps
-    var BR: BaseReader? = nil
-    
+    @Published var BR: BaseReader? = nil
     /// Error shown when the opened file cannot be loaded
     var errorDescription = ""
     
@@ -56,7 +64,7 @@ class AtomicMainController: ObservableObject {
     func newFile() {
         resetFile()
         let emptyStep = Step()
-        renderer = MoleculeRenderer([emptyStep])
+        renderer = MoleculeRenderer([emptyStep], moleculeName: "New molecule")
         fileReady = true
     }
     
@@ -69,7 +77,7 @@ class AtomicMainController: ObservableObject {
         fileReady = false
         loading = true
         guard let url = AtomicFileOpener.getFileURLForPicked(picked) else {
-            showErrorFileAlert = true
+            showErrorAlert = true
             return
         }
         processFile(url: url)
@@ -88,31 +96,37 @@ class AtomicMainController: ObservableObject {
             do {
                 guard url.startAccessingSecurityScopedResource() else {
                     DispatchQueue.main.sync {
-                        showErrorFileAlert = true
+                        errorDescription = "Cannot access file"
+                        showErrorAlert = true
                         loading = false
                     }
                     return
                 }
                 let fileString = try AtomicFileOpener.getFileAsString(from: url)
-                let BR = try BaseReader(fileURL: url)
-                try BR.readSteps()
+                try DispatchQueue.main.sync {
+                    self.BR = try BaseReader(fileURL: url)
+                }
+                try BR?.readSteps()
+                
+                guard let BR = BR else {
+                    throw AtomicErrors.internalFailure
+                }
                 #warning("TODO: Clean up this becasue BaseReader makes this easy")
-                self.BR = BR
                 url.stopAccessingSecurityScopedResource()
                 DispatchQueue.main.sync {
                     self.fileAsString = fileString
                     if BR.steps.isEmpty {
                         errorDescription = "Could not load any molecule"
-                        showErrorFileAlert = true
+                        showErrorAlert = true
                         loading = false
                     }
                     else {
                         if !BR.steps.last!.isFinalStep {
                             errorDescription = "Job did not terminate"
-                            showErrorFileAlert = true
+                            showErrorAlert = true
                         }
-                        initializeController(steps: BR.steps)
                         fileURL = url
+                        initializeController(steps: BR.steps)
                         fileReady = true
                         loading = false
                     }
@@ -120,8 +134,8 @@ class AtomicMainController: ObservableObject {
             }
             catch {
                 DispatchQueue.main.sync {
-                    self.errorDescription = error.localizedDescription + " at line:  \(ErrorManager.shared.lineError) \n \(ErrorManager.shared.errorDescription ?? "Error") "
-                    self.showErrorFileAlert = true
+                    self.errorDescription = error.localizedDescription + " at line:  \(BR?.errorLine ?? 0) \n \(ErrorManager.shared.errorDescription ?? "Error") "
+                    self.showErrorAlert = true
                     self.loading = false
                 }
             }

@@ -6,7 +6,7 @@
       "location" : "https://github.com/Jonathan-Gander/LineChartView",
       "state" : {
         "branch" : "main",
-        "revision" : "33996afdc124fe41916cdc69fcbc85c16da0a45c"
+        "revision" : "91416f04a04ad3117e4fe58c35a24bb66e57ebb4"
       }
     },
     {
@@ -15,7 +15,7 @@
       "location" : "https://github.com/heckj/MeshGenerator",
       "state" : {
         "branch" : "main",
-        "revision" : "5ac0bb4871fedb83e0f916a1e83ed2917e4c1b4a"
+        "revision" : "8cb7ab36759f448b3f71d4b88a3b6ef760af8ced"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/costachung/neumorphic",
       "state" : {
         "branch" : "master",
-        "revision" : "ece63559ba075e2546600450c37cde82cc463537"
+        "revision" : "03c6f7b3d27bfb28a082db2e9ffae45fbc69cb8b"
       }
     },
     {
@@ -34,6 +34,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "00bd83f3affae23a0a9375d1b1e4b58f5c3471d0"
+      }
+    },
+    {
+      "identity" : "scenekitplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/chdominguez/SceneKitPlus",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0c78183c843d65da7724230d63d2cdce8c32b0d2"
       }
     }
   ],

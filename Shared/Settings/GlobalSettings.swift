@@ -4,7 +4,7 @@
 //
 //  Created by Christian Dominguez on 11/4/22.
 //
-import SceneKit
+import ProteinKit
 import SwiftUI
 
 
@@ -12,12 +12,30 @@ class GlobalSettings: ObservableObject {
     
     static let shared = GlobalSettings()
     
-    @Published var colorSettings = ColorSettings()
+    let savedRecents = RecentsStore()
+    
+    @Published var colorSettings = ProteinColors()
     
     @Published var atomStyle: AtomStyle = .ballAndStick
     
+    @Published var lightIntensity: Double = 800
+    
+    @Published var lightType: SCNLight.LightType = .directional
+    
+    var lightNode: SCNNode? = nil
+    
+    func modifyLightIntensity(_ newValue: Double) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.lightNode?.light?.intensity = newValue
+        }
+    }
+    
+    func modifyLightType(_ newType: SCNLight.LightType) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            self.lightNode?.light?.type = newType
+        }
+    }
 }
-
 
 //MARK: Color settings
 /// Colors of atoms, bonds, and other properties of the SceneKit scene. This class is meant to reside in GlobalSettings as a property.
@@ -155,8 +173,6 @@ class ColorSettings: ObservableObject {
     @Published var chartColor: Color = .blue
     
 }
-
-#warning("TODO: 3D structures for folded proteins: Helix, Beta-sheet, turns...")
 //MARK: Node geometries
 
 /// Geometries for SceneKit nodes. These geometries implement the materials defined in the ColorSettings class

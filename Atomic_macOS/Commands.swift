@@ -1,10 +1,14 @@
 // Commands for macOS menu bar
 
 import SwiftUI
+import ProteinKit
+import SceneKit
 
 //MARK: Commands view
 /// macOS menus on top of the screen
 struct AtomicCommands: Commands {
+    
+    @State var color: Color = .white
     
     @ObservedObject var commands = AtomicComandsController()
 
@@ -37,10 +41,29 @@ struct AtomicCommands: Commands {
                 commands.newWindow()
             }
         }
-        CommandMenu("Molecule") {
-            Picker("Atom style", selection: $commands.settings.atomStyle) {
-                ForEach(AtomStyle.allCases, id: \.self) { Text($0.rawValue) }
+        CommandMenu("Appearance") {
+            Menu("Atom style") {
+                ForEach(AtomStyle.allCases, id: \.self) { style in
+                    Button {
+                        commands.activeController?.renderer?.changeSelectedOrView(to: style)
+                    } label: {
+                        Text(style.rawValue)
+                    }
+
+                }
             }
+            Button("Color") {
+                guard let controller = commands.activeController else {return}
+                AppearanceView(controller: controller).openNewWindow(type: .appearance, controller: controller)
+            }
+            Button("Hide selected") {
+                commands.activeController?.renderer?.hideSelected()
+            }
+            Button("Show all") {
+                commands.activeController?.renderer?.showAll()
+            }
+        }
+        CommandMenu("Molecule") {
             Button("Periodic table") {
                 PTable().openNewWindow(type: .ptable)
             }
@@ -59,7 +82,6 @@ struct AtomicCommands: Commands {
             Button("Energy") {
                 guard let energy = commands.getStepsEnergy() else {return}
                 AtomicLineChartView(data: energy).openNewWindow(type: .energyGraph, controller: commands.activeController)
-                print("opened widnow")
             }
             Button("Frequencies") {
             }
@@ -68,9 +90,54 @@ struct AtomicCommands: Commands {
 
             }
         }
+        CommandMenu("Camera") {
+            Button("Make selection pivot") {
+                if commands.activeController?.renderer?.selectedAtoms.count != 1 {
+                    commands.activeController?.errorDescription = "Select one atom"
+                    commands.activeController?.showErrorAlert = true
+                    return
+                }
+                commands.activeController?.renderer?.makeSelectedPivot()
+            }
+            Button("Reset pivot") {
+                commands.activeController?.renderer?.resetPivot()
+            }
+            Divider()
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(8, 0, 0)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("X")
+            }
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(0, 8, 0)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("Y")
+            }
+            Button {
+                commands.activeController?.renderer?.cameraNode.position = SCNVector3(0, 0, 8)
+                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+            } label: {
+                Text("Z")
+            }
+            Divider()
+            Button {
+                commands.activeController?.renderer?.toggleFixedLightNode()
+            } label: {
+                Text("Toggle fixed light")
+            }
+
+
+        }
         CommandMenu("Input/Output") {
             Button("View file") {
                 commands.viewInputFIle()
+            }
+        }
+        CommandMenu("Debug") {
+            Button("Show debug window") {
+                DebugWindowView(renderer: commands.activeController!.renderer!).openNewWindow(type: .debug, controller: commands.activeController!)
             }
         }
     }

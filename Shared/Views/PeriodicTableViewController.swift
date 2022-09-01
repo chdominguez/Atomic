@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ProteinKit
 
 
 class PeriodicTableViewController: ObservableObject {

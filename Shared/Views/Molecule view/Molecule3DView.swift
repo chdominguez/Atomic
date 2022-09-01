@@ -136,9 +136,9 @@ extension Molecule3DView {
             Button {
                 controller.playAnimation()
             } label: {
-                Image(systemName: controller.isPlaying ? "stop.fill" : "play.fill")
+                Image(systemName: controller.isStepPlaying ? "stop.fill" : "play.fill")
                     .frame(width: 10, height: 10)
-                    .foregroundColor(controller.isPlaying ? .red : .green)
+                    .foregroundColor(controller.isStepPlaying ? .red : .green)
             }.stepBarButton()
         }
         .padding(.horizontal)

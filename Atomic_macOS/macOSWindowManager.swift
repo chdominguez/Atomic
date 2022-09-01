@@ -167,6 +167,7 @@ extension View {
         if let alreadyOpened = openedWindows.first(where: { window in
             window.windowType == type && window.associatedController.id == controller.id}) {
             alreadyOpened.window.makeMain()
+            alreadyOpened.window.orderFrontRegardless()
             return
         }
         newWindowInternal(type: type, controller: controller)
@@ -211,7 +212,7 @@ extension View {
         window.center()
         window.delegate = MacOSWindowManager.shared
         window.isReleasedWhenClosed = false
-        window.makeKeyAndOrderFront(nil)
+        window.makeKeyAndOrderFront(true)
         window.contentView = NSHostingView(rootView: self)
         return window
     }

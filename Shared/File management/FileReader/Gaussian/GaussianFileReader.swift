@@ -16,9 +16,9 @@ extension BaseReader {
     // These are some of the important strings that appear on a Gaussian .log file. They can be used to track the output.
     private enum GaussianSeparators: String, CaseIterable {
         // When writing the coordinates of each step, Gaussian writes them in a box with this title.
-        case standardOrientation    = "                         Standard orientation:                         "
+        case standardOrientation    = "Standard orientation:"
         // Then, there are three separators like this that encampsulate the coordinates.
-        case orientationSeparator   = " ---------------------------------------------------------------------"
+        case orientationSeparator   = "---------------------------------------------------------------------"
         // The keywords from the input file are locathed between two of those.
         case inputKeywords1         = " ----------------------------------------------------------------------"
         case inputKeywords2         = " --------------------------------------------------"
@@ -61,11 +61,12 @@ extension BaseReader {
         var chkGeom:         Bool = false
         
         while let line = fileReader?.readLine() {
-            //increaseProgress()
+            increaseProgress()
             self.errorLine += 1
             if didReadInput {
                 //MARK: Read log file
                 if line.contains(GS.standardOrientation.rawValue) {
+                    print("Standard")
                     standardOrient = true
                     if currentStep == nil {currentStep = Step()}
                     continue
@@ -128,20 +129,20 @@ extension BaseReader {
                 }
                 if line.contains("\\@") {
                     readFinal = false
-                    guard let _ = currentStep else {throw AtomicErrors.internalFailure}
+                    guard let finalStep = steps.last else {throw AtomicErrors.internalFailure}
                     
-                    for method in EnergyMethods.allCases {
-                        if finalString.contains(method.rawValue) {
-                            currentStep!.energy = steps.last?.energy
-                            break
-                        }
-                    }
-                    currentStep!.jobNumber = jobNumber
-                    currentStep!.molecule = steps.last!.molecule
-                    currentStep!.isFinalStep = true
-                    steps.append(currentStep!)
+//                    for method in EnergyMethods.allCases {
+//                        if finalString.contains(method.rawValue) {
+//                            currentStep.energy = steps.last?.energy
+//                            break
+//                        }
+//                    }
+                    finalStep.jobNumber = jobNumber
+                    finalStep.isFinalStep = true
+                    //steps.append(currentStep)
                     currentStep = nil
                     jobNumber += 1
+                    readOldGeom = false
                     continue
                 }
                 if line.contains("Initial command:") {
@@ -208,6 +209,7 @@ extension BaseReader {
                         if readOldGeom {
                             let separated = line.split(separator: ",")
                             let element = separated[0]
+                            print(separated)
                             guard let x = Float(separated[2]), let y = Float(separated[3]), let z = Float(separated[4]) else {
                                 throw AtomicErrors.badInputCoords
                             }

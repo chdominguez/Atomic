@@ -15,7 +15,7 @@
       "location" : "https://github.com/heckj/MeshGenerator",
       "state" : {
         "branch" : "main",
-        "revision" : "5ac0bb4871fedb83e0f916a1e83ed2917e4c1b4a"
+        "revision" : "8cb7ab36759f448b3f71d4b88a3b6ef760af8ced"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/costachung/neumorphic",
       "state" : {
         "branch" : "master",
-        "revision" : "ece63559ba075e2546600450c37cde82cc463537"
+        "revision" : "03c6f7b3d27bfb28a082db2e9ffae45fbc69cb8b"
       }
     },
     {

@@ -81,7 +81,8 @@ struct AtomicCommands: Commands {
             #warning("TODO: Implement views for for macOS and iOS")
             Button("Energy") {
                 guard let energy = commands.getStepsEnergy() else {return}
-                AtomicLineChartView(data: energy).openNewWindow(type: .energyGraph, controller: commands.activeController)
+                AtomicLineChartView().openNewWindow(type: .energyGraph, controller: commands.activeController)
+//                AtomicLineChartView(data: energy).openNewWindow(type: .energyGraph, controller: commands.activeController)
             }
             Button("Frequencies") {
             }

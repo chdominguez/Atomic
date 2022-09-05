@@ -123,7 +123,7 @@ extension MainWindow {
                 let energies = steps.compactMap { step in
                     step.energy
                 }
-                AtomicLineChartView(data: energies).openNewWindow(controller: controller)
+                //AtomicLineChartView(data: energies).openNewWindow(controller: controller)
             }
             
             // Show freq results

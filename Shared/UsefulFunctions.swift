@@ -14,7 +14,7 @@ import SceneKitPlus
 ///   - pos2: position of atom 2
 /// - Returns: The square root of the diference of the vectors
 func distance(from pos1: SCNVector3, to pos2: SCNVector3) -> Double {
-    let distanceVector = pos1 - pos2
+    let distanceVector = pos2 - pos1
     return Double(distanceVector.magnitudeSquared)
 }
 

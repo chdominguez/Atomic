@@ -61,6 +61,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
     var cartoonNodes = SCNNode()
     var selectionNodes = SCNNode()
     var compoundAtomNodes = SCNNode()
+    var axisNode = SCNNode()
     
     let atomicRootNode = SCNNode()
     var cameraNode = SCNNode()
@@ -116,6 +117,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
     internal func setupBasicSCN() {
         
         let scene = SCNScene()
+        self.scene = scene
         
         // Setup the camera node
         self.cameraNode = setupCameraNode()
@@ -125,7 +127,10 @@ class MoleculeRenderer: SCNView, ObservableObject {
         scene.rootNode.addChildNode(cameraNode)
         self.pointOfView = self.cameraNode
         
-        self.scene = scene
+        let axis = generate3DAxis()
+        axis.position = SCNVector3(-5, -3.5, -9)
+        self.axisNode = axis
+        cameraNode.addChildNode(self.axisNode)
         
     }
     

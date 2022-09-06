@@ -10,6 +10,7 @@ import SwiftUI
 
 extension MoleculeRenderer {
     internal func newSelection(at location: CGPoint) {
+        
         guard let hitNode = hitTest(location).first?.node else {unSelectAll();measureNodes(); return}
         guard let name = hitNode.name else {return}
         

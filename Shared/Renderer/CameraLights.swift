@@ -69,6 +69,38 @@ extension MoleculeRenderer {
     typealias Point = CGPoint
     #endif
     
+    enum Direction {
+        case x
+        case y
+        case z
+    }
+    
+    func rotateCamera(direction: Direction) {
+        self.atomicRootNode.orientation = .init(x: 1, y: 0, z: 0, w: 0)
+        switch direction {
+        case .x:
+            self.atomicRootNode.orientation = rotateInernal(xRadians: (1/2) * .pi, yRadians: (3/2) * .pi)
+        case .y:
+            self.atomicRootNode.orientation = rotateInernal(xRadians: (3/2) * .pi, yRadians: 0, zRadians: (1/2) * .pi)
+        case .z:
+            self.atomicRootNode.orientation = rotateInernal(xRadians: .pi, yRadians: 0)
+        }
+        self.axisNode.orientation = self.atomicRootNode.orientation
+    }
+    
+    private func rotateInernal(xRadians: Float, yRadians: Float, zRadians: Float = 0) -> SCNQuaternion {
+        let x = GLKQuaternionMakeWithAngleAndAxis(xRadians, 1, 0, 0)
+        let y = GLKQuaternionMakeWithAngleAndAxis(yRadians, 0, 1, 0)
+        let z = GLKQuaternionMakeWithAngleAndAxis(zRadians, 0, 0, 1)
+        let combination = GLKQuaternionMultiply(z, GLKQuaternionMultiply(y, x))
+        // Multiply the quaternions to obtain an updated orientation
+        let scnOrientation = self.atomicRootNode.orientation
+        let glkOrientation = GLKQuaternionMake(Float(scnOrientation.x), Float(scnOrientation.y), Float(scnOrientation.z), Float(scnOrientation.w))
+        let q = GLKQuaternionMultiply(combination, glkOrientation)
+        // And finally set the current orientation to the updated orientation
+        return SCNQuaternion(x: UFloat(q.x), y: UFloat(q.y), z: UFloat(q.z), w: UFloat(q.w))
+    }
+    
     // Save code for rotate molecules etc...
     internal func rotate(sender recognizer: PanGesture)
     {
@@ -95,16 +127,8 @@ extension MoleculeRenderer {
             xRadians = -xRadians
             #endif
             // Use the radian values to construct quaternions
-            let x = GLKQuaternionMakeWithAngleAndAxis(xRadians, 1, 0, 0)
-            let y = GLKQuaternionMakeWithAngleAndAxis(yRadians, 0, 1, 0)
-            let z = GLKQuaternionMakeWithAngleAndAxis(0, 0, 0, 1)
-            let combination = GLKQuaternionMultiply(z, GLKQuaternionMultiply(y, x))
-            // Multiply the quaternions to obtain an updated orientation
-            let scnOrientation = self.atomicRootNode.orientation
-            let glkOrientation = GLKQuaternionMake(Float(scnOrientation.x), Float(scnOrientation.y), Float(scnOrientation.z), Float(scnOrientation.w))
-            let q = GLKQuaternionMultiply(combination, glkOrientation)
-            // And finally set the current orientation to the updated orientation
-            self.atomicRootNode.orientation = SCNQuaternion(x: UFloat(q.x), y: UFloat(q.y), z: UFloat(q.z), w: UFloat(q.w))
+            self.atomicRootNode.orientation = rotateInernal(xRadians: xRadians, yRadians: yRadians)
+            self.axisNode.orientation = self.atomicRootNode.orientation
             self.previousPanTranslation = translation
         default:
             self.previousPanTranslation = nil

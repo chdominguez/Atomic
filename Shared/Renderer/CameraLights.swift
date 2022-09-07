@@ -199,6 +199,14 @@ extension MoleculeRenderer {
     }
     #endif
     
+    #if os(macOS)
+    override func magnify(with event: NSEvent) {
+        if event.phase == .changed {
+            cameraNode.position.z -= UFloat(event.magnification*10)
+        }
+    }
+    #endif
+    
     internal func macOSCameraControls(sender: PanGesture) {
         if sender.integer == 1 {
             rotate(sender: sender)

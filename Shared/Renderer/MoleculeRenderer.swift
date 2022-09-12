@@ -29,6 +29,8 @@ class MoleculeRenderer: SCNView, ObservableObject {
         steps[stepToShow - 1]
     }
     
+    var kit: ProteinKit? = nil
+    
     init(_ steps: [Step], moleculeName: String?) {
         self.steps = steps
         self.moleculeName = moleculeName ?? "Molecule"
@@ -114,6 +116,8 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     // Setup SceneKit, Camera and Light
     
+    @Published var axisInCenter = false
+    
     internal func setupBasicSCN() {
         
         let scene = SCNScene()
@@ -128,7 +132,9 @@ class MoleculeRenderer: SCNView, ObservableObject {
         self.pointOfView = self.cameraNode
         
         let axis = generate3DAxis()
-        axis.position = SCNVector3(-5, -3.5, -9)
+        axis.position = SCNVector3(-0.6, -0.4, -1)
+        axis.scale = SCNVector3(0.1, 0.1, 0.1)
+        axis.castsShadow = false
         self.axisNode = axis
         cameraNode.addChildNode(self.axisNode)
         
@@ -162,16 +168,13 @@ class MoleculeRenderer: SCNView, ObservableObject {
         cartoonNodes.name = "cartoon"
         selectionNodes.name = "selections"
         
-        print(moleculeName)
-        
         let kit = ProteinKit(residues: step.res, colorSettings: settings.colorSettings, moleculeName: moleculeName)
         
         if step.isProtein {
-            loadCartoon(step.res)
-//            atomNodes.isHidden = true
-        } else {
-            kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
+            loadCartoon()
         }
+        
+        kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
         
         
         // Add the newly created atomNodes to the root scene

@@ -22,11 +22,10 @@ extension MoleculeRenderer {
         return atomNode
     }
     
-    internal func loadCartoon(_ residues: [Residue]) {
-        let pNode = ProteinKit(residues: residues, moleculeName: moleculeName)
+    internal func loadCartoon() {
         
         do {
-            let n = try pNode.getProteinNode()
+            guard let n = try kit?.getProteinNode() else {return}
             cartoonNodes.addChildNode(n)
             compoundAtomNodes.addChildNode(cartoonNodes)
         } catch {

@@ -85,7 +85,9 @@ extension MoleculeRenderer {
         case .z:
             self.atomicRootNode.orientation = rotateInernal(xRadians: .pi, yRadians: 0)
         }
-        self.axisNode.orientation = self.atomicRootNode.orientation
+        if !axisInCenter {
+            self.axisNode.orientation = self.atomicRootNode.orientation
+        }
     }
     
     private func rotateInernal(xRadians: Float, yRadians: Float, zRadians: Float = 0) -> SCNQuaternion {
@@ -128,7 +130,9 @@ extension MoleculeRenderer {
             #endif
             // Use the radian values to construct quaternions
             self.atomicRootNode.orientation = rotateInernal(xRadians: xRadians, yRadians: yRadians)
-            self.axisNode.orientation = self.atomicRootNode.orientation
+            if !axisInCenter {
+                self.axisNode.orientation = self.atomicRootNode.orientation
+            }
             self.previousPanTranslation = translation
         default:
             self.previousPanTranslation = nil

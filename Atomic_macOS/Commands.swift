@@ -119,6 +119,11 @@ struct AtomicCommands: Commands {
             } label: {
                 Text("Z")
             }.keyboardShortcut("3")
+            Button {
+                commands.activeController?.renderer?.swapAxis()
+            } label: {
+                Text("Swap axis")
+            }
             Divider()
             Button {
                 commands.activeController?.renderer?.toggleFixedLightNode()

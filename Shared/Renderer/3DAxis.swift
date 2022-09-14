@@ -11,6 +11,25 @@ import SceneKitPlus
 
 extension MoleculeRenderer {
     
+    public func hideAxis(hide: Bool) {
+        self.axisNode.isHidden = hide
+    }
+    
+    public func swapAxis() {
+        self.axisNode.removeFromParentNode()
+        if axisInCenter {
+            self.cameraNode.addChildNode(axisNode)
+            axisNode.position = SCNVector3(-0.6, -0.4, -1)
+            axisNode.scale = SCNVector3(0.1, 0.1, 0.1)
+            axisInCenter = false
+        } else {
+            self.compoundAtomNodes.addChildNode(axisNode)
+            axisNode.scale = SCNVector3(1,1,1)
+            axisNode.position = .zero
+            axisInCenter = true
+        }
+    }
+    
     private func createLine(from: SCNVector3, to: SCNVector3) -> SCNNode {
         let midPosition = SCNVector3((to.x + from.x) / 2,(to.y + from.y) / 2,(to.z + from.z) / 2)
         let lineNode = SCNNode()
@@ -44,13 +63,16 @@ extension MoleculeRenderer {
         
         xaxis.enumerateChildNodes { node, _ in
             node.geometry?.materials.first?.diffuse.contents = UColor.red
+            node.geometry?.materials.first?.lightingModel = .constant
         }
         yaxis.enumerateChildNodes { node, _ in
             node.geometry?.materials.first?.diffuse.contents = UColor.blue
+            node.geometry?.materials.first?.lightingModel = .constant
         }
         
         zaxis.enumerateChildNodes { node, _ in
             node.geometry?.materials.first?.diffuse.contents = UColor.green
+            node.geometry?.materials.first?.lightingModel = .constant
         }
         
         let axisNode = SCNNode()

@@ -39,6 +39,9 @@ extension MoleculeRenderer {
             bondNodes.isHidden = true
             atomNodes.isHidden = true
             cartoonNodes.isHidden = false
+        case .licorice:
+            //atomNodes.isHidden = true
+            computeLicorice()
         }
     }
     

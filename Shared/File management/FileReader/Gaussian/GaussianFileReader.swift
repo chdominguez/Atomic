@@ -209,7 +209,7 @@ extension BaseReader {
                         if readOldGeom {
                             let separated = line.split(separator: ",")
                             let element = separated[0]
-                            print(separated)
+                            //print(separated)
                             guard let x = Float(separated[2]), let y = Float(separated[3]), let z = Float(separated[4]) else {
                                 throw AtomicErrors.badInputCoords
                             }

@@ -29,6 +29,8 @@ class MoleculeRenderer: SCNView, ObservableObject {
         steps[stepToShow - 1]
     }
     
+    var kit: ProteinKit? = nil
+    
     init(_ steps: [Step], moleculeName: String?) {
         self.steps = steps
         self.moleculeName = moleculeName ?? "Molecule"
@@ -55,12 +57,14 @@ class MoleculeRenderer: SCNView, ObservableObject {
     //MARK: Scene
     let colors = ProteinColors()
     var atomNodes = SCNNode()
+    var licoriceNodes = SCNNode()
     var vdwNodes = SCNNode()
     var bondNodes = SCNNode()
     var backBoneNode = SCNLineNode()
     var cartoonNodes = SCNNode()
     var selectionNodes = SCNNode()
     var compoundAtomNodes = SCNNode()
+    var axisNode = SCNNode()
     
     let atomicRootNode = SCNNode()
     var cameraNode = SCNNode()
@@ -113,9 +117,12 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     // Setup SceneKit, Camera and Light
     
+    @Published var axisInCenter = false
+    
     internal func setupBasicSCN() {
         
         let scene = SCNScene()
+        self.scene = scene
         
         // Setup the camera node
         self.cameraNode = setupCameraNode()
@@ -125,7 +132,12 @@ class MoleculeRenderer: SCNView, ObservableObject {
         scene.rootNode.addChildNode(cameraNode)
         self.pointOfView = self.cameraNode
         
-        self.scene = scene
+        let axis = generate3DAxis()
+        axis.position = SCNVector3(-0.6, -0.4, -1)
+        axis.scale = SCNVector3(0.1, 0.1, 0.1)
+        axis.castsShadow = false
+        self.axisNode = axis
+        cameraNode.addChildNode(self.axisNode)
         
     }
     
@@ -156,19 +168,18 @@ class MoleculeRenderer: SCNView, ObservableObject {
         backBoneNode.name = "backBone"
         cartoonNodes.name = "cartoon"
         selectionNodes.name = "selections"
+        licoriceNodes.name = "licorice"
         
-        print(moleculeName)
+        compoundAtomNodes.addChildNode(licoriceNodes)
         
         let kit = ProteinKit(residues: step.res, colorSettings: settings.colorSettings, moleculeName: moleculeName)
         
         if step.isProtein {
-            loadCartoon(step.res)
-//            atomNodes.isHidden = true
-        } else {
-            kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
+            loadCartoon()
         }
         
-        
+        kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
+
         // Add the newly created atomNodes to the root scene
         compoundAtomNodes.addChildNode(atomNodes)
         
@@ -176,6 +187,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
         if bondNodes.childNodes.count > 1000 {
             self.bondNodes = bondNodes.flattenedClone()
         }
+        
         
         compoundAtomNodes.addChildNode(bondNodes)
         
@@ -347,4 +359,61 @@ struct SceneUI: Representable {
         controller.addGestureRecognizer(rotateG)
     }
     #endif
+}
+
+extension MoleculeRenderer {
+    public func computeLicorice() {
+        
+        DispatchQueue.global(qos: .userInitiated).async { [self] in
+            atomNodes.enumerateChildNodes { n, _ in
+                let g = n.geometry as! SCNSphere
+                g.radius = 0.25
+            }
+        }
+        
+        guard let molecule = showingStep.molecule else {return}
+        DispatchQueue.global(qos: .userInitiated).async { [self] in
+            for (n,atom) in molecule.atoms.enumerated() {
+                if n == 0 {continue}
+                for i in 0..<n {
+                    if distance(from: atom.position, to: molecule.atoms[i].position) < 1.6 {
+                        createInternalLicorice(atom1: atom, atom2: molecule.atoms[i])
+                    }
+                }
+            }
+        }
+    }
+    
+    private func createInternalLicorice(atom1: Atom, atom2: Atom) {
+        let positionA = atom1.position
+        let positionB = atom2.position
+        
+        let midPosition = SCNVector3Make((positionA.x + positionB.x) / 2,(positionA.y + positionB.y) / 2,(positionA.z + positionB.z) / 2)
+        
+        let bondGeometry1 = geometries.bond!.copy() as! SCNCylinder
+        let bondGeometry2 = geometries.bond!.copy() as! SCNCylinder
+        bondGeometry1.radius = 0.25
+        let height = distance(from: positionA, to: midPosition)
+        bondGeometry1.height = height
+        bondGeometry2.radius = 0.25
+        bondGeometry2.height = height
+        bondGeometry1.materials = geometries.atoms[atom1.type]!.materials
+        bondGeometry2.materials = geometries.atoms[atom2.type]!.materials
+        
+        let liconode1 = SCNNode(geometry: bondGeometry1)
+        liconode1.position = SCNVector3(0,-height/2,0)
+        let liconode2 = SCNNode(geometry: bondGeometry2)
+        liconode2.position = -liconode1.position
+        
+        let liconode = SCNNode()
+        
+        liconode.addChildNode(liconode1)
+        liconode.addChildNode(liconode2)
+        
+        liconode.position = midPosition
+        
+        liconode.look(at: positionB, up: scene!.rootNode.worldUp, localFront: liconode.worldUp)
+        
+        licoriceNodes.addChildNode(liconode)
+    }
 }

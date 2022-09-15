@@ -43,8 +43,12 @@ struct SettingsView_Previews: PreviewProvider {
 }
 
 struct GeneralSettings: View {
+    @ObservedObject var settings = GlobalSettings.shared
     var body: some View {
-        Text("General settings")
+        VStack {
+            Text("General settings")
+        }
+        
     }
 }
 struct ViewSettings: View {

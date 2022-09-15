@@ -52,6 +52,8 @@
 		C09DBDA228C10E76001AD3FF /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBDA128C10E76001AD3FF /* Neumorphic */; };
 		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
+		C0AAA8B828C6505E0010D371 /* 3DAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AAA8B728C6505E0010D371 /* 3DAxis.swift */; };
+		C0AAA8B928C6505E0010D371 /* 3DAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AAA8B728C6505E0010D371 /* 3DAxis.swift */; };
 		C0B7EEE828B4FCFF00449DA6 /* DataRecentsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */; };
 		C0B7EEE928B4FCFF00449DA6 /* DataRecentsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */; };
 		C0BEB2BB276A9E66006F37A5 /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */; };
@@ -116,6 +118,7 @@
 		C09441342761F76F00680075 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		C09DBD9928C10DEE001AD3FF /* ProteinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProteinKit; path = ../ProteinKit; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
+		C0AAA8B728C6505E0010D371 /* 3DAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DAxis.swift; sourceTree = "<group>"; };
 		C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRecentsStorage.swift; sourceTree = "<group>"; };
 		C0BEB2BA276A9E66006F37A5 /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		C0C6904828BF710A0017CF4A /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
@@ -339,6 +342,7 @@
 		F06AA4A926E7806100387EBA /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				C0AAA8B728C6505E0010D371 /* 3DAxis.swift */,
 				C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */,
 				C07BE7C628A283A700EFBE98 /* AtomStyles.swift */,
 				C07BE7C328A2831400EFBE98 /* RenderAtoms.swift */,
@@ -517,6 +521,7 @@
 				C0DCCE97276A3C9B0085CD1D /* Atomic_macOSApp.swift in Sources */,
 				C0DCCECE276A3E8F0085CD1D /* PeriodicTableViewController.swift in Sources */,
 				C0DCCECF276A3E8F0085CD1D /* ViewExtensions.swift in Sources */,
+				C0AAA8B928C6505E0010D371 /* 3DAxis.swift in Sources */,
 				C0BEB2BC276A9E6B006F37A5 /* CustomColors.swift in Sources */,
 				C0DCCED5276A3E980085CD1D /* AtomicMainController.swift in Sources */,
 				C0CE163A28006C1200A35AA3 /* UsefulFunctions.swift in Sources */,
@@ -553,6 +558,7 @@
 				C01FD3AE278B4E2F00E0A5AD /* InstanceManager.swift in Sources */,
 				C0455E58277B985400561AAA /* GaussianKeywords.swift in Sources */,
 				C0CE163928006C1200A35AA3 /* UsefulFunctions.swift in Sources */,
+				C0AAA8B828C6505E0010D371 /* 3DAxis.swift in Sources */,
 				F0EC49DB270B42650082EC6C /* PeriodicTableViewController.swift in Sources */,
 				C07BE7C728A283A700EFBE98 /* AtomStyles.swift in Sources */,
 				F0F6552726F7C89600DD4F25 /* SettingsView.swift in Sources */,
@@ -601,7 +607,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Atomic.macos;
 				PRODUCT_NAME = Atomic;
 				SDKROOT = macosx;
@@ -635,7 +641,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Atomic.macos;
 				PRODUCT_NAME = Atomic;
 				SDKROOT = macosx;
@@ -791,7 +797,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Atomic.ios;
 				PRODUCT_MODULE_NAME = Atomic;
 				PRODUCT_NAME = Atomic;
@@ -834,7 +840,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 0.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Atomic.ios;
 				PRODUCT_MODULE_NAME = Atomic;
 				PRODUCT_NAME = Atomic;

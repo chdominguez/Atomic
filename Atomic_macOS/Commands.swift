@@ -105,22 +105,24 @@ struct AtomicCommands: Commands {
             }
             Divider()
             Button {
-                commands.activeController?.renderer?.cameraNode.position = SCNVector3(8, 0, 0)
-                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+                commands.seeFrom(.x)
             } label: {
                 Text("X")
-            }
+            }.keyboardShortcut("1")
             Button {
-                commands.activeController?.renderer?.cameraNode.position = SCNVector3(0, 8, 0)
-                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+                commands.seeFrom(.y)
             } label: {
                 Text("Y")
-            }
+            }.keyboardShortcut("2")
             Button {
-                commands.activeController?.renderer?.cameraNode.position = SCNVector3(0, 0, 8)
-                commands.activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
+                commands.seeFrom(.z)
             } label: {
                 Text("Z")
+            }.keyboardShortcut("3")
+            Button {
+                commands.activeController?.renderer?.swapAxis()
+            } label: {
+                Text("Swap axis")
             }
             Divider()
             Button {
@@ -193,5 +195,10 @@ class AtomicComandsController: ObservableObject {
             step.energy
         }
         return energies
+    }
+    
+    func seeFrom(_ d: MoleculeRenderer.Direction) {
+        activeController?.renderer?.rotateCamera(direction: d)
+        activeController?.renderer?.cameraNode.look(at: SCNVector3(0,0,0))
     }
 }

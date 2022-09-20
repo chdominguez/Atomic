@@ -5,7 +5,6 @@
     <sparkle:releaseNotesLink>
         https://example.com/release_notes/app_2.0.html
     </sparkle:releaseNotesLink>
-    <pubDate>Tue, 20 Oct 2022</pubDate>
     <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.1/Atomic0.4.1.dmg"
                 sparkle:edSignature="7cLALFUHSwvEJWSkV8aMreoBe4fhRa4FncC5NoThKxwThL6FDR7hTiPJh1fo2uagnPogisnQsgFgq6mGkt2RBw=="
                 length="1623481"

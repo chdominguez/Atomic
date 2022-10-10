@@ -2,11 +2,13 @@
 
 import SwiftUI
 import ProteinKit
-import SceneKit
+import Sparkle
 
 //MARK: Commands view
 /// macOS menus on top of the screen
 struct AtomicCommands: Commands {
+    
+    let updaterController: SPUStandardUpdaterController
     
     @State var color: Color = .white
     
@@ -143,6 +145,9 @@ struct AtomicCommands: Commands {
                 DebugWindowView(renderer: commands.activeController!.renderer!).openNewWindow(type: .debug, controller: commands.activeController!)
             }
         }
+        CommandGroup(after: .appInfo) {
+                        CheckForUpdatesView(updater: updaterController.updater)
+                    }
     }
 }
 

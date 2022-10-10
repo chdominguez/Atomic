@@ -50,6 +50,8 @@
 		C09DBD9D28C10E56001AD3FF /* ProteinKit in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBD9C28C10E56001AD3FF /* ProteinKit */; };
 		C09DBDA028C10E70001AD3FF /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBD9F28C10E70001AD3FF /* Neumorphic */; };
 		C09DBDA228C10E76001AD3FF /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBDA128C10E76001AD3FF /* Neumorphic */; };
+		C0A386C428EEB0BA003FD23E /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A386C328EEB0BA003FD23E /* Updater.swift */; };
+		C0A386C728EEB22F003FD23E /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = C0A386C628EEB22F003FD23E /* Sparkle */; };
 		C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */; };
 		C0AAA8B828C6505E0010D371 /* 3DAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AAA8B728C6505E0010D371 /* 3DAxis.swift */; };
@@ -117,6 +119,7 @@
 		C07BE7C628A283A700EFBE98 /* AtomStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomStyles.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		C09DBD9928C10DEE001AD3FF /* ProteinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProteinKit; path = ../ProteinKit; sourceTree = "<group>"; };
+		C0A386C328EEB0BA003FD23E /* Updater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
 		C0AAA8B728C6505E0010D371 /* 3DAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DAxis.swift; sourceTree = "<group>"; };
 		C0B7EEE728B4FCFF00449DA6 /* DataRecentsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRecentsStorage.swift; sourceTree = "<group>"; };
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09DBDA228C10E76001AD3FF /* Neumorphic in Frameworks */,
+				C0A386C728EEB22F003FD23E /* Sparkle in Frameworks */,
 				C09DBD9B28C10E52001AD3FF /* ProteinKit in Frameworks */,
 				C064B8C328C1111E008180DB /* SCNLine in Frameworks */,
 			);
@@ -212,6 +216,7 @@
 				C0DCCE96276A3C9B0085CD1D /* Atomic_macOSApp.swift */,
 				C04B837F289BD73700B8E9B8 /* Debug.swift */,
 				C064B3D0278AAE5D0086E7BD /* macOSWindowManager.swift */,
+				C0A386C328EEB0BA003FD23E /* Updater.swift */,
 				C0205A6A280C632200BCD688 /* Commands.swift */,
 				C0DCCEDA276A44760085CD1D /* Atomic-macOS-Info.plist */,
 				C0DCCE9F276A3C9C0085CD1D /* Atomic_macOS.entitlements */,
@@ -399,6 +404,7 @@
 				C09DBD9A28C10E52001AD3FF /* ProteinKit */,
 				C09DBDA128C10E76001AD3FF /* Neumorphic */,
 				C064B8C228C1111E008180DB /* SCNLine */,
+				C0A386C628EEB22F003FD23E /* Sparkle */,
 			);
 			productName = Atomic_macOS;
 			productReference = C0DCCE94276A3C9B0085CD1D /* Atomic.app */;
@@ -458,6 +464,7 @@
 			packageReferences = (
 				C09DBD9E28C10E70001AD3FF /* XCRemoteSwiftPackageReference "neumorphic" */,
 				C064B8BF28C11118008180DB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */,
+				C0A386C528EEB22F003FD23E /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			productRefGroup = F06AA47726E77F5100387EBA /* Products */;
 			projectDirPath = "";
@@ -506,6 +513,7 @@
 				C066B782277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */,
 				C0F9F3012857DE9200ABADE3 /* AtomicProgressView.swift in Sources */,
+				C0A386C428EEB0BA003FD23E /* Updater.swift in Sources */,
 				C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */,
 				C07BE7BC28A2745600EFBE98 /* CameraLights.swift in Sources */,
 				C07BE7C228A2823F00EFBE98 /* TouchGestures.swift in Sources */,
@@ -903,6 +911,14 @@
 				kind = branch;
 			};
 		};
+		C0A386C528EEB22F003FD23E /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -933,6 +949,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C09DBD9E28C10E70001AD3FF /* XCRemoteSwiftPackageReference "neumorphic" */;
 			productName = Neumorphic;
+		};
+		C0A386C628EEB22F003FD23E /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0A386C528EEB22F003FD23E /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -15,6 +15,7 @@
 		C0205A6B280C632200BCD688 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0205A6A280C632200BCD688 /* Commands.swift */; };
 		C021717F27E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
 		C021718027E3E269007ACD2F /* ToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C021717E27E3E269007ACD2F /* ToolBar.swift */; };
+		C0217EEB28F4698300A9D3AF /* ProteinKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0217EEA28F4698300A9D3AF /* ProteinKit */; };
 		C02C1BDC27E4B23F00BCDF01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F06AA47D26E77F5200387EBA /* Assets.xcassets */; };
 		C041E25E2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
 		C041E25F2774B96D005790EE /* Molecule3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C041E25D2774B96D005790EE /* Molecule3DView.swift */; };
@@ -47,7 +48,6 @@
 		C07BE7C828A283A700EFBE98 /* AtomStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07BE7C628A283A700EFBE98 /* AtomStyles.swift */; };
 		C09441352761F76F00680075 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09441342761F76F00680075 /* ViewExtensions.swift */; };
 		C09DBD9B28C10E52001AD3FF /* ProteinKit in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBD9A28C10E52001AD3FF /* ProteinKit */; };
-		C09DBD9D28C10E56001AD3FF /* ProteinKit in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBD9C28C10E56001AD3FF /* ProteinKit */; };
 		C09DBDA028C10E70001AD3FF /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBD9F28C10E70001AD3FF /* Neumorphic */; };
 		C09DBDA228C10E76001AD3FF /* Neumorphic in Frameworks */ = {isa = PBXBuildFile; productRef = C09DBDA128C10E76001AD3FF /* Neumorphic */; };
 		C0A386C428EEB0BA003FD23E /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A386C328EEB0BA003FD23E /* Updater.swift */; };
@@ -102,6 +102,7 @@
 		C01FD3AC278B4E2C00E0A5AD /* InstanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceManager.swift; sourceTree = "<group>"; };
 		C0205A6A280C632200BCD688 /* Commands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		C021717E27E3E269007ACD2F /* ToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBar.swift; sourceTree = "<group>"; };
+		C0217EE928F4697B00A9D3AF /* ProteinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProteinKit; path = ../ProteinKit; sourceTree = "<group>"; };
 		C041E25D2774B96D005790EE /* Molecule3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Molecule3DView.swift; sourceTree = "<group>"; };
 		C0455E54277B668A00561AAA /* GaussianFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianFileReader.swift; sourceTree = "<group>"; };
 		C0455E57277B985400561AAA /* GaussianKeywords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianKeywords.swift; sourceTree = "<group>"; };
@@ -118,7 +119,6 @@
 		C07BE7C328A2831400EFBE98 /* RenderAtoms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderAtoms.swift; sourceTree = "<group>"; };
 		C07BE7C628A283A700EFBE98 /* AtomStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomStyles.swift; sourceTree = "<group>"; };
 		C09441342761F76F00680075 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
-		C09DBD9928C10DEE001AD3FF /* ProteinKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProteinKit; path = ../ProteinKit; sourceTree = "<group>"; };
 		C0A386C328EEB0BA003FD23E /* Updater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		C0A7F09E276F7FBB00E69E0F /* MoleculeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleculeRenderer.swift; sourceTree = "<group>"; };
 		C0AAA8B728C6505E0010D371 /* 3DAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = 3DAxis.swift; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09DBDA028C10E70001AD3FF /* Neumorphic in Frameworks */,
-				C09DBD9D28C10E56001AD3FF /* ProteinKit in Frameworks */,
+				C0217EEB28F4698300A9D3AF /* ProteinKit in Frameworks */,
 				C064B8C128C11118008180DB /* SCNLine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,7 +205,7 @@
 		C09DBD9828C10DEE001AD3FF /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				C09DBD9928C10DEE001AD3FF /* ProteinKit */,
+				C0217EE928F4697B00A9D3AF /* ProteinKit */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -424,9 +424,9 @@
 			);
 			name = Atomic_ipad;
 			packageProductDependencies = (
-				C09DBD9C28C10E56001AD3FF /* ProteinKit */,
 				C09DBD9F28C10E70001AD3FF /* Neumorphic */,
 				C064B8C028C11118008180DB /* SCNLine */,
+				C0217EEA28F4698300A9D3AF /* ProteinKit */,
 			);
 			productName = Atomic;
 			productReference = F06AA47626E77F5100387EBA /* Atomic.app */;
@@ -922,6 +922,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C0217EEA28F4698300A9D3AF /* ProteinKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProteinKit;
+		};
 		C064B8C028C11118008180DB /* SCNLine */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C064B8BF28C11118008180DB /* XCRemoteSwiftPackageReference "SceneKit-SCNLine" */;
@@ -933,10 +937,6 @@
 			productName = SCNLine;
 		};
 		C09DBD9A28C10E52001AD3FF /* ProteinKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ProteinKit;
-		};
-		C09DBD9C28C10E56001AD3FF /* ProteinKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProteinKit;
 		};

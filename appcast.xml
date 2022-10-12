@@ -4,11 +4,11 @@
         <title>Atomic</title>
         <item>
             <title>0.4.2</title>
-            <pubDate>Mon, 10 Oct 2022 09:17:59 +0200</pubDate>
+            <pubDate>Tue, 11 Oct 2022 18:02:08 +0200</pubDate>
             <sparkle:version>2</sparkle:version>
             <sparkle:shortVersionString>0.4.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.2/Atomic.0.4.2.dmg" length="4251280" type="application/octet-stream" sparkle:edSignature="8lagGp+pe7/nTh3EpJf+Q+s6EfrbnHiMbZ9eswbJoSGSSmbtm5p7CAcYQZtTs3h3ShVKzWeFmEbsKVwwhUyeCQ=="/>
+            <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.2/Atomic.0.4.2.dmg" length="4849756" type="application/octet-stream" sparkle:edSignature="thr7Hev0G1514Jo0pM7G1+zLsB+xc6yfJI0qX5RW8+a3XJ8z4gKotbVxK/PRNA+LO4FFNtX6RC5udb8X0SEyDA=="/>
         </item>
     </channel>
 </rss>

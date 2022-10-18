@@ -3,12 +3,14 @@
     <channel>
         <title>Atomic</title>
         <item>
-            <title>0.4.2</title>
-            <pubDate>Tue, 11 Oct 2022 18:02:08 +0200</pubDate>
-            <sparkle:version>2</sparkle:version>
-            <sparkle:shortVersionString>0.4.2</sparkle:shortVersionString>
+            <title>0.4.3</title>
+            <pubDate>Tue, 18 Oct 2022 16:32:36 +0200</pubDate>
+            <link>https://github.com/chdominguez/Atomic/releases/download/0.4.3/Atomic0.4.3.dmg</link>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>0.4.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.2/Atomic.0.4.2.dmg" length="4849756" type="application/octet-stream" sparkle:edSignature="thr7Hev0G1514Jo0pM7G1+zLsB+xc6yfJI0qX5RW8+a3XJ8z4gKotbVxK/PRNA+LO4FFNtX6RC5udb8X0SEyDA=="/>
+            <description>Fixed App Sandbox issue for dropped files</description>
+            <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.3/Atomic0.4.3.dmg" length="4892564" type="application/octet-stream" sparkle:edSignature="ZFUmHM+k4XB/EKXg6tdMcDZic1zIdIZVl+Zp54903vffLSSkxUCynL4NNZ/x4JlLYRo2lNJmXUgp34ox2IkJAw=="/>
         </item>
     </channel>
 </rss>

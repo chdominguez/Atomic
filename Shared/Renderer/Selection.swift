@@ -196,7 +196,6 @@ extension MoleculeRenderer {
                                 let clonedMaterial = sel.selectedNode.geometry?.materials.first?.copy() as! SCNMaterial
                                 clonedMaterial.diffuse.contents = newColor.uColor
                                 node.enumerateChildNodes { aa, _ in
-                                    //print(aa.name)
                                     aa.geometry?.materials = [clonedMaterial]
                                 }
                                 return

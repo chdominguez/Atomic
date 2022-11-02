@@ -20,6 +20,7 @@ ReadMeResources/
 *.lock
 profile
 Atomic.xcodeproj/xcuserdata/*
+'Atomic.xcodeproj/xcuserdata'
 Atomic.xcodeproj/project.xcworkspace/xcshareddata/*
 ####
 # Xcode temporary files that should never be committed

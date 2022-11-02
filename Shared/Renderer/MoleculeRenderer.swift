@@ -98,6 +98,7 @@ class MoleculeRenderer: SCNView, ObservableObject {
                 setupBasicSCN()
                 try setupScene(firstStep, moleculeName: moleculeName)}
             catch {
+                #warning("Fix errors thrown on scene setup")
                 fatalError()
             }
             DispatchQueue.main.sync {
@@ -143,7 +144,6 @@ class MoleculeRenderer: SCNView, ObservableObject {
     
     /// Populates the SCNodes with atoms and bonds from the step molecule
     internal func setupScene(_ step: Step, moleculeName: String) throws {
-        
         guard let molecule = steps.first?.molecule else {return}
         
         let positions = molecule.atoms.map {$0.position}
@@ -172,13 +172,14 @@ class MoleculeRenderer: SCNView, ObservableObject {
         
         compoundAtomNodes.addChildNode(licoriceNodes)
         
-        let kit = ProteinKit(residues: step.res, colorSettings: settings.colorSettings, moleculeName: moleculeName)
+        self.kit = ProteinKit(residues: step.res, colorSettings: settings.colorSettings, moleculeName: moleculeName)
         
         if step.isProtein {
-            loadCartoon()
+            try loadCartoon()
+            self.atomNodes.isHidden = true
         }
         
-        kit.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
+        kit?.atomNodes(atoms: molecule.atoms, to: atomNodes, hidden: false)
 
         // Add the newly created atomNodes to the root scene
         compoundAtomNodes.addChildNode(atomNodes)

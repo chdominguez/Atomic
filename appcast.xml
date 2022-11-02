@@ -3,13 +3,13 @@
     <channel>
         <title>Atomic</title>
         <item>
-            <title>0.4.3</title>
-            <pubDate>Tue, 18 Oct 2022 19:57:56 +0200</pubDate>
-            <sparkle:version>3</sparkle:version>
-            <description>Fixed App Sandbox issue for dropped files</description>
-            <sparkle:shortVersionString>0.4.3</sparkle:shortVersionString>
+            <title>Version 0.4.4 (2 bugs fixed)</title>
+            <pubDate>Wed, 02 Nov 2022 17:09:12 +0100</pubDate>
+            <sparkle:version>4</sparkle:version>
+            <description>- Fixed atoms being rendered as a flat surface.\n - Fixed rendering of proteins as cartoon for some PDBs</description>
+            <sparkle:shortVersionString>0.4.4</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.3/Atomic.0.4.3.dmg" length="4834713" type="application/octet-stream" sparkle:edSignature="40Sz8LLjMCSDXSyMjjZkJYKeRrIeZPVTwvfabjhX4iSDXx9196BGUOvF0bcB1e1AQoVXX6EC/KSEaK97yC6gDg=="/>
+            <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.4/Atomic0.4.4.dmg" length="4832934" type="application/octet-stream" sparkle:edSignature="ZeaZghjS8NHIn8V0tmAur9PnTQwijKlFsv+69otc9yC7QXwhy5BbyFuxDJwqWp2Rm3oMhFQGoHkhX2AbMnC3DA=="/>
         </item>
     </channel>
 </rss>

@@ -6,8 +6,7 @@
             <title>Version 0.4.4 (2 bugs fixed)</title>
             <pubDate>Wed, 02 Nov 2022 17:09:12 +0100</pubDate>
             <sparkle:version>4</sparkle:version>
-            <description>* Fixed atoms being rendered as a flat surface.</description>
-            <description>* Fixed rendering of proteins as cartoon for some PDBs.</description>
+            <description><![CDATA[<h2>Bugfixes in version 0.4.4: #35</h2><ul><li>Fixed atoms being rendered as a flat surface.</li><li>Fixed rendering of proteins as cartoon for some PDBs.</li></ul>]]></description>
             <sparkle:shortVersionString>0.4.4</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
             <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.4/Atomic0.4.4.dmg" length="4832934" type="application/octet-stream" sparkle:edSignature="ZeaZghjS8NHIn8V0tmAur9PnTQwijKlFsv+69otc9yC7QXwhy5BbyFuxDJwqWp2Rm3oMhFQGoHkhX2AbMnC3DA=="/>

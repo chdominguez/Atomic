@@ -66,7 +66,6 @@ extension BaseReader {
             if didReadInput {
                 //MARK: Read log file
                 if line.contains(GS.standardOrientation.rawValue) {
-                    print("Standard")
                     standardOrient = true
                     if currentStep == nil {currentStep = Step()}
                     continue
@@ -209,7 +208,6 @@ extension BaseReader {
                         if readOldGeom {
                             let separated = line.split(separator: ",")
                             let element = separated[0]
-                            //print(separated)
                             guard let x = Float(separated[2]), let y = Float(separated[3]), let z = Float(separated[4]) else {
                                 throw AtomicErrors.badInputCoords
                             }

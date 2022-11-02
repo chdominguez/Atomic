@@ -104,7 +104,7 @@ class AtomicWindow: Hashable {
     }
     
     func keyDown(with event: NSEvent) {
-        print("Key down!")
+        
     }
     
     static func == (lhs: AtomicWindow, rhs: AtomicWindow) -> Bool {

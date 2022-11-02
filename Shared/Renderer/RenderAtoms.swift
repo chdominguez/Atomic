@@ -22,15 +22,10 @@ extension MoleculeRenderer {
         return atomNode
     }
     
-    internal func loadCartoon() {
-        
-        do {
-            guard let n = try kit?.getProteinNode() else {return}
-            cartoonNodes.addChildNode(n)
-            compoundAtomNodes.addChildNode(cartoonNodes)
-        } catch {
-            fatalError("Bad PDB in ProteinKit")
-        }
+    internal func loadCartoon() throws {
+        guard let n = try kit?.getProteinNode() else {throw AtomicErrors.pdbError}
+        cartoonNodes.addChildNode(n)
+        compoundAtomNodes.addChildNode(cartoonNodes)
     }
     
     /// Adds a bond node to bondNodes checking the distance between thgiven atom and the following 8 atoms (in list order) in the molecule.

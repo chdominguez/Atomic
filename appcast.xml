@@ -3,6 +3,15 @@
     <channel>
         <title>Atomic</title>
         <item>
+            <title>Version 0.4.5</title>
+            <pubDate>Mon, 21 Nov 2022 13:50:06 +0100</pubDate>
+            <sparkle:version>5</sparkle:version>
+            <description><![CDATA[<h2>Bugfixes in version 0.4.5: #35</h2><ul><li>Fixed XYZ file reader for files with title.</li><li>Fixed XYZ file saving by adding a title after the atom count.</li></ul>]]></description>
+            <sparkle:shortVersionString>0.4.5</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.5/Atomic0.4.5.dmg" length="4892175" type="application/octet-stream" sparkle:edSignature="pfF3PpNG8uUSO2KeUuEp5ECnYItqqPQXzJ8iTzxTvyXre+4UspxI/C/4D2qiwSCp1R/fO2onxZUb4ce3ohq0Bw=="/>
+        </item>
+        <item>
             <title>Version 0.4.4 (2 bugs fixed)</title>
             <pubDate>Wed, 02 Nov 2022 17:09:12 +0100</pubDate>
             <sparkle:version>4</sparkle:version>

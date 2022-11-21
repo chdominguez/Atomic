@@ -39,8 +39,20 @@ extension BaseReader {
             
             // Continue the loop on empty line
             if splitted.isEmpty {skipLine = false; continue}
+            
+            if skipLine {
+                // Obtain timestep for Molecular dynamics simulations
+                guard !filteredLine.contains("Timestep") else {
+                    guard let time = Int(splitted.last!) else {throw xyzError}
+                    timeStep = time
+                    continue // Skip loop as in timestep lines that is the only useful information
+                }
+                skipLine = false
+                continue
+            }
                     
             // If the line contains 1 element, then it's the atom count for that molecule
+            #warning("Fix XYZ reading")
             guard splitted.count > 1 else {
                 
                 // Check whether its the first molecule and assign a new Molecule to currentMolecule.
@@ -60,17 +72,6 @@ extension BaseReader {
                 stepNumber += 1 // Increment the number of steps for the next one
                 skipLine = true // Next line should not contain atom info
                 continue // Skip loop to next line
-            }
-            
-            if skipLine {
-                // Obtain timestep for Molecular dynamics simulations
-                guard !filteredLine.contains("Timestep") else {
-                    guard let time = Int(splitted.last!) else {throw xyzError}
-                    timeStep = time
-                    continue // Skip loop as in timestep lines that is the only useful information
-                }
-                skipLine = false
-                continue
             }
             
 

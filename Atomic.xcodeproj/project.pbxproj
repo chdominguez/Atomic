@@ -81,8 +81,8 @@
 		C0E1371C277F33D3009ACCB6 /* InputfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1371A277F33D3009ACCB6 /* InputfileView.swift */; };
 		C0E1371E277F3930009ACCB6 /* FreqsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1371D277F3930009ACCB6 /* FreqsView.swift */; };
 		C0E1371F277F3930009ACCB6 /* FreqsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1371D277F3930009ACCB6 /* FreqsView.swift */; };
-		C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
-		C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */; };
+		C0E137252783AB53009ACCB6 /* XYZWritter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* XYZWritter.swift */; };
+		C0E137262783AB53009ACCB6 /* XYZWritter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E137242783AB53009ACCB6 /* XYZWritter.swift */; };
 		C0F9F3002857DE9200ABADE3 /* AtomicProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F9F2FF2857DE9200ABADE3 /* AtomicProgressView.swift */; };
 		C0F9F3012857DE9200ABADE3 /* AtomicProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F9F2FF2857DE9200ABADE3 /* AtomicProgressView.swift */; };
 		F006ADC326FBD3B500FD2F33 /* PeriodicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */; };
@@ -134,7 +134,7 @@
 		C0DFA43327E89C2A00F6BA9A /* XYZReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYZReader.swift; sourceTree = "<group>"; };
 		C0E1371A277F33D3009ACCB6 /* InputfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputfileView.swift; sourceTree = "<group>"; };
 		C0E1371D277F3930009ACCB6 /* FreqsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreqsView.swift; sourceTree = "<group>"; };
-		C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaussianGJFWriter.swift; sourceTree = "<group>"; };
+		C0E137242783AB53009ACCB6 /* XYZWritter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYZWritter.swift; sourceTree = "<group>"; };
 		C0F9F2FF2857DE9200ABADE3 /* AtomicProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomicProgressView.swift; sourceTree = "<group>"; };
 		F006ADC226FBD3B500FD2F33 /* PeriodicTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTableView.swift; sourceTree = "<group>"; };
 		F06AA47626E77F5100387EBA /* Atomic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Atomic.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -264,7 +264,7 @@
 		C0E137232783AB39009ACCB6 /* FileWriter */ = {
 			isa = PBXGroup;
 			children = (
-				C0E137242783AB53009ACCB6 /* GaussianGJFWriter.swift */,
+				C0E137242783AB53009ACCB6 /* XYZWritter.swift */,
 			);
 			path = FileWriter;
 			sourceTree = "<group>";
@@ -508,7 +508,7 @@
 				C0A7F0A0276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
 				C07BE7C828A283A700EFBE98 /* AtomStyles.swift in Sources */,
 				C07BE7BF28A281D800EFBE98 /* Selection.swift in Sources */,
-				C0E137262783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
+				C0E137262783AB53009ACCB6 /* XYZWritter.swift in Sources */,
 				C0DFA43727E8A28500F6BA9A /* XYZReader.swift in Sources */,
 				C066B782277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E56277B668A00561AAA /* GaussianFileReader.swift in Sources */,
@@ -552,7 +552,7 @@
 				C07BE7BB28A2745600EFBE98 /* CameraLights.swift in Sources */,
 				C0A7F09F276F7FBB00E69E0F /* MoleculeRenderer.swift in Sources */,
 				F06AA4A526E7801200387EBA /* AtomicMainController.swift in Sources */,
-				C0E137252783AB53009ACCB6 /* GaussianGJFWriter.swift in Sources */,
+				C0E137252783AB53009ACCB6 /* XYZWritter.swift in Sources */,
 				C0DFA43427E89C2A00F6BA9A /* XYZReader.swift in Sources */,
 				C066B781277E15140036F404 /* ErrorManager.swift in Sources */,
 				C0455E55277B668A00561AAA /* GaussianFileReader.swift in Sources */,
@@ -602,7 +602,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = A5LQ554459;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -615,7 +615,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.4.3;
+				MARKETING_VERSION = 0.4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Atomic.macos;
 				PRODUCT_NAME = Atomic;
 				SDKROOT = macosx;
@@ -636,7 +636,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = A5LQ554459;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -649,7 +649,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 0.4.3;
+				MARKETING_VERSION = 0.4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Atomic.macos;
 				PRODUCT_NAME = Atomic;
 				SDKROOT = macosx;

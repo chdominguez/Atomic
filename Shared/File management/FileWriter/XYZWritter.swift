@@ -27,7 +27,7 @@ class XYZWritter {
             fileToBeSaved += "\(atomType)\t\t \(posx)\t\t \(posy)\t\t \(posz)\n"
         }
         
-        fileToBeSaved = "\(natoms)\n" + fileToBeSaved
+        fileToBeSaved = "\(natoms)\n" + "Written by Atomic\n" + fileToBeSaved
         
         let file = xyzFile(initialText: fileToBeSaved)
         

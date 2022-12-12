@@ -3,6 +3,15 @@
     <channel>
         <title>Atomic</title>
         <item>
+            <title>0.4.6</title>
+            <pubDate>Mon, 12 Dec 2022 16:32:30 +0100</pubDate>
+            <sparkle:version>6</sparkle:version>
+            <description><![CDATA[<h2>Bugfixes in version 0.4.6:</h2><ul><li>Fixed XYZ out of bounds progress bar</li><li>Updated ProteinKit</li><li>Added "clear recents" button in settings</li></ul>]]></description>
+            <sparkle:shortVersionString>0.4.6</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/chdominguez/Atomic/releases/download/0.4.6/Atomic0.4.6.dmg" length="4852879" type="application/octet-stream" sparkle:edSignature="Zivhgitnwl3BlBdQPvEQnO3/oFZDs+tWBKj6xUS+YPC3Edn+tlI6e980svh94v8UVgzA+Gmm2mK5fpVU59QUAw=="/>
+        </item>
+        <item>
             <title>Version 0.4.5</title>
             <pubDate>Mon, 21 Nov 2022 13:50:06 +0100</pubDate>
             <sparkle:version>5</sparkle:version>

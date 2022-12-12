@@ -17,6 +17,15 @@ class RecentsStore: ObservableObject {
         }
     }
     
+    public func clearData() throws {
+        let path = saveDataPath().path
+        guard let files = try? FileManager.default.contentsOfDirectory(atPath: path) else {throw AtomicErrors.internalFailure}
+        for file in files {
+            try FileManager.default.removeItem(atPath: path + "/" + file)
+        }
+        loadBookmarks()
+    }
+    
     private func createDirectory() -> Bool {
         do {
             try FileManager.default.createDirectory(at: saveDataPath(), withIntermediateDirectories: true)

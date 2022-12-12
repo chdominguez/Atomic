@@ -18,7 +18,7 @@ func distance(from pos1: SCNVector3, to pos2: SCNVector3) -> Double {
     return Double(distanceVector.magnitudeSquared)
 }
 
-/// Returns the angle between three vectors in degrees
+/// Returns the angle between three positions in degrees
 func angle(pos1: SCNVector3, pos2: SCNVector3, pos3: SCNVector3) -> Double {
     let vector1 = (pos1 - pos2).normalized()
     let vector2 = (pos3 - pos2).normalized()

@@ -44,9 +44,21 @@ struct SettingsView_Previews: PreviewProvider {
 
 struct GeneralSettings: View {
     @ObservedObject var settings = GlobalSettings.shared
+    @State var tempErased = false
     var body: some View {
         VStack {
-            Text("General settings")
+            Button("Clear recents") {
+                do {
+                    try settings.savedRecents.clearData()
+                    tempErased = true
+                }
+                catch let error {
+                    print(error)
+                }
+            }
+            if tempErased {
+                Text("Erased! Restart Atomic...")
+            }
         }
         
     }
